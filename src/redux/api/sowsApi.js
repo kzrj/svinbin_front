@@ -13,14 +13,14 @@ const create = () => {
             throw new Error(err)
         })
     }
-    return {
-        getSows,
-    }
 
     const seminationSow = payload => {
         const { id, week, seminationEmployeeId } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.seminationSow(id);
+        console.log('oppa');
+        console.log(token);
+        console.log(url);
 
         const formData = new FormData();
         formData.append("week", week);
@@ -28,7 +28,7 @@ const create = () => {
         
         return axios({
                     method: 'post',
-                    url: endpoints.CREATE_LIESENCE,
+                    url: url,
                     data: formData,
                     headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
         })
@@ -37,9 +37,15 @@ const create = () => {
         })
         .catch(err => {
             const error = new Error(err);
-            error.data = parseErrorData(err);
+
+            // error.data = parseErrorData(err);
             throw error;
         })
+    }
+
+    return {
+        getSows,
+        seminationSow
     }
 
 }

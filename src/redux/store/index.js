@@ -8,6 +8,7 @@ import { reducer as formReducer } from 'redux-form';
 
 export const reducers = combineReducers({
   routing: routerReducer,
+  auth: require('../redux-sauce/auth').reducer,
   locations: require('../redux-sauce/locations').reducer,
   sows: require('../redux-sauce/sows').reducer,
   form: formReducer,

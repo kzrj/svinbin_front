@@ -1,8 +1,3 @@
-const extensions = ['application/postscript'];
-
-const isStrInList = (str, array) => {
-    return array.indexOf(str) !== -1;
-}
 
 export const parseErrorData = (error) => {
 
@@ -19,19 +14,19 @@ export const parseErrorData = (error) => {
 }
 
 export const createUrlParamsFromFilters = (filters) => {
-    const params = new URLSearchParams();
+    const params = new URLSearchParams()
 
     if (filters != null) Object.keys(filters).forEach(key => {
-        if (filters[key] != null && !(filters[key] instanceof Array)
-            && filters[key] != '') params.append(key, filters[key])
-        if (filters[key] != null && filters[key] instanceof Array){
-            delete params[key]
-            filters[key].map((one) => {
-                if (one != '')
-                    params.append(key, one)
-            })
-        }
-    })
-
+            if (filters[key] !== null && !(filters[key] instanceof Array)) 
+                params.append(key, filters[key])
+            if (filters[key] !== null && filters[key] instanceof Array){
+                delete params[key]
+                filters[key].map(value => {
+                    if (value !== '')
+                        params.append(key, value)
+                    return null
+                })
+            }
+        })
     return params
 }

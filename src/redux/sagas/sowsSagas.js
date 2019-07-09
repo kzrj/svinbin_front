@@ -10,3 +10,12 @@ export function* getSows(api, action) {
         yield put(SowsActions.getSowsFail(err.message))
     }
 }
+
+export function* seminationSow(api, action) {
+    try {
+        let response = yield call(api.seminationSow, action.payload);
+        yield put(SowsActions.seminationSowSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.seminationSowFail(err))
+    }
+}
