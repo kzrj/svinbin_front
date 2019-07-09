@@ -3,7 +3,7 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-    getSowsRequest: [],
+    getSowsRequest: ['payload'],
     getSowsFail: ['error'],
     getSowsSuccess: ['payload'],
 })
@@ -27,7 +27,7 @@ export const SowsSelectors = {
 
 /* ------------- Reducers ------------- */
 
-export const getSowsRequest = (state) => {
+export const getSowsRequest = (state, { payload }) => {
     return state.merge({ fetching: true, list: [] })
 }
 

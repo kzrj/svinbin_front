@@ -5,5 +5,6 @@ export default {
     // JWT_AUTH: `${apiUrl}/jwt/api-token-auth/`,
     // JWT_CHECK_TOKEN: `${apiUrl}/jwt/api-token-verify/`,
     GET_LOCATIONS: `${apiUrl}/locations/`,
-    GET_SOWS: `${apiUrl}/sows/`,    
+    GET_SOWS: `${apiUrl}/sows/`,
+    seminationSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/semination/`,
 }

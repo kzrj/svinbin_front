@@ -5,6 +5,9 @@ import LocationsActions from '../../redux/redux-sauce/locations';
 import SowsActions from '../../redux/redux-sauce/sows';
 
 class Full extends Component {
+  // constructor(props) {
+	// 	super(props);  
+	// }
 
   // componentDidMount() {
   //   $('body').addClass('loaded');
@@ -22,17 +25,26 @@ class Full extends Component {
     console.log(state)
   }
 
+  getLocations = () => {
+    this.props.getLocations({by_workshop: 1})
+  }
+
+  getSows = () => {
+    // this.props.getSows({by_workshop_number: 3})
+    this.props.getSows()
+  }
+
   render() {
     return (
       <div className="app">
         <h1>Oppa</h1>
         <div id="pageContent">
           {this.props.children}
-          <button onClick={this.props.getLocations}>
+          <button onClick={this.getLocations}>
             Button get locations
           </button>
 
-          <button onClick={this.props.getSows}>
+          <button onClick={this.getSows}>
             Button get sows
           </button>
           
@@ -54,8 +66,8 @@ const mapDispatchToProps = (dispatch) => ({
   // checkToken: (token) => {
   // dispatch(AuthActions.checkTokenRequest(token))
   // }
-  getLocations: () => dispatch(LocationsActions.getLocationsRequest()),
-  getSows: () => dispatch(SowsActions.getSowsRequest()),
+  getLocations: query => dispatch(LocationsActions.getLocationsRequest(query)),
+  getSows: query => dispatch(SowsActions.getSowsRequest(query)),
 })
 
 export default connect(

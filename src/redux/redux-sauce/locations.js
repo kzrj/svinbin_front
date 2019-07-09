@@ -3,7 +3,7 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-    getLocationsRequest: [],
+    getLocationsRequest: ['payload'],
     getLocationsFail: ['error'],
     getLocationsSuccess: ['payload'],
 })
@@ -27,7 +27,7 @@ export const LocationsSelectors = {
 
 /* ------------- Reducers ------------- */
 
-export const getLocationsRequest = (state) => {
+export const getLocationsRequest = (state, { payload }) => {
     return state.merge({ fetching: true, list: [] })
 }
 
