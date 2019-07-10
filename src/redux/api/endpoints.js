@@ -10,4 +10,7 @@ export default {
     
     GET_SOWS: `${apiUrl}/sows/`,
     seminationSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/semination/`,
+    ultrasoundSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/ultrasound/`,
+    cullingSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/culling/`,
+    sowMoveTo: (id) => `${apiUrl}/workshoponetwo/sows/${id}/move_to/`,
 }

@@ -41,10 +41,36 @@ class Full extends Component {
   seminationSow = () => {
     let data = {
       id: '1',
-      week: '102',
+      week: '104',
       seminationEmployeeId: '5'
     }
     this.props.seminationSow(data)
+  }
+
+  ultrasoundSow = () => {
+    let data = {
+      id: '1',
+      week: '104',
+      result: true
+    }
+    this.props.ultrasoundSow(data)
+  }
+
+  cullingSow = () => {
+    let data = {
+      id: '1',
+      culling_type: 'padej',
+      reason: 'test reason'
+    }
+    this.props.cullingSow(data)
+  }
+
+  sowMoveTo = () => {
+    let data = {
+      id: '1',
+      location: '1',
+    }
+    this.props.sowMoveTo(data)
   }
 
   login = () => {
@@ -58,25 +84,50 @@ class Full extends Component {
         <h1>Oppa</h1>
         <div id="pageContent">
           {this.props.children}
-          <button onClick={this.login}>
-            Button login
-          </button>
+          <div>
+            <button onClick={this.login}>
+              Button login
+            </button>
+          </div>
+          <br/>
+          <div>
+            <button onClick={this.showStateConsole}>
+              Button show store
+            </button>
+          </div>
+          <br/>
+          <div>
+            <label>Locations</label>
+            <br/>
+            <button onClick={this.getLocations}>
+              Button get locations
+            </button>
+          </div>
+          <br/>
+          <div>
+            <label>Sows</label>
+            <br/>
+            <button onClick={this.getSows}>
+              Button get sows
+            </button>
 
-          <button onClick={this.getLocations}>
-            Button get locations
-          </button>
+            <button onClick={this.seminationSow}>
+              Button semination sow 1
+            </button>
 
-          <button onClick={this.getSows}>
-            Button get sows
-          </button>
+            <button onClick={this.ultrasoundSow}>
+              Button ultrasound sow 1
+            </button>
 
-          <button onClick={this.seminationSow}>
-            Button semination sow 1
-          </button>
+            <button onClick={this.cullingSow}>
+              Button culling sow 1
+            </button>
+
+            <button onClick={this.sowMoveTo}>
+              Button sow 1 move to 1
+            </button>
+          </div>
           
-          <button onClick={this.showStateConsole}>
-            Button show store
-          </button>
         </div>
       </div>
     );
@@ -95,6 +146,9 @@ const mapDispatchToProps = (dispatch) => ({
 
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   seminationSow: data => dispatch(SowsActions.seminationSowRequest(data)),
+  ultrasoundSow: data => dispatch(SowsActions.ultrasoundSowRequest(data)),
+  cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
+  sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
 })
 
 export default connect(

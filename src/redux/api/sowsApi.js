@@ -37,15 +37,91 @@ const create = () => {
         })
         .catch(err => {
             const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
 
-            // error.data = parseErrorData(err);
+    const ultrasoundSow = payload => {
+        const { id, week, result } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.ultrasoundSow(id);
+
+        const formData = new FormData();
+        formData.append("week", week);
+        formData.append("result", result);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const cullingSow = payload => {
+        const { id, culling_type, reason } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.cullingSow(id);
+
+        const formData = new FormData();
+        formData.append("culling_type", culling_type);
+        formData.append("reason", reason);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const sowMoveTo = payload => {
+        const { id, location } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.sowMoveTo(id);
+
+        const formData = new FormData();
+        formData.append("location", location);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
             throw error;
         })
     }
 
     return {
         getSows,
-        seminationSow
+        seminationSow,
+        ultrasoundSow,
+        cullingSow,
+        sowMoveTo
     }
 
 }
