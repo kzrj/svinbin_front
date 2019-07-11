@@ -4,18 +4,22 @@ import { takeEvery, all, takeLatest } from "redux-saga/effects";
 import AuthApi from "../api/authApi";
 import LocationsApi from '../api/locationsApi';
 import SowsApi from '../api/sowsApi';
+import NomadPigletsApi from '../api/nomadPigletsApi';
 /* ------------- Types ------------- */
 import { AuthTypes } from "../redux-sauce/auth";
 import { LocationsTypes } from '../redux-sauce/locations';
 import { SowsTypes } from '../redux-sauce/sows';
+import { NomadPigletsTypes } from '../redux-sauce/nomadPiglets';
 /* ------------- Sagas ------------- */
 import { logIn, logOut, checkToken, signUp, checkAuth } from "./authSagas";
 import { getLocations } from './locationsSagas';
 import * as sowsSaga from './sowsSagas';
+import * as nomadPigletsSaga from './nomadPigletsSagas';
 
 const authApi = AuthApi.create();
 const locationsApi = LocationsApi.create();
 const sowsApi = SowsApi.create();
+const nomadPigletsApi = NomadPigletsApi.create();
 
 export default function* root() {
   yield all([
@@ -33,5 +37,9 @@ export default function* root() {
     takeEvery(SowsTypes.ULTRASOUND_SOW_REQUEST, sowsSaga.ultrasoundSow, sowsApi),
     takeEvery(SowsTypes.CULLING_SOW_REQUEST, sowsSaga.cullingSow, sowsApi),
     takeEvery(SowsTypes.SOW_MOVE_TO_REQUEST, sowsSaga.sowMoveTo, sowsApi),
+    takeEvery(SowsTypes.SOW_FARROW_REQUEST, sowsSaga.sowFarrow, sowsApi),
+
+    takeEvery(NomadPigletsTypes.GET_NOMAD_PIGLETS_REQUEST, nomadPigletsSaga.getNomadPiglets, nomadPigletsApi),
+    takeEvery(NomadPigletsTypes.WEIGHING_PIGLETS_REQUEST, nomadPigletsSaga.weighingPiglets, nomadPigletsApi),
   ]);
 }

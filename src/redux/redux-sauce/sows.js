@@ -22,6 +22,14 @@ const { Types, Creators } = createActions({
     sowMoveToRequest: ['payload'],
     sowMoveToFail: ['error'],
     sowMoveToSuccess: ['payload'],
+
+    // sowsMoveManyToRequest: ['payload'],
+    // sowsMoveManyFail: ['error'],
+    // sowsMoveManySuccess: ['payload'],
+
+    sowFarrowRequest: ['payload'],
+    sowFarrowFail: ['error'],
+    sowFarrowSuccess: ['payload'],
 })
 
 export const SowsTypes = Types
@@ -45,6 +53,8 @@ export const SowsSelectors = {
     ultrasoundSow: state => state.Sows.sow,
     cullingSow: state => state.Sows.sow,
     sowMoveTo: state => state.Sows.sow,
+    // sowsMoveMany: state => state.Sows.sow,
+    sowFarrow: state => state.Sows.sow,
 }
 
 /* ------------- Reducers ------------- */
@@ -113,6 +123,19 @@ export const sowMoveToFail = (state, { error }) => {
     return state.merge({ fetching: false, error: error.data })
 }
 
+// Sow Farrow
+export const sowFarrowRequest = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const sowFarrowSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, sow: payload.sow, sowEvent: payload.farrow })
+}
+
+export const sowFarrowFail = (state, { error }) => {
+    return state.merge({ fetching: false, error: error.data })
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -135,4 +158,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.SOW_MOVE_TO_REQUEST]: sowMoveToRequest,
     [Types.SOW_MOVE_TO_SUCCESS]: sowMoveToSuccess,
     [Types.SOW_MOVE_TO_FAIL]: sowMoveToFail,
+
+    [Types.SOW_FARROW_REQUEST]: sowFarrowRequest,
+    [Types.SOW_FARROW_SUCCESS]: sowFarrowSuccess,
+    [Types.SOW_FARROW_FAIL]: sowFarrowFail,
 })

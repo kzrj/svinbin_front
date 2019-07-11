@@ -116,12 +116,64 @@ const create = () => {
         })
     }
 
+    // const sowsMoveMany = payload => {
+    //     const { id, sows } = payload;
+    //     const token = localStorage.getItem('token') || '';
+
+    //     const formData = new FormData();
+    //     formData.append("sows", sows);
+        
+    //     return axios({
+    //                 method: 'post',
+    //                 url: endpoints.SOWS_MOVE_MANY,
+    //                 data: formData,
+    //                 headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+    //     })
+    //     .then(response => {
+    //         return response.data
+    //     })
+    //     .catch(err => {
+    //         const error = new Error(err);
+    //         error.data = parseErrorData(err);
+    //         throw error;
+    //     })
+    // }
+
+    const sowFarrow = payload => {
+        const { id, week, alive_quantity, dead_quantity, mummy_quantity } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.sowFarrow(id);
+
+        const formData = new FormData();
+        formData.append("week", week);
+        formData.append("alive_quantity", alive_quantity);
+        formData.append("dead_quantity", dead_quantity);
+        formData.append("mummy_quantity", mummy_quantity);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getSows,
         seminationSow,
         ultrasoundSow,
         cullingSow,
-        sowMoveTo
+        sowMoveTo,
+        // sowsMoveMany,
+        sowFarrow
     }
 
 }

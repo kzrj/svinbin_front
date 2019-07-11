@@ -46,3 +46,12 @@ export function* sowMoveTo(api, action) {
         yield put(SowsActions.sowMoveToFail(err))
     }
 }
+
+export function* sowFarrow(api, action) {
+    try {
+        let response = yield call(api.sowFarrow, action.payload);
+        yield put(SowsActions.sowFarrowSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.sowFarrowFail(err))
+    }
+}

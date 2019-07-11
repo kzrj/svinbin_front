@@ -13,4 +13,10 @@ export default {
     ultrasoundSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/ultrasound/`,
     cullingSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/culling/`,
     sowMoveTo: (id) => `${apiUrl}/workshoponetwo/sows/${id}/move_to/`,
+    // SOWS_MOVE_MANY: `${apiUrl}/workshoponetwo/sows/move_many/`,
+    sowFarrow: (id) => `${apiUrl}/workshopthree/sows/${id}/sow_farrow/`,
+
+    GET_NOMADS_PIGLETS: `${apiUrl}/workshopfour/piglets/`,
+    weighingPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/weighing_piglets/`
+    
 }

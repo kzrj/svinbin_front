@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import LocationsActions from '../../redux/redux-sauce/locations';
 import SowsActions from '../../redux/redux-sauce/sows';
+import NomadPigletsActions from '../../redux/redux-sauce/nomadPiglets';
 import AuthActions from '../../redux/redux-sauce/auth';
 
 
@@ -28,7 +29,7 @@ class Full extends Component {
   }
 
   getLocations = () => {
-    this.props.getLocations({by_workshop: 1})
+    this.props.getLocations({by_workshop: 3})
   }
 
   getSows = () => {
@@ -72,6 +73,33 @@ class Full extends Component {
     }
     this.props.sowMoveTo(data)
   }
+
+  sowFarrow = () => {
+    let data = {
+      id: '2',
+      week: '104',
+      alive_quantity: '11',
+      dead_quantity: '2',
+      mummy_quantity: '3',
+    }
+    this.props.sowFarrow(data)
+  }
+
+  getNomadPiglets = () => {
+    let query = {
+
+    }
+    this.props.getNomadPiglets(query)
+  }
+
+  weighingPiglets = () => {
+    let data = {
+      id: 1,
+      total_weight: 720,
+      place: '3/4'
+    }
+    this.props.weighingPiglets(data)
+  } 
 
   login = () => {
     this.props.login({username: 'test_seminator', password: 'qwerty123'})
@@ -126,8 +154,23 @@ class Full extends Component {
             <button onClick={this.sowMoveTo}>
               Button sow 1 move to 1
             </button>
+
+            <button onClick={this.sowFarrow}>
+              Button sow farrow
+            </button>
           </div>
-          
+          <br/>
+          <div>
+            <label>Nomad piglets</label>
+            <br/>
+            <button onClick={this.getNomadPiglets}>
+              Button get piglets
+            </button>
+
+            <button onClick={this.weighingPiglets}>
+              Button weighing piglets
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -149,6 +192,10 @@ const mapDispatchToProps = (dispatch) => ({
   ultrasoundSow: data => dispatch(SowsActions.ultrasoundSowRequest(data)),
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
+  sowFarrow: data => dispatch(SowsActions.sowFarrowRequest(data)),
+
+  getNomadPiglets: query => dispatch(NomadPigletsActions.getNomadPigletsRequest(query)),
+  weighingPiglets: data => dispatch(NomadPigletsActions.weighingPigletsRequest(data)),
 })
 
 export default connect(
