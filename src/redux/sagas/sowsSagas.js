@@ -7,7 +7,7 @@ export function* getSows(api, action) {
         let response = yield call(api.getSows, action.payload);
         yield put(SowsActions.getSowsSuccess(response.results));
     } catch (err) {
-        yield put(SowsActions.getSowsFail(err.message))
+        yield put(SowsActions.getSowsFail(err))
     }
 }
 

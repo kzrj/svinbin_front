@@ -10,6 +10,22 @@ const { Types, Creators } = createActions({
     weighingPigletsRequest: ['payload'],
     weighingPigletsFail: ['error'],
     weighingPigletsSuccess: ['payload'],
+
+    cullingPigletsRequest: ['payload'],
+    cullingPigletsFail: ['error'],
+    cullingPigletsSuccess: ['payload'],
+
+    cullingGiltPigletsRequest: ['payload'],
+    cullingGiltPigletsFail: ['error'],
+    cullingGiltPigletsSuccess: ['payload'],
+
+    moveGroupFromCellToCellRequest: ['payload'],
+    moveGroupFromCellToCellFail: ['error'],
+    moveGroupFromCellToCellSuccess: ['payload'],
+
+    moveToPigletsRequest: ['payload'],
+    moveToPigletsFail: ['error'],
+    moveToPigletsSuccess: ['payload'],
 })
 
 export const NomadPigletsTypes = Types
@@ -30,10 +46,14 @@ export const INITIAL_STATE = Immutable({
 export const NomadPigletsSelectors = {
     getNomadPiglets: state => state.nomadPiglets.list,
     weighingPiglets: state => state.nomadPiglets.nomadGroup,
+    cullingPiglets: state => state.nomadPiglets.nomadGroup,
+    cullingGiltPiglets: state => state.nomadPiglets.nomadGroup,
+    moveGroupFromCellToCell: state => state.nomadPiglets.nomadGroup,
+    moveToPiglets: state => state.nomadPiglets.nomadGroup,
 }
 
 /* ------------- Reducers ------------- */
-
+// Get
 export const getNomadPigletsRequest = (state, { payload }) => {
     return state.merge({ fetching: true, list: [] })
 }
@@ -61,6 +81,65 @@ export const weighingPigletsFail = (state, { error }) => {
         event: null })
 }
 
+// Culling
+export const cullingPigletsRequest = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const cullingPigletsSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, nomadGroup: payload.piglets_group, 
+        event: payload.culling })
+}
+
+export const cullingPigletsFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, nomadGroup: null, 
+        event: null })
+}
+
+// Culling gilts
+export const cullingGiltPigletsRequest = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const cullingGiltPigletsSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, nomadGroup: payload.piglets_group, 
+        event: payload.culling })
+}
+
+export const cullingGiltPigletsFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, nomadGroup: null, 
+        event: null })
+}
+
+// Move from cell to cell 
+export const moveGroupFromCellToCellRequest = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const moveGroupFromCellToCellSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, nomadGroup: payload.piglets_group, 
+        event: payload.transaction })
+}
+
+export const moveGroupFromCellToCellFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, nomadGroup: null, 
+        event: null })
+}
+
+// Move to
+export const moveToPigletsRequest = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const moveToPigletsSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, nomadGroup: payload.piglets_group, 
+        event: payload.transaction })
+}
+
+export const moveToPigletsFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, nomadGroup: null, 
+        event: null })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -71,4 +150,20 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.WEIGHING_PIGLETS_REQUEST]: weighingPigletsRequest,
     [Types.WEIGHING_PIGLETS_SUCCESS]: weighingPigletsSuccess,
     [Types.WEIGHING_PIGLETS_FAIL]: weighingPigletsFail,
+
+    [Types.CULLING_PIGLETS_REQUEST]: cullingPigletsRequest,
+    [Types.CULLING_PIGLETS_SUCCESS]: cullingPigletsSuccess,
+    [Types.CULLING_PIGLETS_FAIL]: cullingPigletsFail,
+
+    [Types.CULLING_GILT_PIGLETS_REQUEST]: cullingGiltPigletsRequest,
+    [Types.CULLING_GILT_PIGLETS_SUCCESS]: cullingGiltPigletsSuccess,
+    [Types.CULLING_GILT_PIGLETS_FAIL]: cullingGiltPigletsFail,
+
+    [Types.MOVE_GROUP_FROM_CELL_TO_CELL_REQUEST]: moveGroupFromCellToCellRequest,
+    [Types.MOVE_GROUP_FROM_CELL_TO_CELL_SUCCESS]: moveGroupFromCellToCellSuccess,
+    [Types.MOVE_GROUP_FROM_CELL_TO_CELL_FAIL]: moveGroupFromCellToCellFail,
+
+    [Types.MOVE_TO_PIGLETS_REQUEST]: moveToPigletsRequest,
+    [Types.MOVE_TO_PIGLETS_SUCCESS]: moveToPigletsSuccess,
+    [Types.MOVE_TO_PIGLETS_FAIL]: moveToPigletsFail,
 })

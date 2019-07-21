@@ -10,7 +10,30 @@ const create = () => {
         return axios.get(endpoints.GET_SOWS, { params })
         .then(response => response.data)
         .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
             throw new Error(err)
+        })
+    }
+
+    const getSow = payload => {
+        const { id } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.getSow(id);
+
+        return axios({
+                    method: 'get',
+                    url: url,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
         })
     }
 
@@ -18,9 +41,6 @@ const create = () => {
         const { id, week, seminationEmployeeId } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.seminationSow(id);
-        console.log('oppa');
-        console.log(token);
-        console.log(url);
 
         const formData = new FormData();
         formData.append("week", week);
@@ -168,6 +188,7 @@ const create = () => {
 
     return {
         getSows,
+        getSow,
         seminationSow,
         ultrasoundSow,
         cullingSow,

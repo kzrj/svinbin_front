@@ -42,6 +42,9 @@ export const INITIAL_STATE = Immutable({
     list: [],
     error: '',
     sow: null,
+    seminationSow: null,
+    ultrasoundSow: null,
+    cullingSow: null,
     sowEvent: null
 })
 
@@ -64,7 +67,9 @@ export const getSowsRequest = (state, { payload }) => {
 }
 
 export const getSowsSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, list: payload })
+    let sow = null
+    if (payload.length > 0) sow = payload[1]
+    return state.merge({ fetching: false, error: null, list: payload, sow: sow })
 }
 
 export const getSowsFail = (state, { error }) => {

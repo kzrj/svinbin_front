@@ -9,6 +9,7 @@ export default {
     GET_LOCATIONS: `${apiUrl}/locations/`,
     
     GET_SOWS: `${apiUrl}/sows/`,
+    getSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/`,
     seminationSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/semination/`,
     ultrasoundSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/ultrasound/`,
     cullingSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/culling/`,
@@ -17,6 +18,9 @@ export default {
     sowFarrow: (id) => `${apiUrl}/workshopthree/sows/${id}/sow_farrow/`,
 
     GET_NOMADS_PIGLETS: `${apiUrl}/workshopfour/piglets/`,
-    weighingPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/weighing_piglets/`
-    
+    weighingPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/weighing_piglets/`,
+    cullingPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/culling_piglets/`,
+    cullingGiltPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/culling_gilts/`,
+    moveGroupFromCellToCell: () => `${apiUrl}/workshopfour/piglets/move_group_from_cell_to_cell/`,
+    moveToPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/moveToPiglets/`,
 }

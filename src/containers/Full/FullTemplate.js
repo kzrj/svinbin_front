@@ -147,7 +147,8 @@ class Full extends Component {
 
   render() {
     return (
-      <div className="app container">
+      <div className="app">
+        <h1>Oppa</h1>
         <div id="pageContent">
           {this.props.children}
           <div>
