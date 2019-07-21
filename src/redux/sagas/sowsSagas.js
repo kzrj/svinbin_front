@@ -11,6 +11,15 @@ export function* getSows(api, action) {
     }
 }
 
+export function* getSow(api, action) {
+    try {
+        let response = yield call(api.getSow, action.payload);
+        yield put(SowsActions.getSowSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.getSowFail(err))
+    }
+}
+
 export function* seminationSow(api, action) {
     try {
         let response = yield call(api.seminationSow, action.payload);

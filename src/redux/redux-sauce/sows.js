@@ -7,6 +7,10 @@ const { Types, Creators } = createActions({
     getSowsFail: ['error'],
     getSowsSuccess: ['payload'],
 
+    getSowRequest: ['payload'],
+    getSowFail: ['error'],
+    getSowSuccess: ['payload'],
+
     seminationSowRequest: ['payload'],
     seminationSowFail: ['error'],
     seminationSowSuccess: ['payload'],
@@ -52,6 +56,7 @@ export const INITIAL_STATE = Immutable({
 
 export const SowsSelectors = {
     getSows: state => state.Sows.list,
+    getSow: state => state.Sows.sow,
     seminationSow: state => state.Sows.sow,
     ultrasoundSow: state => state.Sows.sow,
     cullingSow: state => state.Sows.sow,
@@ -74,6 +79,19 @@ export const getSowsSuccess = (state, { payload }) => {
 
 export const getSowsFail = (state, { error }) => {
     return state.merge({ fetching: false, error, list: [] })
+}
+
+// Get one
+export const getSowRequest = (state, { payload }) => {
+    return state.merge({ fetching: true, })
+}
+
+export const getSowSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, sow: payload })
+}
+
+export const getSowFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, sow: null })
 }
 
 // Semination
@@ -147,6 +165,10 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_SOWS_REQUEST]: getSowsRequest,
     [Types.GET_SOWS_SUCCESS]: getSowsSuccess,
     [Types.GET_SOWS_FAIL]: getSowsFail,
+
+    [Types.GET_SOW_REQUEST]: getSowRequest,
+    [Types.GET_SOW_SUCCESS]: getSowSuccess,
+    [Types.GET_SOW_FAIL]: getSowFail,
 
     [Types.SEMINATION_SOW_REQUEST]: seminationSowRequest,
     [Types.SEMINATION_SOW_SUCCESS]: seminationSowSuccess,
