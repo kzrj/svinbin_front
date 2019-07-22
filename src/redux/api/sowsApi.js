@@ -17,8 +17,7 @@ const create = () => {
         })
     }
 
-    const getSow = payload => {
-        const { id } = payload;
+    const getSow = id => {
         const token = localStorage.getItem('token') || '';
         const url = endpoints.getSow(id);
 

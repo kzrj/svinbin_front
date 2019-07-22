@@ -153,18 +153,27 @@ class WorkshopOneContainer extends Component {
         </div>
         { this.state.tabs.seminationTab &&
           <WS1SeminationTab 
-            getSows={this.props.getSows} 
+            query={null}
+            getSows={this.props.getSows}
+            getSow={this.props.getSow}
             sows={this.props.state.sows.list}
             sowsData={this.props.state.sows}
-            sow={this.props.state.sow}
-            seminationSow={this.seminationSow}
+            sow={this.props.state.sows.sow}
+            // seminationSow={this.seminationSow}
+            seminationSow={this.props.seminationSow}
+            seminationEmployes={[{name: 1},{name: 2},{name: 3},{name: 4},{name: 123}]}
+            week={1}
           />}
         { this.state.tabs.ultrasoundTab &&
           <WS1UltrasoundTab 
-            getSows={this.props.getSows} 
+            query={null}
+            getSows={this.props.getSows}
+            getSow={this.props.getSow} 
             sows={this.props.state.sows.list}
-            sow={this.props.state.sow}
-            ultrasoundSow={this.ultrasoundSow}
+            sow={this.props.state.sows.sow}
+            sowsData={this.props.state.sows}
+            ultrasoundSow={this.props.ultrasoundSow}
+            week={1}
           />}
 
       </div>
@@ -181,6 +190,7 @@ const mapDispatchToProps = (dispatch) => ({
   login: (payload) => dispatch(AuthActions.loginRequest(payload)),
 
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
+  getSow: id => dispatch(SowsActions.getSowRequest(id)),
   seminationSow: data => dispatch(SowsActions.seminationSowRequest(data)),
   ultrasoundSow: data => dispatch(SowsActions.ultrasoundSowRequest(data)),
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),

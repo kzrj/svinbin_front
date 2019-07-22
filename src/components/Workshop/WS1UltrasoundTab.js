@@ -10,56 +10,29 @@ class WS1UltrasoundTab extends Component {
   }
   
   componentDidMount() {
+    // query
     this.props.getSows()
-    this.setState({
-      sow: this.props.sow
-    })
-    // console.log(this.props.sow)
-    // console.log(this.props.sows)
-    // console.log(this.props.sows[1])
-    // console.log(this.state.sow)
   }
 
   getSowsById = () => {
-    this.props.sows.length > 0 &&
-      this.setState({
-        sow: this.props.sows[1]
-      })
+    // value
+    // query
     this.props.getSows()
-    const token = localStorage.getItem('token');
-    console.log(token)
-    console.log('OOPA')
-    console.log(Array.isArray(this.props.sows))
-    // this.props.sows.length > 0 &&
-    //   this.setState({
-    //     sow: this.props.sows[1]
-    //   })
-    console.log(this.props.sows)
-    console.log(this.props.sows[1])
-    console.log(this.state.sow)
-    
-  }
-
-  showSowData = (sow) => {
-    console.log(sow)
-    this.setState({
-      sow: this.props.sow
-    })
   }
 
   ultrasoundSow = (result) => {
     let data = {
-      id: this.state.sow.id,
-      week: '104',
+      id: this.props.sow.id,
+      week: this.props.week,
       result: result
     }
     this.props.ultrasoundSow(data)
+    // query
     this.props.getSows()
-    console.log('ultrasoundSow')
   }
 
   render() {
-    const { sows, sow } = this.props
+    const { sows, sowsData, sow, week } = this.props
     return (
         <div className='row workshop-content'>
           <div className='col-3'>
@@ -69,10 +42,13 @@ class WS1UltrasoundTab extends Component {
             <div className='workshop-content-column-1'>
               <input type='text' onChange={this.getSowsById} />
               <ul className='list-unstyled'>
-                {sows.length > 0 && this.state.sow &&
-                  sows.map(sow => 
-                    <li className={sow.id === this.state.sow.id ? 'sow-active' : ''} key={sow.id} onClick={() => this.showSowData(sow)}>
-                      {sow.farm_id}
+                {sowsData.fetching && 'Fetching'}
+                {!sowsData.fetching && 'Not Fetching'}
+                
+                {sows.length > 0 && sow &&
+                  sows.map(sowInList => 
+                    <li className={sowInList.id == sow.id ? 'sow-active' : sowInList.id} key={sowInList.id} onClick={() => this.props.getSow(sowInList.id)}>
+                      {sowInList.farm_id}
                     </li>)
                 }
               </ul>
@@ -83,22 +59,15 @@ class WS1UltrasoundTab extends Component {
               <p className="workshop-header-2">ВЫБРАНА МАТКА</p>
             </div>
             <div className='workshop-content-column-2'>
-              {this.state.sow &&
+              {sow &&
                 <div>
-                  <ul>
-                    <li>{this.state.sow.id}</li>
-                    <li>{this.state.sow.location}</li>
-                    <li>{this.state.sow.status}</li>
-                    <li>{this.state.sow.farm_id}</li>
-                  </ul>
-                  {sow &&
                   <ul>
                     <li>{sow.id}</li>
                     <li>{sow.location}</li>
                     <li>{sow.status}</li>
                     <li>{sow.farm_id}</li>
+                    {/* semenation info */}
                   </ul>
-                  }
                   <div>
                     <button onClick={() => this.ultrasoundSow(false)}>
                       Отметить как прохолост
