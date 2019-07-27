@@ -12,6 +12,7 @@ export const reducers = combineReducers({
   locations: require('../redux-sauce/locations').reducer,
   sows: require('../redux-sauce/sows').reducer,
   nomadPiglets: require('../redux-sauce/nomadPiglets').reducer,
+  ws1: require('../redux-sauce/ws1').reducer,
   form: formReducer,
   // notifications: notifications
 })

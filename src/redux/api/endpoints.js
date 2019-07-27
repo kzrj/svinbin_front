@@ -16,6 +16,7 @@ export default {
     sowMoveTo: (id) => `${apiUrl}/workshoponetwo/sows/${id}/move_to/`,
     // SOWS_MOVE_MANY: `${apiUrl}/workshoponetwo/sows/move_many/`,
     sowFarrow: (id) => `${apiUrl}/workshopthree/sows/${id}/sow_farrow/`,
+    GET_SOWS_BY_TOURS: `${apiUrl}/workshoponetwo/sows/sows_by_tours/`,
 
     GET_NOMADS_PIGLETS: `${apiUrl}/workshopfour/piglets/`,
     weighingPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/weighing_piglets/`,

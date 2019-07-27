@@ -4,9 +4,6 @@ import React, { Component } from 'react';
 class WS1UltrasoundTab extends Component {
    constructor(props) {
     super(props);
-    this.state = {
-      sow: null
-    }
   }
   
   componentDidMount() {
@@ -32,7 +29,7 @@ class WS1UltrasoundTab extends Component {
   }
 
   render() {
-    const { sows, sowsData, sow, week } = this.props
+    const { sows, sow, week } = this.props
     return (
         <div className='row workshop-content'>
           <div className='col-3'>
@@ -42,9 +39,6 @@ class WS1UltrasoundTab extends Component {
             <div className='workshop-content-column-1'>
               <input type='text' onChange={this.getSowsById} />
               <ul className='list-unstyled'>
-                {sowsData.fetching && 'Fetching'}
-                {!sowsData.fetching && 'Not Fetching'}
-                
                 {sows.length > 0 && sow &&
                   sows.map(sowInList => 
                     <li className={sowInList.id == sow.id ? 'sow-active' : sowInList.id} key={sowInList.id} onClick={() => this.props.getSow(sowInList.id)}>
@@ -66,7 +60,7 @@ class WS1UltrasoundTab extends Component {
                     <li>{sow.location}</li>
                     <li>{sow.status}</li>
                     <li>{sow.farm_id}</li>
-                    {/* semenation info */}
+                    {/* ultrasound info */}
                   </ul>
                   <div>
                     <button onClick={() => this.ultrasoundSow(false)}>

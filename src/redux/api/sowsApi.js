@@ -13,7 +13,6 @@ const create = () => {
             const error = new Error(err);
             error.data = parseErrorData(err);
             throw error;
-            throw new Error(err)
         })
     }
 
@@ -185,6 +184,18 @@ const create = () => {
         })
     }
 
+    const getSowsByTours = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+
+        return axios.get(endpoints.GET_SOWS_BY_TOURS, { params })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getSows,
         getSow,
@@ -193,7 +204,8 @@ const create = () => {
         cullingSow,
         sowMoveTo,
         // sowsMoveMany,
-        sowFarrow
+        sowFarrow,
+        getSowsByTours
     }
 
 }

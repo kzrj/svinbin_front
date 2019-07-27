@@ -4,10 +4,28 @@ import { connect } from 'react-redux';
 // components
 import WS1SeminationTab from '../../components/Workshop/WS1SeminationTab'
 import WS1UltrasoundTab from '../../components/Workshop/WS1UltrasoundTab'
+import WS1TransferToWS2Tab from '../../components/Workshop/WS1TransferToWS2Tab'
 
 import SowsActions from '../../redux/redux-sauce/sows';
 import AuthActions from '../../redux/redux-sauce/auth';
 
+import Ws1Actions from '../../redux/redux-sauce/ws1';
+
+
+const convertSowsByTours = (sowsByToursElemList) => {
+  let outputDict = {};
+  sowsByToursElemList.map((listElem) => {
+    let columns = {};
+    outputDict[listElem['tour']['id']] = columns;
+    columns['count'] = listElem['count'];
+    columns['checked'] = false;
+    columns['rows'] = {};
+    listElem['sows'].map(sowElem =>
+      columns['rows'][sowElem['farm_id']] = false
+    );
+  });
+  return outputDict
+}
 
 class WorkshopOneContainer extends Component {
   constructor(props) {
@@ -23,20 +41,24 @@ class WorkshopOneContainer extends Component {
     }
 	}
 
-  // componentDidMount() {
-  //   $('body').addClass('loaded');
-  //   this.props.startup();
+  componentDidMount() {
+    // $('body').addClass('loaded');
+    // this.props.startup();
 
-  //   const token = localStorage.getItem('token');
-  //   if (token) {
-  //     this.props.checkToken(token);
-  //   }
-  // }
+    // const token = localStorage.getItem('token');
+    // if (token) {
+    //   this.props.checkToken(token);
+    // }
+
+    this.props.getSowsByTours()
+  }
 
   showStateConsole = () => {
     const { state } = this.props
     console.log('Hi')
     console.log(state)
+    console.log(this.props.state.sowsByTours)
+    console.log('JHIU')
   }
 
   setTab = (tab) => {
@@ -154,12 +176,10 @@ class WorkshopOneContainer extends Component {
         { this.state.tabs.seminationTab &&
           <WS1SeminationTab 
             query={null}
-            getSows={this.props.getSows}
-            getSow={this.props.getSow}
-            sows={this.props.state.sows.list}
-            sowsData={this.props.state.sows}
-            sow={this.props.state.sows.sow}
-            // seminationSow={this.seminationSow}
+            getSows={this.props.getSeminationSows}
+            getSow={this.props.getSeminationSow}
+            sows={this.props.state.ws1.seminationList}
+            sow={this.props.state.ws1.seminationSow}
             seminationSow={this.props.seminationSow}
             seminationEmployes={[{name: 1},{name: 2},{name: 3},{name: 4},{name: 123}]}
             week={1}
@@ -167,13 +187,19 @@ class WorkshopOneContainer extends Component {
         { this.state.tabs.ultrasoundTab &&
           <WS1UltrasoundTab 
             query={null}
-            getSows={this.props.getSows}
-            getSow={this.props.getSow} 
-            sows={this.props.state.sows.list}
-            sow={this.props.state.sows.sow}
-            sowsData={this.props.state.sows}
+            getSows={this.props.getUltrasoundSows}
+            getSow={this.props.getUltrasoundSow} 
+            sows={this.props.state.ws1.ultrasoundList}
+            sow={this.props.state.ws1.ultrasoundSow}
             ultrasoundSow={this.props.ultrasoundSow}
             week={1}
+          />}
+        { this.state.tabs.transferToWS2Tab &&
+          <WS1TransferToWS2Tab 
+            query={null}
+            getSowsByTours={this.props.getSowsByTours}
+            sowsByTours={convertSowsByTours(this.props.state.ws1.sowsByTours)}
+            tour={1}
           />}
 
       </div>
@@ -191,10 +217,18 @@ const mapDispatchToProps = (dispatch) => ({
 
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
-  seminationSow: data => dispatch(SowsActions.seminationSowRequest(data)),
-  ultrasoundSow: data => dispatch(SowsActions.ultrasoundSowRequest(data)),
+  // seminationSow: data => dispatch(SowsActions.seminationSowRequest(data)),
+  // ultrasoundSow: data => dispatch(SowsActions.ultrasoundSowRequest(data)),
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
+
+  getSeminationSows: query => dispatch(Ws1Actions.getSeminationSowsRequest(query)),
+  getSeminationSow: id => dispatch(Ws1Actions.getSeminationSowRequest(id)),
+  getUltrasoundSows: query => dispatch(Ws1Actions.getUltrasoundSowsRequest(query)),
+  getUltrasoundSow: id => dispatch(Ws1Actions.getUltrasoundSowRequest(id)),
+  seminationSow: data => dispatch(Ws1Actions.seminationSowRequest(data)),
+  ultrasoundSow: data => dispatch(Ws1Actions.ultrasoundSowRequest(data)),
+  getSowsByTours: data => dispatch(Ws1Actions.getSowsByToursRequest(data)),
 })
 
 export default connect(

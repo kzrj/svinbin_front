@@ -10,11 +10,14 @@ import { AuthTypes } from "../redux-sauce/auth";
 import { LocationsTypes } from '../redux-sauce/locations';
 import { SowsTypes } from '../redux-sauce/sows';
 import { NomadPigletsTypes } from '../redux-sauce/nomadPiglets';
+
+import { Ws1Types } from '../redux-sauce/ws1';
 /* ------------- Sagas ------------- */
 import { logIn, logOut, checkToken, signUp, checkAuth } from "./authSagas";
 import { getLocations } from './locationsSagas';
 import * as sowsSaga from './sowsSagas';
 import * as nomadPigletsSaga from './nomadPigletsSagas';
+import * as ws1Saga from './ws1Sagas';
 
 const authApi = AuthApi.create();
 const locationsApi = LocationsApi.create();
@@ -46,5 +49,13 @@ export default function* root() {
     takeEvery(NomadPigletsTypes.CULLING_GILT_PIGLETS_REQUEST, nomadPigletsSaga.cullingGiltPiglets, nomadPigletsApi),
     takeEvery(NomadPigletsTypes.MOVE_GROUP_FROM_CELL_TO_CELL_REQUEST, nomadPigletsSaga.moveGroupFromCellToCell, nomadPigletsApi),
     takeEvery(NomadPigletsTypes.MOVE_TO_PIGLETS_REQUEST, nomadPigletsSaga.moveToPiglets, nomadPigletsApi),
+
+    takeEvery(Ws1Types.GET_SEMINATION_SOWS_REQUEST, ws1Saga.getSeminationSows, sowsApi),
+    takeEvery(Ws1Types.GET_ULTRASOUND_SOWS_REQUEST, ws1Saga.getUltrasoundSows, sowsApi),
+    takeEvery(Ws1Types.GET_SEMINATION_SOW_REQUEST, ws1Saga.getSeminationSow, sowsApi),
+    takeEvery(Ws1Types.GET_ULTRASOUND_SOW_REQUEST, ws1Saga.getUltrasoundSow, sowsApi),
+    takeEvery(Ws1Types.SEMINATION_SOW_REQUEST, ws1Saga.seminationSow, sowsApi),
+    takeEvery(Ws1Types.ULTRASOUND_SOW_REQUEST, ws1Saga.ultrasoundSow, sowsApi),
+    takeEvery(Ws1Types.GET_SOWS_BY_TOURS_REQUEST, ws1Saga.getSowsByTours, sowsApi),
   ]);
 }

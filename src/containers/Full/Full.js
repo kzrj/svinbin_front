@@ -6,6 +6,8 @@ import SowsActions from '../../redux/redux-sauce/sows';
 import NomadPigletsActions from '../../redux/redux-sauce/nomadPiglets';
 import AuthActions from '../../redux/redux-sauce/auth';
 
+import Ws1Actions from '../../redux/redux-sauce/ws1';
+
 
 class Full extends Component {
   // constructor(props) {
@@ -26,6 +28,8 @@ class Full extends Component {
     const { state } = this.props
     console.log('Hi')
     console.log(state)
+    console.log(this.props.state.sowsByTours)
+    console.log('JHIU')
   }
 
   getLocations = () => {
@@ -145,6 +149,12 @@ class Full extends Component {
     
   }
 
+  getSeminationSows = () => {
+    this.props.getSeminationSows()
+    const token = localStorage.getItem('token');
+    console.log('get semination sows')
+  }
+
   render() {
     return (
       <div className="app container">
@@ -175,6 +185,10 @@ class Full extends Component {
             <br/>
             <button onClick={this.getSows}>
               Button get sows
+            </button>
+
+            <button onClick={this.getSeminationSows}>
+              Button get semination sows
             </button>
 
             <button onClick={this.seminationSow}>
@@ -254,6 +268,9 @@ const mapDispatchToProps = (dispatch) => ({
   cullingGiltPiglets: data => dispatch(NomadPigletsActions.cullingGiltPigletsRequest(data)),
   moveGroupFromCellToCell: data => dispatch(NomadPigletsActions.moveGroupFromCellToCellRequest(data)),
   moveToPiglets: data => dispatch(NomadPigletsActions.moveToPiglets(data)),
+
+  getSeminationSows: query => dispatch(Ws1Actions.getSeminationSowsRequest(query)),
+
 })
 
 export default connect(
