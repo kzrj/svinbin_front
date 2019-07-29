@@ -20,6 +20,15 @@ export function* getUltrasoundSows(api, action) {
     }
 }
 
+export function* getCullingSows(api, action) {
+    try {
+        let response = yield call(api.getSows, action.payload);
+        yield put(WS1Actions.getCullingSowsSuccess(response.results));
+    } catch (err) {
+        yield put(WS1Actions.getCullingSowsFail(err))
+    }
+}
+
 export function* getSeminationSow(api, action) {
     try {
         let response = yield call(api.getSow, action.payload);
@@ -35,6 +44,15 @@ export function* getUltrasoundSow(api, action) {
         yield put(WS1Actions.getUltrasoundSowSuccess(response));
     } catch (err) {
         yield put(WS1Actions.getUltrasoundSowFail(err))
+    }
+}
+
+export function* getCullingSow(api, action) {
+    try {
+        let response = yield call(api.getSow, action.payload);
+        yield put(WS1Actions.getCullingSowSuccess(response));
+    } catch (err) {
+        yield put(WS1Actions.getCullingSowFail(err))
     }
 }
 
@@ -56,6 +74,15 @@ export function* ultrasoundSow(api, action) {
     }
 }
 
+export function* cullingSow(api, action) {
+    try {
+        let response = yield call(api.cullingSow, action.payload);
+        yield put(WS1Actions.cullingSowSuccess(response));
+    } catch (err) {
+        yield put(WS1Actions.cullingSowFail(err))
+    }
+}
+
 export function* getSowsByTours(api, action) {
     try {
         let response = yield call(api.getSowsByTours, action.payload);
@@ -65,29 +92,11 @@ export function* getSowsByTours(api, action) {
     }
 }
 
-// export function* cullingSow(api, action) {
-//     try {
-//         let response = yield call(api.cullingSow, action.payload);
-//         yield put(SowsActions.cullingSowSuccess(response));
-//     } catch (err) {
-//         yield put(SowsActions.cullingSowFail(err))
-//     }
-// }
-
 // export function* sowMoveTo(api, action) {
 //     try {
 //         let response = yield call(api.sowMoveTo, action.payload);
 //         yield put(SowsActions.sowMoveToSuccess(response));
 //     } catch (err) {
 //         yield put(SowsActions.sowMoveToFail(err))
-//     }
-// }
-
-// export function* sowFarrow(api, action) {
-//     try {
-//         let response = yield call(api.sowFarrow, action.payload);
-//         yield put(SowsActions.sowFarrowSuccess(response));
-//     } catch (err) {
-//         yield put(SowsActions.sowFarrowFail(err))
 //     }
 // }

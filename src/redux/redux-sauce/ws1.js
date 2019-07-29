@@ -11,6 +11,10 @@ const { Types, Creators } = createActions({
     getUltrasoundSowsFail: ['error'],
     getUltrasoundSowsSuccess: ['payload'],
 
+    getCullingSowsRequest: ['payload'],
+    getCullingSowsFail: ['error'],
+    getCullingSowsSuccess: ['payload'],
+
     getSeminationSowRequest: ['payload'],
     getSeminationSowFail: ['error'],
     getSeminationSowSuccess: ['payload'],
@@ -18,6 +22,10 @@ const { Types, Creators } = createActions({
     getUltrasoundSowRequest: ['payload'],
     getUltrasoundSowFail: ['error'],
     getUltrasoundSowSuccess: ['payload'],
+
+    getCullingSowRequest: ['payload'],
+    getCullingSowFail: ['error'],
+    getCullingSowSuccess: ['payload'],
 
     seminationSowRequest: ['payload'],
     seminationSowFail: ['error'],
@@ -27,13 +35,13 @@ const { Types, Creators } = createActions({
     ultrasoundSowFail: ['error'],
     ultrasoundSowSuccess: ['payload'],
 
+    cullingSowRequest: ['payload'],
+    cullingSowFail: ['error'],
+    cullingSowSuccess: ['payload'],
+
     getSowsByToursRequest: ['payload'],
     getSowsByToursFail: ['error'],
     getSowsByToursSuccess: ['payload'],
-
-    // cullingSowRequest: ['payload'],
-    // cullingSowFail: ['error'],
-    // cullingSowSuccess: ['payload'],
 
     // sowMoveToRequest: ['payload'],
     // sowMoveToFail: ['error'],
@@ -42,10 +50,6 @@ const { Types, Creators } = createActions({
     // sowsMoveManyToRequest: ['payload'],
     // sowsMoveManyFail: ['error'],
     // sowsMoveManySuccess: ['payload'],
-
-    // sowFarrowRequest: ['payload'],
-    // sowFarrowFail: ['error'],
-    // sowFarrowSuccess: ['payload'],
 })
 
 export const Ws1Types = Types
@@ -68,18 +72,19 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Selectors ------------- */
 
-export const SowsSelectors = {
+export const Ws1Selectors = {
     getSeminationSows: state => state.ws1.seminationList,
     getUltrasoundSows: state => state.ws1.ultrasoundList,
     getSeminationSow: state => state.ws1.seminationSow,
     getUltrasoundSow: state => state.ws1.ultrasoundSow,
+    getCullingSows: state => state.ws1.cullingList,
+    getCullingSow: state => state.ws1.cullingSow,
     seminationSow: state => state.ws1.seminationSow,
     ultrasoundSow: state => state.ws1.ultrasoundSow,
+    cullingSow: state => state.ws1.cullingSow,
     getSowsByTours: state => state.ws1.sowsByTours,
-    // cullingSow: state => state.Sows.sow,
     // sowMoveTo: state => state.Sows.sow,
     // // sowsMoveMany: state => state.Sows.sow,
-    // sowFarrow: state => state.Sows.sow,
 }
 
 /* ------------- Reducers ------------- */
@@ -113,6 +118,21 @@ export const getUltrasoundSowsFail = (state, { error }) => {
     return state.merge({ fetching: false, error, ultrasoundList: [] })
 }
 
+// Get culling list
+export const getCullingSowsRequest = (state, { payload }) => {
+    return state.merge({ fetching: true, cullingList: [] })
+}
+
+export const getCullingSowsSuccess = (state, { payload }) => {
+    let sow = null
+    if (payload.length > 0) sow = payload[1]
+    return state.merge({ fetching: false, error: null, cullingList: payload, cullingSow: sow })
+}
+
+export const getCullingSowsFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, cullingList: [] })
+}
+
 // Get one semination
 export const getSeminationSowRequest = (state, { payload }) => {
     return state.merge({ fetching: true, })
@@ -137,6 +157,19 @@ export const getUltrasoundSowSuccess = (state, { payload }) => {
 
 export const getUltrasoundSowFail = (state, { error }) => {
     return state.merge({ fetching: false, error, ultrasoundSow: null })
+}
+
+// Get one culling
+export const getCullingSowRequest = (state, { payload }) => {
+    return state.merge({ fetching: true, })
+}
+
+export const getCullingSowSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, cullingSow: payload })
+}
+
+export const getCullingSowFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, cullingSow: null })
 }
 
 // Semination
@@ -165,6 +198,19 @@ export const ultrasoundSowFail = (state, { error }) => {
     return state.merge({ fetching: false, error: error.data })
 }
 
+// Culling
+export const cullingSowRequest = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const cullingSowSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, cullingSow: payload.sow, })
+}
+
+export const cullingSowFail = (state, { error }) => {
+    return state.merge({ fetching: false, error: error.data })
+}
+
 // Get sows by tours
 export const getSowsByToursRequest = (state, { payload }) => {
     return state.merge({ fetching: true, ultrasoundList: [] })
@@ -177,19 +223,6 @@ export const getSowsByToursSuccess = (state, { payload }) => {
 export const getSowsByToursFail = (state, { error }) => {
     return state.merge({ fetching: false, error, sowsByTours: [] })
 }
-
-// // Culling
-// export const cullingSowRequest = (state, { payload }) => {
-//     return state.merge({ fetching: true })
-// }
-
-// export const cullingSowSuccess = (state, { payload }) => {
-//     return state.merge({ fetching: false, error: null, sow: payload.sow, sowEvent: payload.culling })
-// }
-
-// export const cullingSowFail = (state, { error }) => {
-//     return state.merge({ fetching: false, error: error.data })
-// }
 
 // // Move to
 // export const sowMoveToRequest = (state, { payload }) => {
@@ -228,6 +261,10 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_ULTRASOUND_SOWS_SUCCESS]: getUltrasoundSowsSuccess,
     [Types.GET_ULTRASOUND_SOWS_FAIL]: getUltrasoundSowsFail,
 
+    [Types.GET_CULLING_SOWS_REQUEST]: getCullingSowsRequest,
+    [Types.GET_CULLING_SOWS_SUCCESS]: getCullingSowsSuccess,
+    [Types.GET_CULLING_SOWS_FAIL]: getCullingSowsFail,
+
     [Types.GET_SEMINATION_SOW_REQUEST]: getSeminationSowRequest,
     [Types.GET_SEMINATION_SOW_SUCCESS]: getSeminationSowSuccess,
     [Types.GET_SEMINATION_SOW_FAIL]: getSeminationSowFail,
@@ -235,6 +272,10 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_ULTRASOUND_SOW_REQUEST]: getUltrasoundSowRequest,
     [Types.GET_ULTRASOUND_SOW_SUCCESS]: getUltrasoundSowSuccess,
     [Types.GET_ULTRASOUND_SOW_FAIL]: getUltrasoundSowFail,
+
+    [Types.GET_CULLING_SOW_REQUEST]: getCullingSowRequest,
+    [Types.GET_CULLING_SOW_SUCCESS]: getCullingSowSuccess,
+    [Types.GET_CULLING_SOW_FAIL]: getCullingSowFail,
 
     [Types.SEMINATION_SOW_REQUEST]: seminationSowRequest,
     [Types.SEMINATION_SOW_SUCCESS]: seminationSowSuccess,
@@ -244,19 +285,15 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.ULTRASOUND_SOW_SUCCESS]: ultrasoundSowSuccess,
     [Types.ULTRASOUND_SOW_FAIL]: ultrasoundSowFail,
 
+    [Types.CULLING_SOW_REQUEST]: cullingSowRequest,
+    [Types.CULLING_SOW_SUCCESS]: cullingSowSuccess,
+    [Types.CULLING_SOW_FAIL]: cullingSowFail,
+
     [Types.GET_SOWS_BY_TOURS_REQUEST]: getSowsByToursRequest,
     [Types.GET_SOWS_BY_TOURS_SUCCESS]: getSowsByToursSuccess,
     [Types.GET_SOWS_BY_TOURS_FAIL]: getSowsByToursFail,
 
-    // [Types.CULLING_SOW_REQUEST]: cullingSowRequest,
-    // [Types.CULLING_SOW_SUCCESS]: cullingSowSuccess,
-    // [Types.CULLING_SOW_FAIL]: cullingSowFail,
-
     // [Types.SOW_MOVE_TO_REQUEST]: sowMoveToRequest,
     // [Types.SOW_MOVE_TO_SUCCESS]: sowMoveToSuccess,
     // [Types.SOW_MOVE_TO_FAIL]: sowMoveToFail,
-
-    // [Types.SOW_FARROW_REQUEST]: sowFarrowRequest,
-    // [Types.SOW_FARROW_SUCCESS]: sowFarrowSuccess,
-    // [Types.SOW_FARROW_FAIL]: sowFarrowFail,
 })

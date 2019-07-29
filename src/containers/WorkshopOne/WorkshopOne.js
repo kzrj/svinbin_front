@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
-import WS1SeminationTab from '../../components/Workshop/WS1SeminationTab'
-import WS1UltrasoundTab from '../../components/Workshop/WS1UltrasoundTab'
-import WS1TransferToWS2Tab from '../../components/Workshop/WS1TransferToWS2Tab'
+import WS1SeminationTab from '../../components/WorkshopOne/WS1SeminationTab'
+import WS1UltrasoundTab from '../../components/WorkshopOne/WS1UltrasoundTab'
+import WS1TransferToWS2Tab from '../../components/WorkshopOne/WS1TransferToWS2Tab'
+import WS1CullingTab from '../../components/WorkshopOne/WS1CullingTab'
 
+// actions
 import SowsActions from '../../redux/redux-sauce/sows';
 import AuthActions from '../../redux/redux-sauce/auth';
-
 import Ws1Actions from '../../redux/redux-sauce/ws1';
 
 
@@ -62,20 +63,16 @@ class WorkshopOneContainer extends Component {
   }
 
   setTab = (tab) => {
-    const tabs = {
-      seminationTab: false,
-      ultrasoundTab: false,
-      transferToWS2Tab: false,
-      cullingTab: false,
-      infoTab: false,
-    }
+    let { tabs } = this.state
+    Object.keys(tabs).forEach((key) => {
+      tabs[key] = false
+    })
     this.setState({
       tabs: {
         ...tabs,
         [tab]: true
       }
     })
-    console.log(this.state.tabs)
   }
 
   showStateConsole = () => {
@@ -201,6 +198,15 @@ class WorkshopOneContainer extends Component {
             sowsByTours={convertSowsByTours(this.props.state.ws1.sowsByTours)}
             tour={1}
           />}
+        { this.state.tabs.cullingTab &&
+          <WS1CullingTab 
+            query={null}
+            getSows={this.props.getCullingSows}
+            getSow={this.props.getCullingSow} 
+            sows={this.props.state.ws1.cullingList}
+            sow={this.props.state.ws1.cullingSow}
+            cullingSow={this.props.cullingSow}
+          />}
 
       </div>
     );
@@ -226,8 +232,11 @@ const mapDispatchToProps = (dispatch) => ({
   getSeminationSow: id => dispatch(Ws1Actions.getSeminationSowRequest(id)),
   getUltrasoundSows: query => dispatch(Ws1Actions.getUltrasoundSowsRequest(query)),
   getUltrasoundSow: id => dispatch(Ws1Actions.getUltrasoundSowRequest(id)),
+  getCullingSows: query => dispatch(Ws1Actions.getCullingSowsRequest(query)),
+  getCullingSow: id => dispatch(Ws1Actions.getCullingSowRequest(id)),
   seminationSow: data => dispatch(Ws1Actions.seminationSowRequest(data)),
   ultrasoundSow: data => dispatch(Ws1Actions.ultrasoundSowRequest(data)),
+  cullingSow: data => dispatch(Ws1Actions.cullingSowRequest(data)),
   getSowsByTours: data => dispatch(Ws1Actions.getSowsByToursRequest(data)),
 })
 

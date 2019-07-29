@@ -7,6 +7,7 @@ export default {
     SIGNUP: `${apiUrl}/users/`,
 
     GET_LOCATIONS: `${apiUrl}/locations/`,
+    GET_SECTIONS: `${apiUrl}/sections/`,
     
     GET_SOWS: `${apiUrl}/sows/`,
     getSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/`,
