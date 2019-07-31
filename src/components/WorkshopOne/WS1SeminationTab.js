@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-
+//hello kzrj 
 class WS1SeminationTab extends Component {
    constructor(props) {
     super(props);
@@ -8,7 +8,7 @@ class WS1SeminationTab extends Component {
       seminationEmployee: null
     }
   }
-  
+
   componentDidMount() {
     // query
     this.props.getSows()
@@ -51,7 +51,7 @@ class WS1SeminationTab extends Component {
               <input type='text' onChange={this.getSowsById} />
               <ul className='list-unstyled'>
                 {sows.length > 0 && sow &&
-                  sows.map(sowInList => 
+                  sows.map(sowInList =>
                     <li className={sowInList.id == sow.id ? 'sow-active' : sowInList.id} key={sowInList.id} onClick={() => this.props.getSow(sowInList.id)}>
                       {sowInList.farm_id}
                     </li>)
