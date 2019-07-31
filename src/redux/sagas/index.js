@@ -74,7 +74,7 @@ export default function* root() {
     takeEvery(Ws4Types.GET_INCOME_TAB_LOCATIONS_REQUEST, ws4Saga.getIncomeTabLocations, locationsApi),
     takeEvery(Ws4Types.SETLLE_PIGLETS_REQUEST, ws4Saga.setllePiglets, nomadPigletsApi),
     takeEvery(Ws4Types.GET_TRANSFER_PIGLETS_REQUEST, ws4Saga.getTransferPiglets, nomadPigletsApi),
-    takeEvery(Ws4Types.GET_INNER_TRANSFER_TAB_LOCATIONS_REQUEST, ws4Saga.getInnerTransferTabLocations1, locationsApi),
-    takeEvery(Ws4Types.GET_INNER_TRANSFER_TAB_LOCATIONS_REQUEST, ws4Saga.getInnerTransferTabLocations2, locationsApi),
+    takeEvery(Ws4Types.GET_INNER_TRANSFER_TAB_LOCATIONS1_REQUEST, ws4Saga.getInnerTransferTabLocations1, locationsApi),
+    takeEvery(Ws4Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_REQUEST, ws4Saga.getInnerTransferTabLocations2, locationsApi),
   ]);
 }
