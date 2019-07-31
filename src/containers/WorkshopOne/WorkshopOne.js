@@ -68,6 +68,7 @@ class WorkshopOneContainer extends Component {
       tabs[key] = false
     })
     this.setState({
+      ...this.state,
       tabs: {
         ...tabs,
         [tab]: true
@@ -170,7 +171,7 @@ class WorkshopOneContainer extends Component {
               ИНФО
             </div>
         </div>
-        { this.state.tabs.seminationTab &&
+        { this.state.tabs.seminationTab && 
           <WS1SeminationTab 
             query={null}
             getSows={this.props.getSeminationSows}
