@@ -57,6 +57,8 @@ class WorkshopFourContainer extends WorkshopRearing {
             query={null}
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.ws4.incomingPigletsList}
+            weighingPiglets={this.props.weighingPiglets}
+            weighingData={this.props.state.ws4.weighingData}
           />}
         { this.state.tabs.resettlementTab &&
           <WS4ResettelmentTab 
@@ -73,15 +75,12 @@ class WorkshopFourContainer extends WorkshopRearing {
       { this.state.tabs.innerTransferTab &&
           <WS4InnerTransferTab 
           query={null}
-          getPiglets={this.props.getTransferPiglets}
-          piglets={this.props.state.ws4.transferPiglets}
           getSections={this.props.getSections}
           sections={this.props.state.ws4.sections}
           getLocations1={this.props.getInnerTransferTabLocations1}
           getLocations2={this.props.getInnerTransferTabLocations2}
           locations1={this.props.state.ws4.innerTransferLocations1}
           locations2={this.props.state.ws4.innerTransferLocations2}
-          setllePiglets={this.props.setllePiglets}
           movePiglets={this.props.movePiglets}
         />}
 
@@ -117,6 +116,7 @@ const mapDispatchToProps = (dispatch) => ({
   movePiglets: data => dispatch(NomadPigletsActions.moveToPigletsRequest(data)),
   getInnerTransferTabLocations1: query => dispatch(Ws4Actions.getInnerTransferTabLocations1Request(query)),
   getInnerTransferTabLocations2: query => dispatch(Ws4Actions.getInnerTransferTabLocations2Request(query)),
+  weighingPiglets: data => dispatch(Ws4Actions.weighingPigletsRequest(data)),
 })
 
 export default connect(

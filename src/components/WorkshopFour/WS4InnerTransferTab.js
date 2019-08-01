@@ -46,7 +46,6 @@ class WS4InnerTransferTab extends Component {
   }
 
   clickCellFromLocation = (location) => {
-    this.props.getPiglets({location: location.id})
     this.setState({
       ...this.state,
       activeCellFromLocationId: location.id,

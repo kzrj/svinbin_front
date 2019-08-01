@@ -30,7 +30,10 @@ const { Types, Creators } = createActions({
     getInnerTransferTabLocations2Request: ['payload'],
     getInnerTransferTabLocations2Fail: ['error'],
     getInnerTransferTabLocations2Success: ['payload'],
-    
+
+    weighingPigletsRequest : ['payload'],
+    weighingPigletsFail : ['payload'],
+    weighingPigletsSuccess : ['payload'],
 })
 
 export const Ws4Types = Types
@@ -48,6 +51,7 @@ export const INITIAL_STATE = Immutable({
     innerTransferLocations1: [],
     innerTransferLocations2: [],
     innerTransferPiglets: [],
+    weighingData: {},
     error: '',
 })
 
@@ -61,6 +65,7 @@ export const Ws4Selectors = {
     getTransferPiglets: state => state.ws4.transferPiglets,
     getInnerTransferTabLocations1: state => state.ws4.innerTransferLocations1,
     getInnerTransferTabLocations2: state => state.ws4.innerTransferLocations2,
+    weighingPiglets: state => state.ws4.weighingData,
 }
 
 /* ------------- Reducers ------------- */
@@ -154,6 +159,20 @@ export const getInnerTransferTabLocations2Success = (state, { payload }) => {
 export const getInnerTransferTabLocations2Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, innerTransferLocations2: [] })
 }
+
+// Weighing
+export const weighingPigletsRequest = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const weighingPigletsSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, weighingData: payload, })
+}
+
+export const weighingPigletsFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, weighingData: null, 
+        event: null })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -184,4 +203,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_REQUEST]: getInnerTransferTabLocations2Request,
     [Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_SUCCESS]: getInnerTransferTabLocations2Success,
     [Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_FAIL]: getInnerTransferTabLocations2Fail,
+
+    [Types.WEIGHING_PIGLETS_REQUEST]: weighingPigletsRequest,
+    [Types.WEIGHING_PIGLETS_SUCCESS]: weighingPigletsSuccess,
+    [Types.WEIGHING_PIGLETS_FAIL]: weighingPigletsFail,
 })
