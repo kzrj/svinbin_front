@@ -7,6 +7,7 @@ import WS4IncomeTab from '../../components/WorkshopFour/WS4IncomeTab'
 import WS4ResettelmentTab from '../../components/WorkshopFour/WS4ResettelmentTab'
 import WS4TransferTab from '../../components/WorkshopFour/WS4TransferTab'
 import WS4InnerTransferTab from '../../components/WorkshopFour/WS4InnerTransferTab'
+import WS4CullingTab from '../../components/WorkshopFour/WS4CullingTab'
 
 // actions
 import Ws4Actions from '../../redux/redux-sauce/ws4';
@@ -96,6 +97,16 @@ class WorkshopFourContainer extends WorkshopRearing {
           setllePiglets={this.props.setllePiglets}
           movePiglets={this.props.movePiglets}
         />}
+
+        { this.state.tabs.cullingTab &&
+          <WS4CullingTab 
+          query={null}
+          getSections={this.props.getSections}
+          sections={this.props.state.ws4.sections}
+          getLocations={this.props.getIncomeTabLocations}
+          locations={this.props.state.ws4.incomeTabLocations}
+          cullingPiglets={this.props.cullingPiglets}
+        />}
         
       </div>
     );
@@ -117,6 +128,7 @@ const mapDispatchToProps = (dispatch) => ({
   getInnerTransferTabLocations1: query => dispatch(Ws4Actions.getInnerTransferTabLocations1Request(query)),
   getInnerTransferTabLocations2: query => dispatch(Ws4Actions.getInnerTransferTabLocations2Request(query)),
   weighingPiglets: data => dispatch(Ws4Actions.weighingPigletsRequest(data)),
+  cullingPiglets: data => dispatch(NomadPigletsActions.cullingPigletsRequest(data)),
 })
 
 export default connect(
