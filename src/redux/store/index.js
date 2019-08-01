@@ -17,6 +17,7 @@ export const reducers = combineReducers({
   ws4: require('../redux-sauce/ws4').reducer,
   ws8: require('../redux-sauce/ws8').reducer,
   ws5: require('../redux-sauce/ws5').reducer,
+  ws6: require('../redux-sauce/ws6').reducer,
   form: formReducer,
   // notifications: notifications
 })

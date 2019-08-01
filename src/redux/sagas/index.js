@@ -16,6 +16,7 @@ import { Ws2Types } from '../redux-sauce/ws2';
 import { Ws4Types } from '../redux-sauce/ws4';
 import { Ws8Types } from '../redux-sauce/ws8';
 import { Ws5Types } from '../redux-sauce/ws5';
+import { Ws6Types } from '../redux-sauce/ws6';
 /* ------------- Sagas ------------- */
 import { logIn, logOut, checkToken, signUp, checkAuth } from "./authSagas";
 import { getLocations } from './locationsSagas';
@@ -26,6 +27,7 @@ import * as ws2Saga from './ws2Sagas';
 import * as ws4Saga from './ws4Sagas';
 import * as ws8Saga from './ws8Sagas';
 import * as ws5Saga from './ws5Sagas';
+import * as ws6Saga from './ws6Sagas';
 
 const authApi = AuthApi.create();
 const locationsApi = LocationsApi.create();
@@ -96,5 +98,13 @@ export default function* root() {
     takeEvery(Ws5Types.GET_TRANSFER_PIGLETS_REQUEST, ws5Saga.getTransferPiglets, nomadPigletsApi),
     takeEvery(Ws5Types.GET_INNER_TRANSFER_TAB_LOCATIONS1_REQUEST, ws5Saga.getInnerTransferTabLocations1, locationsApi),
     takeEvery(Ws5Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_REQUEST, ws5Saga.getInnerTransferTabLocations2, locationsApi),
+
+    takeEvery(Ws6Types.GET_NOMAD_PIGLETS_REQUEST, ws6Saga.getNomadPiglets, nomadPigletsApi),
+    takeEvery(Ws6Types.GET_SECTIONS_REQUEST, ws6Saga.getSections, locationsApi),
+    takeEvery(Ws6Types.GET_INCOME_TAB_LOCATIONS_REQUEST, ws6Saga.getIncomeTabLocations, locationsApi),
+    takeEvery(Ws6Types.SETLLE_PIGLETS_REQUEST, ws6Saga.setllePiglets, nomadPigletsApi),
+    takeEvery(Ws6Types.GET_TRANSFER_PIGLETS_REQUEST, ws6Saga.getTransferPiglets, nomadPigletsApi),
+    takeEvery(Ws6Types.GET_INNER_TRANSFER_TAB_LOCATIONS1_REQUEST, ws6Saga.getInnerTransferTabLocations1, locationsApi),
+    takeEvery(Ws6Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_REQUEST, ws6Saga.getInnerTransferTabLocations2, locationsApi),
   ]);
 }
