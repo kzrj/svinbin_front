@@ -14,43 +14,7 @@ import Ws8Actions from '../../redux/redux-sauce/ws8';
 import NomadPigletsActions from '../../redux/redux-sauce/nomadPiglets';
 
 
-class WorkshopEightContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tabs: {
-        arrivalTab: true,
-        innerTransferTab: false,
-        transferTab: false,
-        cullingTab: false,
-        infoTab: false,
-      }
-    }
-	}
-
-  componentDidMount() {
-    // $('body').addClass('loaded');
-    // this.props.startup();
-
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   this.props.checkToken(token);
-    // }
-  }
-
-  setTab = (tab) => {
-    let { tabs } = this.state
-    Object.keys(tabs).forEach((key) => {
-      tabs[key] = false
-    })
-    this.setState({
-      tabs: {
-        ...tabs,
-        [tab]: true
-      }
-    })
-  }
-
+class WorkshopEightContainer extends WorkshopRearing {
   render() {
     return (
       <div className="workshop container">
