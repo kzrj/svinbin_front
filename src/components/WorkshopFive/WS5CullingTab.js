@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 
-class WS8TransferTab extends Component {
+class WS5TransferTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -15,7 +15,7 @@ class WS8TransferTab extends Component {
   
   componentDidMount() {
     // query
-    this.props.getSections({workshop: 5})
+    this.props.getSections({workshop: 6})
   }
   setCullingType = (e) => {
     this.setState({
@@ -124,4 +124,4 @@ class WS8TransferTab extends Component {
   }
 }
 
-export default WS8TransferTab
+export default WS5TransferTab

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 
-class WS8TransferTab extends Component {
+class WS5TransferTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -18,8 +18,7 @@ class WS8TransferTab extends Component {
   
   componentDidMount() {
     // query
-    this.props.getSections({workshop: 5})
-    // this.props.getLocations({by_section: 8})
+    this.props.getSections({workshop: 6})
   }
   showProps = () => {
     console.log(this.props)
@@ -101,7 +100,7 @@ class WS8TransferTab extends Component {
             </div>
             <div>
               <button onClick={this.clickTransfer}>
-                Отправить в Откорм
+                Отправить в 7-5
               </button>
             </div>  
         </div>
@@ -110,4 +109,4 @@ class WS8TransferTab extends Component {
   }
 }
 
-export default WS8TransferTab
+export default WS5TransferTab
