@@ -47,6 +47,7 @@ export const INITIAL_STATE = Immutable({
     transferPiglets: [],
     innerTransferLocations1: [],
     innerTransferLocations2: [],
+    innerTransferPiglets: [],
     error: '',
 })
 

@@ -5,16 +5,15 @@ class WS4InnerTransferTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      piglets: props.piglets,
       activePiglets: {
         id: 0,
         quantity: 0,
         gilt_quantity: 0
       },
-      activeSection1Id: null,
-      activeCell1Id: null,
-      activeSection2Id: null,
-      activeCell2Id: null,
+      activeFromSectionId: null,
+      activeCellFromLocationId: null,
+      activeToSectionId: null,
+      activeCellToLocationId: null,
     }
   }
   
@@ -27,43 +26,53 @@ class WS4InnerTransferTab extends Component {
     console.log(this.props)
   }
 
-  clickSection = (e) => {
-    const { section1Id } = e.target.dataset
+  clickFromSection = (e) => {
+    const { sectionId } = e.target.dataset
     this.setState({
       ...this.state,
-      activeSection1Id: section1Id
+      activeFromSectionId: sectionId
     })
 
-    this.props.getLocations1({by_section: section1Id})
+    this.props.getLocations1({by_section: sectionId})
   }
 
-  clickSection2 = (e) => {
-    const { section2Id } = e.target.dataset
+  clickToSection = (e) => {
+    const { sectionId } = e.target.dataset
     this.setState({
       ...this.state,
-      activeSection2Id: section2Id
+      activeToSectionId: sectionId
     })
-
-    this.props.getLocations({by_section: section2Id})
+    this.props.getLocations2({by_section: sectionId})
   }
 
-  clickCell = (e) => {
+  clickCellFromLocation = (location) => {
+    this.props.getPiglets({location: location.id})
+    this.setState({
+      ...this.state,
+      activeCellFromLocationId: location.id,
+      activePiglets: location.nomadpigletsgroup_set.length > 0 ?
+       location.nomadpigletsgroup_set[0] : 0
+    })
+  }
+
+  clickCellToLocation = (e) => {
     const { locationId } = e.target.dataset
-    this.props.getPiglets({location: locationId})
     this.setState({
       ...this.state,
-      activeCell1Id: locationId
+      activeCellToLocationId: locationId
     })
   }
 
   clickTransfer = () => {
     let data = {
-      id: this.props.piglets[0].id,
-      quantity: this.props.piglets[0].quantity,
+      id: this.state.activePiglets.id,
+      quantity: this.state.activePiglets.quantity,
       gilt_quantity: 0,
-      to_location: 5 // hardcode
+      to_location: this.state.activeCellToLocationId
     }
     this.props.movePiglets(data)
+    this.props.getLocations1({by_section: this.state.activeFromSectionId})
+    this.props.getLocations2({by_section: this.state.activeToSectionId})
   }
 
   render() {
@@ -74,10 +83,10 @@ class WS4InnerTransferTab extends Component {
           <div className='col-6'>
             <div className='row'>
                 {sections.map((section, key) => 
-                    <div className={ this.state.activeSection1Id == section.id ? 
+                    <div className={ this.state.activeFromSectionId == section.id ? 
                       'col-sm section-button section-active': 'col-sm section-button '
-                      } onClick={this.clickSection}
-                      data-section1-id={section.id}
+                      } onClick={this.clickFromSection}
+                      data-section-id={section.id}
                       key={key}>
                       ID{section.id} {section.name}
                     </div>
@@ -85,15 +94,12 @@ class WS4InnerTransferTab extends Component {
             </div>
             <div className='row'>
               {locations1.map(location =>
-                  <div className={this.state.activeCell1Id == location.id ? 
+                  <div className={this.state.activeCellFromLocationId == location.id ? 
                     'col-md-5 cell cell-active' : 'col-md-5 cell'}
-                    onClick={this.clickCell}
-                    data-location1-id={location.id}
-                    data-piglets={location.nomadpigletsgroup_set}
+                    onClick={() => this.clickCellFromLocation(location)}
                     key={location.id}>
                     ID{location.id} 
                     {location.is_empty && 'Пустая'}
-                    
                   </div>
               )}
               {locations1.length < 1 && 'Выберите секцию'}
@@ -102,9 +108,9 @@ class WS4InnerTransferTab extends Component {
           <div className='col-6'>
             <div className='row'>
                 {sections.map((section, key) => 
-                    <div className={ this.state.activeSection2Id == section.id ? 
+                    <div className={ this.state.activeToSectionId == section.id ? 
                       'col-sm section-button section-active': 'col-sm section-button '
-                      } onClick={this.clickSection}
+                      } onClick={this.clickToSection}
                       data-section-id={section.id}
                       key={key}>
                       ID{section.id} {section.name}
@@ -113,21 +119,29 @@ class WS4InnerTransferTab extends Component {
               </div>
               <div className='row'>
                 {locations2.map((location, key) =>
-                  <div className={this.state.activeCell2Id == location.id ? 
+                  <div className={this.state.activeCellToLocationId == location.id ? 
                     'col-md-5 cell cell-active' : 'col-md-5 cell'}
-                    onClick={this.clickCell}
+                    onClick={this.clickCellToLocation}
                     data-location-id={location.id}
                     data-piglets={location.nomadpigletsgroup_set}
                     key={key}>
                     ID{location.id} 
                     {location.is_empty && 'Пустая'}
-                    
                   </div>
                 )}
                 {locations2.length < 1 && 'Выберите секцию'}
               </div>
           </div>
         <div>
+          <div>
+            {this.state.activePiglets.id > 0 && 
+              <ul>
+                <li>{this.state.activePiglets.id}</li>
+                <li>{this.state.activePiglets.quantity}</li>
+                <li>{this.state.activePiglets.gilt_quantity}</li>
+              </ul>  
+            }
+          </div>
           <button onClick={this.clickTransfer}>
             Отправить в Цех8
           </button>
