@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 
-class WS4ResettelmentTab extends Component {
+class WS8ResettelmentTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +18,7 @@ class WS4ResettelmentTab extends Component {
   componentDidMount() {
     // query
     this.props.getPiglets()
-    this.props.getSections({workshop: 4})
+    this.props.getSections({workshop: 5})
     // this.props.getLocations({by_section: 8})
   }
   showProps = () => {
@@ -122,4 +122,4 @@ class WS4ResettelmentTab extends Component {
   }
 }
 
-export default WS4ResettelmentTab
+export default WS8ResettelmentTab

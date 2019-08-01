@@ -18,7 +18,7 @@ class WS4TransferTab extends Component {
   
   componentDidMount() {
     // query
-    this.props.getSections({workshop: 4})
+    this.props.getSections({workshop: 5})
     // this.props.getLocations({by_section: 8})
   }
   showProps = () => {
@@ -101,7 +101,7 @@ class WS4TransferTab extends Component {
             </div>
             <div>
               <button onClick={this.clickTransfer}>
-                Отправить в Цех8
+                Отправить в Откорм
               </button>
             </div>  
         </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 
-class WS4InnerTransferTab extends Component {
+class WS8InnerTransferTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -19,7 +19,7 @@ class WS4InnerTransferTab extends Component {
   
   componentDidMount() {
     // query
-    this.props.getSections({workshop: 4})
+    this.props.getSections({workshop: 5})
     // this.props.getLocations({by_section: 8})
   }
   showProps = () => {
@@ -142,7 +142,7 @@ class WS4InnerTransferTab extends Component {
             }
           </div>
           <button onClick={this.clickTransfer}>
-            Отправить в Цех8
+            Переместить
           </button>
         </div>
       </div>
@@ -150,4 +150,4 @@ class WS4InnerTransferTab extends Component {
   }
 }
 
-export default WS4InnerTransferTab
+export default WS8InnerTransferTab

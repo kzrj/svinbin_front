@@ -15,7 +15,7 @@ class WS4TransferTab extends Component {
   
   componentDidMount() {
     // query
-    this.props.getSections({workshop: 4})
+    this.props.getSections({workshop: 5})
   }
   setCullingType = (e) => {
     this.setState({

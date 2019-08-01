@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 
-class WS4IncomeTab extends Component {
+class WS8IncomeTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +38,7 @@ class WS4IncomeTab extends Component {
     // need initiator
     let data = {
       id: this.state.activePiglets.id,
-      place: '3/4',
+      place: '4/8',
       total_weight: this.state.totalWeight,
       initiator: 1
     }
@@ -93,4 +93,4 @@ class WS4IncomeTab extends Component {
   }
 }
 
-export default WS4IncomeTab
+export default WS8IncomeTab
