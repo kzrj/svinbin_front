@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 
 // components
 import WorkshopFattening from '../Workshop/WorkshopFattening';
-import WS6IncomeTab from '../../components/WorkshopSix/WS6IncomeTab'
-import WS6ResettelmentTab from '../../components/WorkshopSix/WS6ResettelmentTab'
-import WS6TransferTab from '../../components/WorkshopSix/WS6TransferTab'
-import WS6Transfer75Tab from '../../components/WorkshopSix/WS6Transfer75Tab'
-import WS6InnerTransferTab from '../../components/WorkshopSix/WS6InnerTransferTab'
-import WS6CullingTab from '../../components/WorkshopSix/WS6CullingTab'
+import WS7IncomeTab from '../../components/WorkshopSeven/WS7IncomeTab'
+import WS7ResettelmentTab from '../../components/WorkshopSeven/WS7ResettelmentTab'
+import WS7TransferTab from '../../components/WorkshopSeven/WS7TransferTab'
+import WS7Transfer75Tab from '../../components/WorkshopSeven/WS7Transfer75Tab'
+import WS7InnerTransferTab from '../../components/WorkshopSeven/WS7InnerTransferTab'
+import WS7CullingTab from '../../components/WorkshopSeven/WS7CullingTab'
 
 // actions
 import Ws7Actions from '../../redux/redux-sauce/ws7';
@@ -52,7 +52,7 @@ class WorkshopSevenContainer extends WorkshopFattening {
           </div>
         </div>
         { this.state.tabs.incomeTab &&
-          <WS6IncomeTab 
+          <WS7IncomeTab 
             query={null}
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.ws5.incomingPigletsList}
@@ -60,7 +60,7 @@ class WorkshopSevenContainer extends WorkshopFattening {
             weighingData={this.props.state.ws5.weighingData}
           />}
         { this.state.tabs.resettlementTab &&
-          <WS6ResettelmentTab 
+          <WS7ResettelmentTab 
             query={null}
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.ws5.incomingPigletsList}
@@ -72,7 +72,7 @@ class WorkshopSevenContainer extends WorkshopFattening {
           />}
 
         { this.state.tabs.innerTransferTab &&
-          <WS6InnerTransferTab 
+          <WS7InnerTransferTab 
             query={null}
             getSections={this.props.getSections}
             sections={this.props.state.ws5.sections}
@@ -84,7 +84,7 @@ class WorkshopSevenContainer extends WorkshopFattening {
           />}
 
         { this.state.tabs.transferTab &&
-          <WS6TransferTab 
+          <WS7TransferTab 
             query={null}
             getPiglets={this.props.getTransferPiglets}
             piglets={this.props.state.ws5.transferPiglets}
@@ -97,7 +97,7 @@ class WorkshopSevenContainer extends WorkshopFattening {
           />}
 
         { this.state.tabs.transfer75Tab &&
-          <WS6Transfer75Tab 
+          <WS7Transfer75Tab 
             query={null}
             getPiglets={this.props.getTransferPiglets}
             piglets={this.props.state.ws5.transferPiglets}
@@ -110,7 +110,7 @@ class WorkshopSevenContainer extends WorkshopFattening {
           />}
 
         { this.state.tabs.cullingTab &&
-          <WS6CullingTab 
+          <WS7CullingTab 
             query={null}
             getSections={this.props.getSections}
             sections={this.props.state.ws5.sections}
