@@ -2,49 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
+import WorkshopFattening from '../Workshop/WorkshopFattening';
+import WS8IncomeTab from '../../components/WorkshopEight/WS8IncomeTab'
+import WS8ResettelmentTab from '../../components/WorkshopEight/WS8ResettelmentTab'
+import WS8TransferTab from '../../components/WorkshopEight/WS8TransferTab'
+import WS8InnerTransferTab from '../../components/WorkshopEight/WS8InnerTransferTab'
+import WS8CullingTab from '../../components/WorkshopEight/WS8CullingTab'
 
 // actions
-import SowsActions from '../../redux/redux-sauce/sows';
-import AuthActions from '../../redux/redux-sauce/auth';
+import Ws8Actions from '../../redux/redux-sauce/ws8';
+import NomadPigletsActions from '../../redux/redux-sauce/nomadPiglets';
 
 
-class WorkshopFiveContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tabs: {
-        arrivalTab: true,
-        transferToSlaughterTab: false,
-        transferToSevenFiveTab: false,
-        cullingTab: false,
-        infoTab: false,
-      }
-    }
-	}
-
-  componentDidMount() {
-    // $('body').addClass('loaded');
-    // this.props.startup();
-
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   this.props.checkToken(token);
-    // }
-  }
-
-  setTab = (tab) => {
-    let { tabs } = this.state
-    Object.keys(tabs).forEach((key) => {
-      tabs[key] = false
-    })
-    this.setState({
-      tabs: {
-        ...tabs,
-        [tab]: true
-      }
-    })
-  }
-
+class WorkshopFiveContainer extends WorkshopFattening {
   render() {
     return (
       <div className="workshop container">
@@ -76,9 +46,74 @@ class WorkshopFiveContainer extends Component {
           >
             Инфо
           </div>
-
         </div>
-        
+        { this.state.tabs.incomeTab &&
+          <WS8IncomeTab 
+            query={null}
+            getPiglets={this.props.getPiglets}
+            piglets={this.props.state.ws8.incomingPigletsList}
+            weighingPiglets={this.props.weighingPiglets}
+            weighingData={this.props.state.ws8.weighingData}
+          />}
+        { this.state.tabs.resettlementTab &&
+          <WS8ResettelmentTab 
+            query={null}
+            getPiglets={this.props.getPiglets}
+            piglets={this.props.state.ws8.incomingPigletsList}
+            getSections={this.props.getSections}
+            sections={this.props.state.ws8.sections}
+            getLocations={this.props.getIncomeTabLocations}
+            locations={this.props.state.ws8.incomeTabLocations}
+            setllePiglets={this.props.setllePiglets}
+          />}
+
+        { this.state.tabs.innerTransferTab &&
+          <WS8InnerTransferTab 
+            query={null}
+            getSections={this.props.getSections}
+            sections={this.props.state.ws8.sections}
+            getLocations1={this.props.getInnerTransferTabLocations1}
+            getLocations2={this.props.getInnerTransferTabLocations2}
+            locations1={this.props.state.ws8.innerTransferLocations1}
+            locations2={this.props.state.ws8.innerTransferLocations2}
+            movePiglets={this.props.movePiglets}
+          />}
+
+        { this.state.tabs.transferTab &&
+          <WS8TransferTab 
+            query={null}
+            getPiglets={this.props.getTransferPiglets}
+            piglets={this.props.state.ws8.transferPiglets}
+            getSections={this.props.getSections}
+            sections={this.props.state.ws8.sections}
+            getLocations={this.props.getIncomeTabLocations}
+            locations={this.props.state.ws8.incomeTabLocations}
+            setllePiglets={this.props.setllePiglets}
+            movePiglets={this.props.movePiglets}
+          />}
+
+        { this.state.tabs.transfer75Tab &&
+          <WS8TransferTab 
+            query={null}
+            getPiglets={this.props.getTransferPiglets}
+            piglets={this.props.state.ws8.transferPiglets}
+            getSections={this.props.getSections}
+            sections={this.props.state.ws8.sections}
+            getLocations={this.props.getIncomeTabLocations}
+            locations={this.props.state.ws8.incomeTabLocations}
+            setllePiglets={this.props.setllePiglets}
+            movePiglets={this.props.movePiglets}
+          />}
+
+        { this.state.tabs.cullingTab &&
+          <WS8CullingTab 
+            query={null}
+            getSections={this.props.getSections}
+            sections={this.props.state.ws8.sections}
+            getLocations={this.props.getIncomeTabLocations}
+            locations={this.props.state.ws8.incomeTabLocations}
+            cullingPiglets={this.props.cullingPiglets}
+          />}
       </div>
     );
   }
@@ -90,15 +125,16 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  login: (payload) => dispatch(AuthActions.loginRequest(payload)),
-
-  getSows: query => dispatch(SowsActions.getSowsRequest(query)),
-  getSow: id => dispatch(SowsActions.getSowRequest(id)),
-  // seminationSow: data => dispatch(SowsActions.seminationSowRequest(data)),
-  // ultrasoundSow: data => dispatch(SowsActions.ultrasoundSowRequest(data)),
-  cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
-  sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
-
+  getPiglets: query => dispatch(Ws8Actions.getNomadPigletsRequest(query)),
+  getSections: query => dispatch(Ws8Actions.getSectionsRequest(query)),
+  getIncomeTabLocations: query => dispatch(Ws8Actions.getIncomeTabLocationsRequest(query)),
+  setllePiglets: data => dispatch(Ws8Actions.setllePigletsRequest(data)),
+  getTransferPiglets: query => dispatch(Ws8Actions.getTransferPigletsRequest(query)),
+  movePiglets: data => dispatch(NomadPigletsActions.moveToPigletsRequest(data)),
+  getInnerTransferTabLocations1: query => dispatch(Ws8Actions.getInnerTransferTabLocations1Request(query)),
+  getInnerTransferTabLocations2: query => dispatch(Ws8Actions.getInnerTransferTabLocations2Request(query)),
+  weighingPiglets: data => dispatch(Ws8Actions.weighingPigletsRequest(data)),
+  cullingPiglets: data => dispatch(NomadPigletsActions.cullingPigletsRequest(data)),
 })
 
 export default connect(

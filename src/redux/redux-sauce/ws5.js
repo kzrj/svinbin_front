@@ -36,7 +36,7 @@ const { Types, Creators } = createActions({
     weighingPigletsSuccess : ['payload'],
 })
 
-export const Ws8Types = Types
+export const Ws5Types = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
@@ -57,15 +57,15 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Selectors ------------- */
 
-export const Ws4Selectors = {
-    getNomadPiglets: state => state.ws8.incomingPigletsList,
-    getSections: state => state.ws8.incomingPigletsList,
-    getIncomeTabLocations: state => state.ws8.incomeTabLocations,
-    settlePiglets: state => state.ws8.setlledPiglets,
-    getTransferPiglets: state => state.ws8.transferPiglets,
-    getInnerTransferTabLocations1: state => state.ws8.innerTransferLocations1,
-    getInnerTransferTabLocations2: state => state.ws8.innerTransferLocations2,
-    weighingPiglets: state => state.ws8.weighingData,
+export const Ws5Selectors = {
+    getNomadPiglets: state => state.ws5.incomingPigletsList,
+    getSections: state => state.ws5.incomingPigletsList,
+    getIncomeTabLocations: state => state.ws5.incomeTabLocations,
+    settlePiglets: state => state.ws5.setlledPiglets,
+    getTransferPiglets: state => state.ws5.transferPiglets,
+    getInnerTransferTabLocations1: state => state.ws5.innerTransferLocations1,
+    getInnerTransferTabLocations2: state => state.ws5.innerTransferLocations2,
+    weighingPiglets: state => state.ws5.weighingData,
 }
 
 /* ------------- Reducers ------------- */
