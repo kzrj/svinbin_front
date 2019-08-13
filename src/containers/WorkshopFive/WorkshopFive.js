@@ -129,7 +129,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  getPiglets: query => dispatch(Ws5Actions.getNomadPigletsRequest(query)),
+  getPiglets: query => dispatch(Ws5Actions.getNomadPigletsWs5Request(query)),
   getSections: query => dispatch(Ws5Actions.getSectionsRequest(query)),
   getIncomeTabLocations: query => dispatch(Ws5Actions.getIncomeTabLocationsRequest(query)),
   setllePiglets: data => dispatch(Ws5Actions.setllePigletsRequest(data)),

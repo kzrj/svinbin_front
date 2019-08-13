@@ -2,12 +2,12 @@ import { put, call } from 'redux-saga/effects';
 
 import WS8Actions from '../redux-sauce/ws8'
 
-export function* getNomadPiglets(api, action) {
+export function* getNomadPigletsWs8(api, action) {
     try {
         let response = yield call(api.getNomadPiglets, action.payload);
-        yield put(WS8Actions.getNomadPigletsSuccess(response.results));
+        yield put(WS8Actions.getNomadPigletsWs8Success(response.results));
     } catch (err) {
-        yield put(WS8Actions.getNomadPigletsFail(err))
+        yield put(WS8Actions.getNomadPigletsWs8Fail(err))
     }
 }
 

@@ -20,12 +20,12 @@ export function* getUltrasoundSows(api, action) {
     }
 }
 
-export function* getCullingSows(api, action) {
+export function* getCullingSowsWs1(api, action) {
     try {
         let response = yield call(api.getSows, action.payload);
-        yield put(WS1Actions.getCullingSowsSuccess(response.results));
+        yield put(WS1Actions.getCullingSowsWs1Success(response.results));
     } catch (err) {
-        yield put(WS1Actions.getCullingSowsFail(err))
+        yield put(WS1Actions.getCullingSowsWs1Fail(err))
     }
 }
 
@@ -47,39 +47,39 @@ export function* getUltrasoundSow(api, action) {
     }
 }
 
-export function* getCullingSow(api, action) {
+export function* getCullingSowWs1(api, action) {
     try {
         let response = yield call(api.getSow, action.payload);
-        yield put(WS1Actions.getCullingSowSuccess(response));
+        yield put(WS1Actions.getCullingSowWs1Success(response));
     } catch (err) {
-        yield put(WS1Actions.getCullingSowFail(err))
+        yield put(WS1Actions.getCullingSowWs1Fail(err))
     }
 }
 
-export function* seminationSow(api, action) {
+export function* seminationSowWs1(api, action) {
     try {
         let response = yield call(api.seminationSow, action.payload);
-        yield put(WS1Actions.seminationSowSuccess(response));
+        yield put(WS1Actions.seminationSowWs1Success(response));
     } catch (err) {
-        yield put(WS1Actions.seminationSowFail(err))
+        yield put(WS1Actions.seminationSowWs1Fail(err))
     }
 }
 
-export function* ultrasoundSow(api, action) {
+export function* ultrasoundSowWs1(api, action) {
     try {
         let response = yield call(api.ultrasoundSow, action.payload);
-        yield put(WS1Actions.ultrasoundSowSuccess(response));
+        yield put(WS1Actions.ultrasoundSowWs1Success(response));
     } catch (err) {
-        yield put(WS1Actions.ultrasoundSowFail(err))
+        yield put(WS1Actions.ultrasoundSowWs1Fail(err))
     }
 }
 
-export function* cullingSow(api, action) {
+export function* cullingSowWs1(api, action) {
     try {
         let response = yield call(api.cullingSow, action.payload);
-        yield put(WS1Actions.cullingSowSuccess(response));
+        yield put(WS1Actions.cullingSowWs1Success(response));
     } catch (err) {
-        yield put(WS1Actions.cullingSowFail(err))
+        yield put(WS1Actions.cullingSowWs1Fail(err))
     }
 }
 
@@ -89,6 +89,21 @@ export function* getSowsByTours(api, action) {
         yield put(WS1Actions.getSowsByToursSuccess(response));
     } catch (err) {
         yield put(WS1Actions.getSowsByToursFail(err))
+    }
+}
+
+export function* setSeminationSow(sow) {
+    // console.log('111')
+    // let sow = yield call(api.setSow, action.payload);
+    yield put(WS1Actions.setSeminationSow(sow));
+}
+
+export function* getSeminators(api, action) {
+    try {
+        let response = yield call(api.getUsers, action.payload);
+        yield put(WS1Actions.getSeminatorsSuccess(response.results));
+    } catch (err) {
+        yield put(WS1Actions.getSeminatorsFail(err))
     }
 }
 

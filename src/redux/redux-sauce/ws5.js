@@ -3,9 +3,9 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-    getNomadPigletsRequest: ['payload'],
-    getNomadPigletsFail: ['error'],
-    getNomadPigletsSuccess: ['payload'],
+    getNomadPigletsWs5Request: ['payload'],
+    getNomadPigletsWs5Fail: ['error'],
+    getNomadPigletsWs5Success: ['payload'],
 
     getSectionsRequest: ['payload'],
     getSectionsFail: ['error'],
@@ -58,7 +58,7 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const Ws5Selectors = {
-    getNomadPiglets: state => state.ws5.incomingPigletsList,
+    getNomadPigletsWs5: state => state.ws5.incomingPigletsList,
     getSections: state => state.ws5.incomingPigletsList,
     getIncomeTabLocations: state => state.ws5.incomeTabLocations,
     settlePiglets: state => state.ws5.setlledPiglets,
@@ -70,15 +70,15 @@ export const Ws5Selectors = {
 
 /* ------------- Reducers ------------- */
 // Get piglets
-export const getNomadPigletsRequest = (state, { payload }) => {
+export const getNomadPigletsWs5Request = (state, { payload }) => {
     return state.merge({ fetching: true, incomingPigletsList: [] })
 }
 
-export const getNomadPigletsSuccess = (state, { payload }) => {
+export const getNomadPigletsWs5Success = (state, { payload }) => {
     return state.merge({ fetching: false, error: null, incomingPigletsList: payload })
 }
 
-export const getNomadPigletsFail = (state, { error }) => {
+export const getNomadPigletsWs5Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, incomingPigletsList: [] })
 }
 
@@ -176,9 +176,9 @@ export const weighingPigletsFail = (state, { error }) => {
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-    [Types.GET_NOMAD_PIGLETS_REQUEST]: getNomadPigletsRequest,
-    [Types.GET_NOMAD_PIGLETS_SUCCESS]: getNomadPigletsSuccess,
-    [Types.GET_NOMAD_PIGLETS_FAIL]: getNomadPigletsFail,
+    [Types.GET_NOMAD_PIGLETS_WS5_REQUEST]: getNomadPigletsWs5Request,
+    [Types.GET_NOMAD_PIGLETS_WS5_SUCCESS]: getNomadPigletsWs5Success,
+    [Types.GET_NOMAD_PIGLETS_WS5_FAIL]: getNomadPigletsWs5Fail,
 
     [Types.GET_SECTIONS_REQUEST]: getSectionsRequest,
     [Types.GET_SECTIONS_SUCCESS]: getSectionsSuccess,

@@ -5,39 +5,44 @@ class WS1CullingTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      sowsToMove: [],
-      sowsByTours: props.sowsByTours,
       cullingReason: '',
+      cullingType: null,
+      query: {by_workshop_number: 1, not_in_tour: true},
     }
   }
   
   componentDidMount() {
-    // query
-    this.props.getSows()
+    this.props.getSows(this.state.query)
   }
 
-  getSowsById = () => {
-    // value
-    // query
-    this.props.getSows()
+  getSowsById = (e) => {
+    let { query } = this.state
+    query.farm_id_starts = e.target.value
+    this.setState({
+      ...this.state,
+      query: query
+    })
+    this.props.getSows(query)
   }
 
   setReason = (e) => {
-    console.log(e.target.value)
-    console.log('reason')
     this.setState({
       ...this.state,
       cullingReason: e.target.value
     })
   }
 
-  cullingSow = (e) => {
-    const { cullingtype } = e.target.dataset
-    console.log(cullingtype)
-    console.log(e.target.dataset)
+  setType = (e) => {
+    this.setState({
+      ...this.state,
+      cullingType: e.target.value
+    })
+  }
+
+  cullingSow = () => {
     let data = {
       id: this.props.sow.id,
-      culling_type: cullingtype,
+      culling_type: this.state.cullingType,
       reason: this.state.cullingReason
     }
     this.props.cullingSow(data)
@@ -77,39 +82,19 @@ class WS1CullingTab extends Component {
                     <li>{sow.status}</li>
                     <li>{sow.farm_id}</li>
                   </ul>
+
                   <div className="input-group">
-                    <div className="input-group-append">
-                      <button className="btn btn-outline-secondary" type="button" data-cullingType='padej'
-                       onClick={this.cullingSow}>
-                        Падеж
-                      </button>
-                    </div>
-                  </div>
-                  <div className="input-group">
-                    <select className="custom-select" id="inputGroupSelect04" onChange={this.setReason}>
-                      <option selected>Выберите причину...</option>
-                      <option value='1' >1</option>
-                      <option value='2' >2</option>
-                      <option value='3' >4</option>
-                    </select>
-                    <div className="input-group-append">
-                      <button className="btn btn-outline-secondary" type="button" data-cullingType='prirezka'
-                      onClick={this.cullingSow}>
-                        Прирезка
-                      </button>
-                    </div>
-                  </div>
-                  <div className="input-group">
-                      <select className="custom-select" id="inputGroupSelect04" onChange={this.setReason}>
-                        <option selected>Выберите причину...</option>
-                        <option value='1' >1</option>
-                        <option value='2' >2</option>
-                        <option value='3' >4</option>
+                      <select className="custom-select" onChange={this.setType}>
+                        <option selected>Выберите тип падежа...</option>
+                        <option value='padej' >Падеж</option>
+                        <option value='spec' >Спец. убой</option>
+                        <option value='prirezka' >Прирезка</option>
                       </select>
+                      <input type='text' onChange={this.setReason} />
                     <div className="input-group-append">
-                      <button className="btn btn-outline-secondary" type="button" data-cullingType='spec uboi' 
+                      <button className="btn btn-outline-secondary" type="button"  
                       onClick={this.cullingSow}>
-                        Убой
+                        Забраковать
                       </button>
                     </div>
                   </div>

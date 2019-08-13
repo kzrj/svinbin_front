@@ -25,4 +25,6 @@ export default {
     cullingGiltPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/culling_gilts/`,
     moveGroupFromCellToCell: () => `${apiUrl}/workshopfour/piglets/move_group_from_cell_to_cell/`,
     moveToPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/move_to/`,
+
+    GET_USERS: `${apiUrl}/users/`,
 }

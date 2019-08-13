@@ -3,37 +3,37 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-    getNomadPigletsRequest: ['payload'],
-    getNomadPigletsFail: ['error'],
-    getNomadPigletsSuccess: ['payload'],
+    getNomadPigletsWs4Request: ['payload'],
+    getNomadPigletsWs4Fail: ['error'],
+    getNomadPigletsWs4Success: ['payload'],
 
-    getSectionsRequest: ['payload'],
-    getSectionsFail: ['error'],
-    getSectionsSuccess: ['payload'],
+    getSectionsWs4Request: ['payload'],
+    getSectionsWs4Fail: ['error'],
+    getSectionsWs4Success: ['payload'],
 
-    getIncomeTabLocationsRequest: ['payload'],
-    getIncomeTabLocationsFail: ['error'],
-    getIncomeTabLocationsSuccess: ['payload'],
+    getIncomeTabLocationsWs4Request: ['payload'],
+    getIncomeTabLocationsWs4Fail: ['error'],
+    getIncomeTabLocationsWs4Success: ['payload'],
 
-    setllePigletsRequest: ['payload'],
-    setllePigletsFail: ['error'],
-    setllePigletsSuccess: ['payload'],
+    setllePigletsWs4Request: ['payload'],
+    setllePigletsWs4Fail: ['error'],
+    setllePigletsWs4Success: ['payload'],
 
-    getTransferPigletsRequest: ['payload'],
-    getTransferPigletsFail: ['error'],
-    getTransferPigletsSuccess: ['payload'],
+    getTransferPigletsWs4Request: ['payload'],
+    getTransferPigletsWs4Fail: ['error'],
+    getTransferPigletsWs4Success: ['payload'],
 
-    getInnerTransferTabLocations1Request: ['payload'],
-    getInnerTransferTabLocations1Fail: ['error'],
-    getInnerTransferTabLocations1Success: ['payload'],
+    getInnerTransferTabLocations1Ws4Request: ['payload'],
+    getInnerTransferTabLocations1Ws4Fail: ['error'],
+    getInnerTransferTabLocations1Ws4Success: ['payload'],
 
-    getInnerTransferTabLocations2Request: ['payload'],
-    getInnerTransferTabLocations2Fail: ['error'],
-    getInnerTransferTabLocations2Success: ['payload'],
+    getInnerTransferTabLocations2Ws4Request: ['payload'],
+    getInnerTransferTabLocations2Ws4Fail: ['error'],
+    getInnerTransferTabLocations2Ws4Success: ['payload'],
 
-    weighingPigletsRequest : ['payload'],
-    weighingPigletsFail : ['payload'],
-    weighingPigletsSuccess : ['payload'],
+    weighingPigletsWs4Request : ['payload'],
+    weighingPigletsWs4Fail : ['payload'],
+    weighingPigletsWs4Success : ['payload'],
 })
 
 export const Ws4Types = Types
@@ -58,153 +58,153 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const Ws4Selectors = {
-    getNomadPiglets: state => state.ws4.incomingPigletsList,
-    getSections: state => state.ws4.incomingPigletsList,
-    getIncomeTabLocations: state => state.ws4.incomeTabLocations,
-    settlePiglets: state => state.ws4.setlledPiglets,
-    getTransferPiglets: state => state.ws4.transferPiglets,
-    getInnerTransferTabLocations1: state => state.ws4.innerTransferLocations1,
-    getInnerTransferTabLocations2: state => state.ws4.innerTransferLocations2,
-    weighingPiglets: state => state.ws4.weighingData,
+    getNomadPigletsWs4: state => state.ws4.incomingPigletsList,
+    getSectionsWs4: state => state.ws4.incomingPigletsList,
+    getIncomeTabLocationsWs4: state => state.ws4.incomeTabLocations,
+    settlePigletsWs4: state => state.ws4.setlledPiglets,
+    getTransferPigletsWs4: state => state.ws4.transferPiglets,
+    getInnerTransferTabLocations1Ws4: state => state.ws4.innerTransferLocations1,
+    getInnerTransferTabLocations2Ws4: state => state.ws4.innerTransferLocations2,
+    weighingPigletsWs4: state => state.ws4.weighingData,
 }
 
 /* ------------- Reducers ------------- */
 // Get piglets
-export const getNomadPigletsRequest = (state, { payload }) => {
+export const getNomadPigletsWs4Request = (state, { payload }) => {
     return state.merge({ fetching: true, incomingPigletsList: [] })
 }
 
-export const getNomadPigletsSuccess = (state, { payload }) => {
+export const getNomadPigletsWs4Success = (state, { payload }) => {
     return state.merge({ fetching: false, error: null, incomingPigletsList: payload })
 }
 
-export const getNomadPigletsFail = (state, { error }) => {
+export const getNomadPigletsWs4Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, incomingPigletsList: [] })
 }
 
 // Get sections
-export const getSectionsRequest = (state, { payload }) => {
+export const getSectionsWs4Request = (state, { payload }) => {
     return state.merge({ fetching: true, sections: [] })
 }
 
-export const getSectionsSuccess = (state, { payload }) => {
+export const getSectionsWs4Success = (state, { payload }) => {
     return state.merge({ fetching: false, error: null, sections: payload })
 }
 
-export const getSectionsFail = (state, { error }) => {
+export const getSectionsWs4Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, sections: [] })
 }
 
 // Get incomeTabLocations
-export const getIncomeTabLocationsRequest = (state, { payload }) => {
+export const getIncomeTabLocationsWs4Request = (state, { payload }) => {
     return state.merge({ fetching: true, incomeTabLocations: [] })
 }
 
-export const getIncomeTabLocationsSuccess = (state, { payload }) => {
+export const getIncomeTabLocationsWs4Success = (state, { payload }) => {
     return state.merge({ fetching: false,  error: null, incomeTabLocations: payload })
 }
 
-export const getIncomeTabLocationsFail = (state, { error }) => {
+export const getIncomeTabLocationsWs4Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, incomeTabLocations: [] })
 }
 
 // Setlle
-export const setllePigletsRequest = (state, { payload }) => {
+export const setllePigletsWs4Request = (state, { payload }) => {
     return state.merge({ fetching: true })
 }
 
-export const setllePigletsSuccess = (state, { payload }) => {
+export const setllePigletsWs4Success = (state, { payload }) => {
     return state.merge({ fetching: false, error: null, setlledPiglets: payload.piglets_group })
 }
 
-export const setllePigletsFail = (state, { error }) => {
+export const setllePigletsWs4Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, setlledPiglets: null })
 }
 
 // Get transfer piglets
-export const getTransferPigletsRequest = (state, { payload }) => {
+export const getTransferPigletsWs4Request = (state, { payload }) => {
     return state.merge({ fetching: true, transferPiglets: [] })
 }
 
-export const getTransferPigletsSuccess = (state, { payload }) => {
+export const getTransferPigletsWs4Success = (state, { payload }) => {
     return state.merge({ fetching: false, error: null, transferPiglets: payload })
 }
 
-export const getTransferPigletsFail = (state, { error }) => {
+export const getTransferPigletsWs4Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, transferPiglets: [] })
 }
 
 // Get innerTransferLocations1
-export const getInnerTransferTabLocations1Request = (state, { payload }) => {
+export const getInnerTransferTabLocations1Ws4Request = (state, { payload }) => {
     return state.merge({ fetching: true, innerTransferLocations1: [] })
 }
 
-export const getInnerTransferTabLocations1Success = (state, { payload }) => {
+export const getInnerTransferTabLocations1Ws4Success = (state, { payload }) => {
     return state.merge({ fetching: false,  error: null, innerTransferLocations1: payload })
 }
 
-export const getInnerTransferTabLocations1Fail = (state, { error }) => {
+export const getInnerTransferTabLocations1Ws4Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, innerTransferLocations1: [] })
 }
 
 // Get innerTransferLocations2
-export const getInnerTransferTabLocations2Request = (state, { payload }) => {
+export const getInnerTransferTabLocations2Ws4Request = (state, { payload }) => {
     return state.merge({ fetching: true, innerTransferLocations2: [] })
 }
 
-export const getInnerTransferTabLocations2Success = (state, { payload }) => {
+export const getInnerTransferTabLocations2Ws4Success = (state, { payload }) => {
     return state.merge({ fetching: false,  error: null, innerTransferLocations2: payload })
 }
 
-export const getInnerTransferTabLocations2Fail = (state, { error }) => {
+export const getInnerTransferTabLocations2Ws4Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, innerTransferLocations2: [] })
 }
 
 // Weighing
-export const weighingPigletsRequest = (state, { payload }) => {
+export const weighingPigletsWs4Request = (state, { payload }) => {
     return state.merge({ fetching: true })
 }
 
-export const weighingPigletsSuccess = (state, { payload }) => {
+export const weighingPigletsWs4Success = (state, { payload }) => {
     return state.merge({ fetching: false, error: null, weighingData: payload, })
 }
 
-export const weighingPigletsFail = (state, { error }) => {
+export const weighingPigletsWs4Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, weighingData: null, 
         event: null })
 }
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-    [Types.GET_NOMAD_PIGLETS_REQUEST]: getNomadPigletsRequest,
-    [Types.GET_NOMAD_PIGLETS_SUCCESS]: getNomadPigletsSuccess,
-    [Types.GET_NOMAD_PIGLETS_FAIL]: getNomadPigletsFail,
+    [Types.GET_NOMAD_PIGLETS_WS4_REQUEST]: getNomadPigletsWs4Request,
+    [Types.GET_NOMAD_PIGLETS_WS4_SUCCESS]: getNomadPigletsWs4Success,
+    [Types.GET_NOMAD_PIGLETS_WS4_FAIL]: getNomadPigletsWs4Fail,
 
-    [Types.GET_SECTIONS_REQUEST]: getSectionsRequest,
-    [Types.GET_SECTIONS_SUCCESS]: getSectionsSuccess,
-    [Types.GET_SECTIONS_FAIL]: getSectionsFail,
+    [Types.GET_SECTIONS_WS4_REQUEST]: getSectionsWs4Request,
+    [Types.GET_SECTIONS_WS4_SUCCESS]: getSectionsWs4Success,
+    [Types.GET_SECTIONS_WS4_FAIL]: getSectionsWs4Fail,
 
-    [Types.GET_INCOME_TAB_LOCATIONS_REQUEST]: getIncomeTabLocationsRequest,
-    [Types.GET_INCOME_TAB_LOCATIONS_SUCCESS]: getIncomeTabLocationsSuccess,
-    [Types.GET_INCOME_TAB_LOCATIONS_FAIL]: getIncomeTabLocationsFail,
+    [Types.GET_INCOME_TAB_LOCATIONS_WS4_REQUEST]: getIncomeTabLocationsWs4Request,
+    [Types.GET_INCOME_TAB_LOCATIONS_WS4_SUCCESS]: getIncomeTabLocationsWs4Success,
+    [Types.GET_INCOME_TAB_LOCATIONS_WS4_FAIL]: getIncomeTabLocationsWs4Fail,
 
-    [Types.SETLLE_PIGLETS_REQUEST]: setllePigletsRequest,
-    [Types.SETLLE_PIGLETS_SUCCESS]: setllePigletsSuccess,
-    [Types.SETLLE_PIGLETS_FAIL]: setllePigletsFail,
+    [Types.SETLLE_PIGLETS_WS4_REQUEST]: setllePigletsWs4Request,
+    [Types.SETLLE_PIGLETS_WS4_SUCCESS]: setllePigletsWs4Success,
+    [Types.SETLLE_PIGLETS_WS4_FAIL]: setllePigletsWs4Fail,
 
-    [Types.GET_TRANSFER_PIGLETS_REQUEST]: getTransferPigletsRequest,
-    [Types.GET_TRANSFER_PIGLETS_SUCCESS]: getTransferPigletsSuccess,
-    [Types.GET_TRANSFER_PIGLETS_FAIL]: getTransferPigletsFail,
+    [Types.GET_TRANSFER_PIGLETS_WS4_REQUEST]: getTransferPigletsWs4Request,
+    [Types.GET_TRANSFER_PIGLETS_WS4_SUCCESS]: getTransferPigletsWs4Success,
+    [Types.GET_TRANSFER_PIGLETS_WS4_FAIL]: getTransferPigletsWs4Fail,
 
-    [Types.GET_INNER_TRANSFER_TAB_LOCATIONS1_REQUEST]: getInnerTransferTabLocations1Request,
-    [Types.GET_INNER_TRANSFER_TAB_LOCATIONS1_SUCCESS]: getInnerTransferTabLocations1Success,
-    [Types.GET_INNER_TRANSFER_TAB_LOCATIONS1_FAIL]: getInnerTransferTabLocations1Fail,
+    [Types.GET_INNER_TRANSFER_TAB_LOCATIONS1_WS4_REQUEST]: getInnerTransferTabLocations1Ws4Request,
+    [Types.GET_INNER_TRANSFER_TAB_LOCATIONS1_WS4_SUCCESS]: getInnerTransferTabLocations1Ws4Success,
+    [Types.GET_INNER_TRANSFER_TAB_LOCATIONS1_WS4_FAIL]: getInnerTransferTabLocations1Ws4Fail,
 
-    [Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_REQUEST]: getInnerTransferTabLocations2Request,
-    [Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_SUCCESS]: getInnerTransferTabLocations2Success,
-    [Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_FAIL]: getInnerTransferTabLocations2Fail,
+    [Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_WS4_REQUEST]: getInnerTransferTabLocations2Ws4Request,
+    [Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_WS4_SUCCESS]: getInnerTransferTabLocations2Ws4Success,
+    [Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_WS4_FAIL]: getInnerTransferTabLocations2Ws4Fail,
 
-    [Types.WEIGHING_PIGLETS_REQUEST]: weighingPigletsRequest,
-    [Types.WEIGHING_PIGLETS_SUCCESS]: weighingPigletsSuccess,
-    [Types.WEIGHING_PIGLETS_FAIL]: weighingPigletsFail,
+    [Types.WEIGHING_PIGLETS_WS4_REQUEST]: weighingPigletsWs4Request,
+    [Types.WEIGHING_PIGLETS_WS4_SUCCESS]: weighingPigletsWs4Success,
+    [Types.WEIGHING_PIGLETS_WS4_FAIL]: weighingPigletsWs4Fail,
 })

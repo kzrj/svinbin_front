@@ -14,8 +14,50 @@ import Ws4Actions from '../../redux/redux-sauce/ws4';
 import NomadPigletsActions from '../../redux/redux-sauce/nomadPiglets';
 
 
-class WorkshopFourContainer extends WorkshopRearing {
+class WorkshopFourContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tabs: {
+        incomeTab: true,
+        resettlementTab: false,
+        innerTransferTab: false,
+        transferTab: false,
+        cullingTab: false,
+        // infoTab: false,
+      }
+    };
+    // this.setTab = this.setTab.bind(this);
+    // this.getPiglets = this.getPiglets.bind(this);
+  }
+
+  // getPiglets () {
+  //   this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
+  // }
+
+  componentDidMount() {
+    // query
+    console.log('Did mount WS4')
+    // this.getPiglets()
+    this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
+    // this.props.dispatch(Ws4Actions.getNomadPigletsRequest())
+  }
+  
+  setTab (tab) {
+    let { tabs } = this.state
+    Object.keys(tabs).forEach((key) => {
+      tabs[key] = false
+    })
+    this.setState({
+      tabs: {
+        ...tabs,
+        [tab]: true
+      }
+    })
+  }
+
   render() {
+    console.log('WS4 render')
     return (
       <div className="workshop container">
         <h1>WorkshopFour</h1>
@@ -119,15 +161,16 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  getPiglets: query => dispatch(Ws4Actions.getNomadPigletsRequest(query)),
-  getSections: query => dispatch(Ws4Actions.getSectionsRequest(query)),
-  getIncomeTabLocations: query => dispatch(Ws4Actions.getIncomeTabLocationsRequest(query)),
-  setllePiglets: data => dispatch(Ws4Actions.setllePigletsRequest(data)),
-  getTransferPiglets: query => dispatch(Ws4Actions.getTransferPigletsRequest(query)),
+  dispatch: dispatch,
+  getPiglets: query => dispatch(Ws4Actions.getNomadPigletsWs4Request(query)),
+  getSections: query => dispatch(Ws4Actions.getSectionsWs4Request(query)),
+  getIncomeTabLocations: query => dispatch(Ws4Actions.getIncomeTabLocationsWs4Request(query)),
+  setllePiglets: data => dispatch(Ws4Actions.setllePigletsWs4Request(data)),
+  getTransferPiglets: query => dispatch(Ws4Actions.getTransferPigletsWs4Request(query)),
   movePiglets: data => dispatch(NomadPigletsActions.moveToPigletsRequest(data)),
-  getInnerTransferTabLocations1: query => dispatch(Ws4Actions.getInnerTransferTabLocations1Request(query)),
-  getInnerTransferTabLocations2: query => dispatch(Ws4Actions.getInnerTransferTabLocations2Request(query)),
-  weighingPiglets: data => dispatch(Ws4Actions.weighingPigletsRequest(data)),
+  getInnerTransferTabLocations1: query => dispatch(Ws4Actions.getInnerTransferTabLocations1Ws4Request(query)),
+  getInnerTransferTabLocations2: query => dispatch(Ws4Actions.getInnerTransferTabLocations2Ws4Request(query)),
+  weighingPiglets: data => dispatch(Ws4Actions.weighingPigletsWs4Request(data)),
   cullingPiglets: data => dispatch(NomadPigletsActions.cullingPigletsRequest(data)),
 })
 

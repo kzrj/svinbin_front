@@ -14,7 +14,40 @@ import Ws8Actions from '../../redux/redux-sauce/ws8';
 import NomadPigletsActions from '../../redux/redux-sauce/nomadPiglets';
 
 
-class WorkshopEightContainer extends WorkshopRearing {
+class WorkshopEightContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tabs: {
+        incomeTab: true,
+        resettlementTab: false,
+        innerTransferTab: false,
+        transferTab: false,
+        cullingTab: false,
+        infoTab: false,
+      }
+    };
+    // this.setTab = this.setTab.bind(this);
+    this.getPiglets = this.getPiglets.bind(this);
+  }
+
+  getPiglets () {
+    this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
+  }
+
+  setTab (tab) {
+    let { tabs } = this.state
+    Object.keys(tabs).forEach((key) => {
+      tabs[key] = false
+    })
+    this.setState({
+      tabs: {
+        ...tabs,
+        [tab]: true
+      }
+    })
+  }
+
   render() {
     return (
       <div className="workshop container">
@@ -112,7 +145,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  getPiglets: query => dispatch(Ws8Actions.getNomadPigletsRequest(query)),
+  getPiglets: query => dispatch(Ws8Actions.getNomadPigletsWs8Request(query)),
   getSections: query => dispatch(Ws8Actions.getSectionsRequest(query)),
   getIncomeTabLocations: query => dispatch(Ws8Actions.getIncomeTabLocationsRequest(query)),
   setllePiglets: data => dispatch(Ws8Actions.setllePigletsRequest(data)),

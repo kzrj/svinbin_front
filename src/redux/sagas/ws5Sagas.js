@@ -2,12 +2,12 @@ import { put, call } from 'redux-saga/effects';
 
 import WS5Actions from '../redux-sauce/ws5'
 
-export function* getNomadPiglets(api, action) {
+export function* getNomadPigletsWs5(api, action) {
     try {
         let response = yield call(api.getNomadPiglets, action.payload);
-        yield put(WS5Actions.getNomadPigletsSuccess(response.results));
+        yield put(WS5Actions.getNomadPigletsWs5Success(response.results));
     } catch (err) {
-        yield put(WS5Actions.getNomadPigletsFail(err))
+        yield put(WS5Actions.getNomadPigletsWs5Fail(err))
     }
 }
 

@@ -44,7 +44,7 @@ class WorkshopRearing extends Workshop {
           >
             Перегон
           </div>
-          <div className={this.state.tabs.cullingTab ? 'tab-active col-sm' : 'col-sm'}
+          {/* <div className={this.state.tabs.cullingTab ? 'tab-active col-sm' : 'col-sm'}
             onClick={() => this.setTab('cullingTab')}
           >
             Выбраковка
@@ -53,7 +53,7 @@ class WorkshopRearing extends Workshop {
             onClick={() => this.setTab('infoTab')}
           >
             Инфо
-          </div>
+          </div> */}
 
         </div>
         

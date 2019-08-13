@@ -5,19 +5,24 @@ class WS1SeminationTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      seminationEmployee: null
+      seminationEmployee: null,
+      query: {by_workshop_number: 1, not_in_tour: true},
     }
   }
   
   componentDidMount() {
-    // query
-    this.props.getSows()
+    this.props.getSows(this.state.query)
+    this.props.getSeminators({is_seminator: true})
   }
 
-  getSowsById = () => {
-    // value
-    // query
-    this.props.getSows()
+  getSowsById = (e) => {
+    let { query } = this.state
+    query.farm_id_starts = e.target.value
+    this.setState({
+      ...this.state,
+      query: query
+    })
+    this.props.getSows(query)
   }
 
   setSemitationEmployee = (e) => {
@@ -28,15 +33,13 @@ class WS1SeminationTab extends Component {
   }
 
   seminationSow = () => {
-    // query
-
     const data = {
       id: this.props.sow.id,
       week: this.props.week,
       seminationEmployeeId: this.state.seminationEmployee
     }
     this.props.seminationSow(data)
-    this.props.getSows()
+    this.props.getSows(this.state.query)
   }
 
   render() {
@@ -52,7 +55,9 @@ class WS1SeminationTab extends Component {
               <ul className='list-unstyled'>
                 {sows.length > 0 && sow &&
                   sows.map(sowInList => 
-                    <li className={sowInList.id == sow.id ? 'sow-active' : sowInList.id} key={sowInList.id} onClick={() => this.props.getSow(sowInList.id)}>
+                    <li className={sowInList.id == sow.id ? 'sow-active' : sowInList.id} 
+                      key={sowInList.id} 
+                      onClick={() => this.props.getSow(sowInList.id)}>
                       {sowInList.farm_id}
                     </li>)
                 }
@@ -75,14 +80,18 @@ class WS1SeminationTab extends Component {
                   </ul>
                   <div className="input-group">
                     <label>{week} неделя</label>
-                    <select className="custom-select" id="inputGroupSelect04" onChange={this.setSemitationEmployee}>
+                    <select className="custom-select" id="inputGroupSelect04" 
+                      onChange={this.setSemitationEmployee}>
                       <option selected>Выберите работника...</option>
                       {seminationEmployes.map(employee =>
-                        <option value={employee.name} key={employee.name}>{employee.name}</option>
+                        <option value={employee.id} key={employee.id}>
+                          {employee.username}
+                        </option>
                         )}
                     </select>
                     <div className="input-group-append">
-                      <button className="btn btn-outline-secondary" type="button" onClick={this.seminationSow}>
+                      <button className="btn btn-outline-secondary" type="button" 
+                        onClick={this.seminationSow}>
                         Осеменить
                       </button>
                     </div>

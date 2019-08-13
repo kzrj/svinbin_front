@@ -10,14 +10,29 @@ class WS4IncomeTab extends Component {
       totalWeight: 0,
       weighingRecord: null
     }
+    // this.getPiglets = this.getPiglets.bind(this);
+    this.setWeight = this.setWeight.bind(this);
+    this.weighing = this.weighing.bind(this);
   }
   
-  componentDidMount() {
-    // query
-    this.props.getPiglets()
+  // getPiglets() {
+  //   this.props.getPiglets({status_title: "Взвешены, готовы к заселению"})
+  // }
+
+  componentWillMount(){
+    console.log('First this called');
+    // this.getPiglets()
+    // this.props.getPiglets({status_title: "Взвешены, готовы к заселению"})
   }
 
-  clickPiglets = (piglets) => {
+  componentDidMount() {
+    // query
+    console.log('Did mount')
+    // this.getPiglets()
+    // this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
+  }
+
+  clickPiglets (piglets) {
     this.setState({
       ...this.state,
       activePigletsId: piglets.id,
@@ -27,14 +42,14 @@ class WS4IncomeTab extends Component {
 
   }
 
-  setWeight = (e) => {
+  setWeight (e) {
     this.setState({
       ...this.state,
       totalWeight: e.target.value
     })
   }
 
-  weighing = () => {
+  weighing () {
     // need initiator
     let data = {
       id: this.state.activePiglets.id,
@@ -47,10 +62,13 @@ class WS4IncomeTab extends Component {
       ...this.state,
       weighingRecord: this.props.weighingData.weighing_record
     })
+    // this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
   }
   
   render() {
     const { piglets } = this.props
+    // console.log('OPAOPAOA')
+    // console.log(piglets)
     return (
         <div className='row workshop-content'>
           <div className='col-3'>
@@ -58,6 +76,7 @@ class WS4IncomeTab extends Component {
               <div className={this.state.activePigletsId == group.id ? 
                 'piglets-active': ''}
                 onClick={() => this.clickPiglets(group)}
+                key={group.id}
                 >
                 ID{group.id} Количество{group.quantity}
               </div>

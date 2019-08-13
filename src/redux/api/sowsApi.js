@@ -196,6 +196,8 @@ const create = () => {
         })
     }
 
+    const setSow = sow => sow
+
     return {
         getSows,
         getSow,
@@ -205,7 +207,8 @@ const create = () => {
         sowMoveTo,
         // sowsMoveMany,
         sowFarrow,
-        getSowsByTours
+        getSowsByTours,
+        setSow
     }
 
 }

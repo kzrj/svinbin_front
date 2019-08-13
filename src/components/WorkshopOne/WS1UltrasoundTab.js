@@ -4,32 +4,38 @@ import React, { Component } from 'react';
 class WS1UltrasoundTab extends Component {
    constructor(props) {
     super(props);
+    this.state = {
+      query: {by_workshop_number: 1, status_title: 'Осеменена'},
+    };
+    this.ultrasoundSow = this.ultrasoundSow.bind(this);
   }
   
   componentDidMount() {
     // query
-    this.props.getSows()
+    this.props.getSows(this.state.query)
   }
 
-  getSowsById = () => {
-    // value
-    // query
-    this.props.getSows()
+  getSowsById = (e) => {
+    let { query } = this.state
+    query.farm_id_starts = e.target.value
+    this.setState({
+      ...this.state,
+      query: query
+    })
+    this.props.getSows(query)
   }
 
-  ultrasoundSow = (result) => {
+  ultrasoundSow (result) {
     let data = {
       id: this.props.sow.id,
-      week: this.props.week,
       result: result
     }
     this.props.ultrasoundSow(data)
-    // query
-    this.props.getSows()
+    this.props.getSows(this.state.query)
   }
 
   render() {
-    const { sows, sow, week } = this.props
+    const { sows, sow } = this.props
     return (
         <div className='row workshop-content'>
           <div className='col-3'>
@@ -41,7 +47,8 @@ class WS1UltrasoundTab extends Component {
               <ul className='list-unstyled'>
                 {sows.length > 0 && sow &&
                   sows.map(sowInList => 
-                    <li className={sowInList.id == sow.id ? 'sow-active' : sowInList.id} key={sowInList.id} onClick={() => this.props.getSow(sowInList.id)}>
+                    <li className={sowInList.id == sow.id ? 'sow-active' : sowInList.id} 
+                      key={sowInList.id} onClick={() => this.props.getSow(sowInList.id)}>
                       {sowInList.farm_id}
                     </li>)
                 }

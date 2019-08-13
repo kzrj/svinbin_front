@@ -3,9 +3,9 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-    getNomadPigletsRequest: ['payload'],
-    getNomadPigletsFail: ['error'],
-    getNomadPigletsSuccess: ['payload'],
+    getNomadPigletsWs8Request: ['payload'],
+    getNomadPigletsWs8Fail: ['error'],
+    getNomadPigletsWs8Success: ['payload'],
 
     getSectionsRequest: ['payload'],
     getSectionsFail: ['error'],
@@ -58,7 +58,7 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const Ws4Selectors = {
-    getNomadPiglets: state => state.ws8.incomingPigletsList,
+    getNomadPigletsWs8: state => state.ws8.incomingPigletsList,
     getSections: state => state.ws8.incomingPigletsList,
     getIncomeTabLocations: state => state.ws8.incomeTabLocations,
     settlePiglets: state => state.ws8.setlledPiglets,
@@ -70,15 +70,15 @@ export const Ws4Selectors = {
 
 /* ------------- Reducers ------------- */
 // Get piglets
-export const getNomadPigletsRequest = (state, { payload }) => {
+export const getNomadPigletsWs8Request = (state, { payload }) => {
     return state.merge({ fetching: true, incomingPigletsList: [] })
 }
 
-export const getNomadPigletsSuccess = (state, { payload }) => {
+export const getNomadPigletsWs8Success = (state, { payload }) => {
     return state.merge({ fetching: false, error: null, incomingPigletsList: payload })
 }
 
-export const getNomadPigletsFail = (state, { error }) => {
+export const getNomadPigletsWs8Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, incomingPigletsList: [] })
 }
 
@@ -176,9 +176,9 @@ export const weighingPigletsFail = (state, { error }) => {
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-    [Types.GET_NOMAD_PIGLETS_REQUEST]: getNomadPigletsRequest,
-    [Types.GET_NOMAD_PIGLETS_SUCCESS]: getNomadPigletsSuccess,
-    [Types.GET_NOMAD_PIGLETS_FAIL]: getNomadPigletsFail,
+    [Types.GET_NOMAD_PIGLETS_WS8_REQUEST]: getNomadPigletsWs8Request,
+    [Types.GET_NOMAD_PIGLETS_WS8_SUCCESS]: getNomadPigletsWs8Success,
+    [Types.GET_NOMAD_PIGLETS_WS8_FAIL]: getNomadPigletsWs8Fail,
 
     [Types.GET_SECTIONS_REQUEST]: getSectionsRequest,
     [Types.GET_SECTIONS_SUCCESS]: getSectionsSuccess,

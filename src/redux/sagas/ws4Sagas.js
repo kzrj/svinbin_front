@@ -2,65 +2,65 @@ import { put, call } from 'redux-saga/effects';
 
 import WS4Actions from '../redux-sauce/ws4'
 
-export function* getNomadPiglets(api, action) {
+export function* getNomadPigletsWs4(api, action) {
     try {
         let response = yield call(api.getNomadPiglets, action.payload);
-        yield put(WS4Actions.getNomadPigletsSuccess(response.results));
+        yield put(WS4Actions.getNomadPigletsWs4Success(response.results));
     } catch (err) {
-        yield put(WS4Actions.getNomadPigletsFail(err))
+        yield put(WS4Actions.getNomadPigletsWs4Fail(err))
     }
 }
 
-export function* getSections(api, action) {
+export function* getSectionsWs4(api, action) {
     try {
         let response = yield call(api.getSections, action.payload);
-        yield put(WS4Actions.getSectionsSuccess(response.results));
+        yield put(WS4Actions.getSectionsWs4Success(response.results));
     } catch (err) {
-        yield put(WS4Actions.getSectionsFail(err.message))
+        yield put(WS4Actions.getSectionsWs4Fail(err.message))
     }
 }
 
-export function* getIncomeTabLocations(api, action) {
+export function* getIncomeTabLocationsWs4(api, action) {
     try {
         let response = yield call(api.getLocations, action.payload);
-        yield put(WS4Actions.getIncomeTabLocationsSuccess(response.results));
+        yield put(WS4Actions.getIncomeTabLocationsWs4Success(response.results));
     } catch (err) {
-        yield put(WS4Actions.getIncomeTabLocationsFail(err.message))
+        yield put(WS4Actions.getIncomeTabLocationsWs4Fail(err.message))
     }
 }
 
-export function* setllePiglets(api, action) {
+export function* setllePigletsWs4(api, action) {
     try {
         let response = yield call(api.moveToPiglets, action.payload);
-        yield put(WS4Actions.setllePigletsSuccess(response));
+        yield put(WS4Actions.setllePigletsWs4Success(response));
     } catch (err) {
-        yield put(WS4Actions.setllePigletsFail(err))
+        yield put(WS4Actions.setllePigletsWs4Fail(err))
     }
 }
 
-export function* getTransferPiglets(api, action) {
+export function* getTransferPigletsWs4(api, action) {
     try {
         let response = yield call(api.getNomadPiglets, action.payload);
-        yield put(WS4Actions.getTransferPigletsSuccess(response.results));
+        yield put(WS4Actions.getTransferPigletsWs4Success(response.results));
     } catch (err) {
-        yield put(WS4Actions.getTransferPigletsFail(err))
+        yield put(WS4Actions.getTransferPigletsWs4Fail(err))
     }
 }
 
-export function* getInnerTransferTabLocations1(api, action) {
+export function* getInnerTransferTabLocations1Ws4(api, action) {
     try {
         let response = yield call(api.getLocations, action.payload);
-        yield put(WS4Actions.getInnerTransferTabLocations1Success(response.results));
+        yield put(WS4Actions.getInnerTransferTabLocations1Ws4Success(response.results));
     } catch (err) {
-        yield put(WS4Actions.getInnerTransferTabLocations1Fail(err.message))
+        yield put(WS4Actions.getInnerTransferTabLocations1Ws4Fail(err.message))
     }
 }
 
-export function* getInnerTransferTabLocations2(api, action) {
+export function* getInnerTransferTabLocations2Ws4(api, action) {
     try {
         let response = yield call(api.getLocations, action.payload);
-        yield put(WS4Actions.getInnerTransferTabLocations2Success(response.results));
+        yield put(WS4Actions.getInnerTransferTabLocations2Ws4Success(response.results));
     } catch (err) {
-        yield put(WS4Actions.getInnerTransferTabLocations2Fail(err.message))
+        yield put(WS4Actions.getInnerTransferTabLocations2Ws4Fail(err.message))
     }
 }

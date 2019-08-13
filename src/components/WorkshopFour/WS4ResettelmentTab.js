@@ -17,7 +17,7 @@ class WS4ResettelmentTab extends Component {
   
   componentDidMount() {
     // query
-    this.props.getPiglets()
+    this.props.getPiglets({status_title: "Взвешены, готовы к заселению", by_workshop_number: 3})
     this.props.getSections({workshop: 4})
     // this.props.getLocations({by_section: 8})
   }
@@ -65,7 +65,7 @@ class WS4ResettelmentTab extends Component {
     this.props.setllePiglets(data)
     
     // query
-    this.props.getPiglets()
+    this.props.getPiglets({status_title: "Взвешены, готовы к заселению", by_workshop_number: 4})
   }
 
   render() {

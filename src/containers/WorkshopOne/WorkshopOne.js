@@ -50,7 +50,7 @@ class WorkshopOneContainer extends Component {
     // if (token) {
     //   this.props.checkToken(token);
     // }
-
+    console.log('Did mount WS1')
     this.props.getSowsByTours()
   }
 
@@ -176,10 +176,11 @@ class WorkshopOneContainer extends Component {
             query={null}
             getSows={this.props.getSeminationSows}
             getSow={this.props.getSeminationSow}
+            getSeminators={this.props.getSeminators}
             sows={this.props.state.ws1.seminationList}
             sow={this.props.state.ws1.seminationSow}
             seminationSow={this.props.seminationSow}
-            seminationEmployes={[{name: 1},{name: 2},{name: 3},{name: 4},{name: 123}]}
+            seminationEmployes={this.props.state.ws1.seminators}
             week={1}
           />}
         { this.state.tabs.ultrasoundTab &&
@@ -233,12 +234,14 @@ const mapDispatchToProps = (dispatch) => ({
   getSeminationSow: id => dispatch(Ws1Actions.getSeminationSowRequest(id)),
   getUltrasoundSows: query => dispatch(Ws1Actions.getUltrasoundSowsRequest(query)),
   getUltrasoundSow: id => dispatch(Ws1Actions.getUltrasoundSowRequest(id)),
-  getCullingSows: query => dispatch(Ws1Actions.getCullingSowsRequest(query)),
-  getCullingSow: id => dispatch(Ws1Actions.getCullingSowRequest(id)),
-  seminationSow: data => dispatch(Ws1Actions.seminationSowRequest(data)),
-  ultrasoundSow: data => dispatch(Ws1Actions.ultrasoundSowRequest(data)),
-  cullingSow: data => dispatch(Ws1Actions.cullingSowRequest(data)),
+  getCullingSows: query => dispatch(Ws1Actions.getCullingSowsWs1Request(query)),
+  getCullingSow: id => dispatch(Ws1Actions.getCullingSowWs1Request(id)),
+  seminationSow: data => dispatch(Ws1Actions.seminationSowWs1Request(data)),
+  ultrasoundSow: data => dispatch(Ws1Actions.ultrasoundSowWs1Request(data)),
+  cullingSow: data => dispatch(Ws1Actions.cullingSowWs1Request(data)),
   getSowsByTours: data => dispatch(Ws1Actions.getSowsByToursRequest(data)),
+  getSeminators: query => dispatch(Ws1Actions.getSeminatorsRequest(query)),
+  // setSeminationSow: sow => dispatch(Ws1Actions.setSeminationSow(sow)),
 })
 
 export default connect(
