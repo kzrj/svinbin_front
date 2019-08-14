@@ -27,9 +27,9 @@ const { Types, Creators } = createActions({
     sowMoveToFail: ['error'],
     sowMoveToSuccess: ['payload'],
 
-    // sowsMoveManyToRequest: ['payload'],
-    // sowsMoveManyFail: ['error'],
-    // sowsMoveManySuccess: ['payload'],
+    sowsMoveManyRequest: ['payload'],
+    sowsMoveManyFail: ['error'],
+    sowsMoveManySuccess: ['payload'],
 
     sowFarrowRequest: ['payload'],
     sowFarrowFail: ['error'],
@@ -49,7 +49,7 @@ export const INITIAL_STATE = Immutable({
     seminationSow: null,
     ultrasoundSow: null,
     cullingSow: null,
-    sowEvent: null
+    sowEvent: null,
 })
 
 /* ------------- Selectors ------------- */
@@ -61,7 +61,7 @@ export const SowsSelectors = {
     ultrasoundSow: state => state.Sows.sow,
     cullingSow: state => state.Sows.sow,
     sowMoveTo: state => state.Sows.sow,
-    // sowsMoveMany: state => state.Sows.sow,
+    sowsMoveMany: state => state.Sows.sow,
     sowFarrow: state => state.Sows.sow,
 }
 
@@ -146,6 +146,19 @@ export const sowMoveToFail = (state, { error }) => {
     return state.merge({ fetching: false, error: error.data })
 }
 
+// Move many
+export const sowsMoveManyRequest = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const sowsMoveManySuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, sowEvent: payload.transaction_ids })
+}
+
+export const sowsMoveManyFail = (state, { error }) => {
+    return state.merge({ fetching: false, error: error.data })
+}
+
 // Sow Farrow
 export const sowFarrowRequest = (state, { payload }) => {
     return state.merge({ fetching: true })
@@ -185,6 +198,10 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.SOW_MOVE_TO_REQUEST]: sowMoveToRequest,
     [Types.SOW_MOVE_TO_SUCCESS]: sowMoveToSuccess,
     [Types.SOW_MOVE_TO_FAIL]: sowMoveToFail,
+
+    [Types.SOWS_MOVE_MANY_REQUEST]: sowsMoveManyRequest,
+    [Types.SOWS_MOVE_MANY_SUCCESS]: sowsMoveManySuccess,
+    [Types.SOWS_MOVE_MANY_FAIL]: sowsMoveManyFail,
 
     [Types.SOW_FARROW_REQUEST]: sowFarrowRequest,
     [Types.SOW_FARROW_SUCCESS]: sowFarrowSuccess,

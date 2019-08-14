@@ -134,28 +134,29 @@ const create = () => {
         })
     }
 
-    // const sowsMoveMany = payload => {
-    //     const { id, sows } = payload;
-    //     const token = localStorage.getItem('token') || '';
+    const sowsMoveMany = payload => {
+        const { sows, to_location } = payload;
+        const token = localStorage.getItem('token') || '';
 
-    //     const formData = new FormData();
-    //     formData.append("sows", sows);
+        const formData = new FormData();
+        sows.map(sow => formData.append("sows", sow))
+        formData.append("to_location", to_location);
         
-    //     return axios({
-    //                 method: 'post',
-    //                 url: endpoints.SOWS_MOVE_MANY,
-    //                 data: formData,
-    //                 headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
-    //     })
-    //     .then(response => {
-    //         return response.data
-    //     })
-    //     .catch(err => {
-    //         const error = new Error(err);
-    //         error.data = parseErrorData(err);
-    //         throw error;
-    //     })
-    // }
+        return axios({
+                    method: 'post',
+                    url: endpoints.SOWS_MOVE_MANY,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
 
     const sowFarrow = payload => {
         const { id, week, alive_quantity, dead_quantity, mummy_quantity } = payload;
@@ -205,7 +206,7 @@ const create = () => {
         ultrasoundSow,
         cullingSow,
         sowMoveTo,
-        // sowsMoveMany,
+        sowsMoveMany,
         sowFarrow,
         getSowsByTours,
         setSow

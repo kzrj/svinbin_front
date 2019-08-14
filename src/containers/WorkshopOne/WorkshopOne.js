@@ -12,21 +12,8 @@ import SowsActions from '../../redux/redux-sauce/sows';
 import AuthActions from '../../redux/redux-sauce/auth';
 import Ws1Actions from '../../redux/redux-sauce/ws1';
 
+import { convertSowsByTours } from '../../components/utils';
 
-const convertSowsByTours = (sowsByToursElemList) => {
-  let outputDict = {};
-  sowsByToursElemList.map((listElem) => {
-    let columns = {};
-    outputDict[listElem['tour']['id']] = columns;
-    columns['count'] = listElem['count'];
-    columns['checked'] = false;
-    columns['rows'] = {};
-    listElem['sows'].map(sowElem =>
-      columns['rows'][sowElem['farm_id']] = false
-    );
-  });
-  return outputDict
-}
 
 class WorkshopOneContainer extends Component {
   constructor(props) {
@@ -51,7 +38,7 @@ class WorkshopOneContainer extends Component {
     //   this.props.checkToken(token);
     // }
     console.log('Did mount WS1')
-    this.props.getSowsByTours()
+    // this.props.getSowsByTours()
   }
 
   showStateConsole = () => {
@@ -197,7 +184,9 @@ class WorkshopOneContainer extends Component {
           <WS1TransferToWS2Tab 
             query={null}
             getSowsByTours={this.props.getSowsByTours}
-            sowsByTours={convertSowsByTours(this.props.state.ws1.sowsByTours)}
+            sowsByTours={this.props.state.ws1.sowsByTours}
+            sowsMoveMany={this.props.sowsMoveMany}
+            fetching={this.props.state.ws1.fetching}
             tour={1}
           />}
         { this.state.tabs.cullingTab &&
@@ -229,6 +218,7 @@ const mapDispatchToProps = (dispatch) => ({
   // ultrasoundSow: data => dispatch(SowsActions.ultrasoundSowRequest(data)),
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
+  sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),
 
   getSeminationSows: query => dispatch(Ws1Actions.getSeminationSowsRequest(query)),
   getSeminationSow: id => dispatch(Ws1Actions.getSeminationSowRequest(id)),

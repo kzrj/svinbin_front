@@ -56,6 +56,15 @@ export function* sowMoveTo(api, action) {
     }
 }
 
+export function* sowsMoveMany(api, action) {
+    try {
+        let response = yield call(api.sowsMoveMany, action.payload);
+        yield put(SowsActions.sowsMoveManySuccess(response));
+    } catch (err) {
+        yield put(SowsActions.sowsMoveManyFail(err))
+    }
+}
+
 export function* sowFarrow(api, action) {
     try {
         let response = yield call(api.sowFarrow, action.payload);

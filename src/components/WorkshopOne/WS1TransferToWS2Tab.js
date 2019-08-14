@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { toggleArray, addItemToArray, removeItemFromArray, uniq } from '../utils';
+import { toggleArray, addItemToArray, removeItemFromArray,
+   uniq, convertSowsByTours } from '../utils';
 
 
 class WS1TransferToWS2Tab extends Component {
@@ -7,13 +8,17 @@ class WS1TransferToWS2Tab extends Component {
     super(props);
     this.state = {
       sowsToMove: [],
-      sowsByTours: props.sowsByTours
+      sowsByTours: [],
     }
   }
   
   componentDidMount() {
     // query
-    // this.props.getSowsByTours()
+    this.props.getSowsByTours()
+    this.setState({
+      ...this.state,
+      sowsByTours: convertSowsByTours(this.props.sowsByTours)
+    })
   }
 
   checkColumn = (e) => {
@@ -22,13 +27,13 @@ class WS1TransferToWS2Tab extends Component {
     let sowsToMove = this.state.sowsToMove
     if (!this.state.sowsByTours[tour].checked){
       Object.keys(rows).forEach((key) => {
-        rows[key] = true
-        sowsToMove = addItemToArray(sowsToMove, key)
+        rows[key].active = true
+        sowsToMove = addItemToArray(sowsToMove, rows[key].id)
       })
     } else {
       Object.keys(rows).forEach((key) => {
-        rows[key] = false
-        sowsToMove = removeItemFromArray(sowsToMove, key)
+        rows[key].active = false
+        sowsToMove = removeItemFromArray(sowsToMove, rows[key].id)
       })
     }
     sowsToMove = uniq(sowsToMove)
@@ -46,7 +51,8 @@ class WS1TransferToWS2Tab extends Component {
   }
 
   checkItem = (e) => {
-    const { tour, sowfarmid } = e.target.dataset
+    const { tour, sowfarmid, id} = e.target.dataset
+    let sowsToMove = toggleArray(this.state.sowsToMove, id)
     this.setState({
       sowsByTours: {
         ...this.state.sowsByTours,
@@ -54,11 +60,14 @@ class WS1TransferToWS2Tab extends Component {
           ...this.state.sowsByTours[tour],
           rows: {
             ...this.state.sowsByTours[tour].rows,
-           [sowfarmid]: !this.state.sowsByTours[tour].rows[sowfarmid]
+           [sowfarmid]: {
+              ...this.state.sowsByTours[tour].rows[sowfarmid],
+              active: !this.state.sowsByTours[tour].rows[sowfarmid].active
+           },
           }
         },
       },
-      sowsToMove: toggleArray(this.state.sowsToMove, sowfarmid)
+      sowsToMove: sowsToMove
     })
   }
 
@@ -67,17 +76,27 @@ class WS1TransferToWS2Tab extends Component {
   }
 
   moveManyTo2 = () => {
-    console.log('movemanyTo2')
     console.log(this.state.sowsToMove)
+    this.props.sowsMoveMany({
+      sows: this.state.sowsToMove,
+      to_location: 2
+    })
+    this.props.getSowsByTours()
+    this.setState({
+      ...this.state,
+      sowsByTours: convertSowsByTours(this.props.sowsByTours),
+      sowsToMove: []
+    })
   }
 
   render() {
-    const { sowsByTours, sowsToMove } = this.state
+    const { sowsToMove, sowsByTours } = this.state
     return (
         <div className='row workshop-content'>
           <div className='col-9'>
             <div className='row'>
-                {Object.keys(sowsByTours).map((key) => 
+
+                {!this.props.fetching && Object.keys(sowsByTours).map((key) => 
                   <div className='col-2 tour-list' key={key}>
                     {key}
                     <p><input type="checkbox" data-tour={key} onChange={this.checkColumn}/> 
@@ -87,7 +106,8 @@ class WS1TransferToWS2Tab extends Component {
                           <input type="checkbox"  
                             data-tour={key} 
                             data-sowFarmId={sowFarmId} 
-                            checked={sowsByTours[key].rows[sowFarmId]}
+                            data-id={sowsByTours[key].rows[sowFarmId].id} 
+                            checked={sowsByTours[key].rows[sowFarmId].active}
                             onChange={this.checkItem} 
                             />
                             {sowFarmId}
