@@ -13,6 +13,7 @@ export default {
     getSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/`,
     seminationSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/semination/`,
     ultrasoundSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/ultrasound/`,
+    ultrasoundV2Sow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/ultrasoundv2/`,
     cullingSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/culling/`,
     sowMoveTo: (id) => `${apiUrl}/workshoponetwo/sows/${id}/move_to/`,
     SOWS_MOVE_MANY: `${apiUrl}/workshoponetwo/sows/move_many/`,

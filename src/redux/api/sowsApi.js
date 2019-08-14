@@ -61,12 +61,35 @@ const create = () => {
     }
 
     const ultrasoundSow = payload => {
-        const { id, week, result } = payload;
+        const { id, result } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.ultrasoundSow(id);
 
         const formData = new FormData();
-        formData.append("week", week);
+        formData.append("result", result);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const ultrasoundV2Sow = payload => {
+        const { id, result } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.ultrasoundV2Sow(id);
+
+        const formData = new FormData();
         formData.append("result", result);
         
         return axios({
@@ -204,6 +227,7 @@ const create = () => {
         getSow,
         seminationSow,
         ultrasoundSow,
+        ultrasoundV2Sow,
         cullingSow,
         sowMoveTo,
         sowsMoveMany,

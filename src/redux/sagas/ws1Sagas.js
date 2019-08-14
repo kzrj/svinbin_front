@@ -20,6 +20,15 @@ export function* getUltrasoundSows(api, action) {
     }
 }
 
+export function* getUltrasoundV2SowsWs1(api, action) {
+    try {
+        let response = yield call(api.getSows, action.payload);
+        yield put(WS1Actions.getUltrasoundV2SowsWs1Success(response.results));
+    } catch (err) {
+        yield put(WS1Actions.getUltrasoundV2SowsWs1Fail(err))
+    }
+}
+
 export function* getCullingSowsWs1(api, action) {
     try {
         let response = yield call(api.getSows, action.payload);
@@ -47,6 +56,15 @@ export function* getUltrasoundSow(api, action) {
     }
 }
 
+export function* getUltrasoundV2SowWs1(api, action) {
+    try {
+        let response = yield call(api.getSow, action.payload);
+        yield put(WS1Actions.getUltrasoundV2SowWs1Success(response));
+    } catch (err) {
+        yield put(WS1Actions.getUltrasoundV2SowWs1Fail(err))
+    }
+}
+
 export function* getCullingSowWs1(api, action) {
     try {
         let response = yield call(api.getSow, action.payload);
@@ -71,6 +89,15 @@ export function* ultrasoundSowWs1(api, action) {
         yield put(WS1Actions.ultrasoundSowWs1Success(response));
     } catch (err) {
         yield put(WS1Actions.ultrasoundSowWs1Fail(err))
+    }
+}
+
+export function* ultrasoundV2SowWs1(api, action) {
+    try {
+        let response = yield call(api.ultrasoundV2Sow, action.payload);
+        yield put(WS1Actions.ultrasoundV2SowWs1Success(response));
+    } catch (err) {
+        yield put(WS1Actions.ultrasoundV2SowWs1Fail(err))
     }
 }
 

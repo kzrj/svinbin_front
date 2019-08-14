@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 // components
 import WS1SeminationTab from '../../components/WorkshopOne/WS1SeminationTab'
 import WS1UltrasoundTab from '../../components/WorkshopOne/WS1UltrasoundTab'
+import WS1UltrasoundV2Tab from '../../components/WorkshopOne/WS1UltrasoundV2Tab'
 import WS1TransferToWS2Tab from '../../components/WorkshopOne/WS1TransferToWS2Tab'
 import WS1CullingTab from '../../components/WorkshopOne/WS1CullingTab'
 
@@ -22,6 +23,7 @@ class WorkshopOneContainer extends Component {
       tabs: {
         seminationTab: true,
         ultrasoundTab: false,
+        ultrasoundV2Tab: false,
         transferToWS2Tab: false,
         cullingTab: false,
         infoTab: false,
@@ -38,7 +40,7 @@ class WorkshopOneContainer extends Component {
     //   this.props.checkToken(token);
     // }
     console.log('Did mount WS1')
-    // this.props.getSowsByTours()
+    this.props.getSowsByTours()
   }
 
   showStateConsole = () => {
@@ -69,55 +71,6 @@ class WorkshopOneContainer extends Component {
     console.log(state)
   }
 
-  getSows = () => {
-    // this.props.getSows({by_workshop_number: 3})
-    this.props.getSows()
-    const token = localStorage.getItem('token');
-    console.log(token)
-  }
-
-  getSows2 = () => {
-    this.props.getSows()
-    const token = localStorage.getItem('token');
-    console.log(token)
-  }
-
-  seminationSow = (sow) => {
-    let data = {
-      id: sow.id,
-      week: '104',
-      seminationEmployeeId: '5'
-    }
-    console.log('Semination')
-    this.props.seminationSow(data)
-  }
-
-  ultrasoundSow = (data) => {
-    // let data = {
-    //   id: '1',
-    //   week: '104',
-    //   result: true
-    // }
-    this.props.ultrasoundSow(data)
-  }
-
-  cullingSow = () => {
-    let data = {
-      id: '1',
-      culling_type: 'padej',
-      reason: 'test reason'
-    }
-    this.props.cullingSow(data)
-  }
-
-  sowMoveTo = () => {
-    let data = {
-      id: '1',
-      location: '1',
-    }
-    this.props.sowMoveTo(data)
-  }
-
   login = () => {
     this.props.login({username: 'test_seminator', password: 'qwerty123'})
   }
@@ -141,6 +94,11 @@ class WorkshopOneContainer extends Component {
               onClick={() => this.setTab('ultrasoundTab')}
             >
               УЗИ
+            </div>
+            <div className={this.state.tabs.ultrasoundV2Tab ? 'tab-active col-sm' : 'col-sm'}
+              onClick={() => this.setTab('ultrasoundV2Tab')}
+            >
+              УЗИ 2
             </div>
             <div className={this.state.tabs.transferToWS2Tab ? 'tab-active col-sm' : 'col-sm'}
               onClick={() => this.setTab('transferToWS2Tab')}
@@ -178,7 +136,16 @@ class WorkshopOneContainer extends Component {
             sows={this.props.state.ws1.ultrasoundList}
             sow={this.props.state.ws1.ultrasoundSow}
             ultrasoundSow={this.props.ultrasoundSow}
-            week={1}
+          />}
+        
+        { this.state.tabs.ultrasoundV2Tab &&
+          <WS1UltrasoundV2Tab 
+            query={null}
+            getSows={this.props.getUltrasoundV2Sows}
+            getSow={this.props.getUltrasoundV2Sow} 
+            sows={this.props.state.ws1.ultrasoundV2List}
+            sow={this.props.state.ws1.ultrasoundV2Sow}
+            ultrasoundV2Sow={this.props.ultrasoundV2Sow}
           />}
         { this.state.tabs.transferToWS2Tab &&
           <WS1TransferToWS2Tab 
@@ -224,10 +191,13 @@ const mapDispatchToProps = (dispatch) => ({
   getSeminationSow: id => dispatch(Ws1Actions.getSeminationSowRequest(id)),
   getUltrasoundSows: query => dispatch(Ws1Actions.getUltrasoundSowsRequest(query)),
   getUltrasoundSow: id => dispatch(Ws1Actions.getUltrasoundSowRequest(id)),
+  getUltrasoundV2Sows: query => dispatch(Ws1Actions.getUltrasoundV2SowsWs1Request(query)),
+  getUltrasoundV2Sow: id => dispatch(Ws1Actions.getUltrasoundV2SowWs1Request(id)),
   getCullingSows: query => dispatch(Ws1Actions.getCullingSowsWs1Request(query)),
   getCullingSow: id => dispatch(Ws1Actions.getCullingSowWs1Request(id)),
   seminationSow: data => dispatch(Ws1Actions.seminationSowWs1Request(data)),
   ultrasoundSow: data => dispatch(Ws1Actions.ultrasoundSowWs1Request(data)),
+  ultrasoundV2Sow: data => dispatch(Ws1Actions.ultrasoundV2SowWs1Request(data)),
   cullingSow: data => dispatch(Ws1Actions.cullingSowWs1Request(data)),
   getSowsByTours: data => dispatch(Ws1Actions.getSowsByToursRequest(data)),
   getSeminators: query => dispatch(Ws1Actions.getSeminatorsRequest(query)),
