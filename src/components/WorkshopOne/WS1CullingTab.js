@@ -7,7 +7,7 @@ class WS1CullingTab extends Component {
     this.state = {
       cullingReason: '',
       cullingType: null,
-      query: {by_workshop_number: 1, not_in_tour: true},
+      query: {by_workshop_number: 1},
     }
   }
   

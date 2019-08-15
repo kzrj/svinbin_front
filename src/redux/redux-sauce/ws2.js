@@ -3,29 +3,34 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-    getCullingSowsRequest: ['payload'],
-    getCullingSowsFail: ['error'],
-    getCullingSowsSuccess: ['payload'],
+    getCullingSowsWs2Request: ['payload'],
+    getCullingSowsWs2Fail: ['error'],
+    getCullingSowsWs2Success: ['payload'],
 
-    getCullingSowRequest: ['payload'],
-    getCullingSowFail: ['error'],
-    getCullingSowSuccess: ['payload'],
+    getCullingSowWs2Request: ['payload'],
+    getCullingSowWs2Fail: ['error'],
+    getCullingSowWs2Success: ['payload'],
 
-    // getSowsByToursRequest: ['payload'],
-    // getSowsByToursFail: ['error'],
-    // getSowsByToursSuccess: ['payload'],
+    getSowsByToursWs2Request: ['payload'],
+    getSowsByToursWs2Fail: ['error'],
+    getSowsByToursWs2Success: ['payload'],
 
-    cullingSowRequest: ['payload'],
-    cullingSowFail: ['error'],
-    cullingSowSuccess: ['payload'],
+    cullingSowWs2Request: ['payload'],
+    cullingSowWs2Fail: ['error'],
+    cullingSowWs2Success: ['payload'],
 
-    // sowsMoveManyToRequest: ['payload'],
-    // sowsMoveManyFail: ['error'],
-    // sowsMoveManySuccess: ['payload'],
+    getUltrasoundV2SowWs2Request: ['payload'],
+    getUltrasoundV2SowWs2Fail: ['error'],
+    getUltrasoundV2SowWs2Success: ['payload'],
 
-    // sowFarrowRequest: ['payload'],
-    // sowFarrowFail: ['error'],
-    // sowFarrowSuccess: ['payload'],
+    getUltrasoundV2SowsWs2Request: ['payload'],
+    getUltrasoundV2SowsWs2Fail: ['error'],
+    getUltrasoundV2SowsWs2Success: ['payload'],
+
+    ultrasoundV2SowWs2Request: ['payload'],
+    ultrasoundV2SowWs2Fail: ['error'],
+    ultrasoundV2SowWs2Success: ['payload'],
+
 })
 
 export const Ws2Types = Types
@@ -37,6 +42,8 @@ export const INITIAL_STATE = Immutable({
     fetching: false,
     cullingList: [],
     cullingSow: null,
+    ultrasoundV2List: [],
+    ultrasoundV2Sow: null,
     sowsByTours: [],
     error: '',
 })
@@ -44,119 +51,140 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const Ws2Selectors = {
-    getCullingSows: state => state.ws2.cullingList,
-    getCullingSow: state => state.ws2.cullingList,
-    cullingSow: state => state.ws2.cullingSow,
-    // getSowsByTours: state => state.ws2.sowsByTours,
-    // sowsMoveMany: state => state.Sows.sow,
+    getCullingSowsWs2: state => state.ws2.cullingList,
+    getCullingSowWs2: state => state.ws2.cullingSow,
+    cullingSowWs2: state => state.ws2.cullingSow,
+    getSowsByToursWs2: state => state.ws2.sowsByTours,
+    getUltrasoundV2SowsWs2: state => state.ws2.ultrasoundV2List,
+    getUltrasoundV2Ws2Sow: state => state.ws2.ultrasoundV2Sow,
+    ultrasoundV2SowWs2: state => state.ws2.ultrasoundV2Sow,
 }
 
 /* ------------- Reducers ------------- */
 // Get culling list
-export const getCullingSowsRequest = (state, { payload }) => {
+export const getCullingSowsWs2Request = (state, { payload }) => {
     return state.merge({ fetching: true, cullingList: [] })
 }
 
-export const getCullingSowsSuccess = (state, { payload }) => {
+export const getCullingSowsWs2Success = (state, { payload }) => {
     let sow = null
-    if (payload.length > 0) sow = payload[1]
+    if (payload.length > 0) sow = payload[0]
     return state.merge({ fetching: false, error: null, cullingList: payload, cullingSow: sow })
 }
 
-export const getCullingSowsFail = (state, { error }) => {
+export const getCullingSowsWs2Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, cullingList: [] })
 }
 
 // Get one culling
-export const getCullingSowRequest = (state, { payload }) => {
+export const getCullingSowWs2Request = (state, { payload }) => {
     return state.merge({ fetching: true, })
 }
 
-export const getCullingSowSuccess = (state, { payload }) => {
+export const getCullingSowWs2Success = (state, { payload }) => {
     return state.merge({ fetching: false, error: null, cullingSow: payload })
 }
 
-export const getCullingSowFail = (state, { error }) => {
+export const getCullingSowWs2Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, cullingSow: null })
 }
 
 // Get sows by tours
-// export const getSowsByToursRequest = (state, { payload }) => {
-//     return state.merge({ fetching: true, ultrasoundList: [] })
-// }
+export const getSowsByToursWs2Request = (state, { payload }) => {
+    return state.merge({ fetching: true, sowsByTours: [] })
+}
 
-// export const getSowsByToursSuccess = (state, { payload }) => {
-//     return state.merge({ fetching: false, error: null, sowsByTours: payload})
-// }
+export const getSowsByToursWs2Success = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, sowsByTours: payload})
+}
 
-// export const getSowsByToursFail = (state, { error }) => {
-//     return state.merge({ fetching: false, error, sowsByTours: [] })
-// }
+export const getSowsByToursWs2Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error, sowsByTours: [] })
+}
 
 // Culling
-export const cullingSowRequest = (state, { payload }) => {
+export const cullingSowWs2Request = (state, { payload }) => {
     return state.merge({ fetching: true })
 }
 
-export const cullingSowSuccess = (state, { payload }) => {
+export const cullingSowWs2Success = (state, { payload }) => {
     return state.merge({ fetching: false, error: null, cullingSow: payload.sow,  })
 }
 
-export const cullingSowFail = (state, { error }) => {
+export const cullingSowWs2Fail = (state, { error }) => {
     return state.merge({ fetching: false, error: error.data })
 }
 
-// // Move to
-// export const sowMoveToRequest = (state, { payload }) => {
-//     return state.merge({ fetching: true })
-// }
+// Get ultrasoundv2 list
+export const getUltrasoundV2SowsWs2Request = (state, { payload }) => {
+    return state.merge({ fetching: true, ultrasoundV2List: [] })
+}
 
-// export const sowMoveToSuccess = (state, { payload }) => {
-//     return state.merge({ fetching: false, error: null, sow: payload.sow, sowEvent: payload.transaction })
-// }
+export const getUltrasoundV2SowsWs2Success = (state, { payload }) => {
+    let sow = null
+    if (payload.length > 0) sow = payload[0]
+    return state.merge({ fetching: false, error: null, ultrasoundV2List: payload,
+         ultrasoundV2Sow: sow })
+}
 
-// export const sowMoveToFail = (state, { error }) => {
-//     return state.merge({ fetching: false, error: error.data })
-// }
+export const getUltrasoundV2SowsWs2Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error, ultrasoundV2List: [] })
+}
 
-// Get sows by tours
-// export const getSowsByToursRequest = (state, { payload }) => {
-//     return state.merge({ fetching: true, ultrasoundList: [] })
-// }
+// Get one ultrasoundV2
+export const getUltrasoundV2SowWs2Request = (state, { payload }) => {
+    return state.merge({ fetching: true, })
+}
 
-// export const getSowsByToursSuccess = (state, { payload }) => {
-//     return state.merge({ fetching: false, error: null, sowsByTours: payload})
-// }
+export const getUltrasoundV2SowWs2Success = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, ultrasoundV2Sow: payload })
+}
 
-// export const getSowsByToursFail = (state, { error }) => {
-//     return state.merge({ fetching: false, error, sowsByTours: [] })
-// }
+export const getUltrasoundV2SowWs2Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error, ultrasoundV2Sow: null })
+}
 
+// UltrasoundV2
+export const ultrasoundV2SowWs2Request = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const ultrasoundV2SowWs2Success = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, ultrasoundV2Sow: payload.sow, })
+}
+
+export const ultrasoundV2SowWs2Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error: error.data })
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-    [Types.GET_CULLING_SOWS_REQUEST]: getCullingSowsRequest,
-    [Types.GET_CULLING_SOWS_SUCCESS]: getCullingSowsSuccess,
-    [Types.GET_CULLING_SOWS_FAIL]: getCullingSowsFail,
+    [Types.GET_CULLING_SOWS_WS2_REQUEST]: getCullingSowsWs2Request,
+    [Types.GET_CULLING_SOWS_WS2_SUCCESS]: getCullingSowsWs2Success,
+    [Types.GET_CULLING_SOWS_WS2_FAIL]: getCullingSowsWs2Fail,
 
-    [Types.GET_CULLING_SOW_REQUEST]: getCullingSowRequest,
-    [Types.GET_CULLING_SOW_SUCCESS]: getCullingSowSuccess,
-    [Types.GET_CULLING_SOW_FAIL]: getCullingSowFail,
+    [Types.GET_CULLING_SOW_WS2_REQUEST]: getCullingSowWs2Request,
+    [Types.GET_CULLING_SOW_WS2_SUCCESS]: getCullingSowWs2Success,
+    [Types.GET_CULLING_SOW_WS2_FAIL]: getCullingSowWs2Fail,
 
-    [Types.CULLING_SOW_REQUEST]: cullingSowRequest,
-    [Types.CULLING_SOW_SUCCESS]: cullingSowSuccess,
-    [Types.CULLING_SOW_FAIL]: cullingSowFail,
+    [Types.CULLING_SOW_WS2_REQUEST]: cullingSowWs2Request,
+    [Types.CULLING_SOW_WS2_SUCCESS]: cullingSowWs2Success,
+    [Types.CULLING_SOW_WS2_FAIL]: cullingSowWs2Fail,
 
-    // [Types.GET_SOWS_BY_TOURS_REQUEST]: getSowsByToursRequest,
-    // [Types.GET_SOWS_BY_TOURS_SUCCESS]: getSowsByToursSuccess,
-    // [Types.GET_SOWS_BY_TOURS_FAIL]: getSowsByToursFail,
+    [Types.GET_SOWS_BY_TOURS_WS2_REQUEST]: getSowsByToursWs2Request,
+    [Types.GET_SOWS_BY_TOURS_WS2_SUCCESS]: getSowsByToursWs2Success,
+    [Types.GET_SOWS_BY_TOURS_WS2_FAIL]: getSowsByToursWs2Fail,
 
-    // [Types.SOW_MOVE_TO_REQUEST]: sowMoveToRequest,
-    // [Types.SOW_MOVE_TO_SUCCESS]: sowMoveToSuccess,
-    // [Types.SOW_MOVE_TO_FAIL]: sowMoveToFail,
+    [Types.GET_ULTRASOUND_V2_SOWS_WS2_REQUEST]: getUltrasoundV2SowsWs2Request,
+    [Types.GET_ULTRASOUND_V2_SOWS_WS2_SUCCESS]: getUltrasoundV2SowsWs2Success,
+    [Types.GET_ULTRASOUND_V2_SOWS_WS2_FAIL]: getUltrasoundV2SowsWs2Fail,
 
-    // [Types.SOW_FARROW_REQUEST]: sowFarrowRequest,
-    // [Types.SOW_FARROW_SUCCESS]: sowFarrowSuccess,
-    // [Types.SOW_FARROW_FAIL]: sowFarrowFail,
+    [Types.GET_ULTRASOUND_V2_SOW_WS2_REQUEST]: getUltrasoundV2SowWs2Request,
+    [Types.GET_ULTRASOUND_V2_SOW_WS2_SUCCESS]: getUltrasoundV2SowWs2Success,
+    [Types.GET_ULTRASOUND_V2_SOW_WS2_FAIL]: getUltrasoundV2SowWs2Fail,
+
+    [Types.ULTRASOUND_V2_SOW_WS2_REQUEST]: ultrasoundV2SowWs2Request,
+    [Types.ULTRASOUND_V2_SOW_WS2_SUCCESS]: ultrasoundV2SowWs2Success,
+    [Types.ULTRASOUND_V2_SOW_WS2_FAIL]: ultrasoundV2SowWs2Fail,
 })

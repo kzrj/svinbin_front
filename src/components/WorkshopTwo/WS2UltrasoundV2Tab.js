@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 
 
-class WS2CullingTab extends Component {
+class WS2UltrasoundV2Tab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      cullingReason: '',
-      cullingType: null,
-      query: {by_workshop_number: 2},
-    }
+      query: {by_workshop_number: 2, status_title: 'Прошла УЗИ1, супорос'},
+    };
+    this.ultrasoundV2Sow = this.ultrasoundV2Sow.bind(this);
   }
   
   componentDidMount() {
+    // query
     this.props.getSows(this.state.query)
   }
 
@@ -25,27 +25,13 @@ class WS2CullingTab extends Component {
     this.props.getSows(query)
   }
 
-  setReason = (e) => {
-    this.setState({
-      ...this.state,
-      cullingReason: e.target.value
-    })
-  }
-
-  setType = (e) => {
-    this.setState({
-      ...this.state,
-      cullingType: e.target.value
-    })
-  }
-
-  cullingSow = () => {
+  ultrasoundV2Sow (result) {
     let data = {
       id: this.props.sow.id,
-      culling_type: this.state.cullingType,
-      reason: this.state.cullingReason
+      result: result
     }
-    this.props.cullingSow(data)
+    this.props.ultrasoundV2Sow(data)
+    this.props.getSows(this.state.query)
   }
 
   render() {
@@ -81,30 +67,23 @@ class WS2CullingTab extends Component {
                     <li>{sow.location}</li>
                     <li>{sow.status}</li>
                     <li>{sow.farm_id}</li>
+                    {/* ultrasound info */}
                   </ul>
-
-                  <div className="input-group">
-                      <select className="custom-select" onChange={this.setType}>
-                        <option selected>Выберите тип падежа...</option>
-                        <option value='padej' >Падеж</option>
-                        <option value='spec' >Спец. убой</option>
-                        <option value='prirezka' >Прирезка</option>
-                      </select>
-                      <input type='text' onChange={this.setReason} />
-                    <div className="input-group-append">
-                      <button className="btn btn-outline-secondary" type="button"  
-                      onClick={this.cullingSow}>
-                        Забраковать
-                      </button>
-                    </div>
+                  <div>
+                    <button onClick={() => this.ultrasoundV2Sow(false)}>
+                      Отметить как прохолост
+                    </button>
+                    <button onClick={() => this.ultrasoundV2Sow(true)}>
+                      Отметить как супорос
+                    </button>
                   </div>
                 </div>
               }
             </div>
+          </div>
         </div>
-      </div>
     )
   }
 }
 
-export default WS2CullingTab
+export default WS2UltrasoundV2Tab

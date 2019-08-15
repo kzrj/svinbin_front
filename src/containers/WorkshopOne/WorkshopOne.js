@@ -13,8 +13,6 @@ import SowsActions from '../../redux/redux-sauce/sows';
 import AuthActions from '../../redux/redux-sauce/auth';
 import Ws1Actions from '../../redux/redux-sauce/ws1';
 
-import { convertSowsByTours } from '../../components/utils';
-
 
 class WorkshopOneContainer extends Component {
   constructor(props) {
@@ -78,12 +76,6 @@ class WorkshopOneContainer extends Component {
   render() {
     return (
       <div className="workshop container">
-        <h1>WorkshopOne</h1>
-        <div>
-            <button onClick={this.showStateConsole}>
-              Button show store
-            </button>
-          </div>
         <div className='row workshop-menu'>
             <div className={this.state.tabs.seminationTab ? 'tab-active col-sm' : 'col-sm'}
               onClick={() => this.setTab('seminationTab')}

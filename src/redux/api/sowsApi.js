@@ -220,6 +220,18 @@ const create = () => {
         })
     }
 
+    const getSowsByToursWs2 = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+
+        return axios.get(endpoints.GET_SOWS_BY_TOURS_WS2, { params })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     const setSow = sow => sow
 
     return {
@@ -233,6 +245,7 @@ const create = () => {
         sowsMoveMany,
         sowFarrow,
         getSowsByTours,
+        getSowsByToursWs2,
         setSow
     }
 

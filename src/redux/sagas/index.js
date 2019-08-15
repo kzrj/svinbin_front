@@ -83,9 +83,13 @@ export default function* root() {
     takeEvery(Ws1Types.GET_SEMINATORS_REQUEST, ws1Saga.getSeminators, usersApi),
     // takeEvery(Ws1Types.SET_SEMINATION_SOW, ws1Saga.setSeminationSow(), null),
 
-    takeEvery(Ws2Types.GET_CULLING_SOWS_REQUEST, ws2Saga.getCullingSows, sowsApi),
-    takeEvery(Ws2Types.GET_CULLING_SOW_REQUEST, ws2Saga.getCullingSow, sowsApi),
-    takeEvery(Ws2Types.CULLING_SOW_REQUEST, ws2Saga.cullingSow, sowsApi),
+    takeEvery(Ws2Types.GET_CULLING_SOWS_WS2_REQUEST, ws2Saga.getCullingSowsWs2, sowsApi),
+    takeEvery(Ws2Types.GET_CULLING_SOW_WS2_REQUEST, ws2Saga.getCullingSowWs2, sowsApi),
+    takeEvery(Ws2Types.CULLING_SOW_WS2_REQUEST, ws2Saga.cullingSowWs2, sowsApi),
+    takeEvery(Ws2Types.GET_SOWS_BY_TOURS_WS2_REQUEST, ws2Saga.getSowsByToursWs2, sowsApi),
+    takeEvery(Ws2Types.GET_ULTRASOUND_V2_SOWS_WS2_REQUEST, ws2Saga.getUltrasoundV2SowsWs2, sowsApi),
+    takeEvery(Ws2Types.GET_ULTRASOUND_V2_SOW_WS2_REQUEST, ws2Saga.getUltrasoundV2SowWs2, sowsApi),
+    takeEvery(Ws2Types.ULTRASOUND_V2_SOW_WS2_REQUEST, ws2Saga.ultrasoundV2SowWs2, sowsApi),
 
     takeEvery(Ws4Types.GET_NOMAD_PIGLETS_WS4_REQUEST, ws4Saga.getNomadPigletsWs4, nomadPigletsApi),
     takeEvery(Ws4Types.GET_SECTIONS_WS4_REQUEST, ws4Saga.getSectionsWs4, locationsApi),

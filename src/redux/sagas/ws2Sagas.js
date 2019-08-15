@@ -2,47 +2,65 @@ import { put, call } from 'redux-saga/effects';
 
 import WS2Actions from '../redux-sauce/ws2'
 
-export function* getCullingSows(api, action) {
+export function* getCullingSowsWs2(api, action) {
     try {
         let response = yield call(api.getSows, action.payload);
-        yield put(WS2Actions.getCullingSowsSuccess(response.results));
+        yield put(WS2Actions.getCullingSowsWs2Success(response.results));
     } catch (err) {
-        yield put(WS2Actions.getCullingSowsFail(err))
+        yield put(WS2Actions.getCullingSowsWs2Fail(err))
     }
 }
 
-export function* getCullingSow(api, action) {
+export function* getCullingSowWs2(api, action) {
     try {
         let response = yield call(api.getSow, action.payload);
-        yield put(WS2Actions.getCullingSowSuccess(response));
+        yield put(WS2Actions.getCullingSowWs2Success(response));
     } catch (err) {
-        yield put(WS2Actions.getCullingSowFail(err))
+        yield put(WS2Actions.getCullingSowWs2Fail(err))
     }
 }
 
-// export function* getSowsByTours(api, action) {
-//     try {
-//         let response = yield call(api.getSowsByTours, action.payload);
-//         yield put(WS1Actions.getSowsByToursSuccess(response));
-//     } catch (err) {
-//         yield put(WS1Actions.getSowsByToursFail(err))
-//     }
-// }
+export function* getSowsByToursWs2(api, action) {
+    try {
+        let response = yield call(api.getSowsByToursWs2, action.payload);
+        yield put(WS2Actions.getSowsByToursWs2Success(response));
+    } catch (err) {
+        yield put(WS2Actions.getSowsByToursWs2Fail(err))
+    }
+}
 
-export function* cullingSow(api, action) {
+export function* cullingSowWs2(api, action) {
     try {
         let response = yield call(api.cullingSow, action.payload);
-        yield put(WS2Actions.cullingSowSuccess(response));
+        yield put(WS2Actions.cullingSowWs2Success(response));
     } catch (err) {
-        yield put(WS2Actions.cullingSowFail(err))
+        yield put(WS2Actions.cullingSowWs2Fail(err))
     }
 }
 
-// export function* sowMoveTo(api, action) {
-//     try {
-//         let response = yield call(api.sowMoveTo, action.payload);
-//         yield put(SowsActions.sowMoveToSuccess(response));
-//     } catch (err) {
-//         yield put(SowsActions.sowMoveToFail(err))
-//     }
-// }
+export function* getUltrasoundV2SowsWs2(api, action) {
+    try {
+        let response = yield call(api.getSows, action.payload);
+        yield put(WS2Actions.getUltrasoundV2SowsWs2Success(response.results));
+    } catch (err) {
+        yield put(WS2Actions.getUltrasoundV2SowsWs2Fail(err))
+    }
+}
+
+export function* getUltrasoundV2SowWs2(api, action) {
+    try {
+        let response = yield call(api.getSow, action.payload);
+        yield put(WS2Actions.getUltrasoundV2SowWs2Success(response));
+    } catch (err) {
+        yield put(WS2Actions.getUltrasoundV2SowWs2Fail(err))
+    }
+}
+
+export function* ultrasoundV2SowWs2(api, action) {
+    try {
+        let response = yield call(api.ultrasoundV2Sow, action.payload);
+        yield put(WS2Actions.ultrasoundV2SowWs2Success(response));
+    } catch (err) {
+        yield put(WS2Actions.ultrasoundV2SowWs2Fail(err))
+    }
+}

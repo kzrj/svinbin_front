@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 // components
 import WS2TransferTab from '../../components/WorkshopTwo/WS2TransferTab'
 import WS2CullingTab from '../../components/WorkshopTwo/WS2CullingTab'
+import WS2UltrasoundV2Tab from '../../components/WorkshopTwo/WS2UltrasoundV2Tab'
 
 // actions
 import Ws2Actions from '../../redux/redux-sauce/ws2';
+import SowsActions from '../../redux/redux-sauce/sows';
 
 
 class WorkshopTwoContainer extends Component {
@@ -15,6 +17,7 @@ class WorkshopTwoContainer extends Component {
     this.state = {
       tabs: {
         transferTab: false,
+        ultrasoundV2Tab: false,
         cullingTab: true,
         infoTab: false,
       }
@@ -29,8 +32,6 @@ class WorkshopTwoContainer extends Component {
     // if (token) {
     //   this.props.checkToken(token);
     // }
-
-    
   }
 
   setTab = (tab) => {
@@ -46,6 +47,12 @@ class WorkshopTwoContainer extends Component {
     })
   }
 
+  showStateConsole = () => {
+    const { state } = this.props
+    console.log('Hi')
+    console.log(state)
+  }
+
   showState = () => {
     console.log(this.state)
   }
@@ -54,13 +61,24 @@ class WorkshopTwoContainer extends Component {
     return (
       <div className="workshop container">
         <h1>WorkshopTwo</h1>
-        <button onClick={this.showState}>state</button>
+        <div>
+            <button onClick={this.showStateConsole}>
+              Button show store
+            </button>
+            <button onClick={this.showState}>state</button>
+        </div>
+        
         <div className='row workshop-menu'>
           <div className={this.state.tabs.transferTab ? 'tab-active col-sm' : 'col-sm'}
             onClick={() => this.setTab('transferTab')}
           >
             Перемещение
           </div>
+          <div className={this.state.tabs.ultrasoundV2Tab ? 'tab-active col-sm' : 'col-sm'}
+              onClick={() => this.setTab('ultrasoundV2Tab')}
+            >
+              УЗИ 2
+            </div>
           <div className={this.state.tabs.cullingTab ? 'tab-active col-sm' : 'col-sm'}
             onClick={() => this.setTab('cullingTab')}
           >
@@ -76,9 +94,20 @@ class WorkshopTwoContainer extends Component {
           <WS2TransferTab 
             query={null}
             getSowsByTours={this.props.getSowsByTours}
-            sowsByTours={this.props.state.ws1.sowsByTours}
-            tour={1}
+            sowsByTours={this.props.state.ws2.sowsByTours}
+            sowsMoveMany={this.props.sowsMoveMany}
           />}
+
+        { this.state.tabs.ultrasoundV2Tab &&
+          <WS2UltrasoundV2Tab 
+            query={null}
+            getSows={this.props.getUltrasoundV2Sows}
+            getSow={this.props.getUltrasoundV2Sow} 
+            sows={this.props.state.ws2.ultrasoundV2List}
+            sow={this.props.state.ws2.ultrasoundV2Sow}
+            ultrasoundV2Sow={this.props.ultrasoundV2Sow}
+          />}
+
         { this.state.tabs.cullingTab &&
           <WS2CullingTab
             query={null}
@@ -101,13 +130,16 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   // login: (payload) => dispatch(AuthActions.loginRequest(payload)),
 
-  getCullingSows: query => dispatch(Ws2Actions.getCullingSowsRequest(query)),
-  getCullingSow: id => dispatch(Ws2Actions.getCullingSowRequest(id)),
-  cullingSow: data => dispatch(Ws2Actions.cullingSowRequest(data)),
-  
-  
-  // sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
+  getCullingSows: query => dispatch(Ws2Actions.getCullingSowsWs2Request(query)),
+  getCullingSow: id => dispatch(Ws2Actions.getCullingSowWs2Request(id)),
+  cullingSow: data => dispatch(Ws2Actions.cullingSowWs2Request(data)),
 
+  getUltrasoundV2Sows: query => dispatch(Ws2Actions.getUltrasoundV2SowsWs2Request(query)),
+  getUltrasoundV2Sow: id => dispatch(Ws2Actions.getUltrasoundV2SowWs2Request(id)),
+  ultrasoundV2Sow: data => dispatch(Ws2Actions.ultrasoundV2SowWs2Request(data)),
+  getSowsByTours: data => dispatch(Ws2Actions.getSowsByToursWs2Request(data)),
+
+  sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),  
 })
 
 export default connect(
