@@ -7,6 +7,8 @@ class WS1SeminationTab extends Component {
     this.state = {
       seminationEmployee: null,
       query: {by_workshop_number: 1, not_in_tour: true},
+      farmId: null,
+      week: null
     }
   }
   
@@ -35,27 +37,45 @@ class WS1SeminationTab extends Component {
   seminationSow = () => {
     const data = {
       id: this.props.sow.id,
-      week: this.props.week,
+      week: this.state.week,
       seminationEmployeeId: this.state.seminationEmployee
     }
     this.props.seminationSow(data)
     this.props.getSows(this.state.query)
   }
 
+  setFarmId = (e) => {
+    this.setState({
+      ...this.state,
+      farmId: e.target.value
+    })
+  }
+
+  setWeek = (e) => {
+    this.setState({
+      ...this.state,
+      week: e.target.value
+    })
+  }
+
+  createSow = () => {
+    console.log(this.state.farmId)
+  }
+
   render() {
     const { sows, sow, seminationEmployes, week } = this.props
     return (
         <div className='row workshop-content'>
-          <div className='col-3'>
-            <div className='under-menu-line text-center'>
-              <p className="workshop-header-2">ПОИСК ПО ID</p>
+          <div className='col-3 workshop-left-column'>
+            <div className='workshop-header-2 under-menu-line text-center'>
+              <p >ПОИСК ПО ID</p>
             </div>
             <div className='workshop-content-column-1'>
-              <input type='text' onChange={this.getSowsById} />
+              <input type='text' onChange={this.getSowsById} className="search-input"/>
               <ul className='list-unstyled'>
                 {sows.length > 0 && sow &&
                   sows.map(sowInList => 
-                    <li className={sowInList.id == sow.id ? 'sow-active' : sowInList.id} 
+                    <li className={sowInList.id == sow.id ? 'sow-active sow-li text-center' : 'sow-li text-center'} 
                       key={sowInList.id} 
                       onClick={() => this.props.getSow(sowInList.id)}>
                       {sowInList.farm_id}
@@ -64,9 +84,9 @@ class WS1SeminationTab extends Component {
               </ul>
             </div>
           </div>
-          <div className='col-9'>
-            <div className='under-menu-line text-center'>
-              <p className="workshop-header-2">ВЫБРАНА МАТКА</p>
+          <div className='col-9 workshop-right-column'>
+            <div className='under-menu-line text-center workshop-header-2'>
+              <p >ВЫБРАНА МАТКА</p>
             </div>
             <div className='workshop-content-column-2'>
               {sow &&
@@ -79,7 +99,8 @@ class WS1SeminationTab extends Component {
                     {/* semenation info */}
                   </ul>
                   <div className="input-group">
-                    <label>{week} неделя</label>
+                    <input type='text' value={this.state.week} onChange={this.setWeek}/> неделя
+                    < br/>
                     <select className="custom-select" id="inputGroupSelect04" 
                       onChange={this.setSemitationEmployee}>
                       <option selected>Выберите работника...</option>

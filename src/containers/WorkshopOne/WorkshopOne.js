@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 // components
 import WS1SeminationTab from '../../components/WorkshopOne/WS1SeminationTab'
+import WS1CreateTab from '../../components/WorkshopOne/WS1CreateTab'
 import WS1UltrasoundTab from '../../components/WorkshopOne/WS1UltrasoundTab'
 import WS1UltrasoundV2Tab from '../../components/WorkshopOne/WS1UltrasoundV2Tab'
 import WS1TransferToWS2Tab from '../../components/WorkshopOne/WS1TransferToWS2Tab'
@@ -20,6 +21,7 @@ class WorkshopOneContainer extends Component {
     this.state = {
       tabs: {
         seminationTab: true,
+        createTab: false,
         ultrasoundTab: false,
         ultrasoundV2Tab: false,
         transferToWS2Tab: false,
@@ -76,38 +78,50 @@ class WorkshopOneContainer extends Component {
   render() {
     return (
       <div className="workshop container">
+        <div className='workshop-header'>
+        </div>
         <div className='row workshop-menu'>
-            <div className={this.state.tabs.seminationTab ? 'tab-active col-sm' : 'col-sm'}
+            <div className={this.state.tabs.createTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
+              onClick={() => this.setTab('createTab')}
+            >
+              Создание
+            </div>
+            <div className={this.state.tabs.seminationTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
               onClick={() => this.setTab('seminationTab')}
             >
               Осеменение
             </div>
-            <div className={this.state.tabs.ultrasoundTab ? 'tab-active col-sm' : 'col-sm'}
+            <div className={this.state.tabs.ultrasoundTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
               onClick={() => this.setTab('ultrasoundTab')}
             >
               УЗИ
             </div>
-            <div className={this.state.tabs.ultrasoundV2Tab ? 'tab-active col-sm' : 'col-sm'}
+            <div className={this.state.tabs.ultrasoundV2Tab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
               onClick={() => this.setTab('ultrasoundV2Tab')}
             >
               УЗИ 2
             </div>
-            <div className={this.state.tabs.transferToWS2Tab ? 'tab-active col-sm' : 'col-sm'}
+            <div className={this.state.tabs.transferToWS2Tab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
               onClick={() => this.setTab('transferToWS2Tab')}
             >
               Перевод в ЦЕХ2
             </div>
-            <div className={this.state.tabs.cullingTab ? 'tab-active col-sm' : 'col-sm'}
+            <div className={this.state.tabs.cullingTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
               onClick={() => this.setTab('cullingTab')}
             >
               Выбраковка
             </div>
-            <div className={this.state.tabs.infoTab ? 'tab-active col-sm' : 'col-sm'}
+            <div className={this.state.tabs.infoTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
               onClick={() => this.setTab('infoTab')}
             >
               ИНФО
             </div>
         </div>
+        { this.state.tabs.createTab && 
+          <WS1CreateTab 
+            sow={this.props.state.ws1.createdSow}
+            createNewSow={this.props.createNewSow}
+          />}
         { this.state.tabs.seminationTab && 
           <WS1SeminationTab 
             query={null}
@@ -118,7 +132,6 @@ class WorkshopOneContainer extends Component {
             sow={this.props.state.ws1.seminationSow}
             seminationSow={this.props.seminationSow}
             seminationEmployes={this.props.state.ws1.seminators}
-            week={1}
           />}
         { this.state.tabs.ultrasoundTab &&
           <WS1UltrasoundTab 
@@ -178,6 +191,7 @@ const mapDispatchToProps = (dispatch) => ({
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
   sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),
+  createNewSow: data => dispatch(Ws1Actions.createNewSowWs1Request(data)),
 
   getSeminationSows: query => dispatch(Ws1Actions.getSeminationSowsRequest(query)),
   getSeminationSow: id => dispatch(Ws1Actions.getSeminationSowRequest(id)),

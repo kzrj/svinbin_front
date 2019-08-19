@@ -60,6 +60,10 @@ const { Types, Creators } = createActions({
     getUltrasoundV2SowsWs1Request: ['payload'],
     getUltrasoundV2SowsWs1Fail: ['error'],
     getUltrasoundV2SowsWs1Success: ['payload'],
+    
+    createNewSowWs1Request: ['payload'],
+    createNewSowWs1Fail: ['error'],
+    createNewSowWs1Success: ['payload'],
 
     // sowMoveToRequest: ['payload'],
     // sowMoveToFail: ['error'],
@@ -88,6 +92,7 @@ export const INITIAL_STATE = Immutable({
     cullingSow: null,
     sowsByTours: [],
     seminators: [],
+    createdSow: null,
     error: '',
 })
 
@@ -109,6 +114,7 @@ export const Ws1Selectors = {
     getSowsByTours: state => state.ws1.sowsByTours,
     setSeminationSow: state => state.ws1.seminationSow,
     getSeminators: state => state.ws1.seminators,
+    createNewSowWs1: state => state.ws1.createdSow,
     // sowMoveTo: state => state.Sows.sow,
     // // sowsMoveMany: state => state.Sows.sow,
 }
@@ -310,31 +316,18 @@ export const getSeminatorsFail = (state, { error }) => {
     return state.merge({ fetching: false, error, seminators: [] })
 }
 
-// // Move to
-// export const sowMoveToRequest = (state, { payload }) => {
-//     return state.merge({ fetching: true })
-// }
+// Get create new
+export const createNewSowWs1Request = (state, { payload }) => {
+    return state.merge({ fetching: true, createdSow: [] })
+}
 
-// export const sowMoveToSuccess = (state, { payload }) => {
-//     return state.merge({ fetching: false, error: null, sow: payload.sow, sowEvent: payload.transaction })
-// }
+export const createNewSowWs1Success = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, createdSow: payload })
+}
 
-// export const sowMoveToFail = (state, { error }) => {
-//     return state.merge({ fetching: false, error: error.data })
-// }
-
-// // Sow Farrow
-// export const sowFarrowRequest = (state, { payload }) => {
-//     return state.merge({ fetching: true })
-// }
-
-// export const sowFarrowSuccess = (state, { payload }) => {
-//     return state.merge({ fetching: false, error: null, sow: payload.sow, sowEvent: payload.farrow })
-// }
-
-// export const sowFarrowFail = (state, { error }) => {
-//     return state.merge({ fetching: false, error: error.data })
-// }
+export const createNewSowWs1Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error, createdSow: [] })
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -397,7 +390,7 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_SEMINATORS_SUCCESS]: getSeminatorsSuccess,
     [Types.GET_SEMINATORS_FAIL]: getSeminatorsFail,
 
-    // [Types.SOW_MOVE_TO_REQUEST]: sowMoveToRequest,
-    // [Types.SOW_MOVE_TO_SUCCESS]: sowMoveToSuccess,
-    // [Types.SOW_MOVE_TO_FAIL]: sowMoveToFail,
+    [Types.CREATE_NEW_SOW_WS1_REQUEST]: createNewSowWs1Request,
+    [Types.CREATE_NEW_SOW_WS1_SUCCESS]: createNewSowWs1Success,
+    [Types.CREATE_NEW_SOW_WS1_FAIL]: createNewSowWs1Fail,
 })

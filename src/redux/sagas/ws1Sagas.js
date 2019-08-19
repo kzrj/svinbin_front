@@ -134,11 +134,11 @@ export function* getSeminators(api, action) {
     }
 }
 
-// export function* sowMoveTo(api, action) {
-//     try {
-//         let response = yield call(api.sowMoveTo, action.payload);
-//         yield put(SowsActions.sowMoveToSuccess(response));
-//     } catch (err) {
-//         yield put(SowsActions.sowMoveToFail(err))
-//     }
-// }
+export function* createNewSowWs1(api, action) {
+    try {
+        let response = yield call(api.createNewSow, action.payload);
+        yield put(WS1Actions.createNewSowWs1Success(response));
+    } catch (err) {
+        yield put(WS1Actions.createNewSowWs1Fail(err))
+    }
+}

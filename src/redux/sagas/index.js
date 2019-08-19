@@ -59,6 +59,7 @@ export default function* root() {
     takeEvery(SowsTypes.SOW_MOVE_TO_REQUEST, sowsSaga.sowMoveTo, sowsApi),
     takeEvery(SowsTypes.SOWS_MOVE_MANY_REQUEST, sowsSaga.sowsMoveMany, sowsApi),
     takeEvery(SowsTypes.SOW_FARROW_REQUEST, sowsSaga.sowFarrow, sowsApi),
+    takeEvery(SowsTypes.CREATE_NEW_SOW_REQUEST, sowsSaga.createNewSow, sowsApi),
 
     takeEvery(NomadPigletsTypes.GET_NOMAD_PIGLETS_REQUEST, nomadPigletsSaga.getNomadPiglets, nomadPigletsApi),
     takeEvery(NomadPigletsTypes.WEIGHING_PIGLETS_REQUEST, nomadPigletsSaga.weighingPiglets, nomadPigletsApi),
@@ -81,6 +82,7 @@ export default function* root() {
     takeEvery(Ws1Types.CULLING_SOW_WS1_REQUEST, ws1Saga.cullingSowWs1, sowsApi),
     takeEvery(Ws1Types.GET_SOWS_BY_TOURS_REQUEST, ws1Saga.getSowsByTours, sowsApi),
     takeEvery(Ws1Types.GET_SEMINATORS_REQUEST, ws1Saga.getSeminators, usersApi),
+    takeEvery(Ws1Types.CREATE_NEW_SOW_WS1_REQUEST, ws1Saga.createNewSowWs1, sowsApi),
     // takeEvery(Ws1Types.SET_SEMINATION_SOW, ws1Saga.setSeminationSow(), null),
 
     takeEvery(Ws2Types.GET_CULLING_SOWS_WS2_REQUEST, ws2Saga.getCullingSowsWs2, sowsApi),

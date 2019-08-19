@@ -17,6 +17,7 @@ export default {
     cullingSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/culling/`,
     sowMoveTo: (id) => `${apiUrl}/workshoponetwo/sows/${id}/move_to/`,
     SOWS_MOVE_MANY: `${apiUrl}/workshoponetwo/sows/move_many/`,
+    CREATE_NEW_SOW: `${apiUrl}/workshoponetwo/sows/create_new/`,
     sowFarrow: (id) => `${apiUrl}/workshopthree/sows/${id}/sow_farrow/`,
     GET_SOWS_BY_TOURS: `${apiUrl}/workshoponetwo/sows/sows_by_tours/`,
     GET_SOWS_BY_TOURS_WS2: `${apiUrl}/workshoponetwo/sows/sows_by_tours_ws2/`,

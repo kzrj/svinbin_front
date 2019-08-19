@@ -232,7 +232,28 @@ const create = () => {
         })
     }
 
-    const setSow = sow => sow
+    const createNewSow = payload => {
+        const { farmId } = payload;
+        const token = localStorage.getItem('token') || '';
+
+        const formData = new FormData();
+        formData.append("farm_id", farmId);
+        
+        return axios({
+                    method: 'post',
+                    url: endpoints.CREATE_NEW_SOW,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
 
     return {
         getSows,
@@ -246,7 +267,8 @@ const create = () => {
         sowFarrow,
         getSowsByTours,
         getSowsByToursWs2,
-        setSow
+        createNewSow,
+        // setSow
     }
 
 }
