@@ -79,6 +79,9 @@ class WorkshopOneContainer extends Component {
     return (
       <div className="workshop container">
         <div className='workshop-header'>
+          <button onClick={this.showStateConsole}>
+            show store
+          </button>  
         </div>
         <div className='row workshop-menu'>
             <div className={this.state.tabs.createTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
@@ -120,7 +123,10 @@ class WorkshopOneContainer extends Component {
         { this.state.tabs.createTab && 
           <WS1CreateTab 
             sow={this.props.state.ws1.createdSow}
+            nonameSow={this.props.state.sows.createdNonameSow}
+            nonameSowsCount={this.props.state.sows.nonameSowsCount}
             createNewSow={this.props.createNewSow}
+            createNewNonameSow={this.props.createNewNonameSow}
           />}
         { this.state.tabs.seminationTab && 
           <WS1SeminationTab 
@@ -191,7 +197,8 @@ const mapDispatchToProps = (dispatch) => ({
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
   sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),
-  createNewSow: data => dispatch(Ws1Actions.createNewSowWs1Request(data)),
+  // createNewSow: data => dispatch(Ws1Actions.createNewSowWs1Request(data)),
+  createNewNonameSow: data => dispatch(SowsActions.createNewNonameSowRequest(data)),
 
   getSeminationSows: query => dispatch(Ws1Actions.getSeminationSowsRequest(query)),
   getSeminationSow: id => dispatch(Ws1Actions.getSeminationSowRequest(id)),
@@ -207,6 +214,7 @@ const mapDispatchToProps = (dispatch) => ({
   cullingSow: data => dispatch(Ws1Actions.cullingSowWs1Request(data)),
   getSowsByTours: data => dispatch(Ws1Actions.getSowsByToursRequest(data)),
   getSeminators: query => dispatch(Ws1Actions.getSeminatorsRequest(query)),
+  createNewSow: data => dispatch(Ws1Actions.createNewSowWs1Request(data)),
   // setSeminationSow: sow => dispatch(Ws1Actions.setSeminationSow(sow)),
 })
 

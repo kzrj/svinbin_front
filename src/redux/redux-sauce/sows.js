@@ -38,6 +38,10 @@ const { Types, Creators } = createActions({
     createNewSowRequest: ['payload'],
     createNewSowFail: ['error'],
     createNewSowSuccess: ['payload'],
+
+    createNewNonameSowRequest: ['payload'],
+    createNewNonameSowFail: ['error'],
+    createNewNonameSowSuccess: ['payload'],
 })
 
 export const SowsTypes = Types
@@ -55,6 +59,8 @@ export const INITIAL_STATE = Immutable({
     cullingSow: null,
     sowEvent: null,
     createdSow: null,
+    createdNonameSow: null,
+    nonameSowsCount: null,
 })
 
 /* ------------- Selectors ------------- */
@@ -68,7 +74,9 @@ export const SowsSelectors = {
     sowMoveTo: state => state.Sows.sow,
     sowsMoveMany: state => state.Sows.sow,
     sowFarrow: state => state.Sows.sow,
-    createNewSow: state => state.ws1.createdSow,
+    createNewSow: state => state.sows.createdSow,
+    createNewNonameSow: state => state.sows.createdSowNoname,
+    createNewNonameSow: state => state.sows.nonameSowsCount,
 }
 
 /* ------------- Reducers ------------- */
@@ -178,7 +186,6 @@ export const sowFarrowFail = (state, { error }) => {
     return state.merge({ fetching: false, error: error.data })
 }
 
-
 // Get create new
 export const createNewSowRequest = (state, { payload }) => {
     return state.merge({ fetching: true, createdSow: [] })
@@ -190,6 +197,20 @@ export const createNewSowSuccess = (state, { payload }) => {
 
 export const createNewSowFail = (state, { error }) => {
     return state.merge({ fetching: false, error, createdSow: [] })
+}
+
+// Get create new noname
+export const createNewNonameSowRequest = (state, { payload }) => {
+    return state.merge({ fetching: true, createdNonameSow: null, nonameSowsCount: null })
+}
+
+export const createNewNonameSowSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, createdNonameSow: payload.sow, 
+        nonameSowsCount: payload.noname_sows_count })
+}
+
+export const createNewNonameSowFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, createdNonameSow: null, nonameSowsCount: null })
 }
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -229,4 +250,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.CREATE_NEW_SOW_REQUEST]: createNewSowRequest,
     [Types.CREATE_NEW_SOW_SUCCESS]: createNewSowSuccess,
     [Types.CREATE_NEW_SOW_FAIL]: createNewSowFail,
+
+    [Types.CREATE_NEW_NONAME_SOW_REQUEST]: createNewNonameSowRequest,
+    [Types.CREATE_NEW_NONAME_SOW_SUCCESS]: createNewNonameSowSuccess,
+    [Types.CREATE_NEW_NONAME_SOW_FAIL]: createNewNonameSowFail,
 })

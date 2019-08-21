@@ -102,7 +102,7 @@ class WS1TransferToWS2Tab extends Component {
                     <p><input type="checkbox" data-tour={key} onChange={this.checkColumn}/> 
                     {sowsByTours[key].count}</p>
                       {Object.keys(sowsByTours[key].rows).map((sowFarmId) =>
-                        <div key={sowFarmId}>
+                        <div key={sowsByTours[key].rows[sowFarmId].id}>
                           <input type="checkbox"  
                             data-tour={key} 
                             data-sowFarmId={sowFarmId} 
@@ -110,7 +110,9 @@ class WS1TransferToWS2Tab extends Component {
                             checked={sowsByTours[key].rows[sowFarmId].active}
                             onChange={this.checkItem} 
                             />
-                            {sowFarmId}
+                            {sowFarmId ? sowFarmId : 'Нет Id'}
+                            {sowsByTours[key].rows[sowFarmId].status ? 
+                              sowsByTours[key].rows[sowFarmId].status : 'Нет статуса'}
                         </div>
                       )}
                   </div>

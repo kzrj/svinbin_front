@@ -1,4 +1,5 @@
-export const url = 'http://92.53.104.136';
+// export const url = 'http://92.53.104.136';
+export const url = 'http://188.225.32.77';
 export const apiUrl = `${url}/api`;
 
 export default {
@@ -18,6 +19,7 @@ export default {
     sowMoveTo: (id) => `${apiUrl}/workshoponetwo/sows/${id}/move_to/`,
     SOWS_MOVE_MANY: `${apiUrl}/workshoponetwo/sows/move_many/`,
     CREATE_NEW_SOW: `${apiUrl}/workshoponetwo/sows/create_new/`,
+    CREATE_NEW_NONAME_SOW: `${apiUrl}/workshoponetwo/sows/create_new_without_farm_id/`,
     sowFarrow: (id) => `${apiUrl}/workshopthree/sows/${id}/sow_farrow/`,
     GET_SOWS_BY_TOURS: `${apiUrl}/workshoponetwo/sows/sows_by_tours/`,
     GET_SOWS_BY_TOURS_WS2: `${apiUrl}/workshoponetwo/sows/sows_by_tours_ws2/`,

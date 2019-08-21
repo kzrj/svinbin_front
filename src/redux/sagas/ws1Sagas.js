@@ -137,7 +137,7 @@ export function* getSeminators(api, action) {
 export function* createNewSowWs1(api, action) {
     try {
         let response = yield call(api.createNewSow, action.payload);
-        yield put(WS1Actions.createNewSowWs1Success(response));
+        yield put(WS1Actions.createNewSowWs1Success(response.sow));
     } catch (err) {
         yield put(WS1Actions.createNewSowWs1Fail(err))
     }

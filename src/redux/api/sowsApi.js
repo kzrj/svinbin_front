@@ -255,6 +255,25 @@ const create = () => {
         })
     }
 
+    const createNewNonameSow = payload => {
+        const token = localStorage.getItem('token') || '';
+        const formData = new FormData();
+        return axios({
+                    method: 'post',
+                    url: endpoints.CREATE_NEW_NONAME_SOW,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getSows,
         getSow,
@@ -268,6 +287,7 @@ const create = () => {
         getSowsByTours,
         getSowsByToursWs2,
         createNewSow,
+        createNewNonameSow
         // setSow
     }
 

@@ -77,8 +77,17 @@ export function* sowFarrow(api, action) {
 export function* createNewSow(api, action) {
     try {
         let response = yield call(api.createNewSow, action.payload);
-        yield put(SowsActions.createNewSowSuccess(response));
+        yield put(SowsActions.createNewSowSuccess(response.sow));
     } catch (err) {
         yield put(SowsActions.createNewSowFail(err))
+    }
+}
+
+export function* createNewNonameSow(api, action) {
+    try {
+        let response = yield call(api.createNewNonameSow, action.payload);
+        yield put(SowsActions.createNewNonameSowSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.createNewNonameSowFail(err))
     }
 }
