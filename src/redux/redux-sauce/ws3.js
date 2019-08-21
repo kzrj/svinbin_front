@@ -19,6 +19,14 @@ const { Types, Creators } = createActions({
     getSowIncomeTabLocationsWs3Fail: ['error'],
     getSowIncomeTabLocationsWs3Success: ['payload'],
 
+    getSowInnerTransferTabLocations1Ws3Request: ['payload'],
+    getSowInnerTransferTabLocations1Ws3Fail: ['error'],
+    getSowInnerTransferTabLocations1Ws3Success: ['payload'],
+
+    getSowInnerTransferTabLocations2Ws3Request: ['payload'],
+    getSowInnerTransferTabLocations2Ws3Fail: ['error'],
+    getSowInnerTransferTabLocations2Ws3Success: ['payload'],
+
 })
 
 export const Ws3Types = Types
@@ -32,6 +40,8 @@ export const INITIAL_STATE = Immutable({
     incomeSow: null,
     sections: [],
     incomeTabLocations: [],
+    sowInnerTransferLocations1: [],
+    sowInnerTransferLocations2: [],
     error: '',
 })
 
@@ -42,6 +52,8 @@ export const Ws3Selectors = {
     getIncomeSowWs3: state => state.ws3.incomeSow,
     getSectionsWs3: state => state.ws3.sections,
     getSowIncomeTabLocationsWs3: state => state.ws3.incomeTabLocations,
+    getSowInnerTransferTabLocations1Ws3: state => state.ws3.sowInnerTransferLocations1,
+    getSowInnerTransferTabLocations2Ws3: state => state.ws3.sowInnerTransferLocations2,
 }
 
 /* ------------- Reducers ------------- */
@@ -99,6 +111,32 @@ export const getSowIncomeTabLocationsWs3Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, incomeTabLocations: [] })
 }
 
+// Get innerTransferLocations1
+export const getSowInnerTransferTabLocations1Ws3Request = (state, { payload }) => {
+    return state.merge({ fetching: true, sowInnerTransferLocations1: [] })
+}
+
+export const getSowInnerTransferTabLocations1Ws3Success = (state, { payload }) => {
+    return state.merge({ fetching: false,  error: null, sowInnerTransferLocations1: payload })
+}
+
+export const getSowInnerTransferTabLocations1Ws3Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error, sowInnerTransferLocations1: [] })
+}
+
+// Get innerTransferLocations2
+export const getSowInnerTransferTabLocations2Ws3Request = (state, { payload }) => {
+    return state.merge({ fetching: true, sowInnerTransferLocations2: [] })
+}
+
+export const getSowInnerTransferTabLocations2Ws3Success = (state, { payload }) => {
+    return state.merge({ fetching: false,  error: null, sowInnerTransferLocations2: payload })
+}
+
+export const getSowInnerTransferTabLocations2Ws3Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error, sowInnerTransferLocations2: [] })
+}
+
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -118,5 +156,13 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_SOW_INCOME_TAB_LOCATIONS_WS3_REQUEST]: getSowIncomeTabLocationsWs3Request,
     [Types.GET_SOW_INCOME_TAB_LOCATIONS_WS3_SUCCESS]: getSowIncomeTabLocationsWs3Success,
     [Types.GET_SOW_INCOME_TAB_LOCATIONS_WS3_FAIL]: getSowIncomeTabLocationsWs3Fail,
+
+    [Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS1_WS3_REQUEST]: getSowInnerTransferTabLocations1Ws3Request,
+    [Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS1_WS3_SUCCESS]: getSowInnerTransferTabLocations1Ws3Success,
+    [Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS1_WS3_FAIL]: getSowInnerTransferTabLocations1Ws3Fail,
+
+    [Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS2_WS3_REQUEST]: getSowInnerTransferTabLocations2Ws3Request,
+    [Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS2_WS3_SUCCESS]: getSowInnerTransferTabLocations2Ws3Success,
+    [Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS2_WS3_FAIL]: getSowInnerTransferTabLocations2Ws3Fail,
 
 })

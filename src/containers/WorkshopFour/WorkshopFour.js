@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
-import WorkshopRearing from '../Workshop/WorkshopRearing';
 import WS4IncomeTab from '../../components/WorkshopFour/WS4IncomeTab'
 import WS4ResettelmentTab from '../../components/WorkshopFour/WS4ResettelmentTab'
 import WS4TransferTab from '../../components/WorkshopFour/WS4TransferTab'

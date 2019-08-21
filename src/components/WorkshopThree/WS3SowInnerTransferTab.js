@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 
 
-class WS4InnerTransferTab extends Component {
+class WS3SowInnerTransferTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      activePiglets: {
-        id: 0,
-        quantity: 0,
-        gilt_quantity: 0
-      },
+      activeSow: null,
       activeFromSectionId: null,
       activeCellFromLocationId: null,
       activeToSectionId: null,
@@ -18,7 +14,7 @@ class WS4InnerTransferTab extends Component {
   }
   
   componentDidMount() {
-    this.props.getSections({workshop: 4})
+    this.props.getSections({workshop: 3})    
   }
 
   clickFromSection = (e) => {
@@ -44,8 +40,8 @@ class WS4InnerTransferTab extends Component {
     this.setState({
       ...this.state,
       activeCellFromLocationId: location.id,
-      activePiglets: location.nomadpigletsgroup_set.length > 0 ?
-       location.nomadpigletsgroup_set[0] : 0
+      activeSow: location.sow_set.length > 0 ?
+       location.sow_set[0] : null
     })
   }
 
@@ -58,15 +54,16 @@ class WS4InnerTransferTab extends Component {
   }
 
   clickTransfer = () => {
-    let data = {
-      id: this.state.activePiglets.id,
-      quantity: this.state.activePiglets.quantity,
-      gilt_quantity: 0,
-      to_location: this.state.activeCellToLocationId
-    }
-    this.props.movePiglets(data)
+    this.props.sowMoveTo({
+      id: this.state.activeSow.id,
+      location: this.state.activeCellToLocationId
+    })
     this.props.getLocations1({by_section: this.state.activeFromSectionId})
     this.props.getLocations2({by_section: this.state.activeToSectionId})
+    this.setState({
+      ...this.state,
+      activeSow: null
+    })
   }
 
   render() {
@@ -128,11 +125,11 @@ class WS4InnerTransferTab extends Component {
           </div>
         <div>
           <div>
-            {this.state.activePiglets.id > 0 && 
+            {this.state.activeSow && 
               <ul>
-                <li>{this.state.activePiglets.id}</li>
-                <li>{this.state.activePiglets.quantity}</li>
-                <li>{this.state.activePiglets.gilt_quantity}</li>
+                <li>{this.state.activeSow.id}</li>
+                <li>{this.state.activeSow.farm_id}</li>
+                <li>{this.state.activeSow.status}</li>
               </ul>  
             }
           </div>
@@ -145,4 +142,4 @@ class WS4InnerTransferTab extends Component {
   }
 }
 
-export default WS4InnerTransferTab
+export default WS3SowInnerTransferTab

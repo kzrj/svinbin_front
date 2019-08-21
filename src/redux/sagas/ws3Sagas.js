@@ -37,3 +37,21 @@ export function* getSowIncomeTabLocationsWs3(api, action) {
         yield put(WS3Actions.getSowIncomeTabLocationsWs3Fail(err.message))
     }
 }
+
+export function* getSowInnerTransferTabLocations1Ws3(api, action) {
+    try {
+        let response = yield call(api.getLocations, action.payload);
+        yield put(WS3Actions.getSowInnerTransferTabLocations1Ws3Success(response.results));
+    } catch (err) {
+        yield put(WS3Actions.getSowInnerTransferTabLocations1Ws3Fail(err.message))
+    }
+}
+
+export function* getSowInnerTransferTabLocations2Ws3(api, action) {
+    try {
+        let response = yield call(api.getLocations, action.payload);
+        yield put(WS3Actions.getSowInnerTransferTabLocations2Ws3Success(response.results));
+    } catch (err) {
+        yield put(WS3Actions.getSowInnerTransferTabLocations2Ws3Fail(err.message))
+    }
+}

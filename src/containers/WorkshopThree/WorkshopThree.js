@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 // components
 import WS3SowIncomeTab from '../../components/WorkshopThree/WS3SowIncomeTab'
+import WS3SowInnerTransferTab from '../../components/WorkshopThree/WS3SowInnerTransferTab'
 
 // # actions
 import SowsActions from '../../redux/redux-sauce/sows';
@@ -117,6 +118,16 @@ class WorkshopThreeContainer extends Component {
             locations={this.props.state.ws3.incomeTabLocations}
             sowMoveTo={this.props.sowMoveTo}
           />}
+        { this.state.tabs.transferTab && 
+          <WS3SowInnerTransferTab 
+            getSections={this.props.getSections}
+            sections={this.props.state.ws3.sections}
+            getLocations1={this.props.getSowInnerTransferTabLocations1}
+            getLocations2={this.props.getSowInnerTransferTabLocations2}
+            locations1={this.props.state.ws3.sowInnerTransferLocations1}
+            locations2={this.props.state.ws3.sowInnerTransferLocations2}
+            sowMoveTo={this.props.sowMoveTo}
+          />}
       </div>
     );
   }
@@ -140,6 +151,8 @@ const mapDispatchToProps = (dispatch) => ({
   getSections: query => dispatch(Ws3Actions.getSectionsWs3Request(query)),
   getSowIncomeTabLocations: query => dispatch(Ws3Actions.getSowIncomeTabLocationsWs3Request(query)),
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
+  getSowInnerTransferTabLocations1: query => dispatch(Ws3Actions.getSowInnerTransferTabLocations1Ws3Request(query)),
+  getSowInnerTransferTabLocations2: query => dispatch(Ws3Actions.getSowInnerTransferTabLocations2Ws3Request(query)),
 })
 
 export default connect(
