@@ -55,3 +55,12 @@ export function* getSowInnerTransferTabLocations2Ws3(api, action) {
         yield put(WS3Actions.getSowInnerTransferTabLocations2Ws3Fail(err.message))
     }
 }
+
+export function* getSowFarrowTabLocationsWs3(api, action) {
+    try {
+        let response = yield call(api.getLocations, action.payload);
+        yield put(WS3Actions.getSowFarrowTabLocationsWs3Success(response.results));
+    } catch (err) {
+        yield put(WS3Actions.getSowFarrowTabLocationsWs3Fail(err.message))
+    }
+}

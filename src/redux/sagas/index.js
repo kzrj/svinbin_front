@@ -102,6 +102,7 @@ export default function* root() {
     takeEvery(Ws3Types.GET_SOW_INCOME_TAB_LOCATIONS_WS3_REQUEST, ws3Saga.getSowIncomeTabLocationsWs3, locationsApi),
     takeEvery(Ws3Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS1_WS3_REQUEST, ws3Saga.getSowInnerTransferTabLocations1Ws3, locationsApi),
     takeEvery(Ws3Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS2_WS3_REQUEST, ws3Saga.getSowInnerTransferTabLocations2Ws3, locationsApi),
+    takeEvery(Ws3Types.GET_SOW_FARROW_TAB_LOCATIONS_WS3_REQUEST, ws3Saga.getSowFarrowTabLocationsWs3, locationsApi),
 
     takeEvery(Ws4Types.GET_NOMAD_PIGLETS_WS4_REQUEST, ws4Saga.getNomadPigletsWs4, nomadPigletsApi),
     takeEvery(Ws4Types.GET_SECTIONS_WS4_REQUEST, ws4Saga.getSectionsWs4, locationsApi),

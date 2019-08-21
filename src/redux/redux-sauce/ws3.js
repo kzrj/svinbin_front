@@ -27,6 +27,10 @@ const { Types, Creators } = createActions({
     getSowInnerTransferTabLocations2Ws3Fail: ['error'],
     getSowInnerTransferTabLocations2Ws3Success: ['payload'],
 
+    getSowFarrowTabLocationsWs3Request: ['payload'],
+    getSowFarrowTabLocationsWs3Fail: ['error'],
+    getSowFarrowTabLocationsWs3Success: ['payload'],
+
 })
 
 export const Ws3Types = Types
@@ -42,6 +46,7 @@ export const INITIAL_STATE = Immutable({
     incomeTabLocations: [],
     sowInnerTransferLocations1: [],
     sowInnerTransferLocations2: [],
+    sowFarrowLocations: [],
     error: '',
 })
 
@@ -54,6 +59,7 @@ export const Ws3Selectors = {
     getSowIncomeTabLocationsWs3: state => state.ws3.incomeTabLocations,
     getSowInnerTransferTabLocations1Ws3: state => state.ws3.sowInnerTransferLocations1,
     getSowInnerTransferTabLocations2Ws3: state => state.ws3.sowInnerTransferLocations2,
+    getSowFarrowTabLocationsWs3: state => state.ws3.sowFarrowLocations,
 }
 
 /* ------------- Reducers ------------- */
@@ -137,6 +143,19 @@ export const getSowInnerTransferTabLocations2Ws3Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, sowInnerTransferLocations2: [] })
 }
 
+// Get sowFarrowLocations
+export const getSowFarrowTabLocationsWs3Request = (state, { payload }) => {
+    return state.merge({ fetching: true, sowFarrowLocations: [] })
+}
+
+export const getSowFarrowTabLocationsWs3Success = (state, { payload }) => {
+    return state.merge({ fetching: false,  error: null, sowFarrowLocations: payload })
+}
+
+export const getSowFarrowTabLocationsWs3Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error, sowFarrowLocations: [] })
+}
+
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -164,5 +183,9 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS2_WS3_REQUEST]: getSowInnerTransferTabLocations2Ws3Request,
     [Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS2_WS3_SUCCESS]: getSowInnerTransferTabLocations2Ws3Success,
     [Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS2_WS3_FAIL]: getSowInnerTransferTabLocations2Ws3Fail,
+    
+    [Types.GET_SOW_FARROW_TAB_LOCATIONS_WS3_REQUEST]: getSowFarrowTabLocationsWs3Request,
+    [Types.GET_SOW_FARROW_TAB_LOCATIONS_WS3_SUCCESS]: getSowFarrowTabLocationsWs3Success,
+    [Types.GET_SOW_FARROW_TAB_LOCATIONS_WS3_FAIL]: getSowFarrowTabLocationsWs3Fail,
 
 })

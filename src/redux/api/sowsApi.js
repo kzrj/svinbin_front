@@ -182,12 +182,11 @@ const create = () => {
     }
 
     const sowFarrow = payload => {
-        const { id, week, alive_quantity, dead_quantity, mummy_quantity } = payload;
+        const { id, alive_quantity, dead_quantity, mummy_quantity } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.sowFarrow(id);
 
         const formData = new FormData();
-        formData.append("week", week);
         formData.append("alive_quantity", alive_quantity);
         formData.append("dead_quantity", dead_quantity);
         formData.append("mummy_quantity", mummy_quantity);
