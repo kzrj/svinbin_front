@@ -13,7 +13,7 @@ const { Types, Creators } = createActions({
 
     getIncomeTabLocationsWs4Request: ['payload'],
     getIncomeTabLocationsWs4Fail: ['error'],
-    getIncomeTabLocationsWs4Success: ['payload'],
+    getIncomeTabLocationsWs4Success: ['payload'],   
 
     setllePigletsWs4Request: ['payload'],
     setllePigletsWs4Fail: ['error'],

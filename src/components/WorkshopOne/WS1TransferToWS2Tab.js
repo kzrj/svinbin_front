@@ -51,7 +51,7 @@ class WS1TransferToWS2Tab extends Component {
   }
 
   checkItem = (e) => {
-    const { tour, sowfarmid, id} = e.target.dataset
+    const { tour, sowid, id} = e.target.dataset
     let sowsToMove = toggleArray(this.state.sowsToMove, id)
     this.setState({
       sowsByTours: {
@@ -60,9 +60,9 @@ class WS1TransferToWS2Tab extends Component {
           ...this.state.sowsByTours[tour],
           rows: {
             ...this.state.sowsByTours[tour].rows,
-           [sowfarmid]: {
-              ...this.state.sowsByTours[tour].rows[sowfarmid],
-              active: !this.state.sowsByTours[tour].rows[sowfarmid].active
+           [sowid]: {
+              ...this.state.sowsByTours[tour].rows[sowid],
+              active: !this.state.sowsByTours[tour].rows[sowid].active
            },
           }
         },
@@ -101,18 +101,19 @@ class WS1TransferToWS2Tab extends Component {
                     {key}
                     <p><input type="checkbox" data-tour={key} onChange={this.checkColumn}/> 
                     {sowsByTours[key].count}</p>
-                      {Object.keys(sowsByTours[key].rows).map((sowFarmId) =>
-                        <div key={sowsByTours[key].rows[sowFarmId].id}>
+                      {Object.keys(sowsByTours[key].rows).map((sowId) =>
+                        <div key={sowsByTours[key].rows[sowId].id}>
                           <input type="checkbox"  
                             data-tour={key} 
-                            data-sowFarmId={sowFarmId} 
-                            data-id={sowsByTours[key].rows[sowFarmId].id} 
-                            checked={sowsByTours[key].rows[sowFarmId].active}
+                            data-sowId={sowId} 
+                            data-id={sowsByTours[key].rows[sowId].id} 
+                            checked={sowsByTours[key].rows[sowId].active}
                             onChange={this.checkItem} 
                             />
-                            {sowFarmId ? sowFarmId : 'Нет Id'}
-                            {sowsByTours[key].rows[sowFarmId].status ? 
-                              sowsByTours[key].rows[sowFarmId].status : 'Нет статуса'}
+                            {sowsByTours[key].rows[sowId].farm_id ? 
+                              sowsByTours[key].rows[sowId].farm_id : 'Нет Id'}
+                            {sowsByTours[key].rows[sowId].status ? 
+                              sowsByTours[key].rows[sowId].status : 'Нет статуса'}
                         </div>
                       )}
                   </div>

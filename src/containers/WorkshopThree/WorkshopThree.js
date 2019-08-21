@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
-
+import WS3SowIncomeTab from '../../components/WorkshopThree/WS3SowIncomeTab'
 
 // # actions
 import SowsActions from '../../redux/redux-sauce/sows';
 import AuthActions from '../../redux/redux-sauce/auth';
+import Ws3Actions from '../../redux/redux-sauce/ws3';
 
 
 class WorkshopThreeContainer extends Component {
@@ -104,6 +105,18 @@ class WorkshopThreeContainer extends Component {
             Выбраковка
           </div>
         </div>
+        { this.state.tabs.comingSowsTab && 
+          <WS3SowIncomeTab 
+            sow={this.props.state.ws3.incomeSow}
+            sows={this.props.state.ws3.incomeSows}
+            getSows={this.props.getIncomeSows}
+            getSow={this.props.getIncomeSow}
+            getSections={this.props.getSections}
+            sections={this.props.state.ws3.sections}
+            getLocations={this.props.getSowIncomeTabLocations}
+            locations={this.props.state.ws3.incomeTabLocations}
+            sowMoveTo={this.props.sowMoveTo}
+          />}
       </div>
     );
   }
@@ -119,11 +132,14 @@ const mapDispatchToProps = (dispatch) => ({
 
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
-  // seminationSow: data => dispatch(SowsActions.seminationSowRequest(data)),
-  // ultrasoundSow: data => dispatch(SowsActions.ultrasoundSowRequest(data)),
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
-  sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
+  // sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
 
+  getIncomeSows: query => dispatch(Ws3Actions.getIncomeSowsWs3Request(query)),
+  getIncomeSow: id => dispatch(Ws3Actions.getIncomeSowWs3Request(id)),
+  getSections: query => dispatch(Ws3Actions.getSectionsWs3Request(query)),
+  getSowIncomeTabLocations: query => dispatch(Ws3Actions.getSowIncomeTabLocationsWs3Request(query)),
+  sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
 })
 
 export default connect(

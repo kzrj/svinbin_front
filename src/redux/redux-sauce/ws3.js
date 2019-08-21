@@ -3,160 +3,120 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-    getSowsRequest: ['payload'],
-    getCullingSowsFail: ['error'],
-    getCullingSowsSuccess: ['payload'],
+    getIncomeSowsWs3Request: ['payload'],
+    getIncomeSowsWs3Fail: ['error'],
+    getIncomeSowsWs3Success: ['payload'],
 
-    getCullingSowRequest: ['payload'],
-    getCullingSowFail: ['error'],
-    getCullingSowSuccess: ['payload'],
+    getIncomeSowWs3Request: ['payload'],
+    getIncomeSowWs3Fail: ['error'],
+    getIncomeSowWs3Success: ['payload'],
 
-    // getSowsByToursRequest: ['payload'],
-    // getSowsByToursFail: ['error'],
-    // getSowsByToursSuccess: ['payload'],
+    getSectionsWs3Request: ['payload'],
+    getSectionsWs3Fail: ['error'],
+    getSectionsWs3Success: ['payload'],
 
-    cullingSowRequest: ['payload'],
-    cullingSowFail: ['error'],
-    cullingSowSuccess: ['payload'],
+    getSowIncomeTabLocationsWs3Request: ['payload'],
+    getSowIncomeTabLocationsWs3Fail: ['error'],
+    getSowIncomeTabLocationsWs3Success: ['payload'],
 
-    // sowsMoveManyToRequest: ['payload'],
-    // sowsMoveManyFail: ['error'],
-    // sowsMoveManySuccess: ['payload'],
-
-    // sowFarrowRequest: ['payload'],
-    // sowFarrowFail: ['error'],
-    // sowFarrowSuccess: ['payload'],
 })
 
-export const Ws2Types = Types
+export const Ws3Types = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
     fetching: false,
-    cullingList: [],
-    cullingSow: null,
-    sowsByTours: [],
+    incomeSows: [],
+    incomeSow: null,
+    sections: [],
+    incomeTabLocations: [],
     error: '',
 })
 
 /* ------------- Selectors ------------- */
 
-export const Ws2Selectors = {
-    getCullingSows: state => state.ws2.cullingList,
-    getCullingSow: state => state.ws2.cullingList,
-    cullingSow: state => state.ws2.cullingSow,
-    // getSowsByTours: state => state.ws2.sowsByTours,
-    // sowsMoveMany: state => state.Sows.sow,
+export const Ws3Selectors = {
+    getIncomeSowsWs3: state => state.ws3.incomeSows,
+    getIncomeSowWs3: state => state.ws3.incomeSow,
+    getSectionsWs3: state => state.ws3.sections,
+    getSowIncomeTabLocationsWs3: state => state.ws3.incomeTabLocations,
 }
 
 /* ------------- Reducers ------------- */
-// Get culling list
-export const getCullingSowsRequest = (state, { payload }) => {
-    return state.merge({ fetching: true, cullingList: [] })
+// Get income sows
+export const getIncomeSowsWs3Request = (state, { payload }) => {
+    return state.merge({ fetching: true, incomeSows: [] })
 }
 
-export const getCullingSowsSuccess = (state, { payload }) => {
+export const getIncomeSowsWs3Success = (state, { payload }) => {
     let sow = null
-    if (payload.length > 0) sow = payload[1]
-    return state.merge({ fetching: false, error: null, cullingList: payload, cullingSow: sow })
+    if (payload.length > 0) sow = payload[0]
+    return state.merge({ fetching: false, error: null, incomeSows: payload, incomeSow: sow })
 }
 
-export const getCullingSowsFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, cullingList: [] })
+export const getIncomeSowsWs3Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error, incomeSows: [] })
 }
 
-// Get one culling
-export const getCullingSowRequest = (state, { payload }) => {
+// Get one income sow
+export const getIncomeSowWs3Request = (state, { payload }) => {
     return state.merge({ fetching: true, })
 }
 
-export const getCullingSowSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, cullingSow: payload })
+export const getIncomeSowWs3Success = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, incomeSow: payload })
 }
 
-export const getCullingSowFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, cullingSow: null })
+export const getIncomeSowWs3Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error, incomeSow: null })
 }
 
-// Get sows by tours
-// export const getSowsByToursRequest = (state, { payload }) => {
-//     return state.merge({ fetching: true, ultrasoundList: [] })
-// }
-
-// export const getSowsByToursSuccess = (state, { payload }) => {
-//     return state.merge({ fetching: false, error: null, sowsByTours: payload})
-// }
-
-// export const getSowsByToursFail = (state, { error }) => {
-//     return state.merge({ fetching: false, error, sowsByTours: [] })
-// }
-
-// Culling
-export const cullingSowRequest = (state, { payload }) => {
-    return state.merge({ fetching: true })
+// Get sections
+export const getSectionsWs3Request = (state, { payload }) => {
+    return state.merge({ fetching: true, sections: [] })
 }
 
-export const cullingSowSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, cullingSow: payload.sow,  })
+export const getSectionsWs3Success = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, sections: payload })
 }
 
-export const cullingSowFail = (state, { error }) => {
-    return state.merge({ fetching: false, error: error.data })
+export const getSectionsWs3Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error, sections: [] })
 }
 
-// // Move to
-// export const sowMoveToRequest = (state, { payload }) => {
-//     return state.merge({ fetching: true })
-// }
+// Get SowIncomeTabLocations
+export const getSowIncomeTabLocationsWs3Request = (state, { payload }) => {
+    return state.merge({ fetching: true, incomeTabLocations: [] })
+}
 
-// export const sowMoveToSuccess = (state, { payload }) => {
-//     return state.merge({ fetching: false, error: null, sow: payload.sow, sowEvent: payload.transaction })
-// }
+export const getSowIncomeTabLocationsWs3Success = (state, { payload }) => {
+    return state.merge({ fetching: false,  error: null, incomeTabLocations: payload })
+}
 
-// export const sowMoveToFail = (state, { error }) => {
-//     return state.merge({ fetching: false, error: error.data })
-// }
-
-// Get sows by tours
-// export const getSowsByToursRequest = (state, { payload }) => {
-//     return state.merge({ fetching: true, ultrasoundList: [] })
-// }
-
-// export const getSowsByToursSuccess = (state, { payload }) => {
-//     return state.merge({ fetching: false, error: null, sowsByTours: payload})
-// }
-
-// export const getSowsByToursFail = (state, { error }) => {
-//     return state.merge({ fetching: false, error, sowsByTours: [] })
-// }
+export const getSowIncomeTabLocationsWs3Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error, incomeTabLocations: [] })
+}
 
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-    [Types.GET_CULLING_SOWS_REQUEST]: getCullingSowsRequest,
-    [Types.GET_CULLING_SOWS_SUCCESS]: getCullingSowsSuccess,
-    [Types.GET_CULLING_SOWS_FAIL]: getCullingSowsFail,
+    [Types.GET_INCOME_SOWS_WS3_REQUEST]: getIncomeSowsWs3Request,
+    [Types.GET_INCOME_SOWS_WS3_SUCCESS]: getIncomeSowsWs3Success,
+    [Types.GET_INCOME_SOWS_WS3_FAIL]: getIncomeSowsWs3Fail,
 
-    [Types.GET_CULLING_SOW_REQUEST]: getCullingSowRequest,
-    [Types.GET_CULLING_SOW_SUCCESS]: getCullingSowSuccess,
-    [Types.GET_CULLING_SOW_FAIL]: getCullingSowFail,
+    [Types.GET_INCOME_SOW_WS3_REQUEST]: getIncomeSowWs3Request,
+    [Types.GET_INCOME_SOW_WS3_SUCCESS]: getIncomeSowWs3Success,
+    [Types.GET_INCOME_SOW_WS3_FAIL]: getIncomeSowWs3Fail,
 
-    [Types.CULLING_SOW_REQUEST]: cullingSowRequest,
-    [Types.CULLING_SOW_SUCCESS]: cullingSowSuccess,
-    [Types.CULLING_SOW_FAIL]: cullingSowFail,
+    [Types.GET_SECTIONS_WS3_REQUEST]: getSectionsWs3Request,
+    [Types.GET_SECTIONS_WS3_SUCCESS]: getSectionsWs3Success,
+    [Types.GET_SECTIONS_WS3_FAIL]: getSectionsWs3Fail,
 
-    // [Types.GET_SOWS_BY_TOURS_REQUEST]: getSowsByToursRequest,
-    // [Types.GET_SOWS_BY_TOURS_SUCCESS]: getSowsByToursSuccess,
-    // [Types.GET_SOWS_BY_TOURS_FAIL]: getSowsByToursFail,
+    [Types.GET_SOW_INCOME_TAB_LOCATIONS_WS3_REQUEST]: getSowIncomeTabLocationsWs3Request,
+    [Types.GET_SOW_INCOME_TAB_LOCATIONS_WS3_SUCCESS]: getSowIncomeTabLocationsWs3Success,
+    [Types.GET_SOW_INCOME_TAB_LOCATIONS_WS3_FAIL]: getSowIncomeTabLocationsWs3Fail,
 
-    // [Types.SOW_MOVE_TO_REQUEST]: sowMoveToRequest,
-    // [Types.SOW_MOVE_TO_SUCCESS]: sowMoveToSuccess,
-    // [Types.SOW_MOVE_TO_FAIL]: sowMoveToFail,
-
-    // [Types.SOW_FARROW_REQUEST]: sowFarrowRequest,
-    // [Types.SOW_FARROW_SUCCESS]: sowFarrowSuccess,
-    // [Types.SOW_FARROW_FAIL]: sowFarrowFail,
 })
