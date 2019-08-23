@@ -42,6 +42,10 @@ const { Types, Creators } = createActions({
     createNewNonameSowRequest: ['payload'],
     createNewNonameSowFail: ['error'],
     createNewNonameSowSuccess: ['payload'],
+
+    getBoarsRequest: ['payload'],
+    getBoarsFail: ['error'],
+    getBoarsSuccess: ['payload'],
 })
 
 export const SowsTypes = Types
@@ -61,6 +65,7 @@ export const INITIAL_STATE = Immutable({
     createdSow: null,
     createdNonameSow: null,
     nonameSowsCount: null,
+    boars: [],
 })
 
 /* ------------- Selectors ------------- */
@@ -77,6 +82,7 @@ export const SowsSelectors = {
     createNewSow: state => state.sows.createdSow,
     createNewNonameSow: state => state.sows.createdSowNoname,
     createNewNonameSow: state => state.sows.nonameSowsCount,
+    getBoars: state => state.sows.boars,
 }
 
 /* ------------- Reducers ------------- */
@@ -87,8 +93,8 @@ export const getSowsRequest = (state, { payload }) => {
 
 export const getSowsSuccess = (state, { payload }) => {
     let sow = null
-    if (payload.length > 0) sow = payload[1]
-    return state.merge({ fetching: false, error: null, list: payload, sow: sow })
+    if (payload.length > 0) sow = payload[0]
+    return state.merge({ fetching: false, error: null, list: payload, sow: {sow: sow} })
 }
 
 export const getSowsFail = (state, { error }) => {
@@ -212,6 +218,19 @@ export const createNewNonameSowSuccess = (state, { payload }) => {
 export const createNewNonameSowFail = (state, { error }) => {
     return state.merge({ fetching: false, error, createdNonameSow: null, nonameSowsCount: null })
 }
+
+// Get boars list
+export const getBoarsRequest = (state, { payload }) => {
+    return state.merge({ fetching: true, boars: [] })
+}
+
+export const getBoarsSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, boars: payload, })
+}
+
+export const getBoarsFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, boars: [] })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -254,4 +273,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.CREATE_NEW_NONAME_SOW_REQUEST]: createNewNonameSowRequest,
     [Types.CREATE_NEW_NONAME_SOW_SUCCESS]: createNewNonameSowSuccess,
     [Types.CREATE_NEW_NONAME_SOW_FAIL]: createNewNonameSowFail,
+
+    [Types.GET_BOARS_REQUEST]: getBoarsRequest,
+    [Types.GET_BOARS_SUCCESS]: getBoarsSuccess,
+    [Types.GET_BOARS_FAIL]: getBoarsFail,
 })

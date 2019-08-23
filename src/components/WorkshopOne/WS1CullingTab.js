@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+// components
+import SowToursData from '../../components/WorkshopOne/SowComponents'
+
 
 class WS1CullingTab extends Component {
    constructor(props) {
@@ -74,15 +77,15 @@ class WS1CullingTab extends Component {
               <p className="workshop-header-2">ВЫБРАНА МАТКА</p>
             </div>
             <div className='workshop-content-column-2'>
-              {sow &&
+              {sow && sow.sow &&
                 <div>
                   <ul>
-                    <li>{sow.id}</li>
-                    <li>{sow.location}</li>
-                    <li>{sow.status}</li>
-                    <li>{sow.farm_id}</li>
+                    <li>{sow.sow.id}</li>
+                    <li>{sow.sow.location}</li>
+                    <li>{sow.sow.status}</li>
+                    <li>{sow.sow.farm_id}</li>
                   </ul>
-
+                  <SowToursData sow={sow} />
                   <div className="input-group">
                       <select className="custom-select" onChange={this.setType}>
                         <option selected>Выберите тип падежа...</option>

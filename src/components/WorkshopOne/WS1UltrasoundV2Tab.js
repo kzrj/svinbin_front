@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 
+// components
+import SowToursData from '../../components/WorkshopOne/SowComponents'
+
 
 class WS1UltrasoundV2Tab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      query: {by_workshop_number: 1, status_title: 'Осеменена'},
+      query: {by_workshop_number: 1, status_title: 'Прошла УЗИ1, супорос'},
     };
     this.ultrasoundV2Sow = this.ultrasoundV2Sow.bind(this);
   }
@@ -27,7 +30,7 @@ class WS1UltrasoundV2Tab extends Component {
 
   ultrasoundV2Sow (result) {
     let data = {
-      id: this.props.sow.id,
+      id: this.props.sow.sow.id,
       result: result
     }
     this.props.ultrasoundV2Sow(data)
@@ -60,15 +63,16 @@ class WS1UltrasoundV2Tab extends Component {
               <p className="workshop-header-2">ВЫБРАНА МАТКА</p>
             </div>
             <div className='workshop-content-column-2'>
-              {sow &&
+              {sow && sow.sow &&
                 <div>
                   <ul>
-                    <li>{sow.id}</li>
-                    <li>{sow.location}</li>
-                    <li>{sow.status}</li>
-                    <li>{sow.farm_id}</li>
+                    <li>{sow.sow.id}</li>
+                    <li>{sow.sow.location}</li>
+                    <li>{sow.sow.status}</li>
+                    <li>{sow.sow.farm_id}</li>
                     {/* ultrasound info */}
                   </ul>
+                  <SowToursData sow={sow}/>
                   <div>
                     <button onClick={() => this.ultrasoundV2Sow(false)}>
                       Отметить как прохолост

@@ -134,6 +134,8 @@ class WorkshopOneContainer extends Component {
             getSows={this.props.getSeminationSows}
             getSow={this.props.getSeminationSow}
             getSeminators={this.props.getSeminators}
+            getBoars={this.props.getBoars}
+            boars={this.props.state.sows.boars}
             sows={this.props.state.ws1.seminationList}
             sow={this.props.state.ws1.seminationSow}
             seminationSow={this.props.seminationSow}
@@ -191,6 +193,7 @@ const mapDispatchToProps = (dispatch) => ({
   login: (payload) => dispatch(AuthActions.loginRequest(payload)),
 
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
+  getBoars: query => dispatch(SowsActions.getBoarsRequest(query)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
   // seminationSow: data => dispatch(SowsActions.seminationSowRequest(data)),
   // ultrasoundSow: data => dispatch(SowsActions.ultrasoundSowRequest(data)),

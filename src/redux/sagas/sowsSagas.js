@@ -91,3 +91,12 @@ export function* createNewNonameSow(api, action) {
         yield put(SowsActions.createNewNonameSowFail(err))
     }
 }
+
+export function* getBoars(api, action) {
+    try {
+        let response = yield call(api.getBoars, action.payload);
+        yield put(SowsActions.getBoarsSuccess(response.results));
+    } catch (err) {
+        yield put(SowsActions.getBoarsFail(err))
+    }
+}

@@ -36,13 +36,14 @@ const create = () => {
     }
 
     const seminationSow = payload => {
-        const { id, week, seminationEmployeeId } = payload;
+        const { id, week, seminationEmployeeId, boar } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.seminationSow(id);
 
         const formData = new FormData();
         formData.append("week", week);
         formData.append("seminationEmployeeId", seminationEmployeeId);
+        formData.append("boar", boar);
         
         return axios({
                     method: 'post',
@@ -273,6 +274,20 @@ const create = () => {
         })
     }
 
+    const getBoars = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+
+        return axios.get(endpoints.GET_BOARS, { params })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+
+
     return {
         getSows,
         getSow,
@@ -286,7 +301,8 @@ const create = () => {
         getSowsByTours,
         getSowsByToursWs2,
         createNewSow,
-        createNewNonameSow
+        createNewNonameSow,
+        getBoars
         // setSow
     }
 

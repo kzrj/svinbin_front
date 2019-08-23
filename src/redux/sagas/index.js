@@ -63,6 +63,7 @@ export default function* root() {
     takeEvery(SowsTypes.SOW_FARROW_REQUEST, sowsSaga.sowFarrow, sowsApi),
     takeEvery(SowsTypes.CREATE_NEW_SOW_REQUEST, sowsSaga.createNewSow, sowsApi),
     takeEvery(SowsTypes.CREATE_NEW_NONAME_SOW_REQUEST, sowsSaga.createNewNonameSow, sowsApi),
+    takeEvery(SowsTypes.GET_BOARS_REQUEST, sowsSaga.getBoars, sowsApi),
 
     takeEvery(NomadPigletsTypes.GET_NOMAD_PIGLETS_REQUEST, nomadPigletsSaga.getNomadPiglets, nomadPigletsApi),
     takeEvery(NomadPigletsTypes.WEIGHING_PIGLETS_REQUEST, nomadPigletsSaga.weighingPiglets, nomadPigletsApi),
@@ -103,6 +104,7 @@ export default function* root() {
     takeEvery(Ws3Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS1_WS3_REQUEST, ws3Saga.getSowInnerTransferTabLocations1Ws3, locationsApi),
     takeEvery(Ws3Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS2_WS3_REQUEST, ws3Saga.getSowInnerTransferTabLocations2Ws3, locationsApi),
     takeEvery(Ws3Types.GET_SOW_FARROW_TAB_LOCATIONS_WS3_REQUEST, ws3Saga.getSowFarrowTabLocationsWs3, locationsApi),
+    takeEvery(Ws3Types.GET_SOW_WEANING_TAB_LOCATIONS_WS3_REQUEST, ws3Saga.getSowWeaningTabLocationsWs3, locationsApi),
 
     takeEvery(Ws4Types.GET_NOMAD_PIGLETS_WS4_REQUEST, ws4Saga.getNomadPigletsWs4, nomadPigletsApi),
     takeEvery(Ws4Types.GET_SECTIONS_WS4_REQUEST, ws4Saga.getSectionsWs4, locationsApi),

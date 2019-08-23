@@ -32,13 +32,6 @@ class WorkshopThreeContainer extends Component {
 	}
 
   componentDidMount() {
-    // $('body').addClass('loaded');
-    // this.props.startup();
-
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   this.props.checkToken(token);
-    // }
   }
 
   setTab = (tab) => {
@@ -53,13 +46,18 @@ class WorkshopThreeContainer extends Component {
       }
     })
   }
+  showStateConsole = () => {
+    const { state } = this.props
+    console.log('Hi')
+    console.log(state)
+  }
 
   render() {
     return (
       <div className="workshop container">
         <h1>WorkshopThree</h1>
       
-        <button onClick={this.showState}>state</button>
+        <button onClick={this.showStateConsole}>state</button>
         <div className='row workshop-menu'>
           <div className={this.state.tabs.balanceTab ? 'tab-active col-sm' : 'col-sm'}
             onClick={() => this.setTab('balanceTab')}
@@ -90,6 +88,11 @@ class WorkshopThreeContainer extends Component {
             onClick={() => this.setTab('weaningSowsTab')}
           >
             Пересчет
+          </div>
+          <div className={this.state.tabs.weaningSowTab ? 'tab-active col-sm' : 'col-sm'}
+            onClick={() => this.setTab('weaningSowTab')}
+          >
+            Отъем свиноматки
           </div>
           <div className={this.state.tabs.weaningPigletsTab ? 'tab-active col-sm' : 'col-sm'}
             onClick={() => this.setTab('weaningPigletsTab')}

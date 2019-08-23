@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+// components
+import SowToursData from '../../components/WorkshopOne/SowComponents'
+
 
 class WS1SeminationTab extends Component {
    constructor(props) {
@@ -8,12 +11,14 @@ class WS1SeminationTab extends Component {
       seminationEmployee: null,
       query: {by_workshop_number: 1, not_in_tour: true, farm_id_isnull: false},
       farmId: null,
-      week: null
+      week: null,
+      boar: null
     }
   }
   
   componentDidMount() {
     this.props.getSows(this.state.query)
+    this.props.getBoars()
     this.props.getSeminators({is_seminator: true})
   }
 
@@ -36,9 +41,10 @@ class WS1SeminationTab extends Component {
 
   seminationSow = () => {
     const data = {
-      id: this.props.sow.id,
+      id: this.props.sow.sow.id,
       week: this.state.week,
-      seminationEmployeeId: this.state.seminationEmployee
+      seminationEmployeeId: this.state.seminationEmployee,
+      boar: this.state.boar
     }
     this.props.seminationSow(data)
     this.props.getSows(this.state.query)
@@ -58,12 +64,19 @@ class WS1SeminationTab extends Component {
     })
   }
 
+  setBoar = (e) => {
+    this.setState({
+      ...this.state,
+      boar: e.target.value
+    })
+  }
+
   createSow = () => {
     console.log(this.state.farmId)
   }
 
   render() {
-    const { sows, sow, seminationEmployes, week } = this.props
+    const { sows, sow, seminationEmployes, boars } = this.props
     return (
         <div className='row workshop-content'>
           <div className='col-3 workshop-left-column'>
@@ -92,12 +105,13 @@ class WS1SeminationTab extends Component {
               {sow &&
                 <div>
                   <ul>
-                    <li>{sow.id}</li>
-                    <li>{sow.location}</li>
-                    <li>{sow.status}</li>
-                    <li>{sow.farm_id}</li>
+                    <li>{sow.sow.id}</li>
+                    <li>{sow.sow.location}</li>
+                    <li>{sow.sow.status}</li>
+                    <li>{sow.sow.farm_id}</li>
                     {/* semenation info */}
                   </ul>
+                  <SowToursData sow={sow} />
                   <div className="input-group">
                     <input type='text' value={this.state.week} onChange={this.setWeek}/> неделя
                     < br/>
@@ -107,6 +121,15 @@ class WS1SeminationTab extends Component {
                       {seminationEmployes.map(employee =>
                         <option value={employee.id} key={employee.id}>
                           {employee.username}
+                        </option>
+                        )}
+                    </select>
+                    <select className="custom-select" id="inputGroupSelect04" 
+                      onChange={this.setBoar}>
+                      <option selected>Выберите хряка...</option>
+                      {boars.map(boar =>
+                        <option value={boar.id} key={boar.id}>
+                          {boar.birth_id}
                         </option>
                         )}
                     </select>

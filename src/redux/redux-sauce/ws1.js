@@ -85,7 +85,7 @@ export const INITIAL_STATE = Immutable({
     ultrasoundList: [],
     ultrasoundV2List: [],
     cullingList: [],
-    sow: null,
+    sow: {sow: null, tours_info: []},
     seminationSow: null,
     ultrasoundSow: null,
     ultrasoundV2Sow: null,
@@ -128,7 +128,8 @@ export const getSeminationSowsRequest = (state, { payload }) => {
 export const getSeminationSowsSuccess = (state, { payload }) => {
     let sow = null
     if (payload.length > 0) sow = payload[0]
-    return state.merge({ fetching: false, error: null, seminationList: payload, seminationSow: sow })
+    return state.merge({ fetching: false, error: null, seminationList: payload, 
+        seminationSow: {sow: sow} })
 }
 
 export const getSeminationSowsFail = (state, { error }) => {
@@ -143,7 +144,8 @@ export const getUltrasoundSowsRequest = (state, { payload }) => {
 export const getUltrasoundSowsSuccess = (state, { payload }) => {
     let sow = null
     if (payload.length > 0) sow = payload[0]
-    return state.merge({ fetching: false, error: null, ultrasoundList: payload, ultrasoundSow: sow })
+    return state.merge({ fetching: false, error: null, ultrasoundList: payload, 
+        ultrasoundSow: {sow: sow, tours_info: []} })
 }
 
 export const getUltrasoundSowsFail = (state, { error }) => {
@@ -159,7 +161,7 @@ export const getUltrasoundV2SowsWs1Success = (state, { payload }) => {
     let sow = null
     if (payload.length > 0) sow = payload[0]
     return state.merge({ fetching: false, error: null, ultrasoundV2List: payload,
-         ultrasoundV2Sow: sow })
+         ultrasoundV2Sow: {sow: sow, tours_info: []} })
 }
 
 export const getUltrasoundV2SowsWs1Fail = (state, { error }) => {
@@ -174,7 +176,8 @@ export const getCullingSowsWs1Request = (state, { payload }) => {
 export const getCullingSowsWs1Success = (state, { payload }) => {
     let sow = null
     if (payload.length > 0) sow = payload[0]
-    return state.merge({ fetching: false, error: null, cullingList: payload, cullingSow: sow })
+    return state.merge({ fetching: false, error: null, cullingList: payload,
+         cullingSow: {sow: sow, tours_info: []} })
 }
 
 export const getCullingSowsWs1Fail = (state, { error }) => {
@@ -191,7 +194,7 @@ export const getSeminationSowSuccess = (state, { payload }) => {
 }
 
 export const getSeminationSowFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, seminationSow: null })
+    return state.merge({ fetching: false, error, seminationSow: {sow: null, tours_info: []} })
 }
 
 // Get one ultrasound
@@ -204,7 +207,7 @@ export const getUltrasoundSowSuccess = (state, { payload }) => {
 }
 
 export const getUltrasoundSowFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, ultrasoundSow: null })
+    return state.merge({ fetching: false, error, ultrasoundSow: {sow: null, tours_info: []} })
 }
 
 // Get one ultrasoundV2
@@ -217,7 +220,7 @@ export const getUltrasoundV2SowWs1Success = (state, { payload }) => {
 }
 
 export const getUltrasoundV2SowWs1Fail = (state, { error }) => {
-    return state.merge({ fetching: false, error, ultrasoundV2Sow: null })
+    return state.merge({ fetching: false, error, ultrasoundV2Sow: {sow: null, tours_info: []} })
 }
 
 // Get one culling
@@ -230,7 +233,7 @@ export const getCullingSowWs1Success = (state, { payload }) => {
 }
 
 export const getCullingSowWs1Fail = (state, { error }) => {
-    return state.merge({ fetching: false, error, cullingSow: null })
+    return state.merge({ fetching: false, error, cullingSow: {sow: null, tours_info: []} })
 }
 
 // Semination

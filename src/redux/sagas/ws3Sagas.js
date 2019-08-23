@@ -14,7 +14,7 @@ export function* getIncomeSowsWs3(api, action) {
 export function* getIncomeSowWs3(api, action) {
     try {
         let response = yield call(api.getSow, action.payload);
-        yield put(WS3Actions.getIncomeSowWs3Success(response));
+        yield put(WS3Actions.getIncomeSowWs3Success(response.sow));
     } catch (err) {
         yield put(WS3Actions.getIncomeSowWs3Fail(err))
     }
@@ -62,5 +62,14 @@ export function* getSowFarrowTabLocationsWs3(api, action) {
         yield put(WS3Actions.getSowFarrowTabLocationsWs3Success(response.results));
     } catch (err) {
         yield put(WS3Actions.getSowFarrowTabLocationsWs3Fail(err.message))
+    }
+}
+
+export function* getSowWeaningTabLocationsWs3(api, action) {
+    try {
+        let response = yield call(api.getLocations, action.payload);
+        yield put(WS3Actions.getSowWeaningTabLocationsWs3Success(response.results));
+    } catch (err) {
+        yield put(WS3Actions.getSowWeaningTabLocationsWs3Fail(err.message))
     }
 }

@@ -23,6 +23,7 @@ export default {
     sowFarrow: (id) => `${apiUrl}/workshopthree/sows/${id}/sow_farrow/`,
     GET_SOWS_BY_TOURS: `${apiUrl}/workshoponetwo/sows/sows_by_tours/`,
     GET_SOWS_BY_TOURS_WS2: `${apiUrl}/workshoponetwo/sows/sows_by_tours_ws2/`,
+    GET_BOARS: `${apiUrl}/boars/`,
 
     GET_NOMADS_PIGLETS: `${apiUrl}/workshopfour/piglets/`,
     weighingPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/weighing_piglets/`,

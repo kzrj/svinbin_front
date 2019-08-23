@@ -31,6 +31,10 @@ const { Types, Creators } = createActions({
     getSowFarrowTabLocationsWs3Fail: ['error'],
     getSowFarrowTabLocationsWs3Success: ['payload'],
 
+    getSowWeaningTabLocationsWs3Request: ['payload'],
+    getSowWeaningTabLocationsWs3Fail: ['error'],
+    getSowWeaningTabLocationsWs3Success: ['payload'],
+
 })
 
 export const Ws3Types = Types
@@ -47,6 +51,7 @@ export const INITIAL_STATE = Immutable({
     sowInnerTransferLocations1: [],
     sowInnerTransferLocations2: [],
     sowFarrowLocations: [],
+    sowWeaningLocations: [],
     error: '',
 })
 
@@ -60,6 +65,7 @@ export const Ws3Selectors = {
     getSowInnerTransferTabLocations1Ws3: state => state.ws3.sowInnerTransferLocations1,
     getSowInnerTransferTabLocations2Ws3: state => state.ws3.sowInnerTransferLocations2,
     getSowFarrowTabLocationsWs3: state => state.ws3.sowFarrowLocations,
+    getSowWeaningTabLocationsWs3: state => state.ws3.sowWeaningLocations,
 }
 
 /* ------------- Reducers ------------- */
@@ -156,6 +162,19 @@ export const getSowFarrowTabLocationsWs3Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, sowFarrowLocations: [] })
 }
 
+// Get sowWeaningTabLocations
+export const getSowWeaningTabLocationsWs3Request = (state, { payload }) => {
+    return state.merge({ fetching: true, sowWeaningLocations: [] })
+}
+
+export const getSowWeaningTabLocationsWs3Success = (state, { payload }) => {
+    return state.merge({ fetching: false,  error: null, sowWeaningLocations: payload })
+}
+
+export const getSowWeaningTabLocationsWs3Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error, sowWeaningLocations: [] })
+}
+
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -187,5 +206,9 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_SOW_FARROW_TAB_LOCATIONS_WS3_REQUEST]: getSowFarrowTabLocationsWs3Request,
     [Types.GET_SOW_FARROW_TAB_LOCATIONS_WS3_SUCCESS]: getSowFarrowTabLocationsWs3Success,
     [Types.GET_SOW_FARROW_TAB_LOCATIONS_WS3_FAIL]: getSowFarrowTabLocationsWs3Fail,
+
+    [Types.GET_SOW_WEANING_TAB_LOCATIONS_WS3_REQUEST]: getSowWeaningTabLocationsWs3Request,
+    [Types.GET_SOW_WEANING_TAB_LOCATIONS_WS3_SUCCESS]: getSowWeaningTabLocationsWs3Success,
+    [Types.GET_SOW_WEANING_TAB_LOCATIONS_WS3_FAIL]: getSowWeaningTabLocationsWs3Fail,
 
 })
