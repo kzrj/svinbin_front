@@ -25,6 +25,9 @@ export default {
     GET_SOWS_BY_TOURS_WS2: `${apiUrl}/workshoponetwo/sows/sows_by_tours_ws2/`,
     GET_BOARS: `${apiUrl}/boars/`,
 
+    // init endpoints
+    INIT_ADD_NEW_SEMINATED_TO_WS1: `${apiUrl}/sows/add_new_seminated_to_ws1/`,
+
     GET_NOMADS_PIGLETS: `${apiUrl}/workshopfour/piglets/`,
     weighingPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/weighing_piglets/`,
     cullingPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/culling_piglets/`,

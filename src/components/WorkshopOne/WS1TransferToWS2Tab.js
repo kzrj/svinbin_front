@@ -14,6 +14,7 @@ class WS1TransferToWS2Tab extends Component {
   
   componentDidMount() {
     // query
+    console.log('DidMount')
     this.props.getSowsByTours()
     this.setState({
       ...this.state,
@@ -89,6 +90,14 @@ class WS1TransferToWS2Tab extends Component {
     })
   }
 
+  resfresh = () => {
+    this.setState({
+      ...this.state,
+      sowsByTours: convertSowsByTours(this.props.sowsByTours),
+      sowsToMove: []
+    })
+  }
+
   render() {
     const { sowsToMove, sowsByTours } = this.state
     return (
@@ -122,6 +131,9 @@ class WS1TransferToWS2Tab extends Component {
           </div>
           <div className='col-3'>
             <button onClick={this.showState}>state</button>
+            <button onClick={this.resfresh}>
+              resfresh
+            </button>
             <div>
               <ul>
                 {sowsToMove.map(sow =>

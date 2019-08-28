@@ -24,6 +24,7 @@ class MainPage extends Component {
               <li><Link to={'/workshop7/'}>Цех7 Откорм</Link></li>
               <li><Link to={'/workshop75/'}>Цех7-5 Секция ремонтных свинок</Link></li>
               <li><Link to={'/workshop9/'}>Убойный Цех</Link></li>
+              <li><Link to={'/init_sows/'}>Инициализация маток</Link></li>
             </ul>
           </div>
         </div>

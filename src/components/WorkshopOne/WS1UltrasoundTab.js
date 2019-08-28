@@ -8,7 +8,14 @@ class WS1UltrasoundTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      query: {by_workshop_number: 1, status_title: 'Осеменена'},
+      query: {
+        by_workshop_number: 1,
+        farm_id_isnull: false,
+        status_title_not_contains: 'Супорос',
+        status_title_not_contains: 'Прохолост',
+        status_title: 'Осеменена'
+      },
+      // days
     };
     this.ultrasoundSow = this.ultrasoundSow.bind(this);
   }

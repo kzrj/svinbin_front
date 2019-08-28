@@ -9,7 +9,12 @@ class WS1SeminationTab extends Component {
     super(props);
     this.state = {
       seminationEmployee: null,
-      query: {by_workshop_number: 1, not_in_tour: true, farm_id_isnull: false},
+      // query: {by_workshop_number: 1, not_in_tour: true, farm_id_isnull: false},
+      query: {
+          by_workshop_number: 1,
+          status_title_not_contains: 'Супорос',
+          farm_id_isnull: false,
+        },
       farmId: null,
       week: null,
       boar: null
@@ -102,7 +107,7 @@ class WS1SeminationTab extends Component {
               <p >ВЫБРАНА МАТКА</p>
             </div>
             <div className='workshop-content-column-2'>
-              {sow &&
+              {sow && sow.sow &&
                 <div>
                   <ul>
                     <li>{sow.sow.id}</li>

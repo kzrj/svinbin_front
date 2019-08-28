@@ -46,6 +46,10 @@ const { Types, Creators } = createActions({
     getBoarsRequest: ['payload'],
     getBoarsFail: ['error'],
     getBoarsSuccess: ['payload'],
+
+    addNewSeminatedToWs1Request: ['payload'],
+    addNewSeminatedToWs1Fail: ['error'],
+    addNewSeminatedToWs1Success: ['payload'],
 })
 
 export const SowsTypes = Types
@@ -66,6 +70,7 @@ export const INITIAL_STATE = Immutable({
     createdNonameSow: null,
     nonameSowsCount: null,
     boars: [],
+    initData: null,
 })
 
 /* ------------- Selectors ------------- */
@@ -83,6 +88,7 @@ export const SowsSelectors = {
     createNewNonameSow: state => state.sows.createdSowNoname,
     createNewNonameSow: state => state.sows.nonameSowsCount,
     getBoars: state => state.sows.boars,
+    addNewSeminatedToWs1: state => state.sows.initData,
 }
 
 /* ------------- Reducers ------------- */
@@ -231,6 +237,19 @@ export const getBoarsSuccess = (state, { payload }) => {
 export const getBoarsFail = (state, { error }) => {
     return state.merge({ fetching: false, error, boars: [] })
 }
+
+// Sow addNewSeminatedToWs1
+export const addNewSeminatedToWs1Request = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const addNewSeminatedToWs1Success = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, initData: payload })
+}
+
+export const addNewSeminatedToWs1Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error: error.data })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -277,4 +296,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_BOARS_REQUEST]: getBoarsRequest,
     [Types.GET_BOARS_SUCCESS]: getBoarsSuccess,
     [Types.GET_BOARS_FAIL]: getBoarsFail,
+
+    [Types.ADD_NEW_SEMINATED_TO_WS1_REQUEST]: addNewSeminatedToWs1Request,
+    [Types.ADD_NEW_SEMINATED_TO_WS1_SUCCESS]: addNewSeminatedToWs1Success,
+    [Types.ADD_NEW_SEMINATED_TO_WS1_FAIL]: addNewSeminatedToWs1Fail,
 })

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import WS3SowIncomeTab from '../../components/WorkshopThree/WS3SowIncomeTab'
 import WS3SowInnerTransferTab from '../../components/WorkshopThree/WS3SowInnerTransferTab'
 import WS3SowFarrowTab from '../../components/WorkshopThree/WS3SowFarrowTab'
+import WS3SowWeaningTab from '../../components/WorkshopThree/WS3SowWeaningTab'
 
 // # actions
 import SowsActions from '../../redux/redux-sauce/sows';
@@ -84,13 +85,13 @@ class WorkshopThreeContainer extends Component {
           >
             ОПОРОС
           </div>
-          <div className={this.state.tabs.weaningSowsTab ? 'tab-active col-sm' : 'col-sm'}
-            onClick={() => this.setTab('weaningSowsTab')}
+          <div className={this.state.tabs.recountTab ? 'tab-active col-sm' : 'col-sm'}
+            onClick={() => this.setTab('recountTab')}
           >
             Пересчет
           </div>
-          <div className={this.state.tabs.weaningSowTab ? 'tab-active col-sm' : 'col-sm'}
-            onClick={() => this.setTab('weaningSowTab')}
+          <div className={this.state.tabs.weaningSowsTab ? 'tab-active col-sm' : 'col-sm'}
+            onClick={() => this.setTab('weaningSowsTab')}
           >
             Отъем свиноматки
           </div>
@@ -141,6 +142,15 @@ class WorkshopThreeContainer extends Component {
             locations={this.props.state.ws3.sowFarrowLocations}
             sowFarrow={this.props.sowFarrow}
           />}
+
+        { this.state.tabs.weaningSowsTab && 
+          <WS3SowWeaningTab 
+            getSections={this.props.getSections}
+            sections={this.props.state.ws3.sections}
+            getLocations={this.props.getSowWeaningTabLocations}
+            locations={this.props.state.ws3.sowWeaningLocations}
+            sowMoveMany={this.props.sowMoveMany}
+          />}
       </div>
     );
   }
@@ -157,17 +167,18 @@ const mapDispatchToProps = (dispatch) => ({
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
-  // sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
+  sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),
+  sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
+  sowFarrow: data => dispatch(SowsActions.sowFarrowRequest(data)),
 
   getIncomeSows: query => dispatch(Ws3Actions.getIncomeSowsWs3Request(query)),
   getIncomeSow: id => dispatch(Ws3Actions.getIncomeSowWs3Request(id)),
   getSections: query => dispatch(Ws3Actions.getSectionsWs3Request(query)),
   getSowIncomeTabLocations: query => dispatch(Ws3Actions.getSowIncomeTabLocationsWs3Request(query)),
-  sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
   getSowInnerTransferTabLocations1: query => dispatch(Ws3Actions.getSowInnerTransferTabLocations1Ws3Request(query)),
   getSowInnerTransferTabLocations2: query => dispatch(Ws3Actions.getSowInnerTransferTabLocations2Ws3Request(query)),
   getSowFarrowTabLocations: query => dispatch(Ws3Actions.getSowFarrowTabLocationsWs3Request(query)),
-  sowFarrow: data => dispatch(SowsActions.sowFarrowRequest(data)),
+  getSowWeaningTabLocations: query => dispatch(Ws3Actions.getSowWeaningTabLocationsWs3Request(query)),
 })
 
 export default connect(

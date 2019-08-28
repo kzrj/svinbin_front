@@ -286,6 +286,32 @@ const create = () => {
         })
     }
 
+    const addNewSeminatedToWs1 = payload => {
+        const { farm_id, week, boar } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.INIT_ADD_NEW_SEMINATED_TO_WS1;
+
+        const formData = new FormData();
+        formData.append("farm_id", farm_id);
+        formData.append("week", week);
+        formData.append("boar", boar);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
 
 
     return {
@@ -302,7 +328,10 @@ const create = () => {
         getSowsByToursWs2,
         createNewSow,
         createNewNonameSow,
-        getBoars
+        getBoars,
+
+        // init endpoints
+        addNewSeminatedToWs1
         // setSow
     }
 

@@ -49,15 +49,8 @@ class SowToursData extends Component {
                       {tourInfo.ultrasounds.map(ultrasound =>
                         <li>
                           {ultrasound.date} {' '}
+                          {ultrasound.u_type}
                           {ultrasound.result ? 'Супорос' : 'Прохолост'} 
-                        </li>
-                        )}
-                    </td>
-                    <td>
-                      {tourInfo.ultrasoundsV2.map(ultrasoundV2 =>
-                        <li>
-                          {ultrasoundV2.date} {' '}
-                          {ultrasoundV2.result ? 'Супорос' : 'Прохолост'} 
                         </li>
                         )}
                     </td>

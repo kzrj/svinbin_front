@@ -100,3 +100,12 @@ export function* getBoars(api, action) {
         yield put(SowsActions.getBoarsFail(err))
     }
 }
+
+export function* addNewSeminatedToWs1(api, action) {
+    try {
+        let response = yield call(api.addNewSeminatedToWs1, action.payload);
+        yield put(SowsActions.addNewSeminatedToWs1Success(response));
+    } catch (err) {
+        yield put(SowsActions.addNewSeminatedToWs1Fail(err))
+    }
+}
