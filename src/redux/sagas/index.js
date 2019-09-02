@@ -3,12 +3,14 @@ import { takeEvery, all, takeLatest } from "redux-saga/effects";
 /* -------------- API -------------- */
 import AuthApi from "../api/authApi";
 import LocationsApi from '../api/locationsApi';
+import ToursApi from '../api/toursApi';
 import SowsApi from '../api/sowsApi';
 import NomadPigletsApi from '../api/nomadPigletsApi';
 import UsersApi from '../api/usersApi';
 /* ------------- Types ------------- */
 import { AuthTypes } from "../redux-sauce/auth";
 import { LocationsTypes } from '../redux-sauce/locations';
+import { ToursTypes } from '../redux-sauce/tours';
 import { SowsTypes } from '../redux-sauce/sows';
 import { NomadPigletsTypes } from '../redux-sauce/nomadPiglets';
 
@@ -24,6 +26,7 @@ import { Ws75Types } from '../redux-sauce/ws75';
 /* ------------- Sagas ------------- */
 import { logIn, logOut, checkToken, signUp, checkAuth } from "./authSagas";
 import { getLocations } from './locationsSagas';
+import { getTours } from './toursSagas';
 import * as sowsSaga from './sowsSagas';
 import * as nomadPigletsSaga from './nomadPigletsSagas';
 import * as ws1Saga from './ws1Sagas';
@@ -38,6 +41,7 @@ import * as ws75Saga from './ws75Sagas';
 
 const authApi = AuthApi.create();
 const locationsApi = LocationsApi.create();
+const toursApi = ToursApi.create();
 const sowsApi = SowsApi.create();
 const nomadPigletsApi = NomadPigletsApi.create();
 const usersApi = UsersApi.create();
@@ -52,6 +56,7 @@ export default function* root() {
     takeLatest(AuthTypes.CHECK_AUTH_REQUEST, checkAuth, authApi),
     
     takeEvery(LocationsTypes.GET_LOCATIONS_REQUEST, getLocations, locationsApi),
+    takeEvery(ToursTypes.GET_TOURS_REQUEST, getTours, toursApi),
 
     takeEvery(SowsTypes.GET_SOWS_REQUEST, sowsSaga.getSows, sowsApi),
     takeEvery(SowsTypes.GET_SOW_REQUEST, sowsSaga.getSow, sowsApi),

@@ -37,4 +37,6 @@ export default {
     moveToPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/move_to/`,
 
     GET_USERS: `${apiUrl}/users/`,
+
+    GET_TOURS: `${apiUrl}/tours/`,
 }

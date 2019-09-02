@@ -11,6 +11,7 @@ import WS1CullingTab from '../../components/WorkshopOne/WS1CullingTab'
 
 // actions
 import SowsActions from '../../redux/redux-sauce/sows';
+import ToursActions from '../../redux/redux-sauce/tours';
 import AuthActions from '../../redux/redux-sauce/auth';
 import Ws1Actions from '../../redux/redux-sauce/ws1';
 
@@ -141,6 +142,9 @@ class WorkshopOneContainer extends Component {
             sow={this.props.state.ws1.seminationSow}
             seminationSow={this.props.seminationSow}
             seminationEmployes={this.props.state.ws1.seminators}
+            massSemination={this.props.massSemination}
+            getTours={this.props.getTours}
+            tours={this.props.state.tours.list}
           />}
         { this.state.tabs.ultrasoundTab &&
           <WS1UltrasoundTab 
@@ -197,6 +201,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   login: (payload) => dispatch(AuthActions.loginRequest(payload)),
+
+  getTours: query => dispatch(ToursActions.getToursRequest(query)),
 
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getBoars: query => dispatch(SowsActions.getBoarsRequest(query)),
