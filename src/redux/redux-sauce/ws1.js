@@ -65,13 +65,6 @@ const { Types, Creators } = createActions({
     createNewSowWs1Fail: ['error'],
     createNewSowWs1Success: ['payload'],
 
-    // sowMoveToRequest: ['payload'],
-    // sowMoveToFail: ['error'],
-    // sowMoveToSuccess: ['payload'],
-
-    // sowsMoveManyToRequest: ['payload'],
-    // sowsMoveManyFail: ['error'],
-    // sowsMoveManySuccess: ['payload'],
 })
 
 export const Ws1Types = Types

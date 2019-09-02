@@ -90,3 +90,7 @@
 	background: #E0E0E0;
 	min-height: 50px;
 }
+
+.sow-row-active {
+	background: green;
+}

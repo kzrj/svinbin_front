@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import WS1SeminationTab from '../../components/WorkshopOne/WS1SeminationTab'
 import WS1CreateTab from '../../components/WorkshopOne/WS1CreateTab'
 import WS1UltrasoundTab from '../../components/WorkshopOne/WS1UltrasoundTab'
+import WS1CommonFilterTab from '../../components/WorkshopOne/WS1CommonFilterTab'
 import WS1TransferToWS2Tab from '../../components/WorkshopOne/WS1TransferToWS2Tab'
 import WS1CullingTab from '../../components/WorkshopOne/WS1CullingTab'
 
@@ -19,10 +20,10 @@ class WorkshopOneContainer extends Component {
     super(props);
     this.state = {
       tabs: {
-        seminationTab: true,
+        seminationTab: false,
         createTab: false,
         ultrasoundTab: false,
-        ultrasoundV2Tab: false,
+        commonFilterTab: true,
         cullingTab: false,
         infoTab: false,
       }
@@ -97,6 +98,13 @@ class WorkshopOneContainer extends Component {
             >
               УЗИ
             </div>
+
+            <div className={this.state.tabs.commonFilterTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
+              onClick={() => this.setTab('commonFilterTab')}
+            >
+              Фильтр
+            </div>
+
             <div className={this.state.tabs.transferToWS2Tab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
               onClick={() => this.setTab('transferToWS2Tab')}
             >
@@ -143,6 +151,20 @@ class WorkshopOneContainer extends Component {
             sow={this.props.state.ws1.ultrasoundSow}
             ultrasoundSow={this.props.ultrasoundSow}
           />}
+
+        { this.state.tabs.commonFilterTab &&
+          <WS1CommonFilterTab 
+            query={null}
+            getSows={this.props.getUltrasoundSows}
+            getSow={this.props.getUltrasoundSow} 
+            sows={this.props.state.ws1.ultrasoundList}
+            sow={this.props.state.ws1.ultrasoundSow}
+            getSeminators={this.props.getSeminators}
+            getBoars={this.props.getBoars}
+            seminationEmployes={this.props.state.ws1.seminators}
+            boars={this.props.state.sows.boars}
+            massSemination={this.props.massSemination}
+          />}
         
         { this.state.tabs.transferToWS2Tab &&
           <WS1TransferToWS2Tab 
@@ -186,6 +208,7 @@ const mapDispatchToProps = (dispatch) => ({
   sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),
   // createNewSow: data => dispatch(Ws1Actions.createNewSowWs1Request(data)),
   createNewNonameSow: data => dispatch(SowsActions.createNewNonameSowRequest(data)),
+  massSemination: data => dispatch(SowsActions.massSeminationRequest(data)),
 
   getSeminationSows: query => dispatch(Ws1Actions.getSeminationSowsRequest(query)),
   getSeminationSow: id => dispatch(Ws1Actions.getSeminationSowRequest(id)),

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 
-class SowToursData extends Component {
+export default class SowToursData extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -9,10 +9,6 @@ class SowToursData extends Component {
     }
   }
   
-  componentDidMount() {
-
-  }
-
   render() {
     const { sow } = this.props
     return (
@@ -78,4 +74,27 @@ class SowToursData extends Component {
   }
 }
 
-export default SowToursData
+export class SowRow extends Component {
+  constructor(props) {
+   super(props);
+   this.state = {
+     expand: false,
+   }
+ }
+
+ render() {
+   const { sow, sowClick, choosedSows } = this.props
+   const sowClassName = choosedSows.includes(sow.id.toString()) ? 'sow-row-active' : 'sow-row'
+   
+   return (
+    <tr key={sow.id} className={sowClassName}>
+      <th scope="row" onClick={sowClick} data-id={sow.id}>{sow.farm_id}</th>
+      <td onClick={sowClick} data-id={sow.id}>{sow.status}</td>
+      <td onClick={sowClick} data-id={sow.id}>25.05.2019 15:09</td>
+      <td onClick={sowClick} data-id={sow.id}>25.05.2019 15:09</td>
+      <td onClick={sowClick} data-id={sow.id}>25.05.2019 15:09</td>
+      <td >-</td>
+    </tr>
+   )
+ }
+}

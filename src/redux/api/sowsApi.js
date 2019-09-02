@@ -312,6 +312,33 @@ const create = () => {
         })
     }
 
+    const massSemination = payload => {
+        const { sows, week, seminationEmployee, boar } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.MASS_SEMINATION;
+
+        const formData = new FormData();
+        sows.map(sow => formData.append("sows", sow))
+        formData.append("week", week);
+        formData.append("semination_employee", seminationEmployee);
+        formData.append("boar", boar);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
 
 
     return {
@@ -329,6 +356,7 @@ const create = () => {
         createNewSow,
         createNewNonameSow,
         getBoars,
+        massSemination,
 
         // init endpoints
         addNewSeminatedToWs1

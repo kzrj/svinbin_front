@@ -50,6 +50,10 @@ const { Types, Creators } = createActions({
     addNewSeminatedToWs1Request: ['payload'],
     addNewSeminatedToWs1Fail: ['error'],
     addNewSeminatedToWs1Success: ['payload'],
+
+    massSeminationRequest: ['payload'],
+    massSeminationFail: ['error'],
+    massSeminationSuccess: ['payload'],
 })
 
 export const SowsTypes = Types
@@ -250,6 +254,19 @@ export const addNewSeminatedToWs1Success = (state, { payload }) => {
 export const addNewSeminatedToWs1Fail = (state, { error }) => {
     return state.merge({ fetching: false, error: error.data })
 }
+
+// Mass semination
+export const massSeminationRequest = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const massSeminationSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, })
+}
+
+export const massSeminationFail = (state, { error }) => {
+    return state.merge({ fetching: false, error: error.data })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -300,4 +317,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.ADD_NEW_SEMINATED_TO_WS1_REQUEST]: addNewSeminatedToWs1Request,
     [Types.ADD_NEW_SEMINATED_TO_WS1_SUCCESS]: addNewSeminatedToWs1Success,
     [Types.ADD_NEW_SEMINATED_TO_WS1_FAIL]: addNewSeminatedToWs1Fail,
+
+    [Types.MASS_SEMINATION_REQUEST]: massSeminationRequest,
+    [Types.MASS_SEMINATION_SUCCESS]: massSeminationSuccess,
+    [Types.MASS_SEMINATION_FAIL]: massSeminationFail,
 })

@@ -24,6 +24,7 @@ export default {
     GET_SOWS_BY_TOURS: `${apiUrl}/workshoponetwo/sows/sows_by_tours/`,
     GET_SOWS_BY_TOURS_WS2: `${apiUrl}/workshoponetwo/sows/sows_by_tours_ws2/`,
     GET_BOARS: `${apiUrl}/boars/`,
+    MASS_SEMINATION: `${apiUrl}/workshoponetwo/sows/mass_semination/`,
 
     // init endpoints
     INIT_ADD_NEW_SEMINATED_TO_WS1: `${apiUrl}/sows/add_new_seminated_to_ws1/`,

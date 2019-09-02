@@ -109,3 +109,12 @@ export function* addNewSeminatedToWs1(api, action) {
         yield put(SowsActions.addNewSeminatedToWs1Fail(err))
     }
 }
+
+export function* massSemination(api, action) {
+    try {
+        let response = yield call(api.massSemination, action.payload);
+        yield put(SowsActions.massSeminationSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.massSeminationFail(err))
+    }
+}
