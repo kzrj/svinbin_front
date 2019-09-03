@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { toggleArray } from '../../components/utils'
 // components
 import { SowTable }  from '../../components/WorkshopOne/SowComponents'
-import { SowFilter, SowFarmIdFilter, SowTourFilter, SowUsound30Filter }  from '../../components/WorkshopOne/SowComponents'
+import { SowFarmIdFilter, SowTourFilter, SowUsound30Filter }  from '../../components/WorkshopOne/SowComponents'
 
 
 class WS1UltrasoundTab extends Component {
@@ -99,6 +99,10 @@ class WS1UltrasoundTab extends Component {
     }
     this.props.massUltrasound(data)
     this.props.getSows(this.state.query)
+    this.setState({
+      ...this.state,
+      choosedSows: []
+    })
   }
 
   render() {
@@ -140,6 +144,14 @@ class WS1UltrasoundTab extends Component {
           </div>
         </div>
         <div className='commonfilter-results'>
+          <div className='count row'>
+              <div className='col-6'>
+                Выбрано {this.state.choosedSows.length} из {sows.length}
+              </div>
+              {/* <div className='col-6'>
+                <button onClick={this.chooseAll}>Выбрать всех</button>
+              </div> */}
+            </div>
           <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>
         </div>
       </div>

@@ -1,151 +1,149 @@
+
 import React, { Component } from 'react';
-import { toggleArray, addItemToArray, removeItemFromArray,
-   uniq, convertSowsByTours } from '../utils';
+
+import { toggleArray } from '../../components/utils'
+// components
+import { SowTable }  from '../../components/WorkshopOne/SowComponents'
+import { SowFarmIdFilter, SowTourFilter, SowSemUsoundFilter }  from '../../components/WorkshopOne/SowComponents'
 
 
 class WS1TransferToWS2Tab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      sowsToMove: [],
-      sowsByTours: [],
-    }
+      query: {
+        by_workshop_number: 1,
+        suporos: null,
+        seminated: 0,
+        tour: null,
+      },
+      choosedSows: [],
+      
+    };
+    this.setQuery = this.setQuery.bind(this);
+    this.chooseAll = this.chooseAll.bind(this);
+    this.setSeminatedSuporosStatus = this.setSeminatedSuporosStatus.bind(this);
+    this.sowClick = this.sowClick.bind(this);
+    this.massMove = this.massMove.bind(this);
   }
-  
+
   componentDidMount() {
     // query
-    console.log('DidMount')
-    this.props.getSowsByTours()
-    this.setState({
-      ...this.state,
-      sowsByTours: convertSowsByTours(this.props.sowsByTours)
-    })
-  }
-
-  checkColumn = (e) => {
-    const tour = e.target.dataset.tour
-    let rows = this.state.sowsByTours[tour].rows
-    let sowsToMove = this.state.sowsToMove
-    if (!this.state.sowsByTours[tour].checked){
-      Object.keys(rows).forEach((key) => {
-        rows[key].active = true
-        sowsToMove = addItemToArray(sowsToMove, rows[key].id)
-      })
-    } else {
-      Object.keys(rows).forEach((key) => {
-        rows[key].active = false
-        sowsToMove = removeItemFromArray(sowsToMove, rows[key].id)
-      })
-    }
-    sowsToMove = uniq(sowsToMove)
-    
-    this.setState({
-      sowsByTours: {
-        ...this.state.sowsByTours,
-        [tour]: {
-          ...this.state.sowsByTours[tour],
-          checked: !this.state.sowsByTours[tour].checked,
-        }
-      },
-      sowsToMove: sowsToMove
-    })
-  }
-
-  checkItem = (e) => {
-    const { tour, sowid, id} = e.target.dataset
-    let sowsToMove = toggleArray(this.state.sowsToMove, id)
-    this.setState({
-      sowsByTours: {
-        ...this.state.sowsByTours,
-        [tour]: {
-          ...this.state.sowsByTours[tour],
-          rows: {
-            ...this.state.sowsByTours[tour].rows,
-           [sowid]: {
-              ...this.state.sowsByTours[tour].rows[sowid],
-              active: !this.state.sowsByTours[tour].rows[sowid].active
-           },
-          }
-        },
-      },
-      sowsToMove: sowsToMove
-    })
+    this.props.getSows(this.state.query)
+    this.props.getTours()
   }
 
   showState = () => {
     console.log(this.state)
+    // <button onClick={this.showState}>
+    //   State
+    // </button>
   }
 
-  moveManyTo2 = () => {
-    console.log(this.state.sowsToMove)
-    this.props.sowsMoveMany({
-      sows: this.state.sowsToMove,
+  chooseAll () {
+    let ids = []
+    this.props.sows.map(sow => ids = toggleArray(ids, sow.id))
+    this.setState({
+      ...this.state,
+      choosedSows: ids
+    })
+  }
+
+  setQuery (e) {
+    let { query } = this.state
+    query[e.target.name] = e.target.value
+
+    this.setState({
+      ...this.state,
+      query: {
+        ...this.state.query,
+        query: query
+      }
+    })
+    this.props.getSows(query)
+  }
+  
+  setSeminatedSuporosStatus (e) {
+    let { query } = this.state
+    let finalQuery = {}
+    const filter = e.target.value.split('=')[0]
+    const value = e.target.value.split('=')[1]
+    if (filter == 'seminated')
+      finalQuery = {...query, [filter]:value, suporos: null, farm_id_isnull: false}
+    if (filter == 'suporos')
+      finalQuery = {...query, [filter]:value, seminated: null, farm_id_isnull: false}
+    if (filter == 'farm_id_isnull')
+      finalQuery = {by_workshop_number: 1, farm_id_isnull: true}
+    this.setState({
+      ...this.state,
+      query: finalQuery
+    })
+    this.props.getSows(finalQuery)
+  }
+
+  sowClick (e) {
+    let { choosedSows } = this.state
+    const { id } = e.target.dataset
+    choosedSows = toggleArray(choosedSows, id)
+    this.setState({
+      ...this.state,
+      choosedSows: choosedSows
+    })
+  }
+  
+  massMove () {
+    const data = {
+      sows: this.state.choosedSows,
       to_location: 2
-    })
-    this.props.getSowsByTours()
+    }
+    this.props.massMove(data)
+    this.props.getSows(this.state.query)
     this.setState({
       ...this.state,
-      sowsByTours: convertSowsByTours(this.props.sowsByTours),
-      sowsToMove: []
-    })
-  }
-
-  resfresh = () => {
-    this.setState({
-      ...this.state,
-      sowsByTours: convertSowsByTours(this.props.sowsByTours),
-      sowsToMove: []
+      choosedSows: []
     })
   }
 
   render() {
-    const { sowsToMove, sowsByTours } = this.state
+    const { sows, tours } = this.props
+    
     return (
-        <div className='row workshop-content'>
-          <div className='col-9'>
-            <div className='row'>
-
-                {!this.props.fetching && Object.keys(sowsByTours).map((key) => 
-                  <div className='col-2 tour-list' key={key}>
-                    {key}
-                    <p><input type="checkbox" data-tour={key} onChange={this.checkColumn}/> 
-                    {sowsByTours[key].count}</p>
-                      {Object.keys(sowsByTours[key].rows).map((sowId) =>
-                        <div key={sowsByTours[key].rows[sowId].id}>
-                          <input type="checkbox"  
-                            data-tour={key} 
-                            data-sowId={sowId} 
-                            data-id={sowsByTours[key].rows[sowId].id} 
-                            checked={sowsByTours[key].rows[sowId].active}
-                            onChange={this.checkItem} 
-                            />
-                            {sowsByTours[key].rows[sowId].farm_id ? 
-                              sowsByTours[key].rows[sowId].farm_id : 'Нет Id'}
-                            {sowsByTours[key].rows[sowId].status ? 
-                              sowsByTours[key].rows[sowId].status : 'Нет статуса'}
-                        </div>
-                      )}
-                  </div>
-                )}
-            </div>
+      <div className='workshop-content'>
+         <button onClick={this.showState}>
+           State
+         </button>
+        <div>
+          <div className='commonfilter row'>
+            <SowFarmIdFilter setQuery={this.setQuery} />
+            <SowTourFilter tours={tours} setQuery={this.setQuery}/>
+            <SowSemUsoundFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>
           </div>
-          <div className='col-3'>
-            <button onClick={this.showState}>state</button>
-            <button onClick={this.resfresh}>
-              resfresh
-            </button>
+          <div>
             <div>
-              <ul>
-                {sowsToMove.map(sow =>
-                  <li>{sow}</li>)}
-              </ul>
-              <button onClick={this.moveManyTo2}>
-                Перевести в ЦЕХ2
-              </button>
+              Перевести в ЦЕХ 2
+              <div className="input-group">
+                <div className="input-group-append">
+                  <button className="btn btn-outline-secondary" type="button" 
+                    onClick={this.massMove}>
+                    Перевести в ЦЕХ 2
+                  </button>
+                </div>
+                </div>
             </div>
-            
           </div>
         </div>
+        <div className='commonfilter-results'>
+          <div className='count row'>
+            <div className='col-6'>
+              Выбрано {this.state.choosedSows.length} из {sows.length}
+            </div>
+            {/* <div className='col-6'>
+              <button onClick={this.chooseAll}>Выбрать всех</button>
+            </div> */}
+          </div>
+          <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>
+        </div>
+      </div>
     )
   }
 }

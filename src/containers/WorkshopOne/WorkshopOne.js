@@ -23,7 +23,8 @@ class WorkshopOneContainer extends Component {
       tabs: {
         seminationTab: false,
         createTab: false,
-        ultrasoundTab: true,
+        ultrasoundTab: false,
+        transferToWS2Tab: true,
         cullingTab: false,
         infoTab: false,
       }
@@ -126,8 +127,6 @@ class WorkshopOneContainer extends Component {
 
         { this.state.tabs.seminationTab && 
           <WS1SeminationTab 
-            query={null}
-
             getSows={this.props.getSeminationSows}
             sows={this.props.state.ws1.seminationList}
 
@@ -145,8 +144,6 @@ class WorkshopOneContainer extends Component {
 
         { this.state.tabs.ultrasoundTab &&
           <WS1UltrasoundTab 
-            query={null}
-
             getSows={this.props.getUltrasoundSows}
             sows={this.props.state.ws1.ultrasoundList}
 
@@ -158,20 +155,23 @@ class WorkshopOneContainer extends Component {
 
         { this.state.tabs.transferToWS2Tab &&
           <WS1TransferToWS2Tab 
-            query={null}
-            getSowsByTours={this.props.getSowsByTours}
-            sowsByTours={this.props.state.ws1.sowsByTours}
-            sowsMoveMany={this.props.sowsMoveMany}
-            fetching={this.props.state.ws1.fetching}
-            tour={1}
+            getSows={this.props.getUltrasoundSows}
+            sows={this.props.state.ws1.ultrasoundList}
+
+            getTours={this.props.getTours}
+            tours={this.props.state.tours.list}
+
+            massMove={this.props.sowsMoveMany}
           />}
+
         { this.state.tabs.cullingTab &&
           <WS1CullingTab 
-            query={null}
             getSows={this.props.getCullingSows}
-            getSow={this.props.getCullingSow} 
             sows={this.props.state.ws1.cullingList}
+
+            getSow={this.props.getCullingSow}
             sow={this.props.state.ws1.cullingSow}
+
             cullingSow={this.props.cullingSow}
           />}
 

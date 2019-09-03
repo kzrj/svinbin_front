@@ -92,6 +92,10 @@ class WS1SeminationTab extends Component {
     }
     this.props.massSemination(data)
     this.props.getSows(this.state.query)
+    this.setState({
+      ...this.state,
+      choosedSows: []
+    })
   }
 
   render() {
@@ -139,6 +143,14 @@ class WS1SeminationTab extends Component {
           </div>
         </div>
         <div className='commonfilter-results'>
+          <div className='count row'>
+              <div className='col-6'>
+                Выбрано {this.state.choosedSows.length} из {sows.length}
+              </div>
+              {/* <div className='col-6'>
+                <button onClick={this.chooseAll}>Выбрать всех</button>
+              </div> */}
+            </div>
           <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>
         </div>
       </div>

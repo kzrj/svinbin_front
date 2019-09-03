@@ -8,8 +8,8 @@ class WS1CullingTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      cullingReason: 'padej',
-      cullingType: 'padej',
+      cullingReason: '',
+      cullingType: null,
       query: {by_workshop_number: 1},
     }
   }
@@ -44,13 +44,11 @@ class WS1CullingTab extends Component {
 
   cullingSow = () => {
     let data = {
-      id: this.props.sow.sow.id,
+      id: this.props.sow.id,
       culling_type: this.state.cullingType,
       reason: this.state.cullingReason
     }
-    
     this.props.cullingSow(data)
-    this.props.getSows(this.state.query)
   }
 
   render() {
@@ -90,7 +88,8 @@ class WS1CullingTab extends Component {
                   <SowToursData sow={sow} />
                   <div className="input-group">
                       <select className="custom-select" onChange={this.setType}>
-                        <option selected value='padej' >Падеж</option>
+                        <option selected>Выберите тип падежа...</option>
+                        <option value='padej' >Падеж</option>
                         <option value='spec' >Спец. убой</option>
                         <option value='prirezka' >Прирезка</option>
                       </select>

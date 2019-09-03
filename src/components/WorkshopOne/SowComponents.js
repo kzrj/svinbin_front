@@ -165,7 +165,7 @@ export class SowFilter extends Component {
   }
  }
 
- export class SowUsound30Filter extends Component {
+export class SowUsound30Filter extends Component {
   render() {
     return (
       <div className="input-group mb-3 col-3">
@@ -173,6 +173,24 @@ export class SowFilter extends Component {
           onChange={this.props.setSeminatedSuporosStatus}>
           <option selected value='seminated=2'>Осеменена 2</option>
           <option value='suporos=30'>Супорос 30</option>
+        </select>
+      </div>
+    )
+  }
+ }
+
+export class SowSemUsoundFilter extends Component {
+  render() {
+    return (
+      <div className="input-group mb-3 col-3">
+        <select className="custom-select" id="inputGroupSelect01"
+          onChange={this.props.setSeminatedSuporosStatus}>
+          <option selected value='seminated=0'>Не Осеменена, нет УЗИ</option>
+          <option value='farm_id_isnull=true'>Ремонтные</option>
+          <option value='seminated=1'>Осеменена 1</option>
+          <option value='seminated=2'>Осеменена 2</option>
+          <option value='suporos=30'>Супорос 30</option>
+          <option value='suporos=60'>Супорос 60</option>
         </select>
       </div>
     )
@@ -219,7 +237,7 @@ export class SowRow extends Component {
    const sowClassName = choosedSows.includes(sow.id.toString()) ? 'sow-row-active' : 'sow-row'
    
    return (
-    <tr key={sow.id} className={sowClassName}>
+    <tr key={sow.id} className={sowClassName} >
       <th scope="row" onClick={sowClick} data-id={sow.id}>{sow.farm_id}</th>
       <td onClick={sowClick} data-id={sow.id}>{sow.status}</td>
       <td onClick={sowClick} data-id={sow.id}>{sow.tour ? sow.tour : '-'}</td>
