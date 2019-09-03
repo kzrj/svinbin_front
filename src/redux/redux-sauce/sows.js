@@ -54,6 +54,10 @@ const { Types, Creators } = createActions({
     massSeminationRequest: ['payload'],
     massSeminationFail: ['error'],
     massSeminationSuccess: ['payload'],
+
+    massUltrasoundRequest: ['payload'],
+    massUltrasoundFail: ['error'],
+    massUltrasoundSuccess: ['payload'],
 })
 
 export const SowsTypes = Types
@@ -267,6 +271,19 @@ export const massSeminationSuccess = (state, { payload }) => {
 export const massSeminationFail = (state, { error }) => {
     return state.merge({ fetching: false, error: error.data })
 }
+
+// Mass ultrasound
+export const massUltrasoundRequest = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const massUltrasoundSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, })
+}
+
+export const massUltrasoundFail = (state, { error }) => {
+    return state.merge({ fetching: false, error: error.data })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -321,4 +338,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MASS_SEMINATION_REQUEST]: massSeminationRequest,
     [Types.MASS_SEMINATION_SUCCESS]: massSeminationSuccess,
     [Types.MASS_SEMINATION_FAIL]: massSeminationFail,
+
+    [Types.MASS_ULTRASOUND_REQUEST]: massUltrasoundRequest,
+    [Types.MASS_ULTRASOUND_SUCCESS]: massUltrasoundSuccess,
+    [Types.MASS_ULTRASOUND_FAIL]: massUltrasoundFail,
 })

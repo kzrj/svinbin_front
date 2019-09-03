@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import { toggleArray } from '../../components/utils'
 // components
-import { SowRow }  from '../../components/WorkshopOne/SowComponents'
 import { SowTable }  from '../../components/WorkshopOne/SowComponents'
+import { SowFilter, SowFarmIdFilter, SowTourFilter, SowSeminatedFilter }  from '../../components/WorkshopOne/SowComponents'
 
 
 class WS1SeminationTab extends Component {
@@ -21,6 +21,11 @@ class WS1SeminationTab extends Component {
       boar: null,
       seminationEmployee: null,
     }
+    this.setQuery = this.setQuery.bind(this);
+    this.setSeminatedSuporosStatus = this.setSeminatedSuporosStatus.bind(this);
+    this.sowClick = this.sowClick.bind(this);
+    this.setData = this.setData.bind(this);
+    this.massSemination = this.massSemination.bind(this);
   }
   
   componentDidMount() {
@@ -31,31 +36,29 @@ class WS1SeminationTab extends Component {
     this.props.getSeminators({is_seminator: true})
   }
 
-  setSowFarmId = (e) => {
+  setQuery (e) {
     let { query } = this.state
-    query.farm_id_starts = e.target.value
+    query[e.target.name] = e.target.value
+
     this.setState({
       ...this.state,
-      query: query
+      query: {
+        ...this.state.query,
+        query: query
+      }
     })
     this.props.getSows(query)
   }
 
-  setTour = (e) => {
+  setSeminatedSuporosStatus (e) {
     let { query } = this.state
-    query.tour = e.target.value
-    this.setState({
-      ...this.state,
-      query: query
-    })
-    this.props.getSows(query)
-  }
-
-  setSeminatedStatus = (e) => {
-    let { query } = this.state
+    let finalQuery = {}
     const filter = e.target.value.split('=')[0]
     const value = e.target.value.split('=')[1]
-    const finalQuery = {...query, [filter]:value}
+    if (filter == 'seminated')
+      finalQuery = {...query, [filter]:value, suporos: null}
+    if (filter == 'suporos')
+      finalQuery = {...query, [filter]:value, seminated: null}
     this.setState({
       ...this.state,
       query: finalQuery
@@ -63,7 +66,7 @@ class WS1SeminationTab extends Component {
     this.props.getSows(finalQuery)
   }
 
-  sowClick = (e) => {
+  sowClick (e) {
     let { choosedSows } = this.state
     const { id } = e.target.dataset
     choosedSows = toggleArray(choosedSows, id)
@@ -73,28 +76,14 @@ class WS1SeminationTab extends Component {
     })
   }
 
-  setSemitationEmployee = (e) => {
+  setData (e) {
     this.setState({
       ...this.state,
-      seminationEmployee: e.target.value
+      [e.target.name]: e.target.value
     })
   }
 
-  setWeek = (e) => {
-    this.setState({
-      ...this.state,
-      week: e.target.value
-    })
-  }
-
-  setBoar = (e) => {
-    this.setState({
-      ...this.state,
-      boar: e.target.value
-    })
-  }
-
-  massSemination = () => {
+  massSemination () {
     const data = {
       sows: this.state.choosedSows,
       week: this.state.week,
@@ -105,48 +94,24 @@ class WS1SeminationTab extends Component {
     this.props.getSows(this.state.query)
   }
 
-  showState = () => {
-    console.log(this.state)
-  }
-
   render() {
     const { sows, seminationEmployes, boars, tours } = this.props
     return (
       <div className='workshop-content'>
         <div>
           <div className='commonfilter row'>
-            <div className="input-group mb-3 col-3">
-              <input type="text" className="form-control" placeholder="Farm ID"
-                aria-label="Farmid" aria-describedby="basic-addon1"
-                onChange={this.setSowFarmId} />
-            </div>
-            <div className="input-group mb-3 col-3">
-              <select className="custom-select" id="inputGroupSelect01" 
-                  onChange={this.setTour}>
-                  <option selected value=''>Выбрать тур</option>
-                  {tours.map(tour =>
-                    <option value={tour.id} key={tour.id}>
-                      Неделя{tour.week_number}
-                    </option>
-                    )}
-                </select>
-            </div>
-            <div className="input-group mb-3 col-3">
-              <select className="custom-select" id="inputGroupSelect01"
-                onChange={this.setSeminatedStatus}>
-                <option selected value='seminated=0'>Ожидает осеменения</option>
-                <option value='seminated=1'>Осеменена 1</option>
-              </select>
-            </div>
+            <SowFarmIdFilter setQuery={this.setQuery} />
+            <SowTourFilter tours={tours} setQuery={this.setQuery}/>
+            <SowSeminatedFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>
           </div>
           <div>
             <div>
               Осеменение
               <div className="input-group">
-                <input type='text' value={this.state.week} onChange={this.setWeek}/> неделя
+                <input type='text' value={this.state.week} onChange={this.setData} name='week'/> неделя
                 < br/>
                 <select className="custom-select" id="inputGroupSelect04" 
-                  onChange={this.setSemitationEmployee}>
+                  onChange={this.setData} name='seminationEmployee'>
                   <option selected>Выберите работника...</option>
                   {seminationEmployes.map(employee =>
                     <option value={employee.id} key={employee.id}>
@@ -155,7 +120,7 @@ class WS1SeminationTab extends Component {
                     )}
                 </select>
                 <select className="custom-select" id="inputGroupSelect04" 
-                  onChange={this.setBoar}>
+                  onChange={this.setData} name='boar'>
                   <option selected>Выберите хряка...</option>
                   {boars.map(boar =>
                     <option value={boar.id} key={boar.id}>

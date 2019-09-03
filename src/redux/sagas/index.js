@@ -70,6 +70,7 @@ export default function* root() {
     takeEvery(SowsTypes.CREATE_NEW_NONAME_SOW_REQUEST, sowsSaga.createNewNonameSow, sowsApi),
     takeEvery(SowsTypes.GET_BOARS_REQUEST, sowsSaga.getBoars, sowsApi),
     takeEvery(SowsTypes.MASS_SEMINATION_REQUEST, sowsSaga.massSemination, sowsApi),
+    takeEvery(SowsTypes.MASS_ULTRASOUND_REQUEST, sowsSaga.massUltrasound, sowsApi),
 
     // INIT SOWS
     takeEvery(SowsTypes.ADD_NEW_SEMINATED_TO_WS1_REQUEST, sowsSaga.addNewSeminatedToWs1, sowsApi),

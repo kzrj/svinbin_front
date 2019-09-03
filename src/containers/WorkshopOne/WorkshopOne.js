@@ -21,10 +21,9 @@ class WorkshopOneContainer extends Component {
     super(props);
     this.state = {
       tabs: {
-        seminationTab: true,
+        seminationTab: false,
         createTab: false,
-        ultrasoundTab: false,
-        // commonFilterTab: true,
+        ultrasoundTab: true,
         cullingTab: false,
         infoTab: false,
       }
@@ -100,12 +99,6 @@ class WorkshopOneContainer extends Component {
               УЗИ
             </div>
 
-            {/* <div className={this.state.tabs.commonFilterTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
-              onClick={() => this.setTab('commonFilterTab')}
-            >
-              Фильтр
-            </div> */}
-
             <div className={this.state.tabs.transferToWS2Tab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
               onClick={() => this.setTab('transferToWS2Tab')}
             >
@@ -130,46 +123,39 @@ class WorkshopOneContainer extends Component {
             createNewSow={this.props.createNewSow}
             createNewNonameSow={this.props.createNewNonameSow}
           />}
+
         { this.state.tabs.seminationTab && 
           <WS1SeminationTab 
             query={null}
+
             getSows={this.props.getSeminationSows}
-            getSow={this.props.getSeminationSow}
+            sows={this.props.state.ws1.seminationList}
+
             getSeminators={this.props.getSeminators}
+            seminationEmployes={this.props.state.ws1.seminators}
+
             getBoars={this.props.getBoars}
             boars={this.props.state.sows.boars}
-            sows={this.props.state.ws1.seminationList}
-            sow={this.props.state.ws1.seminationSow}
-            seminationSow={this.props.seminationSow}
-            seminationEmployes={this.props.state.ws1.seminators}
-            massSemination={this.props.massSemination}
+            
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
+
+            massSemination={this.props.massSemination}
           />}
+
         { this.state.tabs.ultrasoundTab &&
           <WS1UltrasoundTab 
             query={null}
+
             getSows={this.props.getUltrasoundSows}
-            getSow={this.props.getUltrasoundSow} 
             sows={this.props.state.ws1.ultrasoundList}
-            sow={this.props.state.ws1.ultrasoundSow}
-            ultrasoundSow={this.props.ultrasoundSow}
+
+            getTours={this.props.getTours}
+            tours={this.props.state.tours.list}
+
+            massUltrasound={this.props.massUltrasound}
           />}
 
-        {/* { this.state.tabs.commonFilterTab &&
-          <WS1CommonFilterTab 
-            query={null}
-            getSows={this.props.getUltrasoundSows}
-            getSow={this.props.getUltrasoundSow} 
-            sows={this.props.state.ws1.ultrasoundList}
-            sow={this.props.state.ws1.ultrasoundSow}
-            getSeminators={this.props.getSeminators}
-            getBoars={this.props.getBoars}
-            seminationEmployes={this.props.state.ws1.seminators}
-            boars={this.props.state.sows.boars}
-            massSemination={this.props.massSemination}
-          />} */}
-        
         { this.state.tabs.transferToWS2Tab &&
           <WS1TransferToWS2Tab 
             query={null}
@@ -215,6 +201,7 @@ const mapDispatchToProps = (dispatch) => ({
   // createNewSow: data => dispatch(Ws1Actions.createNewSowWs1Request(data)),
   createNewNonameSow: data => dispatch(SowsActions.createNewNonameSowRequest(data)),
   massSemination: data => dispatch(SowsActions.massSeminationRequest(data)),
+  massUltrasound: data => dispatch(SowsActions.massUltrasoundRequest(data)),
 
   getSeminationSows: query => dispatch(Ws1Actions.getSeminationSowsRequest(query)),
   getSeminationSow: id => dispatch(Ws1Actions.getSeminationSowRequest(id)),

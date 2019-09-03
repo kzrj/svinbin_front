@@ -118,3 +118,12 @@ export function* massSemination(api, action) {
         yield put(SowsActions.massSeminationFail(err))
     }
 }
+
+export function* massUltrasound(api, action) {
+    try {
+        let response = yield call(api.massUltrasound, action.payload);
+        yield put(SowsActions.massUltrasoundSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.massUltrasoundFail(err))
+    }
+}

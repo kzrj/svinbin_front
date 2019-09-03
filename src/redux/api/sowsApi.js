@@ -339,6 +339,31 @@ const create = () => {
         })
     }
 
+    const massUltrasound = payload => {
+        const { sows, days, result } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.MASS_ULTRASOUND;
+
+        const formData = new FormData();
+        sows.map(sow => formData.append("sows", sow))
+        formData.append("days", days);
+        formData.append("result", result);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
 
 
     return {
@@ -357,6 +382,7 @@ const create = () => {
         createNewNonameSow,
         getBoars,
         massSemination,
+        massUltrasound,
 
         // init endpoints
         addNewSeminatedToWs1
