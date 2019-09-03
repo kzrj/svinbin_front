@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { toggleArray } from '../../components/utils'
 // components
 import { SowRow }  from '../../components/WorkshopOne/SowComponents'
+import { SowTable }  from '../../components/WorkshopOne/SowComponents'
 
 
 class WS1SeminationTab extends Component {
@@ -112,9 +113,6 @@ class WS1SeminationTab extends Component {
     const { sows, seminationEmployes, boars, tours } = this.props
     return (
       <div className='workshop-content'>
-        <button onClick={this.showState}>
-          show state
-        </button>
         <div>
           <div className='commonfilter row'>
             <div className="input-group mb-3 col-3">
@@ -176,23 +174,7 @@ class WS1SeminationTab extends Component {
           </div>
         </div>
         <div className='commonfilter-results'>
-          <table className="table table-light table-sm">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Статус</th>
-                <th scope="col">Осеменения</th>
-                <th scope="col">УЗИ 30</th>
-                <th scope="col">УЗИ 60</th>
-                <th scope="col">Выбрать</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sows.length > 0 && sows.map(sow => 
-                <SowRow sow={sow} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>
-                )}
-            </tbody>
-          </table>
+          <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>
         </div>
       </div>
     )

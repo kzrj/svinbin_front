@@ -74,13 +74,41 @@ export default class SowToursData extends Component {
   }
 }
 
-export class SowRow extends Component {
-  constructor(props) {
-   super(props);
-   this.state = {
-     expand: false,
-   }
+
+export class SowTable extends Component {
+
+ render() {
+   const { sows, sowClick, choosedSows } = this.props
+   return (
+    <table className="table table-light table-sm">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Статус</th>
+          <th scope="col">Тур</th>
+          <th scope="col">Осеменения</th>
+          <th scope="col">УЗИ 30</th>
+          <th scope="col">УЗИ 60</th>
+          <th scope="col">Выбрать</th>
+        </tr>
+      </thead>
+      <tbody>
+        {sows.length > 0 && sows.map(sow => 
+          <SowRow sow={sow} sowClick={sowClick} choosedSows={choosedSows}/>
+          )}
+      </tbody>
+    </table>
+   )
  }
+}
+
+export class SowRow extends Component {
+//   constructor(props) {
+//    super(props);
+//    this.state = {
+//      expand: false,
+//    }
+//  }
 
  render() {
    const { sow, sowClick, choosedSows } = this.props
@@ -90,9 +118,25 @@ export class SowRow extends Component {
     <tr key={sow.id} className={sowClassName}>
       <th scope="row" onClick={sowClick} data-id={sow.id}>{sow.farm_id}</th>
       <td onClick={sowClick} data-id={sow.id}>{sow.status}</td>
-      <td onClick={sowClick} data-id={sow.id}>25.05.2019 15:09</td>
-      <td onClick={sowClick} data-id={sow.id}>25.05.2019 15:09</td>
-      <td onClick={sowClick} data-id={sow.id}>25.05.2019 15:09</td>
+      <td onClick={sowClick} data-id={sow.id}>{sow.tour ? sow.tour : '-'}</td>
+      <td onClick={sowClick} data-id={sow.id}>
+        {sow.seminations_current_tour.length > 0 ? 
+          sow.seminations_current_tour.map(seminationDate => seminationDate)
+          : '-'
+        }
+      </td>
+      <td onClick={sowClick} data-id={sow.id}>
+        {sow.ultrasound_30_current_tour.length > 0 ? 
+            sow.ultrasound_30_current_tour.map(usound30Date => usound30Date)
+            : '-'
+          }
+      </td>
+      <td onClick={sowClick} data-id={sow.id}>
+        {sow.ultrasound_60_current_tour.length > 0 ? 
+            sow.ultrasound_60_current_tour.map(usound60Date => usound60Date)
+            : '-'
+          }
+      </td>
       <td >-</td>
     </tr>
    )

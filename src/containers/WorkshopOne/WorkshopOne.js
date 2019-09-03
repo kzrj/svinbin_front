@@ -21,10 +21,10 @@ class WorkshopOneContainer extends Component {
     super(props);
     this.state = {
       tabs: {
-        seminationTab: false,
+        seminationTab: true,
         createTab: false,
         ultrasoundTab: false,
-        commonFilterTab: true,
+        // commonFilterTab: true,
         cullingTab: false,
         infoTab: false,
       }
@@ -100,11 +100,11 @@ class WorkshopOneContainer extends Component {
               УЗИ
             </div>
 
-            <div className={this.state.tabs.commonFilterTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
+            {/* <div className={this.state.tabs.commonFilterTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
               onClick={() => this.setTab('commonFilterTab')}
             >
               Фильтр
-            </div>
+            </div> */}
 
             <div className={this.state.tabs.transferToWS2Tab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
               onClick={() => this.setTab('transferToWS2Tab')}
@@ -156,7 +156,7 @@ class WorkshopOneContainer extends Component {
             ultrasoundSow={this.props.ultrasoundSow}
           />}
 
-        { this.state.tabs.commonFilterTab &&
+        {/* { this.state.tabs.commonFilterTab &&
           <WS1CommonFilterTab 
             query={null}
             getSows={this.props.getUltrasoundSows}
@@ -168,7 +168,7 @@ class WorkshopOneContainer extends Component {
             seminationEmployes={this.props.state.ws1.seminators}
             boars={this.props.state.sows.boars}
             massSemination={this.props.massSemination}
-          />}
+          />} */}
         
         { this.state.tabs.transferToWS2Tab &&
           <WS1TransferToWS2Tab 
