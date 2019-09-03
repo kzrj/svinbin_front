@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import WS1SeminationTab from '../../components/WorkshopOne/WS1SeminationTab'
 import WS1CreateTab from '../../components/WorkshopOne/WS1CreateTab'
 import WS1UltrasoundTab from '../../components/WorkshopOne/WS1UltrasoundTab'
-import WS1CommonFilterTab from '../../components/WorkshopOne/WS1CommonFilterTab'
 import WS1TransferToWS2Tab from '../../components/WorkshopOne/WS1TransferToWS2Tab'
 import WS1CullingTab from '../../components/WorkshopOne/WS1CullingTab'
 

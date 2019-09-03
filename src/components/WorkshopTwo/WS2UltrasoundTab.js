@@ -1,29 +1,33 @@
-
 import React, { Component } from 'react';
 
 import { toggleArray } from '../../components/utils'
 // components
 import { SowTable }  from '../../components/WorkshopOne/SowComponents'
-import { SowFarmIdFilter, SowTourFilter, SowSemUsoundFilter }  from '../../components/WorkshopOne/SowComponents'
+import { SowFarmIdFilter, SowTourFilter, SowUsound30Filter }  from '../../components/WorkshopOne/SowComponents'
 
 
-class WS2TransferTab extends Component {
+class WS2UltrasoundTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
       query: {
         by_workshop_number: 2,
+        farm_id_isnull: false,
+        not_in_tour: false,
         suporos: null,
+        seminated: 2,
         tour: null,
       },
       choosedSows: [],
-      
+      farmId: null,
+      days: 30,
+      result: true,
     };
     this.setQuery = this.setQuery.bind(this);
-    this.chooseAll = this.chooseAll.bind(this);
     this.setSeminatedSuporosStatus = this.setSeminatedSuporosStatus.bind(this);
     this.sowClick = this.sowClick.bind(this);
-    this.massMove = this.massMove.bind(this);
+    this.setData = this.setData.bind(this);
+    this.massUltrasound = this.massUltrasound.bind(this);
   }
 
   componentDidMount() {
@@ -37,15 +41,6 @@ class WS2TransferTab extends Component {
     // <button onClick={this.showState}>
     //   State
     // </button>
-  }
-
-  chooseAll () {
-    let ids = []
-    this.props.sows.map(sow => ids = toggleArray(ids, sow.id))
-    this.setState({
-      ...this.state,
-      choosedSows: ids
-    })
   }
 
   setQuery (e) {
@@ -68,11 +63,9 @@ class WS2TransferTab extends Component {
     const filter = e.target.value.split('=')[0]
     const value = e.target.value.split('=')[1]
     if (filter == 'seminated')
-      finalQuery = {...query, [filter]:value, suporos: null, farm_id_isnull: false}
+      finalQuery = {...query, [filter]:value, suporos: null}
     if (filter == 'suporos')
-      finalQuery = {...query, [filter]:value, seminated: null, farm_id_isnull: false}
-    if (filter == 'farm_id_isnull')
-      finalQuery = {by_workshop_number: 2, farm_id_isnull: true}
+      finalQuery = {...query, [filter]:value, seminated: null}
     this.setState({
       ...this.state,
       query: finalQuery
@@ -89,13 +82,22 @@ class WS2TransferTab extends Component {
       choosedSows: choosedSows
     })
   }
-  
-  massMove (e) {
+
+  // Usound data
+  setData (e) {
+    this.setState({
+      ...this.state,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  massUltrasound () {
     const data = {
       sows: this.state.choosedSows,
-      to_location: e.target.name
+      days: this.state.days,
+      result: this.state.result
     }
-    this.props.massMove(data)
+    this.props.massUltrasound(data)
     this.props.getSows(this.state.query)
     this.setState({
       ...this.state,
@@ -105,7 +107,6 @@ class WS2TransferTab extends Component {
 
   render() {
     const { sows, tours } = this.props
-    
     return (
       <div className='workshop-content'>
          <button onClick={this.showState}>
@@ -115,27 +116,27 @@ class WS2TransferTab extends Component {
           <div className='commonfilter row'>
             <SowFarmIdFilter setQuery={this.setQuery} />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
-            <SowSemUsoundFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>
+            <SowUsound30Filter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>
           </div>
-          <div className='row'>
-            <div className='col-6'>
-              Перевести в ЦЕХ 1
+          <div>
+            <div>
+              УЗИ
               <div className="input-group">
+                
+                <select className="custom-select" id="inputGroupSelect04" 
+                  onChange={this.setData} name='days'>
+                  <option selected value='30'>30 дней</option>
+                  <option value='60' >60 дней</option>
+                </select>
+                <select className="custom-select" id="inputGroupSelect04" 
+                  onChange={this.setData} name='result'>
+                  <option selected value={true}>Супорос</option>
+                  <option value={false}>Прохолост</option>
+                </select>
                 <div className="input-group-append">
                   <button className="btn btn-outline-secondary" type="button" 
-                    onClick={this.massMove} name='1'>
-                    Перевести в ЦЕХ 1
-                  </button>
-                </div>
-                </div>
-            </div>
-            <div className='col-6'>
-              Перевести в ЦЕХ 3
-              <div className="input-group">
-                <div className="input-group-append">
-                  <button className="btn btn-outline-secondary" type="button" 
-                    onClick={this.massMove} name='3'>
-                    Перевести в ЦЕХ 3
+                    onClick={this.massUltrasound}>
+                    Провести УЗИ
                   </button>
                 </div>
                 </div>
@@ -144,13 +145,13 @@ class WS2TransferTab extends Component {
         </div>
         <div className='commonfilter-results'>
           <div className='count row'>
-            <div className='col-6'>
-              Выбрано {this.state.choosedSows.length} из {sows.length}
+              <div className='col-6'>
+                Выбрано {this.state.choosedSows.length} из {sows.length}
+              </div>
+              {/* <div className='col-6'>
+                <button onClick={this.chooseAll}>Выбрать всех</button>
+              </div> */}
             </div>
-            {/* <div className='col-6'>
-              <button onClick={this.chooseAll}>Выбрать всех</button>
-            </div> */}
-          </div>
           <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>
         </div>
       </div>
@@ -158,4 +159,4 @@ class WS2TransferTab extends Component {
   }
 }
 
-export default WS2TransferTab
+export default WS2UltrasoundTab

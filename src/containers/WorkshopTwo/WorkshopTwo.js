@@ -4,11 +4,12 @@ import { connect } from 'react-redux';
 // components
 import WS2TransferTab from '../../components/WorkshopTwo/WS2TransferTab'
 import WS2CullingTab from '../../components/WorkshopTwo/WS2CullingTab'
-import WS2UltrasoundV2Tab from '../../components/WorkshopTwo/WS2UltrasoundV2Tab'
+import WS2UltrasoundTab from '../../components/WorkshopTwo/WS2UltrasoundTab'
 
 // actions
 import Ws2Actions from '../../redux/redux-sauce/ws2';
 import SowsActions from '../../redux/redux-sauce/sows';
+import ToursActions from '../../redux/redux-sauce/tours';
 
 
 class WorkshopTwoContainer extends Component {
@@ -17,8 +18,8 @@ class WorkshopTwoContainer extends Component {
     this.state = {
       tabs: {
         transferTab: false,
-        ultrasoundV2Tab: false,
-        cullingTab: true,
+        ultrasoundTab: true,
+        cullingTab: false,
         infoTab: false,
       }
     }
@@ -74,8 +75,8 @@ class WorkshopTwoContainer extends Component {
           >
             Перемещение
           </div>
-          <div className={this.state.tabs.ultrasoundV2Tab ? 'tab-active col-sm' : 'col-sm'}
-              onClick={() => this.setTab('ultrasoundV2Tab')}
+          <div className={this.state.tabs.ultrasoundTab ? 'tab-active col-sm' : 'col-sm'}
+              onClick={() => this.setTab('ultrasoundTab')}
             >
               УЗИ 2
             </div>
@@ -92,20 +93,24 @@ class WorkshopTwoContainer extends Component {
         </div>
         { this.state.tabs.transferTab &&
           <WS2TransferTab 
-            query={null}
-            getSowsByTours={this.props.getSowsByTours}
-            sowsByTours={this.props.state.ws2.sowsByTours}
-            sowsMoveMany={this.props.sowsMoveMany}
+          getSows={this.props.getCullingSows}
+          sows={this.props.state.ws2.cullingList}
+
+          getTours={this.props.getTours}
+          tours={this.props.state.tours.list}
+
+          massMove={this.props.sowsMoveMany}
           />}
 
-        { this.state.tabs.ultrasoundV2Tab &&
-          <WS2UltrasoundV2Tab 
-            query={null}
+        { this.state.tabs.ultrasoundTab &&
+          <WS2UltrasoundTab 
             getSows={this.props.getUltrasoundV2Sows}
-            getSow={this.props.getUltrasoundV2Sow} 
             sows={this.props.state.ws2.ultrasoundV2List}
-            sow={this.props.state.ws2.ultrasoundV2Sow}
-            ultrasoundV2Sow={this.props.ultrasoundV2Sow}
+
+            getTours={this.props.getTours}
+            tours={this.props.state.tours.list}
+
+            massUltrasound={this.props.massUltrasound}
           />}
 
         { this.state.tabs.cullingTab &&
@@ -129,10 +134,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   // login: (payload) => dispatch(AuthActions.loginRequest(payload)),
-
+  getTours: query => dispatch(ToursActions.getToursRequest(query)),
+  
+  getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getCullingSows: query => dispatch(Ws2Actions.getCullingSowsWs2Request(query)),
   getCullingSow: id => dispatch(Ws2Actions.getCullingSowWs2Request(id)),
   cullingSow: data => dispatch(Ws2Actions.cullingSowWs2Request(data)),
+  massUltrasound: data => dispatch(SowsActions.massUltrasoundRequest(data)),
 
   getUltrasoundV2Sows: query => dispatch(Ws2Actions.getUltrasoundV2SowsWs2Request(query)),
   getUltrasoundV2Sow: id => dispatch(Ws2Actions.getUltrasoundV2SowWs2Request(id)),
