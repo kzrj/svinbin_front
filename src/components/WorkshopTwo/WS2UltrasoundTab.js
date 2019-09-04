@@ -20,7 +20,7 @@ class WS2UltrasoundTab extends Component {
       },
       choosedSows: [],
       farmId: null,
-      days: 30,
+      days: 60,
       result: true,
     };
     this.setQuery = this.setQuery.bind(this);
@@ -109,9 +109,9 @@ class WS2UltrasoundTab extends Component {
     const { sows, tours } = this.props
     return (
       <div className='workshop-content'>
-         <button onClick={this.showState}>
+         {/* <button onClick={this.showState}>
            State
-         </button>
+         </button> */}
         <div>
           <div className='commonfilter row'>
             <SowFarmIdFilter setQuery={this.setQuery} />
@@ -125,8 +125,8 @@ class WS2UltrasoundTab extends Component {
                 
                 <select className="custom-select" id="inputGroupSelect04" 
                   onChange={this.setData} name='days'>
-                  <option selected value='30'>30 дней</option>
-                  <option value='60' >60 дней</option>
+                  <option value='30'>30 дней</option>
+                  <option selected value='60' >60 дней</option>
                 </select>
                 <select className="custom-select" id="inputGroupSelect04" 
                   onChange={this.setData} name='result'>

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+//components
+import { Cells, Sections } from '../WorkshopThree/Components'
 
 class WS3SowFarrowTab extends Component {
    constructor(props) {
@@ -8,6 +10,7 @@ class WS3SowFarrowTab extends Component {
       activeSow: null,
       activeSectionId: null,
       activeCellLocationId: null,
+      current_total_piglets: null,
       total_piglets: 0,
       mummy_piglets: 0,
       dead_piglets: 0,
@@ -35,7 +38,9 @@ class WS3SowFarrowTab extends Component {
       ...this.state,
       activeCellLocationId: location.id,
       activeSow: location.sow_set.length > 0 ?
-       location.sow_set[0] : null
+       location.sow_set[0] : null,
+      current_total_piglets: location.newbornpigletsgroup_set.length > 0 ?
+        location.newbornpigletsgroup_set[0].quantity : 0
     })
   }
 
@@ -74,6 +79,7 @@ class WS3SowFarrowTab extends Component {
       alive_piglets: 0,
       date: null,
     })
+    this.props.getLocations({by_section: this.state.activeSectionId})
   }
 
 
@@ -83,42 +89,31 @@ class WS3SowFarrowTab extends Component {
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
-            <div className='row'>
-                {sections.map((section, key) => 
-                    <div className={ this.state.activeSectionId == section.id ? 
-                      'col-sm section-button section-active': 'col-sm section-button '
-                      } onClick={this.clickSection}
-                      data-section-id={section.id}
-                      key={key}>
-                      ID{section.id} {section.name}
-                    </div>
-                )}
-            </div>
-            <div className='row'>
-              {locations.map(location =>
-                  <div className={this.state.activeCellLocationId == location.id ? 
-                    'col-md-5 cell cell-active' : 'col-md-5 cell'}
-                    onClick={() => this.clickCellLocation(location)}
-                    key={location.id}>
-                    ID{location.id} 
-                    {location.is_empty && 'Пустая'}
-                  </div>
-              )}
-              {locations.length < 1 && 'Выберите секцию'}
-            </div>
+            <Sections 
+              sections={sections}
+              activeSectionId={this.state.activeSectionId}
+              clickSection={this.clickSection}
+            />
+            <Cells 
+              locations={locations}
+              activeCellId={this.state.activeCellLocationId}
+              clickCell={this.clickCellLocation}
+            />
           </div>
           <div className='col-6'>
               {this.state.activeSow && 
                 <div>
                   <h3>Свиноматка {this.state.activeSow.farm_id}</h3>
                   <ul>
-                    <li>{this.state.activeSow.id}</li>
                     <li>{this.state.activeSow.farm_id}</li>
                     <li>{this.state.activeSow.status}</li>
+                    <li>
+                        Текущее число живых поросят в клетке {this.state.current_total_piglets}
+                    </li>
                   </ul>
                   <ul>
                     <li>
-                        Общее число поросят {this.state.total_piglets}
+                        Общее число поросят в опоросе {this.state.total_piglets}
                     </li>
                     <li>Дата начала опороса {this.state.date}</li>
                     <li>

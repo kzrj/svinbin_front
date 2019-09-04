@@ -108,9 +108,9 @@ class WS2TransferTab extends Component {
     
     return (
       <div className='workshop-content'>
-         <button onClick={this.showState}>
+         {/* <button onClick={this.showState}>
            State
-         </button>
+         </button> */}
         <div>
           <div className='commonfilter row'>
             <SowFarmIdFilter setQuery={this.setQuery} />

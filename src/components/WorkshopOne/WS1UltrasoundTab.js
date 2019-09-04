@@ -109,9 +109,9 @@ class WS1UltrasoundTab extends Component {
     const { sows, tours } = this.props
     return (
       <div className='workshop-content'>
-         <button onClick={this.showState}>
+         {/* <button onClick={this.showState}>
            State
-         </button>
+         </button> */}
         <div>
           <div className='commonfilter row'>
             <SowFarmIdFilter setQuery={this.setQuery} />

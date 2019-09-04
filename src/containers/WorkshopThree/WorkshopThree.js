@@ -20,10 +20,10 @@ class WorkshopThreeContainer extends Component {
       tabs: {
         balanceTab: false,
         returnPigletsTab: false,
-        comingSowsTab: true,
+        comingSowsTab: false,
         transferTab: false,
         farrowTab: false,
-        weaningSowsTab: false,
+        weaningSowsTab: true,
         recountTab: false,
         weaningPigletsTab: false,
         taggingTab: false,
@@ -149,7 +149,7 @@ class WorkshopThreeContainer extends Component {
             sections={this.props.state.ws3.sections}
             getLocations={this.props.getSowWeaningTabLocations}
             locations={this.props.state.ws3.sowWeaningLocations}
-            sowMoveMany={this.props.sowMoveMany}
+            massMove={this.props.sowMoveMany}
           />}
       </div>
     );

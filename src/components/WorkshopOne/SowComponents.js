@@ -243,7 +243,7 @@ export class SowRow extends Component {
       <td onClick={sowClick} data-id={sow.id}>{sow.tour ? sow.tour : '-'}</td>
       <td onClick={sowClick} data-id={sow.id}>
         {sow.seminations_current_tour.length > 0 ? 
-          sow.seminations_current_tour.map(seminationDate => <li>{seminationDate}</li>)
+          sow.seminations_current_tour.map(seminationDate => seminationDate )
           : '-'
         }
       </td>

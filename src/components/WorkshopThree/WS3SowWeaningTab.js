@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { toggleArray, addItemToArray, removeItemFromArray,
   uniq} from '../utils';
 
+//components
+import { Cells, Sections } from '../WorkshopThree/Components'
+
 
 class WS3SowWeaningTab extends Component {
    constructor(props) {
@@ -10,7 +13,9 @@ class WS3SowWeaningTab extends Component {
       activeSows: [],
       activeSectionId: null,
       activeLocationsIds: [],
-    }
+    };
+
+    this.massMove = this.massMove.bind(this);
   }
   
   componentDidMount() {
@@ -28,23 +33,30 @@ class WS3SowWeaningTab extends Component {
   }
 
   clickLocation = (location) => {
-    console.log('ClickLoc')
-    console.log(location.id)
-    let { activeLocationsIds } = this.state
-    // toggleArray(activeLocationsIds, location.id)
-
-    if (activeLocationsIds.includes(location.id)){
-      removeItemFromArray(activeLocationsIds, location.id)}
-    else {
-      addItemToArray(activeLocationsIds, location.id)}
+    let { activeLocationsIds, activeSows } = this.state
+    activeLocationsIds = toggleArray(activeLocationsIds, location.id)
+    !location.is_sow_empty ?
+      activeSows = toggleArray(activeSows, location.sow_set[0].id) 
+      : null
 
     this.setState({
       ...this.state,
-      activeLocationsIds: activeLocationsIds
+      activeLocationsIds: activeLocationsIds,
+      activeSows: activeSows
     })
-    console.log(location.id)
-    console.log(activeLocationsIds)
-    console.log(this.state.activeLocationsIds)
+  }
+
+  massMove () {
+    const data = {
+      sows: this.state.activeSows,
+      to_location: 1
+    }
+    this.props.massMove(data)
+    this.setState({
+      activeSows: [],
+      activeSectionId: null,
+      activeLocationsIds: [],
+    })
   }
 
   render() {
@@ -53,34 +65,35 @@ class WS3SowWeaningTab extends Component {
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
-            <div className='row'>
-                {sections.map((section, key) => 
-                    <div className={ this.state.activeSectionId == section.id ? 
-                      'col-sm section-button section-active': 'col-sm section-button '
-                      } onClick={this.clickSection}
-                      data-section-id={section.id}
-                      key={key}>
-                      ID{section.id} {section.name}
-                    </div>
-                )}
-            </div>
-            <div className='row'>
-              {locations.map(location =>
-                  <div className={this.state.activeLocationsIds.includes(location.id) ? 
-                    'col-md-5 cell cell-active' : 'col-md-5 cell'}
-                    onClick={() => this.clickLocation(location)}
-                    key={location.id}>
-                    ID{location.id} 
-                    {location.is_empty && 'Пустая'}
-                  </div>
-              )}
-              {locations.length < 1 && 'Выберите секцию'}
-            </div>
+          <Sections 
+              sections={sections}
+              activeSectionId={this.state.activeSectionId}
+              clickSection={this.clickSection}
+            />
+            <Cells
+              locations={locations}
+              activeCellIds={this.state.activeLocationsIds}
+              activeCellId={null}
+              clickLocation={this.clickLocation}
+            />
           </div>
           <div className='col-6'>
-              Матки
+              Выбрано {this.state.activeSows.length} маток
+              {this.state.activeSows.length > 0 &&
+                <div>
+                  Перевести в ЦЕХ 1
+                  <div className="input-group">
+                    <div className="input-group-append">
+                      <button className="btn btn-outline-secondary" type="button" 
+                        onClick={this.massMove}>
+                        Перевести в ЦЕХ 1
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
           </div>
-      </div>
+        </div>
     )
   }
 }

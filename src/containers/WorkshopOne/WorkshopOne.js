@@ -78,9 +78,9 @@ class WorkshopOneContainer extends Component {
     return (
       <div className="workshop container">
         <div className='workshop-header'>
-          <button onClick={this.showStateConsole}>
+          {/* <button onClick={this.showStateConsole}>
             show store
-          </button>  
+          </button>   */}
         </div>
         <div className='row workshop-menu'>
             <div className={this.state.tabs.createTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}

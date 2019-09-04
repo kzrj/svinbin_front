@@ -61,13 +61,13 @@ class WorkshopTwoContainer extends Component {
   render() {
     return (
       <div className="workshop container">
-        <h1>WorkshopTwo</h1>
-        <div>
+        {/* <h1>WorkshopTwo</h1> */}
+        {/* <div>
             <button onClick={this.showStateConsole}>
               Button show store
             </button>
             <button onClick={this.showState}>state</button>
-        </div>
+        </div> */}
         
         <div className='row workshop-menu'>
           <div className={this.state.tabs.transferTab ? 'tab-active col-sm' : 'col-sm'}

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+//components
+import { SowFindById, Cells, Sections } from '../WorkshopThree/Components'
+
 
 class WS3SowIncomeTab extends Component {
    constructor(props) {
@@ -27,11 +30,10 @@ class WS3SowIncomeTab extends Component {
     this.props.getSows(query)
   }
 
-  clickCell = (e) => {
-    const { locationId } = e.target.dataset
+  clickCell = (location) => {
     this.setState({
       ...this.state,
-      activeCellId: locationId
+      activeCellId: location.id,
     })
   }
 
@@ -51,55 +53,33 @@ class WS3SowIncomeTab extends Component {
 
   render() {
     const { sows, sow, sections, locations } = this.props
+    
     return (
         <div className='row workshop-content'>
           <div className='col-3 workshop-left-column'>
-            <div className='workshop-header-2 under-menu-line text-center'>
-              <p >ПОИСК ПО ID</p>
-            </div>
-            <div className='workshop-content-column-1'>
-              <input type='text' onChange={this.getSowsById} className="search-input"/>
-              <ul className='list-unstyled'>
-                {sows.length > 0 && sow &&
-                  sows.map(sowInList => 
-                    <li className={sowInList.id == sow.id ? 'sow-active sow-li text-center' : 'sow-li text-center'} 
-                      key={sowInList.id} 
-                      onClick={() => this.props.getSow(sowInList.id)}>
-                      {sowInList.farm_id}
-                    </li>)
-                }
-              </ul>
-            </div>
+            <SowFindById 
+              sows={sows} 
+              sow={sow} 
+              getSowsById={this.getSowsById} 
+              getSow={this.props.getSow}/>
           </div>
           <div className='col-9 workshop-right-column'>
-            <div className='row'>
-                {sections.map((section, key) => 
-                    <div className={ this.state.activeSectionId == section.id ? 
-                      'col-sm section-button section-active': 'col-sm section-button '
-                      } onClick={this.clickSection}
-                      data-section-id={section.id}
-                      key={key}>
-                      ID{section.id} {section.name}
-                    </div>
-                )}
-              </div>
-              <div className='row'>
-                {locations.map(location =>
-                    <div className={this.state.activeCellId == location.id ? 
-                      'col-md-5 cell cell-active' : 'col-md-5 cell'}
-                      onClick={this.clickCell}
-                      data-location-id={location.id}
-                      key={location.id}>
-                      ID{location.id} 
-                    </div>
-                )}
-                {locations.length < 1 && 'Выберите секцию'}
-              </div>
-              <div>
+            <Sections 
+              sections={sections}
+              activeSectionId={this.state.activeSectionId} 
+              clickSection={this.clickSection}/>
+            <Cells 
+              locations={locations} 
+              clickLocation={this.clickCell} 
+              activeCellIds={[this.state.activeCellId]}
+              />
+            <div>
+              {this.state.activeCellId && 
                 <button onClick={this.clickSetlle}>
                   Разместить свиноматку
                 </button>
-              </div>
+              }
+            </div>
           </div>
         </div>
     )

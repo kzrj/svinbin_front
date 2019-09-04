@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+//components
+import { Cells, Sections } from '../WorkshopThree/Components'
 
 class WS3SowInnerTransferTab extends Component {
    constructor(props) {
@@ -45,11 +47,10 @@ class WS3SowInnerTransferTab extends Component {
     })
   }
 
-  clickCellToLocation = (e) => {
-    const { locationId } = e.target.dataset
+  clickCellToLocation = (location) => {
     this.setState({
       ...this.state,
-      activeCellToLocationId: locationId
+      activeCellToLocationId: location.id,
     })
   }
 
@@ -62,7 +63,11 @@ class WS3SowInnerTransferTab extends Component {
     this.props.getLocations2({by_section: this.state.activeToSectionId})
     this.setState({
       ...this.state,
-      activeSow: null
+      activeSow: null,
+      activeFromSectionId: null,
+      activeCellFromLocationId: null,
+      activeToSectionId: null,
+      activeCellToLocationId: null,
     })
   }
 
@@ -72,56 +77,28 @@ class WS3SowInnerTransferTab extends Component {
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
-            <div className='row'>
-                {sections.map((section, key) => 
-                    <div className={ this.state.activeFromSectionId == section.id ? 
-                      'col-sm section-button section-active': 'col-sm section-button '
-                      } onClick={this.clickFromSection}
-                      data-section-id={section.id}
-                      key={key}>
-                      ID{section.id} {section.name}
-                    </div>
-                )}
-            </div>
-            <div className='row'>
-              {locations1.map(location =>
-                  <div className={this.state.activeCellFromLocationId == location.id ? 
-                    'col-md-5 cell cell-active' : 'col-md-5 cell'}
-                    onClick={() => this.clickCellFromLocation(location)}
-                    key={location.id}>
-                    ID{location.id} 
-                    {location.is_empty && 'Пустая'}
-                  </div>
-              )}
-              {locations1.length < 1 && 'Выберите секцию'}
-            </div>
+            <Sections 
+              sections={sections}
+              activeSectionId={this.state.activeFromSectionId}
+              clickSection={this.clickFromSection}
+            />
+            <Cells 
+              locations={locations1}
+              activeCellIds={[this.state.activeCellFromLocationId]}
+              clickLocation={this.clickCellFromLocation}
+            />
           </div>
           <div className='col-6'>
-            <div className='row'>
-                {sections.map((section, key) => 
-                    <div className={ this.state.activeToSectionId == section.id ? 
-                      'col-sm section-button section-active': 'col-sm section-button '
-                      } onClick={this.clickToSection}
-                      data-section-id={section.id}
-                      key={key}>
-                      ID{section.id} {section.name}
-                    </div>
-                )}
-              </div>
-              <div className='row'>
-                {locations2.map((location, key) =>
-                  <div className={this.state.activeCellToLocationId == location.id ? 
-                    'col-md-5 cell cell-active' : 'col-md-5 cell'}
-                    onClick={this.clickCellToLocation}
-                    data-location-id={location.id}
-                    data-piglets={location.nomadpigletsgroup_set}
-                    key={key}>
-                    ID{location.id} 
-                    {location.is_empty && 'Пустая'}
-                  </div>
-                )}
-                {locations2.length < 1 && 'Выберите секцию'}
-              </div>
+              <Sections
+                sections={sections}
+                activeSectionId={this.state.activeToSectionId}
+                clickSection={this.clickToSection}
+              />
+              <Cells
+                locations={locations2}
+                activeCellIds={[this.state.activeCellToLocationId]}
+                clickLocation={this.clickCellToLocation}
+              />
           </div>
         <div>
           <div>
@@ -133,9 +110,11 @@ class WS3SowInnerTransferTab extends Component {
               </ul>  
             }
           </div>
-          <button onClick={this.clickTransfer}>
-            Отправить в Цех8
-          </button>
+          {this.state.activeSow && 
+            <button onClick={this.clickTransfer}>
+              Отправить в Цех8
+            </button>
+          }
         </div>
       </div>
     )
