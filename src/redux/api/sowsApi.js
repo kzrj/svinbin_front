@@ -6,6 +6,12 @@ const create = () => {
 
     const getSows = (filters) => {
         const params = createUrlParamsFromFilters(filters);
+        console.log(params)
+        // filters.keys().map(key => {
+        //     if (Array.isArray(filters[key])) 
+        //         filters[key].map(elem)
+        //     )
+        // }
 
         return axios.get(endpoints.GET_SOWS, { params })
         .then(response => response.data)
@@ -365,6 +371,29 @@ const create = () => {
         })
     }
 
+    const abortionSow = payload => {
+        const { id } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.abortionSow(id);
+
+        const formData = new FormData();
+
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
 
     return {
         getSows,
@@ -383,6 +412,7 @@ const create = () => {
         getBoars,
         massSemination,
         massUltrasound,
+        abortionSow,
 
         // init endpoints
         addNewSeminatedToWs1

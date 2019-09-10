@@ -6,6 +6,7 @@ import WS3SowIncomeTab from '../../components/WorkshopThree/WS3SowIncomeTab'
 import WS3SowInnerTransferTab from '../../components/WorkshopThree/WS3SowInnerTransferTab'
 import WS3SowFarrowTab from '../../components/WorkshopThree/WS3SowFarrowTab'
 import WS3SowWeaningTab from '../../components/WorkshopThree/WS3SowWeaningTab'
+import WS3SowCullingTab from '../../components/WorkshopThree/WS3SowCullingTab'
 
 // # actions
 import SowsActions from '../../redux/redux-sauce/sows';
@@ -20,14 +21,14 @@ class WorkshopThreeContainer extends Component {
       tabs: {
         balanceTab: false,
         returnPigletsTab: false,
-        comingSowsTab: false,
+        comingSowsTab: true,
         transferTab: false,
         farrowTab: false,
-        weaningSowsTab: true,
+        weaningSowsTab: false,
         recountTab: false,
         weaningPigletsTab: false,
         taggingTab: false,
-        cullingTab: false,
+        sowCullingTab: false,
       }
     }
 	}
@@ -78,7 +79,7 @@ class WorkshopThreeContainer extends Component {
           <div className={this.state.tabs.transferTab ? 'tab-active col-sm' : 'col-sm'}
             onClick={() => this.setTab('transferTab')}
           >
-            Перемещение
+            Внутреннее перемещение
           </div>
           <div className={this.state.tabs.farrowTab ? 'tab-active col-sm' : 'col-sm'}
             onClick={() => this.setTab('farrowTab')}
@@ -105,10 +106,10 @@ class WorkshopThreeContainer extends Component {
           >
             Биркование
           </div>
-          <div className={this.state.tabs.cullingTab ? 'tab-active col-sm' : 'col-sm'}
-            onClick={() => this.setTab('cullingTab')}
+          <div className={this.state.tabs.sowCullingTab ? 'tab-active col-sm' : 'col-sm'}
+            onClick={() => this.setTab('sowCullingTab')}
           >
-            Выбраковка
+            Выбраковка/Аборт
           </div>
         </div>
         { this.state.tabs.comingSowsTab && 
@@ -151,6 +152,16 @@ class WorkshopThreeContainer extends Component {
             locations={this.props.state.ws3.sowWeaningLocations}
             massMove={this.props.sowMoveMany}
           />}
+
+        { this.state.tabs.sowCullingTab && 
+          <WS3SowCullingTab 
+            getSows={this.props.getSows}
+            getSow={this.props.getSow}
+            sows={this.props.state.sows.list}
+            sow={this.props.state.sows.sow}
+            cullingSow={this.props.cullingSow}
+            abortionSow={this.props.abortionSow}
+          />}
       </div>
     );
   }
@@ -170,6 +181,7 @@ const mapDispatchToProps = (dispatch) => ({
   sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
   sowFarrow: data => dispatch(SowsActions.sowFarrowRequest(data)),
+  abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
 
   getIncomeSows: query => dispatch(Ws3Actions.getIncomeSowsWs3Request(query)),
   getIncomeSow: id => dispatch(Ws3Actions.getIncomeSowWs3Request(id)),

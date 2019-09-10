@@ -3,14 +3,15 @@ import React, { Component } from 'react';
 // components
 import SowToursData from '../../components/WorkshopOne/SowComponents'
 
-
-class WS1CullingTab extends Component {
+class WS2CullingTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      cullingReason: 'padej',
-      cullingType: 'padej',
-      query: {by_workshop_number: 1},
+      cullingReason: '',
+      cullingType: null,
+      query: {
+        all_in_workshop_number: 3
+      },
     }
   }
   
@@ -48,16 +49,13 @@ class WS1CullingTab extends Component {
       culling_type: this.state.cullingType,
       reason: this.state.cullingReason
     }
-    
     this.props.cullingSow(data)
-    this.props.getSows(this.state.query)
   }
 
   abortionSow = () => {
     let data = {
       id: this.props.sow.sow.id,
     }
-    
     this.props.abortionSow(data)
     this.props.getSows(this.state.query)
   }
@@ -96,10 +94,11 @@ class WS1CullingTab extends Component {
                     <li>{sow.sow.status}</li>
                     <li>{sow.sow.farm_id}</li>
                   </ul>
-                  <SowToursData sow={sow} />
+                  <SowToursData sow={sow}/>
                   <div className="input-group">
                       <select className="custom-select" onChange={this.setType}>
-                        <option selected value='padej' >Падеж</option>
+                        <option selected>Выберите тип падежа...</option>
+                        <option value='padej' >Падеж</option>
                         <option value='spec' >Спец. убой</option>
                         <option value='prirezka' >Прирезка</option>
                       </select>
@@ -126,4 +125,4 @@ class WS1CullingTab extends Component {
   }
 }
 
-export default WS1CullingTab
+export default WS2CullingTab

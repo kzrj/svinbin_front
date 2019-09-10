@@ -157,8 +157,8 @@ export class SowFilter extends Component {
       <div className="input-group mb-3 col-3">
         <select className="custom-select" id="inputGroupSelect01"
           onChange={this.props.setSeminatedSuporosStatus}>
-          <option selected value='seminated=0'>Ожидает осеменения</option>
-          <option value='seminated=1'>Осеменена 1</option>
+          <option selected value='to_seminate=true'>Ожидает осеменения</option>
+          <option value='status_title_in=Осеменена 1'>Осеменена 1</option>
         </select>
       </div>
     )
@@ -170,9 +170,9 @@ export class SowUsound30Filter extends Component {
     return (
       <div className="input-group mb-3 col-3">
         <select className="custom-select" id="inputGroupSelect01"
-          onChange={this.props.setSeminatedSuporosStatus}>
-          <option selected value='seminated=2'>Осеменена 2</option>
-          <option value='suporos=30'>Супорос 30</option>
+          onChange={this.props.setQuery} name='status_title'>
+          <option selected value='Осеменена 2'>Осеменена 2</option>
+          <option value='Супорос 30'>Супорос 30</option>
         </select>
       </div>
     )
@@ -185,12 +185,12 @@ export class SowSemUsoundFilter extends Component {
       <div className="input-group mb-3 col-3">
         <select className="custom-select" id="inputGroupSelect01"
           onChange={this.props.setSeminatedSuporosStatus}>
-          <option selected value='seminated=0'>Не Осеменена, нет УЗИ</option>
+          <option value='to_seminate=true'>Не Осеменена, нет УЗИ</option>
           <option value='farm_id_isnull=true'>Ремонтные</option>
-          <option value='seminated=1'>Осеменена 1</option>
-          <option value='seminated=2'>Осеменена 2</option>
-          <option value='suporos=30'>Супорос 30</option>
-          <option value='suporos=60'>Супорос 60</option>
+          <option value='status_title=Осеменена 1'>Осеменена 1</option>
+          <option value='status_title=Осеменена 2'>Осеменена 2</option>
+          <option value='status_title=Супорос 30'>Супорос 30</option>
+          <option selected value='status_title=Супорос 60'>Супорос 60</option>
         </select>
       </div>
     )

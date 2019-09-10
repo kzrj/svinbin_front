@@ -83,7 +83,7 @@ class WorkshopTwoContainer extends Component {
           <div className={this.state.tabs.cullingTab ? 'tab-active col-sm' : 'col-sm'}
             onClick={() => this.setTab('cullingTab')}
           >
-            Выбраковка
+            Выбраковка/Аборт
           </div>
           <div className={this.state.tabs.infoTab ? 'tab-active col-sm' : 'col-sm'}
             onClick={() => this.setTab('infoTab')}
@@ -121,6 +121,7 @@ class WorkshopTwoContainer extends Component {
             sows={this.props.state.ws2.cullingList}
             sow={this.props.state.ws2.cullingSow}
             cullingSow={this.props.cullingSow}
+            abortionSow={this.props.abortionSow}
           />}
       </div>
     );
@@ -141,6 +142,7 @@ const mapDispatchToProps = (dispatch) => ({
   getCullingSow: id => dispatch(Ws2Actions.getCullingSowWs2Request(id)),
   cullingSow: data => dispatch(Ws2Actions.cullingSowWs2Request(data)),
   massUltrasound: data => dispatch(SowsActions.massUltrasoundRequest(data)),
+  abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
 
   getUltrasoundV2Sows: query => dispatch(Ws2Actions.getUltrasoundV2SowsWs2Request(query)),
   getUltrasoundV2Sow: id => dispatch(Ws2Actions.getUltrasoundV2SowWs2Request(id)),

@@ -26,6 +26,7 @@ export default {
     GET_BOARS: `${apiUrl}/boars/`,
     MASS_SEMINATION: `${apiUrl}/workshoponetwo/sows/mass_semination/`,
     MASS_ULTRASOUND: `${apiUrl}/workshoponetwo/sows/mass_ultrasound/`,
+    abortionSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/abortion/`,
 
     // init endpoints
     INIT_ADD_NEW_SEMINATED_TO_WS1: `${apiUrl}/sows/add_new_seminated_to_ws1/`,

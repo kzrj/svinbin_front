@@ -127,3 +127,12 @@ export function* massUltrasound(api, action) {
         yield put(SowsActions.massUltrasoundFail(err))
     }
 }
+
+export function* abortionSow(api, action) {
+    try {
+        let response = yield call(api.abortionSow, action.payload);
+        yield put(SowsActions.abortionSowSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.abortionSowFail(err))
+    }
+}

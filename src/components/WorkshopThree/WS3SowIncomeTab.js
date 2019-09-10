@@ -47,8 +47,16 @@ class WS3SowIncomeTab extends Component {
   }
 
   clickSetlle = () => {
-    const { activeCellId } = this.state
+    const { activeCellId, sectionId } = this.state
     this.props.sowMoveTo({id: this.props.sow.id, location: activeCellId})
+    this.props.getLocations({by_section: sectionId})
+    this.setState({
+      query: {by_workshop_number: 3,},
+      activeSectionId: null,
+      activeCellId: null,
+    })
+    this.props.getSows(this.state.query)
+
   }
 
   render() {

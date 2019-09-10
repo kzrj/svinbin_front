@@ -23,8 +23,8 @@ class WorkshopOneContainer extends Component {
         seminationTab: false,
         createTab: false,
         ultrasoundTab: false,
-        transferToWS2Tab: true,
-        cullingTab: false,
+        transferToWS2Tab: false,
+        cullingTab: true,
         infoTab: false,
       }
     }
@@ -107,7 +107,7 @@ class WorkshopOneContainer extends Component {
             <div className={this.state.tabs.cullingTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
               onClick={() => this.setTab('cullingTab')}
             >
-              Выбраковка
+              Выбраковка/Аборт
             </div>
             <div className={this.state.tabs.infoTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
               onClick={() => this.setTab('infoTab')}
@@ -172,6 +172,7 @@ class WorkshopOneContainer extends Component {
             sow={this.props.state.ws1.cullingSow}
 
             cullingSow={this.props.cullingSow}
+            abortionSow={this.props.abortionSow}
           />}
 
       </div>
@@ -192,15 +193,13 @@ const mapDispatchToProps = (dispatch) => ({
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getBoars: query => dispatch(SowsActions.getBoarsRequest(query)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
-  // seminationSow: data => dispatch(SowsActions.seminationSowRequest(data)),
-  // ultrasoundSow: data => dispatch(SowsActions.ultrasoundSowRequest(data)),
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
-  sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),
-  // createNewSow: data => dispatch(Ws1Actions.createNewSowWs1Request(data)),
+  sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),  
   createNewNonameSow: data => dispatch(SowsActions.createNewNonameSowRequest(data)),
   massSemination: data => dispatch(SowsActions.massSeminationRequest(data)),
   massUltrasound: data => dispatch(SowsActions.massUltrasoundRequest(data)),
+  abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
 
   getSeminationSows: query => dispatch(Ws1Actions.getSeminationSowsRequest(query)),
   getSeminationSow: id => dispatch(Ws1Actions.getSeminationSowRequest(id)),

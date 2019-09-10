@@ -12,10 +12,7 @@ class WS2UltrasoundTab extends Component {
     this.state = {
       query: {
         by_workshop_number: 2,
-        farm_id_isnull: false,
-        not_in_tour: false,
-        suporos: null,
-        seminated: 2,
+        status_title: 'Осеменена 2',
         tour: null,
       },
       choosedSows: [],
@@ -116,7 +113,7 @@ class WS2UltrasoundTab extends Component {
           <div className='commonfilter row'>
             <SowFarmIdFilter setQuery={this.setQuery} />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
-            <SowUsound30Filter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>
+            <SowUsound30Filter setQuery={this.setQuery}/>
           </div>
           <div>
             <div>

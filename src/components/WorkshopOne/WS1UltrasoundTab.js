@@ -12,10 +12,7 @@ class WS1UltrasoundTab extends Component {
     this.state = {
       query: {
         by_workshop_number: 1,
-        farm_id_isnull: false,
-        not_in_tour: false,
-        suporos: null,
-        seminated: 2,
+        status_title: 'Осеменена 2',
         tour: null,
       },
       choosedSows: [],
@@ -24,7 +21,6 @@ class WS1UltrasoundTab extends Component {
       result: true,
     };
     this.setQuery = this.setQuery.bind(this);
-    this.setSeminatedSuporosStatus = this.setSeminatedSuporosStatus.bind(this);
     this.sowClick = this.sowClick.bind(this);
     this.setData = this.setData.bind(this);
     this.massUltrasound = this.massUltrasound.bind(this);
@@ -57,22 +53,6 @@ class WS1UltrasoundTab extends Component {
     this.props.getSows(query)
   }
   
-  setSeminatedSuporosStatus (e) {
-    let { query } = this.state
-    let finalQuery = {}
-    const filter = e.target.value.split('=')[0]
-    const value = e.target.value.split('=')[1]
-    if (filter == 'seminated')
-      finalQuery = {...query, [filter]:value, suporos: null}
-    if (filter == 'suporos')
-      finalQuery = {...query, [filter]:value, seminated: null}
-    this.setState({
-      ...this.state,
-      query: finalQuery
-    })
-    this.props.getSows(finalQuery)
-  }
-
   sowClick (e) {
     let { choosedSows } = this.state
     const { id } = e.target.dataset
@@ -116,7 +96,7 @@ class WS1UltrasoundTab extends Component {
           <div className='commonfilter row'>
             <SowFarmIdFilter setQuery={this.setQuery} />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
-            <SowUsound30Filter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>
+            <SowUsound30Filter setQuery={this.setQuery}/>
           </div>
           <div>
             <div>

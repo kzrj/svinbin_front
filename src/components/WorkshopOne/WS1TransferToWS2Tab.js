@@ -13,9 +13,10 @@ class WS1TransferToWS2Tab extends Component {
     this.state = {
       query: {
         by_workshop_number: 1,
-        suporos: null,
-        seminated: 0,
         tour: null,
+        status_title: "Супорос 60",
+        to_seminate: null,
+        farm_id_isnull: false
       },
       choosedSows: [],
       
@@ -68,12 +69,14 @@ class WS1TransferToWS2Tab extends Component {
     let finalQuery = {}
     const filter = e.target.value.split('=')[0]
     const value = e.target.value.split('=')[1]
-    if (filter == 'seminated')
-      finalQuery = {...query, [filter]:value, suporos: null, farm_id_isnull: false}
-    if (filter == 'suporos')
-      finalQuery = {...query, [filter]:value, seminated: null, farm_id_isnull: false}
+    if (filter == 'to_seminate')
+      finalQuery = {...query, [filter]:value, farm_id_isnull: false,
+         status_title: null}
+    if (filter == 'status_title')
+      finalQuery = {...query, [filter]:value, to_seminate: null, farm_id_isnull: false}
     if (filter == 'farm_id_isnull')
-      finalQuery = {by_workshop_number: 1, farm_id_isnull: true}
+      finalQuery = {...query, farm_id_isnull: true,
+         to_seminate: null, status_title: null}
     this.setState({
       ...this.state,
       query: finalQuery

@@ -96,8 +96,8 @@ class WS3SowFarrowTab extends Component {
             />
             <Cells 
               locations={locations}
-              activeCellId={this.state.activeCellLocationId}
-              clickCell={this.clickCellLocation}
+              activeCellIds={[this.state.activeCellLocationId]}
+              clickLocation={this.clickCellLocation}
             />
           </div>
           <div className='col-6'>

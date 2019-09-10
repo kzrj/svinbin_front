@@ -58,6 +58,10 @@ const { Types, Creators } = createActions({
     massUltrasoundRequest: ['payload'],
     massUltrasoundFail: ['error'],
     massUltrasoundSuccess: ['payload'],
+
+    abortionSowRequest: ['payload'],
+    abortionSowFail: ['error'],
+    abortionSowSuccess: ['payload'],
 })
 
 export const SowsTypes = Types
@@ -97,6 +101,7 @@ export const SowsSelectors = {
     createNewNonameSow: state => state.sows.nonameSowsCount,
     getBoars: state => state.sows.boars,
     addNewSeminatedToWs1: state => state.sows.initData,
+    abortionsSow: state => state.sows.sow
 }
 
 /* ------------- Reducers ------------- */
@@ -284,6 +289,19 @@ export const massUltrasoundSuccess = (state, { payload }) => {
 export const massUltrasoundFail = (state, { error }) => {
     return state.merge({ fetching: false, error: error.data })
 }
+
+// AbortionSow
+export const abortionSowRequest = (state, { payload }) => {
+    return state.merge({ fetching: true, })
+}
+
+export const abortionSowSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, sow: payload })
+}
+
+export const abortionSowFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, sow: null })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -342,4 +360,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MASS_ULTRASOUND_REQUEST]: massUltrasoundRequest,
     [Types.MASS_ULTRASOUND_SUCCESS]: massUltrasoundSuccess,
     [Types.MASS_ULTRASOUND_FAIL]: massUltrasoundFail,
+
+    [Types.ABORTION_SOW_REQUEST]: abortionSowRequest,
+    [Types.ABORTION_SOW_SUCCESS]: abortionSowSuccess,
+    [Types.ABORTION_SOW_FAIL]: abortionSowFail,
 })

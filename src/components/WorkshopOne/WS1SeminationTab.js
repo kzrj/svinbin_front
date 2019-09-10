@@ -12,8 +12,10 @@ class WS1SeminationTab extends Component {
     this.state = {
       query: {
           by_workshop_number: 1,
-          seminated: 0,
+          to_seminate: true,
           tour: null,
+          farm_id_isnull: false,
+          status_title_in: []
         },
       choosedSows: [],
       farmId: null,
@@ -23,6 +25,7 @@ class WS1SeminationTab extends Component {
     }
     this.setQuery = this.setQuery.bind(this);
     this.setSeminatedSuporosStatus = this.setSeminatedSuporosStatus.bind(this);
+    this.setStatusTitleInFilter = this.setStatusTitleInFilter.bind(this);
     this.sowClick = this.sowClick.bind(this);
     this.setData = this.setData.bind(this);
     this.massSemination = this.massSemination.bind(this);
@@ -50,15 +53,22 @@ class WS1SeminationTab extends Component {
     this.props.getSows(query)
   }
 
+  setStatusTitleInFilter (statusTitle) {
+    let { status_title_in } = this.state.query
+    status_title_in = toggleArray(status_title_in, statusTitle)
+    return status_title_in
+  }
+
   setSeminatedSuporosStatus (e) {
     let { query } = this.state
     let finalQuery = {}
     const filter = e.target.value.split('=')[0]
     const value = e.target.value.split('=')[1]
-    if (filter == 'seminated')
-      finalQuery = {...query, [filter]:value, suporos: null}
-    if (filter == 'suporos')
-      finalQuery = {...query, [filter]:value, seminated: null}
+    if (filter == 'to_seminate')
+      finalQuery = {...query, [filter]:value, status_title_in: []}
+    if (filter == 'status_title_in')
+      finalQuery = {...query, [filter]:value,
+         status_title_in: this.setStatusTitleInFilter(value), to_seminate: false}
     this.setState({
       ...this.state,
       query: finalQuery

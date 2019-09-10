@@ -50,6 +50,14 @@ class WS2CullingTab extends Component {
     this.props.cullingSow(data)
   }
 
+  abortionSow = () => {
+    let data = {
+      id: this.props.sow.sow.id,
+    }
+    this.props.abortionSow(data)
+    this.props.getSows(this.state.query)
+  }
+
   render() {
     const { sows, sow } = this.props
     return (
@@ -99,6 +107,12 @@ class WS2CullingTab extends Component {
                         Забраковать
                       </button>
                     </div>
+                  </div>
+                  <div className="input-group">
+                      <button className="btn btn-outline-secondary" type="button"  
+                      onClick={this.abortionSow}>
+                        Аборт
+                      </button>
                   </div>
                 </div>
               }
