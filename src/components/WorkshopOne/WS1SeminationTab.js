@@ -22,6 +22,7 @@ class WS1SeminationTab extends Component {
       week: null,
       boar: null,
       seminationEmployee: null,
+      needToRefresh: false,
     }
     this.setQuery = this.setQuery.bind(this);
     this.setSeminatedSuporosStatus = this.setSeminatedSuporosStatus.bind(this);
@@ -29,10 +30,12 @@ class WS1SeminationTab extends Component {
     this.sowClick = this.sowClick.bind(this);
     this.setData = this.setData.bind(this);
     this.massSemination = this.massSemination.bind(this);
+    this.refreshSowsList = this.refreshSowsList.bind(this);
   }
   
   componentDidMount() {
     // query
+    console.log('Did mount')
     this.props.getSows(this.state.query)
     this.props.getBoars()
     this.props.getTours()
@@ -48,9 +51,11 @@ class WS1SeminationTab extends Component {
       query: {
         ...this.state.query,
         query: query
-      }
+      },
+      choosedSows: [],
+      needToRefresh: true
     })
-    this.props.getSows(query)
+    // this.props.getSows(query)
   }
 
   setStatusTitleInFilter (statusTitle) {
@@ -71,7 +76,8 @@ class WS1SeminationTab extends Component {
          status_title_in: this.setStatusTitleInFilter(value), to_seminate: false}
     this.setState({
       ...this.state,
-      query: finalQuery
+      query: finalQuery,
+      choosedSows: []
     })
     this.props.getSows(finalQuery)
   }
@@ -101,15 +107,24 @@ class WS1SeminationTab extends Component {
       boar: this.state.boar
     }
     this.props.massSemination(data)
-    this.props.getSows(this.state.query)
     this.setState({
       ...this.state,
-      choosedSows: []
+      choosedSows: [],
+      needToRefresh: true
     })
+  }
+
+  refreshSowsList () {
+    if (this.state.needToRefresh) {
+      this.props.getSows(this.state.query)
+      this.props.getTours()
+      this.setState({...this.state, needToRefresh: false})
+    }
   }
 
   render() {
     const { sows, seminationEmployes, boars, tours } = this.props
+    this.refreshSowsList()
     return (
       <div className='workshop-content'>
         <div>

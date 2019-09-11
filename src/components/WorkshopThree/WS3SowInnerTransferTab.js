@@ -112,7 +112,7 @@ class WS3SowInnerTransferTab extends Component {
           </div>
           {this.state.activeSow && 
             <button onClick={this.clickTransfer}>
-              Отправить в Цех8
+              Переместить
             </button>
           }
         </div>

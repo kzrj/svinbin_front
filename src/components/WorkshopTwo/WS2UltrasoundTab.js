@@ -19,12 +19,14 @@ class WS2UltrasoundTab extends Component {
       farmId: null,
       days: 60,
       result: true,
+      needToRefresh: false
     };
     this.setQuery = this.setQuery.bind(this);
     this.setSeminatedSuporosStatus = this.setSeminatedSuporosStatus.bind(this);
     this.sowClick = this.sowClick.bind(this);
     this.setData = this.setData.bind(this);
     this.massUltrasound = this.massUltrasound.bind(this);
+    this.refreshSowsList = this.refreshSowsList.bind(this);
   }
 
   componentDidMount() {
@@ -49,9 +51,11 @@ class WS2UltrasoundTab extends Component {
       query: {
         ...this.state.query,
         query: query
-      }
+      },
+      choosedSows: [],
+      needToRefresh: true
     })
-    this.props.getSows(query)
+    // this.props.getSows(query)
   }
   
   setSeminatedSuporosStatus (e) {
@@ -65,7 +69,8 @@ class WS2UltrasoundTab extends Component {
       finalQuery = {...query, [filter]:value, seminated: null}
     this.setState({
       ...this.state,
-      query: finalQuery
+      query: finalQuery,
+      choosedSows: []
     })
     this.props.getSows(finalQuery)
   }
@@ -95,15 +100,23 @@ class WS2UltrasoundTab extends Component {
       result: this.state.result
     }
     this.props.massUltrasound(data)
-    this.props.getSows(this.state.query)
     this.setState({
       ...this.state,
-      choosedSows: []
+      choosedSows: [],
+      needToRefresh: true
     })
+  }
+
+  refreshSowsList () {
+    if (this.state.needToRefresh) {
+      this.props.getSows(this.state.query)
+      this.setState({...this.state, needToRefresh: false})
+    }
   }
 
   render() {
     const { sows, tours } = this.props
+    this.refreshSowsList()
     return (
       <div className='workshop-content'>
          {/* <button onClick={this.showState}>

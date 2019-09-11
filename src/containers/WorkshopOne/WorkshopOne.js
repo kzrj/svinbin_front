@@ -23,8 +23,8 @@ class WorkshopOneContainer extends Component {
         seminationTab: false,
         createTab: false,
         ultrasoundTab: false,
-        transferToWS2Tab: false,
-        cullingTab: true,
+        transferToWS2Tab: true,
+        cullingTab: false,
         infoTab: false,
       }
     }
@@ -117,6 +117,8 @@ class WorkshopOneContainer extends Component {
         </div>
         { this.state.tabs.createTab && 
           <WS1CreateTab 
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
             sow={this.props.state.ws1.createdSow}
             nonameSow={this.props.state.sows.createdNonameSow}
             nonameSowsCount={this.props.state.sows.nonameSowsCount}

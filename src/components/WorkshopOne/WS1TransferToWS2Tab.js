@@ -19,13 +19,14 @@ class WS1TransferToWS2Tab extends Component {
         farm_id_isnull: false
       },
       choosedSows: [],
-      
+      needToRefresh: false
     };
     this.setQuery = this.setQuery.bind(this);
     this.chooseAll = this.chooseAll.bind(this);
     this.setSeminatedSuporosStatus = this.setSeminatedSuporosStatus.bind(this);
     this.sowClick = this.sowClick.bind(this);
     this.massMove = this.massMove.bind(this);
+    this.refreshSowsList = this.refreshSowsList.bind(this);
   }
 
   componentDidMount() {
@@ -59,9 +60,11 @@ class WS1TransferToWS2Tab extends Component {
       query: {
         ...this.state.query,
         query: query
-      }
+      },
+      choosedSows: [],
+      needToRefresh: true
     })
-    this.props.getSows(query)
+    // this.props.getSows(query)
   }
   
   setSeminatedSuporosStatus (e) {
@@ -79,7 +82,8 @@ class WS1TransferToWS2Tab extends Component {
          to_seminate: null, status_title: null}
     this.setState({
       ...this.state,
-      query: finalQuery
+      query: finalQuery,
+      choosedSows: []
     })
     this.props.getSows(finalQuery)
   }
@@ -100,16 +104,23 @@ class WS1TransferToWS2Tab extends Component {
       to_location: 2
     }
     this.props.massMove(data)
-    this.props.getSows(this.state.query)
     this.setState({
       ...this.state,
-      choosedSows: []
+      choosedSows: [],
+      needToRefresh: true
     })
+  }
+
+  refreshSowsList () {
+    if (this.state.needToRefresh) {
+      this.props.getSows(this.state.query)
+      this.setState({...this.state, needToRefresh: false})
+    }
   }
 
   render() {
     const { sows, tours } = this.props
-    
+    this.refreshSowsList()
     return (
       <div className='workshop-content'>
          {/* <button onClick={this.showState}>
