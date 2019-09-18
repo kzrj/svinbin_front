@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 // components
 import WS1SeminationTab from '../../components/WorkshopOne/WS1SeminationTab'
 import WS1CreateTab from '../../components/WorkshopOne/WS1CreateTab'
-import WS1UltrasoundTab from '../../components/WorkshopOne/WS1UltrasoundTab'
+import WS1Ultrasound30Tab from '../../components/WorkshopOne/WS1Ultrasound30Tab'
+import WS1Ultrasound60Tab from '../../components/WorkshopOne/WS1Ultrasound60Tab'
 import WS1TransferToWS2Tab from '../../components/WorkshopOne/WS1TransferToWS2Tab'
 import WS1CullingTab from '../../components/WorkshopOne/WS1CullingTab'
 
@@ -22,8 +23,9 @@ class WorkshopOneContainer extends Component {
       tabs: {
         seminationTab: false,
         createTab: false,
-        ultrasoundTab: false,
-        transferToWS2Tab: true,
+        ultrasound30Tab: true,
+        ultrasound60Tab: false,
+        transferToWS2Tab: false,
         cullingTab: false,
         infoTab: false,
       }
@@ -44,10 +46,8 @@ class WorkshopOneContainer extends Component {
 
   showStateConsole = () => {
     const { state } = this.props
-    console.log('Hi')
     console.log(state)
     console.log(this.props.state.sowsByTours)
-    console.log('JHIU')
   }
 
   setTab = (tab) => {
@@ -66,7 +66,6 @@ class WorkshopOneContainer extends Component {
 
   showStateConsole = () => {
     const { state } = this.props
-    console.log('Hi')
     console.log(state)
   }
 
@@ -93,10 +92,16 @@ class WorkshopOneContainer extends Component {
             >
               Осеменение
             </div>
-            <div className={this.state.tabs.ultrasoundTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
-              onClick={() => this.setTab('ultrasoundTab')}
+            <div className={this.state.tabs.ultrasound30Tab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
+              onClick={() => this.setTab('ultrasound30Tab')}
             >
-              УЗИ
+              УЗИ 30
+            </div>
+
+            <div className={this.state.tabs.ultrasound60Tab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
+              onClick={() => this.setTab('ultrasound60Tab')}
+            >
+              УЗИ 60
             </div>
 
             <div className={this.state.tabs.transferToWS2Tab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
@@ -141,10 +146,13 @@ class WorkshopOneContainer extends Component {
             tours={this.props.state.tours.list}
 
             massSemination={this.props.massSemination}
+
+            eventFetching={this.props.state.sows.fetching}
+            sowsListFetching={this.props.state.ws1.fetching}
           />}
 
-        { this.state.tabs.ultrasoundTab &&
-          <WS1UltrasoundTab 
+        { this.state.tabs.ultrasound30Tab &&
+          <WS1Ultrasound30Tab 
             getSows={this.props.getUltrasoundSows}
             sows={this.props.state.ws1.ultrasoundList}
 
@@ -152,6 +160,23 @@ class WorkshopOneContainer extends Component {
             tours={this.props.state.tours.list}
 
             massUltrasound={this.props.massUltrasound}
+
+            eventFetching={this.props.state.sows.fetching}
+            sowsListFetching={this.props.state.ws1.fetching}
+          />}
+
+        { this.state.tabs.ultrasound60Tab &&
+          <WS1Ultrasound60Tab 
+            getSows={this.props.getUltrasoundSows}
+            sows={this.props.state.ws1.ultrasoundList}
+
+            getTours={this.props.getTours}
+            tours={this.props.state.tours.list}
+
+            massUltrasound={this.props.massUltrasound}
+
+            eventFetching={this.props.state.sows.fetching}
+            sowsListFetching={this.props.state.ws1.fetching}
           />}
 
         { this.state.tabs.transferToWS2Tab &&
@@ -163,6 +188,9 @@ class WorkshopOneContainer extends Component {
             tours={this.props.state.tours.list}
 
             massMove={this.props.sowsMoveMany}
+
+            eventFetching={this.props.state.sows.fetching}
+            sowsListFetching={this.props.state.ws1.fetching}
           />}
 
         { this.state.tabs.cullingTab &&

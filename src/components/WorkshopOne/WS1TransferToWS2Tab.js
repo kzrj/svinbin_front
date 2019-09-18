@@ -112,9 +112,11 @@ class WS1TransferToWS2Tab extends Component {
   }
 
   refreshSowsList () {
-    if (this.state.needToRefresh) {
-      this.props.getSows(this.state.query)
-      this.setState({...this.state, needToRefresh: false})
+    if (this.props.eventFetching) {
+      setTimeout(() => {
+        this.setState({...this.state, needToRefresh: false})
+        this.props.getSows(this.state.query)  
+      }, 500)
     }
   }
 
@@ -155,7 +157,8 @@ class WS1TransferToWS2Tab extends Component {
               <button onClick={this.chooseAll}>Выбрать всех</button>
             </div> */}
           </div>
-          <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>
+          {this.state.needToRefresh && this.props.sowsListFetching  ? 'Loading' :
+            <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>}
         </div>
       </div>
     )

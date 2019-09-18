@@ -6,7 +6,7 @@ import { SowTable }  from '../../components/WorkshopOne/SowComponents'
 import { SowFarmIdFilter, SowTourFilter, SowUsound30Filter }  from '../../components/WorkshopOne/SowComponents'
 
 
-class WS1Ultrasound60Tab extends Component {
+class WS1Ultrasound30Tab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -90,17 +90,22 @@ class WS1Ultrasound60Tab extends Component {
   }
 
   refreshSowsList () {
-    if (this.state.needToRefresh) {
-      this.setState({...this.state, needToRefresh: false})
-      this.props.getSows(this.state.query)
+    if (this.props.eventFetching) {
+      setTimeout(() => {
+        this.setState({...this.state, needToRefresh: false})
+        this.props.getSows(this.state.query)  
+      }, 500)
     }
   }
 
   render() {
-    const { sows, tours } = this.props
+    let { sows, tours } = this.props
     this.refreshSowsList()
     return (
       <div className='workshop-content'>
+         {/* <button onClick={this.showState}>
+           State
+         </button> */}
         <div>
           <div className='commonfilter row'>
             <SowFarmIdFilter setQuery={this.setQuery} />
@@ -115,7 +120,7 @@ class WS1Ultrasound60Tab extends Component {
                 <select className="custom-select" id="inputGroupSelect04" 
                   onChange={this.setData} name='days'>
                   <option selected value='30'>30 дней</option>
-                  <option value='60' >60 дней</option>
+                  {/* <option value='60' >60 дней</option> */}
                 </select>
                 <select className="custom-select" id="inputGroupSelect04" 
                   onChange={this.setData} name='result'>
@@ -141,11 +146,12 @@ class WS1Ultrasound60Tab extends Component {
                 <button onClick={this.chooseAll}>Выбрать всех</button>
               </div> */}
             </div>
-          <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>
+          {this.state.needToRefresh && this.props.sowsListFetching  ? 'Loading' :
+            <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>}
         </div>
       </div>
     )
   }
 }
 
-export default WS1Ultrasound60Tab
+export default WS1Ultrasound30Tab

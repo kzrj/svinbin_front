@@ -172,7 +172,21 @@ export class SowUsound30Filter extends Component {
         <select className="custom-select" id="inputGroupSelect01"
           onChange={this.props.setQuery} name='status_title'>
           <option selected value='Осеменена 2'>Осеменена 2</option>
-          <option value='Супорос 30'>Супорос 30</option>
+          {/* <option value='Супорос 30'>Супорос 30</option> */}
+        </select>
+      </div>
+    )
+  }
+ }
+
+ export class SowUsound60Filter extends Component {
+  render() {
+    return (
+      <div className="input-group mb-3 col-3">
+        <select className="custom-select" id="inputGroupSelect01"
+          onChange={this.props.setQuery} name='status_title'>
+          {/* <option selected value='Осеменена 2'>Осеменена 2</option> */}
+          <option selected value='Супорос 30'>Супорос 30</option>
         </select>
       </div>
     )
