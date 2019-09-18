@@ -52,6 +52,7 @@ class WS3SowWeaningTab extends Component {
       to_location: 1
     }
     this.props.massMove(data)
+    this.props.getLocations({by_section: this.state.activeSectionId})
     this.setState({
       activeSows: [],
       activeSectionId: null,
@@ -80,7 +81,7 @@ class WS3SowWeaningTab extends Component {
           <div className='col-6'>
               Выбрано {this.state.activeSows.length} маток
               {this.state.activeSows.length > 0 &&
-                <div>
+                <div className='bottom-buttons-block'>
                   Перевести в ЦЕХ 1
                   <div className="input-group">
                     <div className="input-group-append">

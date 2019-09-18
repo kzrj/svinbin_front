@@ -86,6 +86,8 @@ class WorkshopTwoContainer extends Component {
             ИНФО
           </div>
         </div>
+        <div className='workshop-header-3'>
+        </div>
         { this.state.tabs.transferTab &&
           <WS2TransferTab 
           getSows={this.props.getCullingSows}
@@ -116,11 +118,12 @@ class WorkshopTwoContainer extends Component {
 
         { this.state.tabs.cullingTab &&
           <WS2CullingTab
-            query={null}
             getSows={this.props.getCullingSows}
             getSow={this.props.getCullingSow} 
+
             sows={this.props.state.ws2.cullingList}
             sow={this.props.state.ws2.cullingSow}
+            
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}
           />}

@@ -69,7 +69,8 @@ export const getCullingSowsWs2Request = (state, { payload }) => {
 export const getCullingSowsWs2Success = (state, { payload }) => {
     let sow = null
     if (payload.length > 0) sow = payload[0]
-    return state.merge({ fetching: false, error: null, cullingList: payload, cullingSow: sow })
+    return state.merge({ fetching: false, error: null, cullingList: payload,
+        cullingSow: {sow: sow, tours_info: []} })
 }
 
 export const getCullingSowsWs2Fail = (state, { error }) => {

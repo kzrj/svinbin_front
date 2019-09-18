@@ -56,7 +56,6 @@ class WS3SowIncomeTab extends Component {
       activeCellId: null,
     })
     this.props.getSows(this.state.query)
-
   }
 
   render() {
@@ -81,12 +80,14 @@ class WS3SowIncomeTab extends Component {
               clickLocation={this.clickCell} 
               activeCellIds={[this.state.activeCellId]}
               />
-            <div>
-              {this.state.activeCellId && 
-                <button onClick={this.clickSetlle}>
-                  Разместить свиноматку
-                </button>
-              }
+            <div className='bottom-buttons-block'>
+              <div className="input-group">
+                {this.state.activeCellId && 
+                  <button onClick={this.clickSetlle} className='btn btn-outline-secondary'>
+                    Разместить свиноматку
+                  </button>
+                }
+              </div>
             </div>
           </div>
         </div>

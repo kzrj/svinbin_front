@@ -103,11 +103,6 @@ class WS1Ultrasound30Tab extends Component {
     this.refreshSowsList()
     return (
       <div className='workshop-content'>
-         {/* <button onClick={this.showState}>
-           State
-         </button> */}
-         <div className='workshop-header-3'>
-        </div>
         <div>
           <div className='commonfilter row'>
             <label className='sow-event-label'>Фильтр</label>

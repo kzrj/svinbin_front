@@ -118,6 +118,8 @@ class WorkshopOneContainer extends Component {
               ИНФО
             </div>
         </div>
+        <div className='workshop-header-3'>
+        </div>
         { this.state.tabs.createTab && 
           <WS1CreateTab 
             getSows={this.props.getSows}

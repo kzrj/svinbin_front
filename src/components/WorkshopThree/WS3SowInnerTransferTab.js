@@ -111,10 +111,14 @@ class WS3SowInnerTransferTab extends Component {
             }
           </div>
           {this.state.activeSow && 
-            <button onClick={this.clickTransfer}>
-              Переместить
-            </button>
-          }
+            <div className='bottom-buttons-block'>
+              <div className="input-group">
+                <button onClick={this.clickTransfer} className='btn btn-outline-secondary'>
+                  Переместить
+                </button>
+              </div>
+            </div>
+          } 
         </div>
       </div>
     )

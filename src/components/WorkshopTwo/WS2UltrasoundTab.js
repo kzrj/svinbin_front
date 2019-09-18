@@ -121,8 +121,6 @@ class WS2UltrasoundTab extends Component {
     this.refreshSowsList()
     return (
       <div className='workshop-content'>
-        <div className='workshop-header-3'>
-        </div>
         <div>
           <div className='commonfilter row'>
             <label className='sow-event-label'>Фильтр</label>

@@ -57,60 +57,72 @@ class WorkshopThreeContainer extends Component {
   render() {
     return (
       <div className="workshop container">
-        <h1>WorkshopThree</h1>
-      
-        <button onClick={this.showStateConsole}>state</button>
+        <div className='workshop-header'>
+          Цех №3
+        </div>      
         <div className='row workshop-menu'>
-          <div className={this.state.tabs.balanceTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.balanceTab ? 'workshop-tab tab-active col-sm' : 
+            'workshop-tab col-sm'}
             onClick={() => this.setTab('balanceTab')}
           >
             БАЛАНС
           </div>
-          <div className={this.state.tabs.returnPigletsTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.returnPigletsTab ? 'workshop-tab tab-active col-sm' :
+           'workshop-tab col-sm'}
             onClick={() => this.setTab('returnPigletsTab')}
           >
             Возврат поросята
           </div>
-          <div className={this.state.tabs.comingSowsTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.comingSowsTab ? 'workshop-tab tab-active col-sm' : 
+            'workshop-tab col-sm'}
             onClick={() => this.setTab('comingSowsTab')}
           >
             Поступление матки
           </div>
-          <div className={this.state.tabs.transferTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.transferTab ? 'workshop-tab tab-active col-sm' :
+           'workshop-tab col-sm'}
             onClick={() => this.setTab('transferTab')}
           >
             Внутреннее перемещение
           </div>
-          <div className={this.state.tabs.farrowTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.farrowTab ? 'workshop-tab tab-active col-sm' : 
+            'workshop-tab col-sm'}
             onClick={() => this.setTab('farrowTab')}
           >
             ОПОРОС
           </div>
-          <div className={this.state.tabs.recountTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.recountTab ? 'workshop-tab tab-active col-sm' : 
+            'workshop-tab col-sm'}
             onClick={() => this.setTab('recountTab')}
           >
             Пересчет
           </div>
-          <div className={this.state.tabs.weaningSowsTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.weaningSowsTab ? 'workshop-tab tab-active col-sm' : 
+            'workshop-tab col-sm'}
             onClick={() => this.setTab('weaningSowsTab')}
           >
             Отъем свиноматки
           </div>
-          <div className={this.state.tabs.weaningPigletsTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.weaningPigletsTab ? 'workshop-tab tab-active col-sm' :
+           'workshop-tab col-sm'}
             onClick={() => this.setTab('weaningPigletsTab')}
           >
             Отъем поросята
           </div>
-          <div className={this.state.tabs.taggingTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.taggingTab ? 'workshop-tab tab-active col-sm' : 
+            'workshop-tab col-sm'}
             onClick={() => this.setTab('taggingTab')}
           >
             Биркование
           </div>
-          <div className={this.state.tabs.sowCullingTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.sowCullingTab ? 'workshop-tab tab-active col-sm' : 
+            'workshop-tab col-sm'}
             onClick={() => this.setTab('sowCullingTab')}
           >
             Выбраковка/Аборт
           </div>
+        </div>
+        <div className='workshop-header-3'>
         </div>
         { this.state.tabs.comingSowsTab && 
           <WS3SowIncomeTab 
@@ -150,7 +162,7 @@ class WorkshopThreeContainer extends Component {
             sections={this.props.state.ws3.sections}
             getLocations={this.props.getSowWeaningTabLocations}
             locations={this.props.state.ws3.sowWeaningLocations}
-            massMove={this.props.sowMoveMany}
+            massMove={this.props.sowsMoveMany}
           />}
 
         { this.state.tabs.sowCullingTab && 

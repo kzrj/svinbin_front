@@ -7,24 +7,24 @@ export class SowFindById extends Component {
    const { sows, sow } = this.props
     
    return (
-    <div>
-      <div className='workshop-header-2 under-menu-line text-center'>
-        <p >ПОИСК ПО ID</p>
-      </div>
       <div className='workshop-content-column-1'>
-        <input type='text' onChange={this.props.getSowsById} className="search-input"/>
-        <ul className='list-unstyled'>
-          {sows.length > 0 && sow &&
-            sows.map(sowInList => 
-              <li className={sowInList.id == sow.id ? 'sow-active sow-li text-center' : 'sow-li text-center'} 
-                key={sowInList.id} 
-                onClick={() => this.props.getSow(sowInList.id)}>
-                {sowInList.farm_id}
-              </li>)
-          }
-        </ul>
+        <div class="input-group mb-3">
+          <input type='text' onChange={this.props.getSowsById} 
+            className="form-control search-input"
+            placeholder="Поиск по ID"/>
+        </div>
+          <ul className='list-unstyled'>
+            {sows.length > 0 && sow &&
+              sows.map(sowInList => 
+                <li className={sowInList.id == sow.id ? 'sow-active sow-li text-center' :
+                   'sow-li text-center'} 
+                  key={sowInList.id} 
+                  onClick={() => this.props.getSow(sowInList.id)}>
+                  {sowInList.farm_id}
+                </li>)
+            }
+          </ul>
       </div>
-    </div>
    )
  }
 }

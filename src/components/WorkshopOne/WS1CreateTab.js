@@ -39,15 +39,13 @@ class WS1CreateTab extends Component {
     const countSows = sows.length
     return (
       <div className='workshop-content'>
-        <div className='workshop-header-3'>
-        </div>
         <div>
           <div>
             <label className='sow-event-label'>Создать ремонтную свинку без ID</label>
               {nonameSowsCount ? 
               <p>Количество ремонтных свинок {nonameSowsCount}</p> :
               <p>Количество ремонтных свинок {countSows}</p>}
-              <button onClick={this.createNoname}>
+              <button onClick={this.createNoname} className='btn btn-outline-secondary'>
                 Создать
               </button>
               {nonameSow && 
@@ -63,20 +61,26 @@ class WS1CreateTab extends Component {
           </div>
           <div>
             <label className='sow-event-label'>Создать свиноматку с ID</label>
-              <p>Новый farm id</p>
-              <input type="text" value={this.state.farmId} onChange={this.setFarmId}/>
-              <button onClick={this.create}>
-                Создать
-              </button>
-              {sow && 
-                <div>
-                  <p>{sow.id}</p>
-                    <p>{sow.location}</p>
-                    <p>{sow.created_at}</p>
-                    <p>{sow.farm_id}</p>
-                    <p>{sow.status}</p>
+              
+              <div className="input-group">
+                <input type="text" value={this.state.farmId} onChange={this.setFarmId}
+                  className="form-control search-input"
+                  placeholder="Новый ID"/>
+                <div className="input-group-append">
+                  <button onClick={this.create} className='btn btn-outline-secondary'>
+                    Создать
+                  </button>
                 </div>
-              }
+                {sow && 
+                  <div>
+                    <p>{sow.id}</p>
+                      <p>{sow.location}</p>
+                      <p>{sow.created_at}</p>
+                      <p>{sow.farm_id}</p>
+                      <p>{sow.status}</p>
+                  </div>
+                }
+              </div>
           </div>
         </div>
       </div>
