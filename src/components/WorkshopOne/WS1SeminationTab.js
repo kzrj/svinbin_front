@@ -128,15 +128,18 @@ class WS1SeminationTab extends Component {
     this.refreshSowsList()
     return (
       <div className='workshop-content'>
+        <div className='workshop-header-3'>
+        </div>
         <div>
           <div className='commonfilter row'>
+            <label className='sow-event-label'>Фильтр</label>
             <SowFarmIdFilter setQuery={this.setQuery} />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
             <SowSeminatedFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>
           </div>
           <div>
             <div>
-              Осеменение
+              <label className='sow-event-label'>Осеменение</label>
               <div className="input-group">
                 <input type='text' value={this.state.week} onChange={this.setData} name='week'/> неделя
                 < br/>

@@ -6,11 +6,15 @@ class WS1CreateTab extends Component {
     super(props);
     this.state = {
       farmId: null,
+      query: {
+        by_workshop_number: 1,
+        farm_id_isnull: true,
+      }
     }
   }
   
   componentDidMount() {
-
+    this.props.getSows(this.state.query)
   }
 
   setFarmId = (e) => {
@@ -31,36 +35,18 @@ class WS1CreateTab extends Component {
   }
 
   render() {
-    const { sow, nonameSow, nonameSowsCount } = this.props
+    const { sow, sows, nonameSow, nonameSowsCount } = this.props
+    const countSows = sows.length
     return (
-      <div className='row workshop-content'>
-        <div className="col-6 workshop-left-column">
-          <div className='workshop-header-2 under-menu-line text-center'>
-                <p>Создать свиноматку с ID</p>
-          </div>
-          <div className='workshop-content-column-1'>
-            <p>Новый farm id</p>
-            <input type="text" value={this.state.farmId} onChange={this.setFarmId}/>
-            <button onClick={this.create}>
-              Создать
-            </button>
-            {sow && 
-              <div>
-                <p>{sow.id}</p>
-                  <p>{sow.location}</p>
-                  <p>{sow.created_at}</p>
-                  <p>{sow.farm_id}</p>
-                  <p>{sow.status}</p>
-              </div>
-            }
-          </div>
+      <div className='workshop-content'>
+        <div className='workshop-header-3'>
         </div>
-        <div className='col-6 workshop-right-column'>
-            <div className='under-menu-line text-center workshop-header-2'>
-              <p>Создать ремонтную свинку без ID</p>
-            </div>
-            <div className='workshop-content-column-2'>
-              <p>Количество ремонтных свинок {nonameSowsCount}</p>
+        <div>
+          <div>
+            <label className='sow-event-label'>Создать ремонтную свинку без ID</label>
+              {nonameSowsCount ? 
+              <p>Количество ремонтных свинок {nonameSowsCount}</p> :
+              <p>Количество ремонтных свинок {countSows}</p>}
               <button onClick={this.createNoname}>
                 Создать
               </button>
@@ -74,9 +60,25 @@ class WS1CreateTab extends Component {
 
                 </div>
               }
-              
-            </div>
           </div>
+          <div>
+            <label className='sow-event-label'>Создать свиноматку с ID</label>
+              <p>Новый farm id</p>
+              <input type="text" value={this.state.farmId} onChange={this.setFarmId}/>
+              <button onClick={this.create}>
+                Создать
+              </button>
+              {sow && 
+                <div>
+                  <p>{sow.id}</p>
+                    <p>{sow.location}</p>
+                    <p>{sow.created_at}</p>
+                    <p>{sow.farm_id}</p>
+                    <p>{sow.status}</p>
+                </div>
+              }
+          </div>
+        </div>
       </div>
     )
   }

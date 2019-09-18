@@ -112,9 +112,11 @@ class WS2TransferTab extends Component {
   }
 
   refreshSowsList () {
-    if (this.state.needToRefresh) {
-      this.setState({...this.state, needToRefresh: false})
-      this.props.getSows(this.state.query)
+    if (this.props.eventFetching) {
+      setTimeout(() => {
+        this.setState({...this.state, needToRefresh: false})
+        this.props.getSows(this.state.query)  
+      }, 500)
     }
   }
 
@@ -123,18 +125,18 @@ class WS2TransferTab extends Component {
     this.refreshSowsList()
     return (
       <div className='workshop-content'>
-         {/* <button onClick={this.showState}>
-           State
-         </button> */}
+        <div className='workshop-header-3'>
+        </div>
         <div>
           <div className='commonfilter row'>
+            <label className='sow-event-label'>Фильтр</label>
             <SowFarmIdFilter setQuery={this.setQuery} />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
             <SowSemUsoundFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>
           </div>
           <div className='row'>
             <div className='col-6'>
-              Перевести в ЦЕХ 1
+              <label className='sow-event-label'>Перевести в ЦЕХ 1</label>
               <div className="input-group">
                 <div className="input-group-append">
                   <button className="btn btn-outline-secondary" type="button" 
@@ -145,7 +147,7 @@ class WS2TransferTab extends Component {
                 </div>
             </div>
             <div className='col-6'>
-              Перевести в ЦЕХ 3
+              <label className='sow-event-label'>Перевести в ЦЕХ 3</label>
               <div className="input-group">
                 <div className="input-group-append">
                   <button className="btn btn-outline-secondary" type="button" 
@@ -166,7 +168,8 @@ class WS2TransferTab extends Component {
               <button onClick={this.chooseAll}>Выбрать всех</button>
             </div> */}
           </div>
-          <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>
+          {this.state.needToRefresh && this.props.sowsListFetching  ? 'Loading' :
+            <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>}
         </div>
       </div>
     )

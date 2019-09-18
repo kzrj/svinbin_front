@@ -125,18 +125,18 @@ class WS1TransferToWS2Tab extends Component {
     this.refreshSowsList()
     return (
       <div className='workshop-content'>
-         {/* <button onClick={this.showState}>
-           State
-         </button> */}
+        <div className='workshop-header-3'>
+        </div>
         <div>
           <div className='commonfilter row'>
+            <label className='sow-event-label'>Фильтр</label>
             <SowFarmIdFilter setQuery={this.setQuery} />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
             <SowSemUsoundFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>
           </div>
           <div>
             <div>
-              Перевести в ЦЕХ 2
+              <label className='sow-event-label'>Перевести в ЦЕХ 2</label>
               <div className="input-group">
                 <div className="input-group-append">
                   <button className="btn btn-outline-secondary" type="button" 

@@ -61,31 +61,26 @@ class WorkshopTwoContainer extends Component {
   render() {
     return (
       <div className="workshop container">
-        {/* <h1>WorkshopTwo</h1> */}
-        {/* <div>
-            <button onClick={this.showStateConsole}>
-              Button show store
-            </button>
-            <button onClick={this.showState}>state</button>
-        </div> */}
-        
+        <div className='workshop-header'>
+          Цех №2
+        </div>
         <div className='row workshop-menu'>
-          <div className={this.state.tabs.transferTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.transferTab ? 'workshop-tab tab-active col-sm' : 'workshop-tab col-sm'}
             onClick={() => this.setTab('transferTab')}
           >
             Перемещение
           </div>
-          <div className={this.state.tabs.ultrasoundTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.ultrasoundTab ? 'workshop-tab tab-active col-sm' : 'workshop-tab col-sm'}
               onClick={() => this.setTab('ultrasoundTab')}
             >
-              УЗИ 2
+              УЗИ 60
             </div>
-          <div className={this.state.tabs.cullingTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.cullingTab ? 'workshop-tab tab-active col-sm' : 'workshop-tab col-sm'}
             onClick={() => this.setTab('cullingTab')}
           >
             Выбраковка/Аборт
           </div>
-          <div className={this.state.tabs.infoTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.infoTab ? 'workshop-tab tab-active col-sm' : 'workshop-tab col-sm'}
             onClick={() => this.setTab('infoTab')}
           >
             ИНФО
@@ -100,6 +95,9 @@ class WorkshopTwoContainer extends Component {
           tours={this.props.state.tours.list}
 
           massMove={this.props.sowsMoveMany}
+
+          eventFetching={this.props.state.sows.fetching}
+          sowsListFetching={this.props.state.ws2.fetching}
           />}
 
         { this.state.tabs.ultrasoundTab &&
@@ -111,6 +109,9 @@ class WorkshopTwoContainer extends Component {
             tours={this.props.state.tours.list}
 
             massUltrasound={this.props.massUltrasound}
+
+            eventFetching={this.props.state.sows.fetching}
+            sowsListFetching={this.props.state.ws2.fetching}
           />}
 
         { this.state.tabs.cullingTab &&

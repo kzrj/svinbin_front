@@ -55,6 +55,9 @@
 	padding-right: 0px !important;
 	background-color: #747474;
 	min-height: 24px;
+	color: white;
+	text-align: center;
+	font-weight: bold;
 }
 
 .workshop-tab{
@@ -69,9 +72,20 @@
 }
 
 .workshop-header-2{
+	/* color: white; */
+	min-height: 30px;
+	/* background-color: #616161; */
+	background-color: #ECEFF1;
+}
+
+.workshop-header-3{
 	color: white;
-	min-height: 50px;
+	min-height: 30px;
 	background-color: #616161;
+	margin-left: -15px;
+	margin-right: -15px;
+	padding-left: 0px !important;
+	padding-right: 0px !important;
 }
 
 .workshop-left-column{
@@ -100,4 +114,30 @@
 
 .sow-row-active {
 	background: green;
+}
+
+.sow-seminations {
+	list-style: none;
+	padding-left: 0px;
+}
+
+/* .sow-row{ */
+	/* font-size: 10px; */
+/* } */
+
+/* .sow-row-active{ */
+	/* font-size: 10px; */
+/* } */
+
+.sow-row-date {
+	font-size: 10px;
+}
+
+.commonfilter{
+	padding-top: 10px;
+	padding-left: 20px;
+}
+
+.sow-event-label{
+	font-weight: bold;
 }

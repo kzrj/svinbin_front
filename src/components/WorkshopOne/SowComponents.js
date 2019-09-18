@@ -255,19 +255,21 @@ export class SowRow extends Component {
       <th scope="row" onClick={sowClick} data-id={sow.id}>{sow.farm_id}</th>
       <td onClick={sowClick} data-id={sow.id}>{sow.status}</td>
       <td onClick={sowClick} data-id={sow.id}>{sow.tour ? sow.tour : '-'}</td>
-      <td onClick={sowClick} data-id={sow.id}>
+      <td onClick={sowClick} data-id={sow.id} className="sow-row-date">
         {sow.seminations_current_tour.length > 0 ? 
-          sow.seminations_current_tour.map(seminationDate => seminationDate )
+          <ul className='sow-seminations' onClick={sowClick}>
+            {sow.seminations_current_tour.map(seminationDate => <li onClick={sowClick}>{seminationDate}</li> )}
+          </ul>
           : '-'
         }
       </td>
-      <td onClick={sowClick} data-id={sow.id}>
+      <td onClick={sowClick} data-id={sow.id} className="sow-row-date">
         {sow.ultrasound_30_current_tour.length > 0 ? 
             sow.ultrasound_30_current_tour.map(usound30Date => usound30Date)
             : '-'
           }
       </td>
-      <td onClick={sowClick} data-id={sow.id}>
+      <td onClick={sowClick} data-id={sow.id} className="sow-row-date">
         {sow.ultrasound_60_current_tour.length > 0 ? 
             sow.ultrasound_60_current_tour.map(usound60Date => usound60Date)
             : '-'

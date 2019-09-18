@@ -106,15 +106,18 @@ class WS1Ultrasound30Tab extends Component {
          {/* <button onClick={this.showState}>
            State
          </button> */}
+         <div className='workshop-header-3'>
+        </div>
         <div>
           <div className='commonfilter row'>
+            <label className='sow-event-label'>Фильтр</label>
             <SowFarmIdFilter setQuery={this.setQuery} />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
             <SowUsound30Filter setQuery={this.setQuery}/>
           </div>
           <div>
             <div>
-              УЗИ
+              <label className='sow-event-label'>УЗИ 30 дней</label>
               <div className="input-group">
                 
                 <select className="custom-select" id="inputGroupSelect04" 

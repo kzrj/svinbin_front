@@ -108,9 +108,11 @@ class WS2UltrasoundTab extends Component {
   }
 
   refreshSowsList () {
-    if (this.state.needToRefresh) {
-      this.props.getSows(this.state.query)
-      this.setState({...this.state, needToRefresh: false})
+    if (this.props.eventFetching) {
+      setTimeout(() => {
+        this.setState({...this.state, needToRefresh: false})
+        this.props.getSows(this.state.query)  
+      }, 500)
     }
   }
 
@@ -119,23 +121,23 @@ class WS2UltrasoundTab extends Component {
     this.refreshSowsList()
     return (
       <div className='workshop-content'>
-         {/* <button onClick={this.showState}>
-           State
-         </button> */}
+        <div className='workshop-header-3'>
+        </div>
         <div>
           <div className='commonfilter row'>
+            <label className='sow-event-label'>Фильтр</label>
             <SowFarmIdFilter setQuery={this.setQuery} />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
             <SowUsound30Filter setQuery={this.setQuery}/>
           </div>
           <div>
             <div>
-              УЗИ
+              <label className='sow-event-label'>УЗИ 60</label>
               <div className="input-group">
                 
                 <select className="custom-select" id="inputGroupSelect04" 
                   onChange={this.setData} name='days'>
-                  <option value='30'>30 дней</option>
+                  {/* <option value='30'>30 дней</option> */}
                   <option selected value='60' >60 дней</option>
                 </select>
                 <select className="custom-select" id="inputGroupSelect04" 
@@ -162,7 +164,8 @@ class WS2UltrasoundTab extends Component {
                 <button onClick={this.chooseAll}>Выбрать всех</button>
               </div> */}
             </div>
-          <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>
+            {this.state.needToRefresh && this.props.sowsListFetching  ? 'Loading' :
+              <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>}
         </div>
       </div>
     )

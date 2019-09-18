@@ -65,7 +65,10 @@ class WS1CullingTab extends Component {
   render() {
     const { sows, sow } = this.props
     return (
-        <div className='row workshop-content'>
+      <div className='workshop-content'>
+        <div className='workshop-header-3'>
+        </div>
+        <div className='row'>
           <div className='col-3'>
             <div className='under-menu-line text-center'>
               <p className="workshop-header-2">ПОИСК ПО ID</p>
@@ -111,17 +114,21 @@ class WS1CullingTab extends Component {
                       </button>
                     </div>
                   </div>
-                  <div className="input-group">
+                  <div className="input">
+                    <label className='sow-event-label'>Пометить как аборт</label>
+                    <div>
                       <button className="btn btn-outline-secondary" type="button"  
                       onClick={this.abortionSow}>
                         Аборт
                       </button>
+                    </div>
                   </div>
                 </div>
               }
             </div>
         </div>
       </div>
+    </div>
     )
   }
 }

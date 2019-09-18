@@ -103,15 +103,18 @@ class WS1Ultrasound60Tab extends Component {
     this.refreshSowsList()
     return (
       <div className='workshop-content'>
+        <div className='workshop-header-3'>
+        </div>
         <div>
           <div className='commonfilter row'>
+            <label className='sow-event-label'>Фильтр</label>
             <SowFarmIdFilter setQuery={this.setQuery} />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
             <SowUsound60Filter setQuery={this.setQuery}/>
           </div>
           <div>
             <div>
-              УЗИ
+              <label className='sow-event-label'>УЗИ 60 дней</label>
               <div className="input-group">
                 
                 <select className="custom-select" id="inputGroupSelect04" 
