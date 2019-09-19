@@ -23,7 +23,8 @@ class WS3SowInnerTransferTab extends Component {
     const { sectionId } = e.target.dataset
     this.setState({
       ...this.state,
-      activeFromSectionId: sectionId
+      activeFromSectionId: sectionId,
+      needToRefresh: false
     })
 
     this.props.getLocations1({by_section: sectionId})
@@ -59,20 +60,30 @@ class WS3SowInnerTransferTab extends Component {
       id: this.state.activeSow.id,
       location: this.state.activeCellToLocationId
     })
-    this.props.getLocations1({by_section: this.state.activeFromSectionId})
-    this.props.getLocations2({by_section: this.state.activeToSectionId})
     this.setState({
       ...this.state,
       activeSow: null,
-      activeFromSectionId: null,
+      // activeFromSectionId: null,
       activeCellFromLocationId: null,
-      activeToSectionId: null,
+      // activeToSectionId: null,
       activeCellToLocationId: null,
+      needToRefresh: true,
     })
+  }
+
+  refreshLocations () {
+    if (this.props.eventFetching || this.state.needToRefresh) {
+      setTimeout(() => {
+        this.setState({...this.state, needToRefresh: false})
+        this.props.getLocations1({by_section: this.state.activeFromSectionId})
+        this.props.getLocations2({by_section: this.state.activeToSectionId})
+        }, 500)
+    }
   }
 
   render() {
     const { sections, locations1, locations2 } = this.props
+    this.refreshLocations()
     
     return (
         <div className='row workshop-content'>
