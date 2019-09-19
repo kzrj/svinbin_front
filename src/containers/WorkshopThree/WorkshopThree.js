@@ -135,6 +135,7 @@ class WorkshopThreeContainer extends Component {
             getLocations={this.props.getSowIncomeTabLocations}
             locations={this.props.state.ws3.incomeTabLocations}
             sowMoveTo={this.props.sowMoveTo}
+            eventFetching={this.props.state.sows.fetching}
           />}
         { this.state.tabs.transferTab && 
           <WS3SowInnerTransferTab 

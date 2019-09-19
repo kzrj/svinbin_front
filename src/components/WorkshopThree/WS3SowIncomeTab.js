@@ -11,6 +11,7 @@ class WS3SowIncomeTab extends Component {
       query: {by_workshop_number: 3,},
       activeSectionId: null,
       activeCellId: null,
+      needToRefresh: false
     }
   }
   
@@ -54,11 +55,22 @@ class WS3SowIncomeTab extends Component {
       query: {by_workshop_number: 3,},
       activeSectionId: null,
       activeCellId: null,
+      needToRefresh: true
     })
-    this.props.getSows(this.state.query)
+    // this.props.getSows(this.state.query)
+  }
+
+  refreshSowsList () {
+    if (this.props.eventFetching) {
+      setTimeout(() => {
+        this.setState({...this.state, needToRefresh: false})
+        this.props.getSows(this.state.query)  
+      }, 500)
+    }
   }
 
   render() {
+    this.refreshSowsList()
     const { sows, sow, sections, locations } = this.props
     
     return (

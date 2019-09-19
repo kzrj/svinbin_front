@@ -112,7 +112,7 @@ class WS1TransferToWS2Tab extends Component {
   }
 
   refreshSowsList () {
-    if (this.props.eventFetching) {
+    if (this.props.eventFetching || this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)  

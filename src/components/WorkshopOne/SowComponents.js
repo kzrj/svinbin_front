@@ -142,7 +142,7 @@ export class SowFilter extends Component {
             <option selected value=''>Выбрать тур</option>
             {tours.map(tour =>
               <option value={tour.id} key={tour.id}>
-                Неделя{tour.week_number}
+                Неделя {' '} {tour.week_number}
               </option>
               )}
           </select>
