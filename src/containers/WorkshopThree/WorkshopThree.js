@@ -8,6 +8,8 @@ import WS3SowFarrowTab from '../../components/WorkshopThree/WS3SowFarrowTab'
 import WS3SowWeaningTab from '../../components/WorkshopThree/WS3SowWeaningTab'
 import WS3SowCullingTab from '../../components/WorkshopThree/WS3SowCullingTab'
 
+import WS3PigletsWeaningTab from '../../components/WorkshopThree/WS3PigletsWeaningTab'
+
 // # actions
 import SowsActions from '../../redux/redux-sauce/sows';
 import AuthActions from '../../redux/redux-sauce/auth';
@@ -21,12 +23,12 @@ class WorkshopThreeContainer extends Component {
       tabs: {
         balanceTab: false,
         returnPigletsTab: false,
-        comingSowsTab: true,
+        comingSowsTab: false,
         transferTab: false,
         farrowTab: false,
         weaningSowsTab: false,
         recountTab: false,
-        weaningPigletsTab: false,
+        weaningPigletsTab: true,
         taggingTab: false,
         sowCullingTab: false,
       }
@@ -178,6 +180,16 @@ class WorkshopThreeContainer extends Component {
             sow={this.props.state.sows.sow}
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}
+          />}
+
+        { this.state.tabs.weaningPigletsTab && 
+          <WS3PigletsWeaningTab 
+            getSections={this.props.getSections}
+            sections={this.props.state.ws3.sections}
+
+            getLocations={this.props.getSowWeaningTabLocations}
+            locations={this.props.state.ws3.sowWeaningLocations}
+            
           />}
       </div>
     );

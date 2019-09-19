@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 export const toggleArray = (arr: Array<String>, string: string) => {
     if (arr.indexOf(string) === -1) {
@@ -6,6 +7,27 @@ export const toggleArray = (arr: Array<String>, string: string) => {
       return arr.filter(item => item !== string)
     }
   }
+
+export const lodashToggle = (array, item) => _.xor(array, [item])
+
+export const toggleArrayLocations = (arr: Array<Object>, location: Object) => {
+  let alreadyIn = false;
+  let index = -1;
+  for (var i = 0; i < arr.length; i++){
+    if (_.isEqual(arr[i], location)){
+      alreadyIn = true;
+      index = i;
+      break;
+    }
+  }
+
+  if (alreadyIn){
+    arr.splice(index, 1);
+    return arr
+  } else {
+    return [...arr, location]
+  }
+}
 
 export const addItemToArray = (arr: Array<String>, string: string) => {
     return [...arr, string]
