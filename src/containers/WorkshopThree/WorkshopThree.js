@@ -12,6 +12,8 @@ import WS3PigletsWeaningTab from '../../components/WorkshopThree/WS3PigletsWeani
 
 // # actions
 import SowsActions from '../../redux/redux-sauce/sows';
+import NewbornPigletsActions from '../../redux/redux-sauce/newbornPiglets';
+import NomadPigletsActions from '../../redux/redux-sauce/nomadPiglets';
 import AuthActions from '../../redux/redux-sauce/auth';
 import Ws3Actions from '../../redux/redux-sauce/ws3';
 
@@ -61,6 +63,7 @@ class WorkshopThreeContainer extends Component {
       <div className="workshop container">
         <div className='workshop-header'>
           Цех №3
+          <button onClick={this.showStateConsole}>O</button>
         </div>      
         <div className='row workshop-menu'>
           <div className={this.state.tabs.balanceTab ? 'workshop-tab tab-active col-sm' : 
@@ -169,6 +172,7 @@ class WorkshopThreeContainer extends Component {
             sections={this.props.state.ws3.sections}
             getLocations={this.props.getSowWeaningTabLocations}
             locations={this.props.state.ws3.sowWeaningLocations}
+            eventFetching={this.props.state.sows.fetching}
             massMove={this.props.sowsMoveMany}
           />}
 
@@ -190,6 +194,13 @@ class WorkshopThreeContainer extends Component {
             getLocations={this.props.getSowWeaningTabLocations}
             locations={this.props.state.ws3.sowWeaningLocations}
             
+            mergeNewbornPiglets={this.props.mergeNewbornPiglets}
+            megreFetching={this.props.state.newbornPiglets.eventFetching}
+
+            getNomadPiglets={this.props.getNomadPiglets}
+            nomadPiglets={this.props.state.nomadPiglets.list}
+            moveNomadPiglets={this.props.moveNomadPiglets}
+            moveNomadFetching={this.props.state.nomadPiglets.eventFetching}
           />}
       </div>
     );
@@ -211,6 +222,11 @@ const mapDispatchToProps = (dispatch) => ({
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
   sowFarrow: data => dispatch(SowsActions.sowFarrowRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
+
+  getNewbornPiglets: query => dispatch(NewbornPigletsActions.getNewbornPigletsRequest(query)),
+  mergeNewbornPiglets: data => dispatch(NewbornPigletsActions.mergeNewbornPigletsRequest(data)),
+  getNomadPiglets: query => dispatch(NomadPigletsActions.getNomadPigletsRequest(query)),
+  moveNomadPiglets: data => dispatch(NomadPigletsActions.moveToPigletsRequest(data)),
 
   getIncomeSows: query => dispatch(Ws3Actions.getIncomeSowsWs3Request(query)),
   getIncomeSow: id => dispatch(Ws3Actions.getIncomeSowWs3Request(id)),

@@ -7,11 +7,6 @@ const create = () => {
     const getSows = (filters) => {
         const params = createUrlParamsFromFilters(filters);
         console.log(params)
-        // filters.keys().map(key => {
-        //     if (Array.isArray(filters[key])) 
-        //         filters[key].map(elem)
-        //     )
-        // }
 
         return axios.get(endpoints.GET_SOWS, { params })
         .then(response => response.data)

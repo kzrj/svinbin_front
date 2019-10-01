@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 //components
-import { SowFindById, Cells, Sections } from '../WorkshopThree/Components'
+import { SowFindById, SowCells, Sections } from '../WorkshopThree/Components'
 
 
 class WS3SowIncomeTab extends Component {
@@ -87,7 +87,7 @@ class WS3SowIncomeTab extends Component {
               sections={sections}
               activeSectionId={this.state.activeSectionId} 
               clickSection={this.clickSection}/>
-            <Cells 
+            <SowCells 
               locations={locations} 
               clickLocation={this.clickCell} 
               activeCellIds={[this.state.activeCellId]}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 //components
-import { Cells, Sections } from '../WorkshopThree/Components'
+import { SowCells, Sections } from '../WorkshopThree/Components'
 
 class WS3SowFarrowTab extends Component {
    constructor(props) {
@@ -71,7 +71,8 @@ class WS3SowFarrowTab extends Component {
     })
     this.setState({
       activeSow: null,
-      activeSectionId: null,
+      // activeSectionId: null,
+      needToRefresh: true,
       activeCellLocationId: null,
       total_piglets: 0,
       mummy_piglets: 0,
@@ -82,9 +83,18 @@ class WS3SowFarrowTab extends Component {
     this.props.getLocations({by_section: this.state.activeSectionId})
   }
 
+  refreshLocations () {
+    if (this.props.eventFetching || this.state.needToRefresh) {
+      setTimeout(() => {
+        this.setState({...this.state, needToRefresh: false})
+        this.props.getLocations({by_section: this.state.activeSectionId})
+        }, 500)
+    }
+  }
 
   render() {
     const { sections, locations } = this.props
+    this.refreshLocations()
     
     return (
         <div className='row workshop-content'>
@@ -94,7 +104,7 @@ class WS3SowFarrowTab extends Component {
               activeSectionId={this.state.activeSectionId}
               clickSection={this.clickSection}
             />
-            <Cells 
+            <SowCells 
               locations={locations}
               activeCellIds={[this.state.activeCellLocationId]}
               clickLocation={this.clickCellLocation}

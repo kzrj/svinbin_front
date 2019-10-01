@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 //components
-import { Cells, Sections } from '../WorkshopThree/Components'
+import { SowCells, Sections } from '../WorkshopThree/Components'
 
 class WS3SowInnerTransferTab extends Component {
    constructor(props) {
@@ -93,7 +93,7 @@ class WS3SowInnerTransferTab extends Component {
               activeSectionId={this.state.activeFromSectionId}
               clickSection={this.clickFromSection}
             />
-            <Cells 
+            <SowCells 
               locations={locations1}
               activeCellIds={[this.state.activeCellFromLocationId]}
               clickLocation={this.clickCellFromLocation}
@@ -105,7 +105,7 @@ class WS3SowInnerTransferTab extends Component {
                 activeSectionId={this.state.activeToSectionId}
                 clickSection={this.clickToSection}
               />
-              <Cells
+              <SowCells
                 locations={locations2}
                 activeCellIds={[this.state.activeCellToLocationId]}
                 clickLocation={this.clickCellToLocation}

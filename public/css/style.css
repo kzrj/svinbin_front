@@ -146,3 +146,14 @@
 .bottom-buttons-block{
 	margin-top: 10px;
 }
+
+.created-nomad-active{
+	background-color: #43ab92;
+}
+
+.newborn-group-table{
+	text-align: center; 
+    vertical-align: middle;
+	background: #313131 !important;
+	
+}

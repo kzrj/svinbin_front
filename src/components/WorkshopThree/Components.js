@@ -29,7 +29,7 @@ export class SowFindById extends Component {
  }
 }
 
-export class Cells extends Component {
+export class SowCells extends Component {
 
   render() {
     let { locations, activeCellIds } = this.props
@@ -37,7 +37,7 @@ export class Cells extends Component {
     return (
       <div className='row'>
         {locations.map(location =>
-            <Cell 
+            <SowCell 
               location={location}
               activeCellIds={activeCellIds}
               clickLocation={this.props.clickLocation}/>
@@ -48,21 +48,59 @@ export class Cells extends Component {
   }
  }
 
- export class Cell extends Component {
+ export class SowCell extends Component {
 
   render() {
     const { location, activeCellIds } = this.props
     const cellClassName = activeCellIds.includes(location.id) ? 
-      'col-sm cell cell-active' : location.is_sow_empty ? 'col-sm cell' : 'col-sm cell-full'
+      'col-sm cell cell-active' : 
+        location.is_sow_empty ? 'col-sm cell' : 'col-sm cell-full' 
     return (
       <div 
         className={cellClassName}
         onClick={() => this.props.clickLocation(location)}
         key={location.id}>
-        #{location.sowAndPigletsCell && location.sowAndPigletsCell.number}
+          #{location.sowAndPigletsCell && location.sowAndPigletsCell.number}
       </div>
-  )
+  )}
+ }
+
+
+ export class PigletsCells extends Component {
+
+  render() {
+    let { locations, activeCellIds } = this.props
+
+    return (
+      <div className='row'>
+        {locations.map(location =>
+            <PigletsCell 
+              location={location}
+              activeCellIds={activeCellIds}
+              clickLocation={this.props.clickLocation}/>
+        )}
+        {locations.length < 1 && 'Выберите секцию'}
+      </div>
+    )
   }
+ }
+
+
+ export class PigletsCell extends Component {
+
+  render() {
+    const { location, activeCellIds } = this.props
+    const cellClassName = activeCellIds.includes(location.id) ? 
+      'col-sm cell cell-active' : 
+        location.is_piglets_empty ? 'col-sm cell' : 'col-sm cell-full' 
+    return (
+      <div 
+        className={cellClassName}
+        onClick={() => this.props.clickLocation(location)}
+        key={location.id}>
+          #{location.sowAndPigletsCell && location.sowAndPigletsCell.number}
+      </div>
+  )}
  }
 
  export class Sections extends Component {

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { toggleArray } from '../../components/utils'
 // components
 import { SowTable }  from '../../components/WorkshopOne/SowComponents'
-import { SowFarmIdFilter, SowTourFilter, SowUsound30Filter }  from '../../components/WorkshopOne/SowComponents'
+import { SowFarmIdFilter, SowTourFilter, SowUsound60Filter }  from '../../components/WorkshopOne/SowComponents'
 
 
 class WS2UltrasoundTab extends Component {
@@ -12,7 +12,7 @@ class WS2UltrasoundTab extends Component {
     this.state = {
       query: {
         by_workshop_number: 2,
-        status_title: 'Осеменена 2',
+        status_title: 'Супорос 30',
         tour: null,
       },
       choosedSows: [],
@@ -126,7 +126,7 @@ class WS2UltrasoundTab extends Component {
             <label className='sow-event-label'>Фильтр</label>
             <SowFarmIdFilter setQuery={this.setQuery} />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
-            <SowUsound30Filter setQuery={this.setQuery}/>
+            <SowUsound60Filter setQuery={this.setQuery}/>
           </div>
           <div>
             <div>

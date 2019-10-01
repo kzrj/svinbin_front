@@ -13,6 +13,7 @@ export const reducers = combineReducers({
   tours: require('../redux-sauce/tours').reducer,
   sows: require('../redux-sauce/sows').reducer,
   nomadPiglets: require('../redux-sauce/nomadPiglets').reducer,
+  newbornPiglets: require('../redux-sauce/newbornPiglets').reducer,
   ws1: require('../redux-sauce/ws1').reducer,
   ws2: require('../redux-sauce/ws2').reducer,
   ws3: require('../redux-sauce/ws3').reducer,

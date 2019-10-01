@@ -6,6 +6,7 @@ import LocationsApi from '../api/locationsApi';
 import ToursApi from '../api/toursApi';
 import SowsApi from '../api/sowsApi';
 import NomadPigletsApi from '../api/nomadPigletsApi';
+import NewbornPigletsApi from '../api/newbornPigletsApi';
 import UsersApi from '../api/usersApi';
 /* ------------- Types ------------- */
 import { AuthTypes } from "../redux-sauce/auth";
@@ -13,6 +14,7 @@ import { LocationsTypes } from '../redux-sauce/locations';
 import { ToursTypes } from '../redux-sauce/tours';
 import { SowsTypes } from '../redux-sauce/sows';
 import { NomadPigletsTypes } from '../redux-sauce/nomadPiglets';
+import { NewbornPigletsTypes } from '../redux-sauce/newbornPiglets';
 
 import { Ws1Types } from '../redux-sauce/ws1';
 import { Ws2Types } from '../redux-sauce/ws2';
@@ -29,6 +31,7 @@ import { getLocations } from './locationsSagas';
 import { getTours } from './toursSagas';
 import * as sowsSaga from './sowsSagas';
 import * as nomadPigletsSaga from './nomadPigletsSagas';
+import * as newbornPigletsSaga from './newbornPigletsSagas';
 import * as ws1Saga from './ws1Sagas';
 import * as ws2Saga from './ws2Sagas';
 import * as ws3Saga from './ws3Sagas';
@@ -44,6 +47,7 @@ const locationsApi = LocationsApi.create();
 const toursApi = ToursApi.create();
 const sowsApi = SowsApi.create();
 const nomadPigletsApi = NomadPigletsApi.create();
+const newbornPigletsApi = NewbornPigletsApi.create();
 const usersApi = UsersApi.create();
 
 export default function* root() {
@@ -82,6 +86,9 @@ export default function* root() {
     takeEvery(NomadPigletsTypes.CULLING_GILT_PIGLETS_REQUEST, nomadPigletsSaga.cullingGiltPiglets, nomadPigletsApi),
     takeEvery(NomadPigletsTypes.MOVE_GROUP_FROM_CELL_TO_CELL_REQUEST, nomadPigletsSaga.moveGroupFromCellToCell, nomadPigletsApi),
     takeEvery(NomadPigletsTypes.MOVE_TO_PIGLETS_REQUEST, nomadPigletsSaga.moveToPiglets, nomadPigletsApi),
+
+    takeEvery(NewbornPigletsTypes.GET_NEWBORN_PIGLETS_REQUEST, newbornPigletsSaga.getNewbornPiglets, newbornPigletsApi),
+    takeEvery(NewbornPigletsTypes.MERGE_NEWBORN_PIGLETS_REQUEST, newbornPigletsSaga.mergeNewbornPiglets, newbornPigletsApi),
 
     takeEvery(Ws1Types.GET_SEMINATION_SOWS_REQUEST, ws1Saga.getSeminationSows, sowsApi),
     takeEvery(Ws1Types.GET_ULTRASOUND_SOWS_REQUEST, ws1Saga.getUltrasoundSows, sowsApi),

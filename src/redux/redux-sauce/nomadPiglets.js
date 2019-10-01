@@ -34,7 +34,8 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-    fetching: false,
+    eventFetching: false,
+    listFetching: false,
     list: [],
     nomadGroup: null,
     event: null,
@@ -55,89 +56,89 @@ export const NomadPigletsSelectors = {
 /* ------------- Reducers ------------- */
 // Get
 export const getNomadPigletsRequest = (state, { payload }) => {
-    return state.merge({ fetching: true, list: [] })
+    return state.merge({ listFetching: true, list: [] })
 }
 
 export const getNomadPigletsSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, list: payload })
+    return state.merge({ listFetching: false, error: null, list: payload })
 }
 
 export const getNomadPigletsFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, list: [] })
+    return state.merge({ listFetching: false, error, list: [] })
 }
 
 // Weighing
 export const weighingPigletsRequest = (state, { payload }) => {
-    return state.merge({ fetching: true })
+    return state.merge({ eventFetching: true })
 }
 
 export const weighingPigletsSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, nomadGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
         event: payload.weighing_record })
 }
 
 export const weighingPigletsFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, nomadGroup: null, 
+    return state.merge({ eventFetching: false, error, nomadGroup: null, 
         event: null })
 }
 
 // Culling
 export const cullingPigletsRequest = (state, { payload }) => {
-    return state.merge({ fetching: true })
+    return state.merge({ eventFetching: true })
 }
 
 export const cullingPigletsSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, nomadGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
         event: payload.culling })
 }
 
 export const cullingPigletsFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, nomadGroup: null, 
+    return state.merge({ eventFetching: false, error, nomadGroup: null, 
         event: null })
 }
 
 // Culling gilts
 export const cullingGiltPigletsRequest = (state, { payload }) => {
-    return state.merge({ fetching: true })
+    return state.merge({ eventFetching: true })
 }
 
 export const cullingGiltPigletsSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, nomadGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
         event: payload.culling })
 }
 
 export const cullingGiltPigletsFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, nomadGroup: null, 
+    return state.merge({ eventFetching: false, error, nomadGroup: null, 
         event: null })
 }
 
 // Move from cell to cell 
 export const moveGroupFromCellToCellRequest = (state, { payload }) => {
-    return state.merge({ fetching: true })
+    return state.merge({ eventFetching: true })
 }
 
 export const moveGroupFromCellToCellSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, nomadGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
         event: payload.transaction })
 }
 
 export const moveGroupFromCellToCellFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, nomadGroup: null, 
+    return state.merge({ eventFetching: false, error, nomadGroup: null, 
         event: null })
 }
 
 // Move to
 export const moveToPigletsRequest = (state, { payload }) => {
-    return state.merge({ fetching: true })
+    return state.merge({ eventFetching: true })
 }
 
 export const moveToPigletsSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, nomadGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
         event: payload.transaction })
 }
 
 export const moveToPigletsFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, nomadGroup: null, 
+    return state.merge({ eventFetching: false, error, nomadGroup: null, 
         event: null })
 }
 /* ------------- Hookup Reducers To Types ------------- */

@@ -31,12 +31,15 @@ export default {
     // init endpoints
     INIT_ADD_NEW_SEMINATED_TO_WS1: `${apiUrl}/sows/add_new_seminated_to_ws1/`,
 
-    GET_NOMADS_PIGLETS: `${apiUrl}/workshopfour/piglets/`,
-    weighingPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/weighing_piglets/`,
-    cullingPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/culling_piglets/`,
-    cullingGiltPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/culling_gilts/`,
-    moveGroupFromCellToCell: () => `${apiUrl}/workshopfour/piglets/move_group_from_cell_to_cell/`,
-    moveToPiglets: (id) => `${apiUrl}/workshopfour/piglets/${id}/move_to/`,
+    GET_NEWBORN_PIGLETS: `${apiUrl}/workshopthree/newbornpiglets/`,
+    MERGE_NEWBORN: `${apiUrl}/workshopthree/newbornpiglets/create_nomad_group_from_merge/`,
+
+    GET_NOMADS_PIGLETS: `${apiUrl}/nomadpiglets/`,
+    weighingPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/weighing_piglets/`,
+    cullingPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/culling_piglets/`,
+    cullingGiltPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/culling_gilts/`,
+    moveGroupFromCellToCell: () => `${apiUrl}/nomadpiglets/move_group_from_cell_to_cell/`,
+    moveToPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/move_to/`,
 
     GET_USERS: `${apiUrl}/users/`,
 
