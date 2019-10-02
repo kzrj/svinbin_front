@@ -39,9 +39,33 @@ const create = () => {
         })
     }
 
+    const createGilt = payload => {
+        const { id, birth_id } = payload;
+        const token = localStorage.getItem('token') || '';
+
+        const formData = new FormData();
+        formData.append("birth_id", birth_id)
+        
+        return axios({
+                    method: 'post',
+                    url: endpoints.create_gilt(id),
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getNewbornPiglets,
         mergeNewbornPiglets,
+        createGilt
     }
 
 }

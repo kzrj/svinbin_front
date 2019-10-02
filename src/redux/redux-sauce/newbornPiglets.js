@@ -18,6 +18,10 @@ const { Types, Creators } = createActions({
     mergeNewbornPigletsRequest: ['payload'],
     mergeNewbornPigletsFail: ['payload'],
     mergeNewbornPigletsSuccess: ['payload'],
+
+    createGiltRequest: ['payload'],
+    createGiltFail: ['payload'],
+    createGiltSuccess: ['payload'],
 })
 
 export const NewbornPigletsTypes = Types
@@ -42,6 +46,7 @@ export const NewbornPigletsSelectors = {
     // cullingNewbornPigletsRequest: state => state.newbornPiglets.newbornGroup,
     // cullingGiltPiglets: state => state.newbornPiglets.newbornGroup,
     mergeNewbornPiglets: state => state.newbornPiglets.merge,
+    // createGilt: state => state.createGilt.merge,
 }
 
 /* ------------- Reducers ------------- */
@@ -102,6 +107,19 @@ export const mergeNewbornPigletsFail = (state, { error }) => {
     return state.merge({ eventFetching: false, error, newbornGroup: null, 
         event: null })
 }
+
+// Create gilt
+export const createGiltRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const createGiltSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, error: null, })
+}
+
+export const createGiltFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, error, })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -120,4 +138,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MERGE_NEWBORN_PIGLETS_REQUEST]: mergeNewbornPigletsRequest,
     [Types.MERGE_NEWBORN_PIGLETS_SUCCESS]: mergeNewbornPigletsSuccess,
     [Types.MERGE_NEWBORN_PIGLETS_FAIL]: mergeNewbornPigletsFail,
+
+    [Types.CREATE_GILT_REQUEST]: createGiltRequest,
+    [Types.CREATE_GILT_SUCCESS]: createGiltSuccess,
+    [Types.CREATE_GILT_FAIL]: createGiltFail,
 })

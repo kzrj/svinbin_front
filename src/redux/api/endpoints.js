@@ -33,6 +33,7 @@ export default {
 
     GET_NEWBORN_PIGLETS: `${apiUrl}/workshopthree/newbornpiglets/`,
     MERGE_NEWBORN: `${apiUrl}/workshopthree/newbornpiglets/create_nomad_group_from_merge/`,
+    create_gilt: (id) => `${apiUrl}/workshopthree/newbornpiglets/${id}/create_gilt/`,
 
     GET_NOMADS_PIGLETS: `${apiUrl}/nomadpiglets/`,
     weighingPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/weighing_piglets/`,

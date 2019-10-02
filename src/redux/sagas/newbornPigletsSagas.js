@@ -20,6 +20,15 @@ export function* mergeNewbornPiglets(api, action) {
     }
 }
 
+export function* createGilt(api, action) {
+    try {
+        let response = yield call(api.createGilt, action.payload);
+        yield put(NewbornPigletsActions.createGiltSuccess(response));
+    } catch (err) {
+        yield put(NewbornPigletsActions.createGiltFail(err))
+    }
+}
+
 // export function* cullingPiglets(api, action) {
 //     try {
 //         let response = yield call(api.cullingPiglets, action.payload);

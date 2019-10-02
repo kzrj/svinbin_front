@@ -89,6 +89,7 @@ export default function* root() {
 
     takeEvery(NewbornPigletsTypes.GET_NEWBORN_PIGLETS_REQUEST, newbornPigletsSaga.getNewbornPiglets, newbornPigletsApi),
     takeEvery(NewbornPigletsTypes.MERGE_NEWBORN_PIGLETS_REQUEST, newbornPigletsSaga.mergeNewbornPiglets, newbornPigletsApi),
+    takeEvery(NewbornPigletsTypes.CREATE_GILT_REQUEST, newbornPigletsSaga.createGilt, newbornPigletsApi),
 
     takeEvery(Ws1Types.GET_SEMINATION_SOWS_REQUEST, ws1Saga.getSeminationSows, sowsApi),
     takeEvery(Ws1Types.GET_ULTRASOUND_SOWS_REQUEST, ws1Saga.getUltrasoundSows, sowsApi),

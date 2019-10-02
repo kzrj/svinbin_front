@@ -56,7 +56,6 @@ class WS3SowWeaningTab extends Component {
       to_location: 1
     }
     this.props.massMove(data)
-    this.props.getLocations({by_section: this.state.activeSectionId})
     this.setState({
       activeSows: [],
       activeSectionId: 6,
@@ -66,7 +65,8 @@ class WS3SowWeaningTab extends Component {
   }
 
   refreshSowsList () {
-    if (this.props.eventFetching || this.state.needToRefresh){
+    if (this.props.eventFetching && this.state.needToRefresh){
+      console.log('refresh')
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations({by_section: this.state.activeSectionId})
