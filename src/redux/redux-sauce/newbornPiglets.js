@@ -7,13 +7,13 @@ const { Types, Creators } = createActions({
     getNewbornPigletsFail: ['error'],
     getNewbornPigletsSuccess: ['payload'],
 
-    // cullingNewbornPigletsRequest: ['payload'],
-    // cullingNewbornPigletsFail: ['error'],
-    // cullingNewbornPigletsSuccess: ['payload'],
+    cullingNewbornPigletsRequest: ['payload'],
+    cullingNewbornPigletsFail: ['error'],
+    cullingNewbornPigletsSuccess: ['payload'],
 
-    // cullingGiltNewbornPigletsRequest: ['payload'],
-    // cullingGiltNewbornPigletsFail: ['error'],
-    // cullingGiltNewbornPigletsSuccess: ['payload'],
+    cullingGiltNewbornPigletsRequest: ['payload'],
+    cullingGiltNewbornPigletsFail: ['error'],
+    cullingGiltNewbornPigletsSuccess: ['payload'],
 
     mergeNewbornPigletsRequest: ['payload'],
     mergeNewbornPigletsFail: ['payload'],
@@ -38,17 +38,16 @@ export const INITIAL_STATE = Immutable({
     merge: null,
     error: '',
     message: null,
-
 })
 
 /* ------------- Selectors ------------- */
 
 export const NewbornPigletsSelectors = {
     getNewbornPigletsRequest: state => state.newbornPiglets.list,
-    // cullingNewbornPigletsRequest: state => state.newbornPiglets.newbornGroup,
-    // cullingGiltPiglets: state => state.newbornPiglets.newbornGroup,
+    cullingNewbornPigletsRequest: state => state.newbornPiglets.newbornGroup,
+    cullingGiltPiglets: state => state.newbornPiglets.newbornGroup,
     mergeNewbornPiglets: state => state.newbornPiglets.merge,
-    // createGilt: state => state.createGilt.merge,
+    createGilt: state => state.createGilt.event,
 }
 
 /* ------------- Reducers ------------- */
@@ -65,35 +64,35 @@ export const getNewbornPigletsFail = (state, { error }) => {
     return state.merge({ listFetching: false, error, list: [] })
 }
 
-// // Culling
-// export const cullingNewbornPigletsRequest = (state, { payload }) => {
-//     return state.merge({ eventFetching: true })
-// }
+// Culling
+export const cullingNewbornPigletsRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
 
-// export const cullingNewbornPigletsSuccess = (state, { payload }) => {
-//     return state.merge({ eventFetching: false, error: null, newbornGroup: payload.piglets_group, 
-//         event: payload.culling })
-// }
+export const cullingNewbornPigletsSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, error: null, newbornGroup: payload.piglets_group, 
+        event: payload.culling })
+}
 
-// export const cullingNewbornPigletsFail = (state, { error }) => {
-//     return state.merge({ eventFetching: false, error, newbornGroup: null, 
-//         event: null })
-// }
+export const cullingNewbornPigletsFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, error, newbornGroup: null, 
+        event: null })
+}
 
-// // Culling gilts
-// export const cullingGiltNewbornPigletsRequest = (state, { payload }) => {
-//     return state.merge({ eventFetching: true })
-// }
+// Culling gilts
+export const cullingGiltNewbornPigletsRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
 
-// export const cullingGiltNewbornPigletsSuccess = (state, { payload }) => {
-//     return state.merge({ eventFetching: false, error: null, newbornGroup: payload.piglets_group, 
-//         event: payload.culling })
-// }
+export const cullingGiltNewbornPigletsSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, error: null, newbornGroup: payload.piglets_group, 
+        event: payload.culling })
+}
 
-// export const cullingGiltNewbornPigletsFail = (state, { error }) => {
-//     return state.merge({ eventFetching: false, error, newbornGroup: null, 
-//         event: null })
-// }
+export const cullingGiltNewbornPigletsFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, error, newbornGroup: null, 
+        event: null })
+}
 
 // Merge
 export const mergeNewbornPigletsRequest = (state, { payload }) => {
@@ -129,13 +128,13 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_NEWBORN_PIGLETS_SUCCESS]: getNewbornPigletsSuccess,
     [Types.GET_NEWBORN_PIGLETS_FAIL]: getNewbornPigletsFail,
 
-    // [Types.CULLING_NEWBORN_PIGLETS_REQUEST]: cullingNewbornPigletsRequest,
-    // [Types.CULLING_NEWBORN_PIGLETS_SUCCESS]: cullingNewbornPigletsSuccess,
-    // [Types.CULLING_NEWBORN_PIGLETS_FAIL]: cullingNewbornPigletsFail,
+    [Types.CULLING_NEWBORN_PIGLETS_REQUEST]: cullingNewbornPigletsRequest,
+    [Types.CULLING_NEWBORN_PIGLETS_SUCCESS]: cullingNewbornPigletsSuccess,
+    [Types.CULLING_NEWBORN_PIGLETS_FAIL]: cullingNewbornPigletsFail,
 
-    // [Types.CULLING_GILT_PIGLETS_REQUEST]: cullingGiltNewbornPigletsRequest,
-    // [Types.CULLING_GILT_PIGLETS_SUCCESS]: cullingGiltNewbornPigletsSuccess,
-    // [Types.CULLING_GILT_PIGLETS_FAIL]: cullingGiltNewbornPigletsFail,
+    [Types.CULLING_GILT_NEWBORN_PIGLETS_REQUEST]: cullingGiltNewbornPigletsRequest,
+    [Types.CULLING_GILT_NEWBORN_PIGLETS_SUCCESS]: cullingGiltNewbornPigletsSuccess,
+    [Types.CULLING_GILT_NEWBORN_PIGLETS_FAIL]: cullingGiltNewbornPigletsFail,
 
     [Types.MERGE_NEWBORN_PIGLETS_REQUEST]: mergeNewbornPigletsRequest,
     [Types.MERGE_NEWBORN_PIGLETS_SUCCESS]: mergeNewbornPigletsSuccess,

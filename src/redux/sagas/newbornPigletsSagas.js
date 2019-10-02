@@ -29,20 +29,20 @@ export function* createGilt(api, action) {
     }
 }
 
-// export function* cullingPiglets(api, action) {
-//     try {
-//         let response = yield call(api.cullingPiglets, action.payload);
-//         yield put(NewbornPigletsActions.cullingPigletsSuccess(response));
-//     } catch (err) {
-//         yield put(NewbornPigletsActions.cullingPigletsFail(err))
-//     }
-// }
+export function* cullingNewbornPiglets(api, action) {
+    try {
+        let response = yield call(api.cullingNewbornPiglets, action.payload);
+        yield put(NewbornPigletsActions.cullingNewbornPigletsSuccess(response));
+    } catch (err) {
+        yield put(NewbornPigletsActions.cullingNewbornPigletsFail(err))
+    }
+}
 
-// export function* cullingGiltPiglets(api, action) {
-//     try {
-//         let response = yield call(api.cullingGiltPiglets, action.payload);
-//         yield put(NewbornPigletsActions.cullingGiltPigletsSuccess(response));
-//     } catch (err) {
-//         yield put(NewbornPigletsActions.cullingGiltPigletsFail(err))
-//     }
-// }
+export function* cullingGiltNewbornPiglets(api, action) {
+    try {
+        let response = yield call(api.cullingGiltNewbornPiglets, action.payload);
+        yield put(NewbornPigletsActions.cullingGiltNewbornPigletsSuccess(response));
+    } catch (err) {
+        yield put(NewbornPigletsActions.cullingGiltNewbornPigletsFail(err))
+    }
+}
