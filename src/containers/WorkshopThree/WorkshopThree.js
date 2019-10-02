@@ -212,6 +212,7 @@ class WorkshopThreeContainer extends Component {
             
             createGilt={this.props.createGilt}
             eventFetching={this.props.state.newbornPiglets.eventFetching}
+            message={this.props.state.newbornPiglets.message}
           />}
       </div>
     );

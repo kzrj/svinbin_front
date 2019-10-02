@@ -12,8 +12,9 @@ class WS3PigletsWeaningTab extends Component {
       activeSectionId: 6,
       activeLocationsId: null, // cell multiple selection
       activeLocation: null, // for newborn list
+      activeNewbornGroup: null,
       
-      birth_id: 0,
+      birth_id: null,
       needToRefresh: false
     };
     this.clickLocation = this.clickLocation.bind(this);
@@ -37,24 +38,16 @@ class WS3PigletsWeaningTab extends Component {
     this.props.getLocations({by_section: sectionId})
   }
 
-  // clickLocation (location) {
-  //   let { activeLocationsIds, activeLocations } = this.state
-  //   // here I can check is cell need to add to activeCells
-
-  //   activeLocationsIds = toggleArray(activeLocationsIds, location.id)
-  //   activeLocations = toggleArrayLocations(activeLocations, location)
-  //   this.setState({
-  //     ...this.state,
-  //     activeLocationsIds: activeLocationsIds,
-  //     activeLocations: activeLocations
-  //   })
-  // }
-
-  clickLocation (location) {    
+  clickLocation (location) {
+    let activeNewbornGroup = null
+    if (location.newbornpigletsgroup_set.length > 0){
+      activeNewbornGroup = location.newbornpigletsgroup_set[0]
+    }
     this.setState({
       ...this.state,
       activeLocationsId: location.id,
-      activeLocation: location
+      activeLocation: location,
+      activeNewbornGroup: activeNewbornGroup
     })
   }
   
@@ -66,7 +59,10 @@ class WS3PigletsWeaningTab extends Component {
   }
 
   createGilt () {
-    console.log('create gilt')
+    const { birth_id, activeNewbornGroup } = this.state
+    this.props.createGilt({id: activeNewbornGroup.id, birth_id: birth_id})
+    this.setState({...this.state, needToRefresh: true, 
+      activeLocation: null, activeNewbornGroup: null})
   }
 
   refreshSowsList () {
@@ -97,17 +93,20 @@ class WS3PigletsWeaningTab extends Component {
             />
           </div>
           <div className='col-6'>
+            {this.state.activeNewbornGroup ?
             <div className="input-group-append">
-              <input type='text' value={this.state.partNumber} 
+              <input type='text' value={this.state.birth_id} 
                   onChange={this.setData} 
-                  name='partNumber' className="form-control search-input"
-                  placeholder="Номер партии" />
+                  name='birth_id' className="form-control search-input"
+                  placeholder="Уникальный номер" />
               <button className='btn btn-outline-secondary' type='button'
-                onClick={this.createNomadPart}>
-                  Создать партию
+                onClick={this.createGilt}>
+                  Создать ремонтную свинку
               </button>
             </div>
-            
+            :
+            this.props.message ? <p>{this.props.message}</p> : <p>Выберите клетку</p>
+            }
           </div>
         </div>
     )

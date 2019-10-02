@@ -36,7 +36,9 @@ export const INITIAL_STATE = Immutable({
     newbornGroup: null,
     event: null,
     merge: null,
-    error: ''
+    error: '',
+    message: null,
+
 })
 
 /* ------------- Selectors ------------- */
@@ -110,11 +112,11 @@ export const mergeNewbornPigletsFail = (state, { error }) => {
 
 // Create gilt
 export const createGiltRequest = (state, { payload }) => {
-    return state.merge({ eventFetching: true })
+    return state.merge({ eventFetching: true, message: null })
 }
 
 export const createGiltSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, })
+    return state.merge({ eventFetching: false, error: null, message: payload.message})
 }
 
 export const createGiltFail = (state, { error }) => {
