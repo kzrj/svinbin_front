@@ -10,6 +10,7 @@ import WS3SowCullingTab from '../../components/WorkshopThree/WS3SowCullingTab'
 
 import WS3PigletsWeaningTab from '../../components/WorkshopThree/WS3PigletsWeaningTab'
 import WS3CreateGiltTab from '../../components/WorkshopThree/WS3CreateGiltTab'
+import WS3PigletsCullingTab from '../../components/WorkshopThree/WS3PigletsCullingTab'
 
 // # actions
 import SowsActions from '../../redux/redux-sauce/sows';
@@ -32,8 +33,9 @@ class WorkshopThreeContainer extends Component {
         weaningSowsTab: false,
         recountTab: false,
         weaningPigletsTab: false,
-        createGiltTab: true,
+        createGiltTab: false,
         sowCullingTab: false,
+        pigletsCullingTab: true,
       }
     }
 	}
@@ -55,6 +57,7 @@ class WorkshopThreeContainer extends Component {
   }
   showStateConsole = () => {
     const { state } = this.props
+    console.log(state)
   }
 
   render() {
@@ -124,6 +127,12 @@ class WorkshopThreeContainer extends Component {
             onClick={() => this.setTab('sowCullingTab')}
           >
             Выбраковка/Аборт
+          </div>
+          <div className={this.state.tabs.pigletsCullingTab ? 'workshop-tab tab-active col-sm' : 
+            'workshop-tab col-sm'}
+            onClick={() => this.setTab('pigletsCullingTab')}
+          >
+            Выбраковка поросят
           </div>
         </div>
         <div className='workshop-header-3'>
@@ -214,6 +223,20 @@ class WorkshopThreeContainer extends Component {
             eventFetching={this.props.state.newbornPiglets.eventFetching}
             message={this.props.state.newbornPiglets.message}
           />}
+
+        { this.state.tabs.pigletsCullingTab && 
+          <WS3PigletsCullingTab
+            getSections={this.props.getSections}
+            sections={this.props.state.ws3.sections}
+
+            getLocations={this.props.getSowWeaningTabLocations}
+            locations={this.props.state.ws3.sowWeaningLocations}
+            
+            cullingPiglets={this.props.cullingPiglets}
+            cullingGilt={this.props.cullingGilt}
+            eventFetching={this.props.state.newbornPiglets.eventFetching}
+            message={this.props.state.newbornPiglets.message}
+          />}
       </div>
     );
   }
@@ -238,6 +261,9 @@ const mapDispatchToProps = (dispatch) => ({
   getNewbornPiglets: query => dispatch(NewbornPigletsActions.getNewbornPigletsRequest(query)),
   mergeNewbornPiglets: data => dispatch(NewbornPigletsActions.mergeNewbornPigletsRequest(data)),
   createGilt: data => dispatch(NewbornPigletsActions.createGiltRequest(data)),
+  cullingPiglets: data => dispatch(NewbornPigletsActions.cullingNewbornPigletsRequest(data)),
+  cullingGilt: data => dispatch(NewbornPigletsActions.cullingGiltNewbornPigletsRequest(data)),
+
   getNomadPiglets: query => dispatch(NomadPigletsActions.getNomadPigletsRequest(query)),
   moveNomadPiglets: data => dispatch(NomadPigletsActions.moveToPigletsRequest(data)),
 

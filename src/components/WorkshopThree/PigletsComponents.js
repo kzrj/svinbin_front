@@ -73,3 +73,30 @@ export class NewBornGroupWeaning extends Component {
     )
   }
  }
+
+ export class PigletsGroup extends Component {
+
+  render() {
+    const { piglets } = this.props
+    return (
+      <table className='table table-sm'>
+        <thead>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Количество</td><td>{piglets.quantity}</td>
+          </tr>
+          <tr>
+            <td>Количество ремонтных</td><td>{piglets.gilts_quantity}</td>
+          </tr>
+          <tr>
+            <td>Тур</td><td>{piglets.tour}</td>
+          </tr>
+          <tr>
+            <td>Дата рождения</td><td>{piglets.created_at}</td>
+          </tr>
+        </tbody>
+      </table>
+    )
+  }
+ }
