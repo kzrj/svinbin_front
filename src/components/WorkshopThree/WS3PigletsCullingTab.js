@@ -12,8 +12,8 @@ class WS3PigletsWeaningTab extends Component {
     super(props);
     this.state = {
       activeSectionId: 6,
-      activeLocationsId: null, // cell multiple selection
-      activeLocation: null, // for newborn list
+      activeLocationsId: null,
+      activeLocation: null,
       activeNewbornGroup: null,
       
       culling_type: null,
@@ -128,12 +128,13 @@ class WS3PigletsWeaningTab extends Component {
             {this.state.activeNewbornGroup ?
               <div>
                 <PigletsGroup piglets={this.state.activeNewbornGroup}/>
-                <div className="input-group-append">
-                  <label>ремонтная свинка</label>
-                  <input type='checkbox' 
-                      onChange={this.setData} 
-                      name='is_it_gilt' value={!this.state.is_it_gilt}/>
-                </div>
+                {this.state.activeNewbornGroup.gilts_quantity > 0 &&
+                  <div className="input-group-append">
+                    <label>ремонтная свинка</label>
+                    <input type='checkbox' 
+                        onChange={this.setData} 
+                        name='is_it_gilt' value={!this.state.is_it_gilt}/>
+                  </div>}
                 <div className="input-group-append">
                   <CullingTypeInput setData={this.setData}/>
                   <CullingReasonInput setData={this.setData} 
