@@ -38,7 +38,9 @@ export const INITIAL_STATE = Immutable({
     listFetching: false,
     list: [],
     nomadGroup: null,
+    weighing: null,
     event: null,
+    message: null,
     error: ''
 })
 
@@ -74,12 +76,12 @@ export const weighingPigletsRequest = (state, { payload }) => {
 
 export const weighingPigletsSuccess = (state, { payload }) => {
     return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
-        event: payload.weighing_record })
+        weighing: payload.weighing_record, message: payload.message })
 }
 
 export const weighingPigletsFail = (state, { error }) => {
     return state.merge({ eventFetching: false, error, nomadGroup: null, 
-        event: null })
+        weighing: null })
 }
 
 // Culling

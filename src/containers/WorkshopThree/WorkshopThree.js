@@ -11,6 +11,7 @@ import WS3SowCullingTab from '../../components/WorkshopThree/WS3SowCullingTab'
 import WS3PigletsWeaningTab from '../../components/WorkshopThree/WS3PigletsWeaningTab'
 import WS3CreateGiltTab from '../../components/WorkshopThree/WS3CreateGiltTab'
 import WS3PigletsCullingTab from '../../components/WorkshopThree/WS3PigletsCullingTab'
+import WS3PigletsRecountTab from '../../components/WorkshopThree/WS3PigletsRecountTab'
 
 // # actions
 import SowsActions from '../../redux/redux-sauce/sows';
@@ -31,19 +32,17 @@ class WorkshopThreeContainer extends Component {
         transferTab: false,
         farrowTab: false,
         weaningSowsTab: false,
-        recountTab: false,
+        recountTab: true,
         weaningPigletsTab: false,
         createGiltTab: false,
         sowCullingTab: false,
-        pigletsCullingTab: true,
+        pigletsCullingTab: false,
       }
     }
+    this.setTab = this.setTab.bind(this);
 	}
 
-  componentDidMount() {
-  }
-
-  setTab = (tab) => {
+  setTab (tab) {
     let { tabs } = this.state
     Object.keys(tabs).forEach((key) => {
       tabs[key] = false
@@ -237,6 +236,18 @@ class WorkshopThreeContainer extends Component {
             eventFetching={this.props.state.newbornPiglets.eventFetching}
             message={this.props.state.newbornPiglets.message}
           />}
+        { this.state.tabs.recountTab && 
+          <WS3PigletsRecountTab
+            getSections={this.props.getSections}
+            sections={this.props.state.ws3.sections}
+
+            getLocations={this.props.getSowWeaningTabLocations}
+            locations={this.props.state.ws3.sowWeaningLocations}
+            
+            recountPiglets={this.props.recountPiglets}
+            eventFetching={this.props.state.newbornPiglets.eventFetching}
+            message={this.props.state.newbornPiglets.message}
+          />}
       </div>
     );
   }
@@ -263,6 +274,7 @@ const mapDispatchToProps = (dispatch) => ({
   createGilt: data => dispatch(NewbornPigletsActions.createGiltRequest(data)),
   cullingPiglets: data => dispatch(NewbornPigletsActions.cullingNewbornPigletsRequest(data)),
   cullingGilt: data => dispatch(NewbornPigletsActions.cullingGiltNewbornPigletsRequest(data)),
+  recountPiglets: data => dispatch(NewbornPigletsActions.recountNewbornPigletsRequest(data)),
 
   getNomadPiglets: query => dispatch(NomadPigletsActions.getNomadPigletsRequest(query)),
   moveNomadPiglets: data => dispatch(NomadPigletsActions.moveToPigletsRequest(data)),

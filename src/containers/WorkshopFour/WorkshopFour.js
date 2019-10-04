@@ -26,22 +26,9 @@ class WorkshopFourContainer extends Component {
         // infoTab: false,
       }
     };
-    // this.setTab = this.setTab.bind(this);
-    // this.getPiglets = this.getPiglets.bind(this);
+    this.setTab = this.setTab.bind(this);
   }
 
-  // getPiglets () {
-  //   this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
-  // }
-
-  componentDidMount() {
-    // query
-    console.log('Did mount WS4')
-    // this.getPiglets()
-    this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
-    // this.props.dispatch(Ws4Actions.getNomadPigletsRequest())
-  }
-  
   setTab (tab) {
     let { tabs } = this.state
     Object.keys(tabs).forEach((key) => {
@@ -55,52 +42,67 @@ class WorkshopFourContainer extends Component {
     })
   }
 
+  showStateConsole = () => {
+    const { state } = this.props
+    console.log(state)
+  }
+
   render() {
-    console.log('WS4 render')
     return (
       <div className="workshop container">
-        <h1>WorkshopFour</h1>
-        <button onClick={this.showStateConsole}>store</button>
-        <button onClick={this.showProps}>props</button>
+        <div className='workshop-header'>
+          Цех №4
+          <button onClick={this.showStateConsole}>O</button>
+        </div>
         <div className='row workshop-menu'>
-          <div className={this.state.tabs.incomeTab ? 'tab-active col-sm' : 'col-sm'}
-              onClick={() => this.setTab('incomeTab')}
+          <div className={this.state.tabs.incomeTab ? 'workshop-tab tab-active col-sm' : 
+            'workshop-tab col-sm'}
+            onClick={() => this.setTab('incomeTab')}
             >
               Поступление и взвешивание
             </div>
-          <div className={this.state.tabs.resettlementTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.resettlementTab ? 'workshop-tab tab-active col-sm' :
+            'workshop-tab col-sm'}
             onClick={() => this.setTab('resettlementTab')}
           >
             Расселение поступивших
           </div>
-          <div className={this.state.tabs.innerTransferTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.innerTransferTab ? 'workshop-tab tab-active col-sm' :
+            'workshop-tab col-sm'}
             onClick={() => this.setTab('innerTransferTab')}
           >
             Перемещение
           </div>
-          <div className={this.state.tabs.transferTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.transferTab ? 'workshop-tab tab-active col-sm' :
+            'workshop-tab col-sm'}
             onClick={() => this.setTab('transferTab')}
           >
             Перегон
           </div>
-          <div className={this.state.tabs.cullingTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.cullingTab ? 'workshop-tab tab-active col-sm' :
+            'workshop-tab col-sm'}
             onClick={() => this.setTab('cullingTab')}
           >
             Выбраковка
           </div>
-          <div className={this.state.tabs.infoTab ? 'tab-active col-sm' : 'col-sm'}
+          <div className={this.state.tabs.infoTab ? 'workshop-tab tab-active col-sm' :
+            'workshop-tab col-sm'}
             onClick={() => this.setTab('infoTab')}
           >
             Инфо
           </div>
         </div>
+        <div className='workshop-header-3'>
+        </div>
         { this.state.tabs.incomeTab &&
           <WS4IncomeTab 
-            query={null}
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.ws4.incomingPigletsList}
+
             weighingPiglets={this.props.weighingPiglets}
-            weighingData={this.props.state.ws4.weighingData}
+            weighingData={this.props.state.nomadPiglets.weighing}
+            eventFetching={this.props.state.nomadPiglets.eventFetching}
+            message={this.props.state.nomadPiglets.message}
           />}
         { this.state.tabs.resettlementTab &&
           <WS4ResettelmentTab 
@@ -169,7 +171,7 @@ const mapDispatchToProps = (dispatch) => ({
   movePiglets: data => dispatch(NomadPigletsActions.moveToPigletsRequest(data)),
   getInnerTransferTabLocations1: query => dispatch(Ws4Actions.getInnerTransferTabLocations1Ws4Request(query)),
   getInnerTransferTabLocations2: query => dispatch(Ws4Actions.getInnerTransferTabLocations2Ws4Request(query)),
-  weighingPiglets: data => dispatch(Ws4Actions.weighingPigletsWs4Request(data)),
+  weighingPiglets: data => dispatch(NomadPigletsActions.weighingPigletsRequest(data)),
   cullingPiglets: data => dispatch(NomadPigletsActions.cullingPigletsRequest(data)),
 })
 

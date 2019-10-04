@@ -22,6 +22,10 @@ const { Types, Creators } = createActions({
     createGiltRequest: ['payload'],
     createGiltFail: ['payload'],
     createGiltSuccess: ['payload'],
+
+    recountNewbornPigletsRequest: ['payload'],
+    recountNewbornPigletsFail: ['payload'],
+    recountNewbornPigletsSuccess: ['payload'],
 })
 
 export const NewbornPigletsTypes = Types
@@ -36,6 +40,9 @@ export const INITIAL_STATE = Immutable({
     newbornGroup: null,
     event: null,
     merge: null,
+    cullingPiglets: null,
+    cullingGilt: null,
+    recount: null,
     error: '',
     message: null,
 })
@@ -71,12 +78,12 @@ export const cullingNewbornPigletsRequest = (state, { payload }) => {
 
 export const cullingNewbornPigletsSuccess = (state, { payload }) => {
     return state.merge({ eventFetching: false, error: null, newbornGroup: payload.piglets_group, 
-        event: payload.culling })
+        cullingPiglets: payload.culling })
 }
 
 export const cullingNewbornPigletsFail = (state, { error }) => {
     return state.merge({ eventFetching: false, error, newbornGroup: null, 
-        event: null })
+        cullingPiglets: null })
 }
 
 // Culling gilts
@@ -86,12 +93,12 @@ export const cullingGiltNewbornPigletsRequest = (state, { payload }) => {
 
 export const cullingGiltNewbornPigletsSuccess = (state, { payload }) => {
     return state.merge({ eventFetching: false, error: null, newbornGroup: payload.piglets_group, 
-        event: payload.culling })
+        cullingGilt: payload.culling })
 }
 
 export const cullingGiltNewbornPigletsFail = (state, { error }) => {
     return state.merge({ eventFetching: false, error, newbornGroup: null, 
-        event: null })
+        cullingGilt: null })
 }
 
 // Merge
@@ -101,12 +108,12 @@ export const mergeNewbornPigletsRequest = (state, { payload }) => {
 
 export const mergeNewbornPigletsSuccess = (state, { payload }) => {
     return state.merge({ eventFetching: false, error: null, newbornGroup: payload.piglets_group, 
-        event: payload.transaction })
+        merge: payload.transaction })
 }
 
 export const mergeNewbornPigletsFail = (state, { error }) => {
     return state.merge({ eventFetching: false, error, newbornGroup: null, 
-        event: null })
+        merge: null })
 }
 
 // Create gilt
@@ -120,6 +127,21 @@ export const createGiltSuccess = (state, { payload }) => {
 
 export const createGiltFail = (state, { error }) => {
     return state.merge({ eventFetching: false, error, })
+}
+
+// Recount
+export const recountNewbornPigletsRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const recountNewbornPigletsSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, error: null, newbornGroup: payload.piglets_group, 
+        recount: payload.transaction })
+}
+
+export const recountNewbornPigletsFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, error, newbornGroup: null, 
+        recount: null })
 }
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -143,4 +165,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.CREATE_GILT_REQUEST]: createGiltRequest,
     [Types.CREATE_GILT_SUCCESS]: createGiltSuccess,
     [Types.CREATE_GILT_FAIL]: createGiltFail,
+
+    [Types.RECOUNT_NEWBORN_PIGLETS_REQUEST]: recountNewbornPigletsRequest,
+    [Types.RECOUNT_NEWBORN_PIGLETS_SUCCESS]: recountNewbornPigletsSuccess,
+    [Types.RECOUNT_NEWBORN_PIGLETS_FAIL]: recountNewbornPigletsFail,
 })

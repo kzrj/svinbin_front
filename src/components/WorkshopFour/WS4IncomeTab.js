@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+//components
+import { NomadGroupDetail, WeighingPigletsInput, WeighingDetail } from '../WSComponents'
 
 class WS4IncomeTab extends Component {
    constructor(props) {
@@ -8,28 +10,17 @@ class WS4IncomeTab extends Component {
       activePigletsId: 0,
       activePiglets: null,
       totalWeight: 0,
-      weighingRecord: null
+      weighingRecord: null,
+      needToRefresh: false
     }
-    // this.getPiglets = this.getPiglets.bind(this);
-    this.setWeight = this.setWeight.bind(this);
+    this.setData = this.setData.bind(this);
     this.weighing = this.weighing.bind(this);
+    this.refreshSowsList = this.refreshSowsList.bind(this);
   }
   
-  // getPiglets() {
-  //   this.props.getPiglets({status_title: "Взвешены, готовы к заселению"})
-  // }
-
-  componentWillMount(){
-    console.log('First this called');
-    // this.getPiglets()
-    // this.props.getPiglets({status_title: "Взвешены, готовы к заселению"})
-  }
-
   componentDidMount() {
     // query
-    console.log('Did mount')
-    // this.getPiglets()
-    // this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
+    this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
   }
 
   clickPiglets (piglets) {
@@ -39,13 +30,12 @@ class WS4IncomeTab extends Component {
       activePiglets: piglets,
       weighingRecord: null
     })
-
   }
 
-  setWeight (e) {
+  setData (e) {
     this.setState({
       ...this.state,
-      totalWeight: e.target.value
+      [e.target.name]: e.target.value
     })
   }
 
@@ -60,52 +50,59 @@ class WS4IncomeTab extends Component {
     this.props.weighingPiglets(data)
     this.setState({
       ...this.state,
-      weighingRecord: this.props.weighingData.weighing_record
+      weighingRecord: this.props.weighingData,
+      activePiglets: null,
+      needToRefresh: true
     })
     // this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
   }
+
+  refreshSowsList () {
+    if (this.props.eventFetching && this.state.needToRefresh){
+      setTimeout(() => {
+        this.setState({...this.state, needToRefresh: false})
+        this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
+      }, 500)
+    }
+  }
   
   render() {
+    this.refreshSowsList()
     const { piglets } = this.props
-    // console.log('OPAOPAOA')
-    // console.log(piglets)
     return (
-        <div className='row workshop-content'>
-          <div className='col-3'>
-            {piglets.map(group =>
-              <div className={this.state.activePigletsId == group.id ? 
-                'piglets-active': ''}
-                onClick={() => this.clickPiglets(group)}
-                key={group.id}
-                >
-                ID{group.id} Количество{group.quantity}
-              </div>
-            )}
-            
-          </div>
-          <div className='col-9'>
-            {this.state.activePiglets && !this.state.weighingRecord &&
+      <div className='row workshop-content'>
+        <div className='col-3'>
+          {piglets.map(group =>
+            <div className={this.state.activePigletsId == group.id ? 
+              'nomad-piglets-row piglets-active': 'nomad-piglets-row'}
+              onClick={() => this.clickPiglets(group)}
+              key={group.id}
+              >
+              Партия №{group.merger_part_number} {group.quantity} голов
+            </div>
+          )}
+        </div>
+        <div className='col-9'>
+          {this.state.activePiglets ?
+            <div>
+              <NomadGroupDetail piglets={this.state.activePiglets}/>
+              <WeighingPigletsInput 
+                totalWeight={this.state.totalWeight}
+                setData={this.setData}
+                weighing={this.weighing}
+              />
+            </div>
+            :
+            this.props.message ? 
               <div>
-                <ul>
-                  <li>{this.state.activePiglets.id}</li>
-                  <li>{this.state.activePiglets.quantity}</li>
-                  <li>{this.state.activePiglets.status}</li>
-                </ul>
-                <div>
-                  <input type='text' value={this.state.totalWeight} onChange={this.setWeight}/>
-                  <button onClick={this.weighing}>
-                    Взвесить
-                  </button>
-                </div>
+                <p>{this.props.message}</p> 
+                {this.props.weighingData && 
+                  <WeighingDetail weighingData={this.props.WeighingData} />
+                }
               </div>
-            }
-            {this.state.weighingRecord &&
-              <div>
-                <p>{this.state.weighingRecord.average_weight}</p>
-                <p>{this.state.weighingRecord.total_weight}</p>
-              </div>
-            }
-            
+              :
+                <p>Выберите партию для взвешивания</p>
+          }
         </div>
       </div>
     )

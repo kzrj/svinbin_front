@@ -38,6 +38,15 @@ export function* cullingNewbornPiglets(api, action) {
     }
 }
 
+export function* recountNewbornPiglets(api, action) {
+    try {
+        let response = yield call(api.recountNewbornPiglets, action.payload);
+        yield put(NewbornPigletsActions.recountNewbornPigletsSuccess(response));
+    } catch (err) {
+        yield put(NewbornPigletsActions.recountNewbornPigletsFail(err))
+    }
+}
+
 export function* cullingGiltNewbornPiglets(api, action) {
     try {
         let response = yield call(api.cullingGiltNewbornPiglets, action.payload);

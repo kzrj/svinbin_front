@@ -36,6 +36,7 @@ export default {
     create_gilt: (id) => `${apiUrl}/workshopthree/newbornpiglets/${id}/create_gilt/`,
     cullingNewbornPiglets: (id) => `${apiUrl}/workshopthree/newbornpiglets/${id}/culling_piglets/`,
     cullingGiltNewbornPiglets: (id) => `${apiUrl}/workshopthree/newbornpiglets/${id}/culling_gilts/`,
+    recountNewbornPiglets: (id) => `${apiUrl}/workshopthree/newbornpiglets/${id}/recount/`,
 
     GET_NOMADS_PIGLETS: `${apiUrl}/nomadpiglets/`,
     weighingPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/weighing_piglets/`,

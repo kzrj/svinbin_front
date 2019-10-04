@@ -31,9 +31,9 @@ const { Types, Creators } = createActions({
     getInnerTransferTabLocations2Ws4Fail: ['error'],
     getInnerTransferTabLocations2Ws4Success: ['payload'],
 
-    weighingPigletsWs4Request : ['payload'],
-    weighingPigletsWs4Fail : ['payload'],
-    weighingPigletsWs4Success : ['payload'],
+    // weighingPigletsWs4Request : ['payload'],
+    // weighingPigletsWs4Fail : ['payload'],
+    // weighingPigletsWs4Success : ['payload'],
 })
 
 export const Ws4Types = Types
@@ -43,6 +43,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
     fetching: false,
+    eventFetching: false,
     sections: [],
     incomingPigletsList: [],
     incomeTabLocations: [],
@@ -65,7 +66,7 @@ export const Ws4Selectors = {
     getTransferPigletsWs4: state => state.ws4.transferPiglets,
     getInnerTransferTabLocations1Ws4: state => state.ws4.innerTransferLocations1,
     getInnerTransferTabLocations2Ws4: state => state.ws4.innerTransferLocations2,
-    weighingPigletsWs4: state => state.ws4.weighingData,
+    // weighingPigletsWs4: state => state.ws4.weighingData,
 }
 
 /* ------------- Reducers ------------- */
@@ -110,15 +111,15 @@ export const getIncomeTabLocationsWs4Fail = (state, { error }) => {
 
 // Setlle
 export const setllePigletsWs4Request = (state, { payload }) => {
-    return state.merge({ fetching: true })
+    return state.merge({ eventFetching: true })
 }
 
 export const setllePigletsWs4Success = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, setlledPiglets: payload.piglets_group })
+    return state.merge({ eventFetching: false, error: null, setlledPiglets: payload.piglets_group })
 }
 
 export const setllePigletsWs4Fail = (state, { error }) => {
-    return state.merge({ fetching: false, error, setlledPiglets: null })
+    return state.merge({ eventFetching: false, error, setlledPiglets: null })
 }
 
 // Get transfer piglets
@@ -160,19 +161,19 @@ export const getInnerTransferTabLocations2Ws4Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, innerTransferLocations2: [] })
 }
 
-// Weighing
-export const weighingPigletsWs4Request = (state, { payload }) => {
-    return state.merge({ fetching: true })
-}
+// // Weighing
+// export const weighingPigletsWs4Request = (state, { payload }) => {
+//     return state.merge({ eventFetching: true })
+// }
 
-export const weighingPigletsWs4Success = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, weighingData: payload, })
-}
+// export const weighingPigletsWs4Success = (state, { payload }) => {
+//     return state.merge({ eventFetching: false, error: null, weighingData: payload, })
+// }
 
-export const weighingPigletsWs4Fail = (state, { error }) => {
-    return state.merge({ fetching: false, error, weighingData: null, 
-        event: null })
-}
+// export const weighingPigletsWs4Fail = (state, { error }) => {
+//     return state.merge({ eventFetching: false, error, weighingData: null, 
+//         event: null })
+// }
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -204,7 +205,7 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_WS4_SUCCESS]: getInnerTransferTabLocations2Ws4Success,
     [Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_WS4_FAIL]: getInnerTransferTabLocations2Ws4Fail,
 
-    [Types.WEIGHING_PIGLETS_WS4_REQUEST]: weighingPigletsWs4Request,
-    [Types.WEIGHING_PIGLETS_WS4_SUCCESS]: weighingPigletsWs4Success,
-    [Types.WEIGHING_PIGLETS_WS4_FAIL]: weighingPigletsWs4Fail,
+    // [Types.WEIGHING_PIGLETS_WS4_REQUEST]: weighingPigletsWs4Request,
+    // [Types.WEIGHING_PIGLETS_WS4_SUCCESS]: weighingPigletsWs4Success,
+    // [Types.WEIGHING_PIGLETS_WS4_FAIL]: weighingPigletsWs4Fail,
 })

@@ -112,12 +112,37 @@ const create = () => {
         })
     }
 
+    const recountNewbornPiglets = payload => {
+        const { id, quantity } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.recountNewbornPiglets(id);
+
+        const formData = new FormData();
+        formData.append("quantity", quantity);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getNewbornPiglets,
         mergeNewbornPiglets,
         createGilt,
         cullingNewbornPiglets,
-        cullingGiltNewbornPiglets
+        cullingGiltNewbornPiglets,
+        recountNewbornPiglets
     }
 
 }
