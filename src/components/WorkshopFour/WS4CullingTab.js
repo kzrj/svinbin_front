@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 
+//components
+import { PigletsCells, Sections } from '../WorkshopThree/Components'
+import { PigletsGroup } from '../WorkshopThree/PigletsComponents'
+import { CullingTypeInput, CullingReasonInput } from '../WSComponents'
+
 
 class WS4TransferTab extends Component {
    constructor(props) {
@@ -8,20 +13,21 @@ class WS4TransferTab extends Component {
       activePiglets: null,
       activeSectionId: null,
       activeCellId: null,
+
       cullingType: null,
-      cullingReason: null
+      cullingReason: null,
+      needToRefresh: false,
+      is_it_gilt: false,
     }
+    this.clickSection = this.clickSection.bind(this);
+    this.clickLocation = this.clickLocation.bind(this);
+    this.setData = this.setData.bind(this);
+    this.cullingPiglets = this.cullingPiglets.bind(this);
+    this.cullingGilt = this.cullingGilt.bind(this);
   }
   
   componentDidMount() {
-    // query
     this.props.getSections({workshop: 4})
-  }
-  setCullingType = (e) => {
-    this.setState({
-      ...this.state,
-      cullingType: e.target.value
-    })
   }
 
   clickSection = (e) => {
@@ -33,7 +39,7 @@ class WS4TransferTab extends Component {
     this.props.getLocations({by_section: sectionId})
   }
 
-  clickCell = (location) => {
+  clickLocation (location) {
     this.setState({
       ...this.state,
       activeCellId: location.id,
@@ -42,82 +48,100 @@ class WS4TransferTab extends Component {
     })
   }
 
-  clickCulling = () => {
-    let data = {
-      id: this.state.activePiglets.id,
-      quantity: 1,
-      gilt_quantity: 0,
-      culling_type: this.state.cullingType,
-      reason: this.state.cullingReason,
-      initiator: 1 // hardcode
-    }
-    this.props.cullingPiglets(data)
-    this.props.getLocations({by_section: this.state.activeSectionId})
+  setData (e) {
     this.setState({
       ...this.state,
-      activePiglets:null
+      [e.target.name]: e.target.value
     })
   }
 
+
+  cullingPiglets () {
+    const { culling_type, culling_reason, activePiglets } = this.state
+    this.props.cullingPiglets({
+      id: activePiglets.id,
+      culling_type: culling_type,
+      culling_reason: culling_reason
+    })
+    this.setState({
+      ...this.state,
+      culling_reason: null,
+      culling_type: null,
+      needToRefresh: true, 
+      activeLocation: null,
+      activePiglets: null,
+    })
+  }
+
+  cullingGilt () {
+    const { culling_type, culling_reason, activePiglets } = this.state    
+    this.props.cullingGilt({
+      id: activePiglets.id,
+      culling_type: culling_type,
+      culling_reason: culling_reason
+    })
+    this.setState({
+      ...this.state,
+      culling_reason: null,
+      culling_type: null,
+      needToRefresh: true, 
+      activeLocation: null,
+      activePiglets: null,
+    })
+  }
+
+  refreshSowsList () {
+    if (this.props.eventFetching && this.state.needToRefresh){
+      setTimeout(() => {
+        this.setState({...this.state, needToRefresh: false})
+        this.props.getLocations({by_section: this.state.activeSectionId})
+      }, 500)
+    }
+  }
+
   render() {
+    this.refreshSowsList()
     const { sections, locations } = this.props
     
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
-            <div className='row'>
-                {sections.map((section, key) => 
-                    <div className={ this.state.activeSectionId == section.id ? 
-                      'col-sm section-button section-active': 'col-sm section-button '
-                      } onClick={this.clickSection}
-                      data-section-id={section.id}
-                      key={key}>
-                      ID{section.id} {section.name}
-                    </div>
-                )}
-            </div>
-            <div className='row'>
-              {locations.map(location =>
-                  <div className={this.state.activeCellId == location.id ? 
-                    'col-md-5 cell cell-active' : 'col-md-5 cell'}
-                    onClick={() => this.clickCell(location)}
-                    key={location.id}>
-                    ID{location.id} 
-                    {location.is_empty && 'Пустая'}
-                    
-                  </div>
-              )}
-              {locations.length < 1 && 'Выберите секцию'}
-            </div>
+            <Sections 
+              sections={sections}
+              activeSectionId={this.state.activeSectionId}
+              clickSection={this.clickSection}
+            />
+            <PigletsCells
+              locations={locations}
+              activeCellIds={[this.state.activeCellId]}
+              clickLocation={this.clickLocation}
+            />
           </div>
           <div className='col-6'>
-            <div>
-              {this.state.activePiglets ? 
-                <div>
-                  <p>id {this.state.activePiglets.id}</p>
-                  <p>количество {this.state.activePiglets.quantity}</p>
-                  <p>количество ремонтных {this.state.activePiglets.gilts_quantity}</p>
-                  <p>{this.state.activePiglets.status}</p>
-                </div>
-                : 'Пустая клетка'}
-            </div>
-            <div>
-              <div className="input-group">
-                <select className="custom-select" id="inputGroupSelect04" onChange={this.setCullingType}>
-                  <option selected>Выберите причину...</option>
-                  <option value='padej' >padej</option>
-                  <option value='prirezka' >prirezka</option>
-                  <option value='spec uboi' >spec uboi</option>
-                </select>
-                <input type='text' value={this.state.cullingReason} />
+            {this.state.activePiglets ?
+              <div>
+                <PigletsGroup piglets={this.state.activePiglets}/>
+                {this.state.activePiglets.gilts_quantity > 0 &&
+                  <div className="input-group-append">
+                    <label>ремонтная свинка</label>
+                    <input type='checkbox' 
+                        onChange={this.setData} 
+                        name='is_it_gilt' value={!this.state.is_it_gilt}/>
+                  </div>}
                 <div className="input-group-append">
-                  <button className="btn btn-outline-secondary" type="button" 
-                  onClick={this.clickCulling}>
-                    Брак
+                  <CullingTypeInput setData={this.setData}/>
+                  <CullingReasonInput setData={this.setData} 
+                    culling_reason={this.state.culling_reason}/>
+                  <button className='btn btn-outline-secondary' type='button'
+                    onClick={this.state.is_it_gilt ? this.cullingGilt : this.cullingPiglets}
+                    >
+                      Выбраковка
                   </button>
                 </div>
               </div>
-            </div>  
+              :
+              this.props.message ? <p>{this.props.message}</p> : <p>Выберите клетку</p>
+            }
         </div>
       </div>
     )

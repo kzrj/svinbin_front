@@ -21,8 +21,8 @@ class WorkshopFourContainer extends Component {
         incomeTab: false,
         resettlementTab: false,
         innerTransferTab: false,
-        transferTab: true,
-        cullingTab: false,
+        transferTab: false,
+        cullingTab: true,
         // infoTab: false,
       }
     };
@@ -138,27 +138,32 @@ class WorkshopFourContainer extends Component {
 
         { this.state.tabs.transferTab &&
           <WS4TransferTab 
-          getPiglets={this.props.getTransferPiglets}
-          piglets={this.props.state.ws4.transferPiglets}
+            getPiglets={this.props.getTransferPiglets}
+            piglets={this.props.state.ws4.transferPiglets}
 
-          getSections={this.props.getSections}
-          sections={this.props.state.ws4.sections}
+            getSections={this.props.getSections}
+            sections={this.props.state.ws4.sections}
 
-          getLocations={this.props.getIncomeTabLocations}
-          locations={this.props.state.ws4.incomeTabLocations}
+            getLocations={this.props.getIncomeTabLocations}
+            locations={this.props.state.ws4.incomeTabLocations}
 
-          movePiglets={this.props.movePiglets}
-          eventFetching={this.props.state.nomadPiglets.eventFetching}
+            movePiglets={this.props.movePiglets}
+            eventFetching={this.props.state.nomadPiglets.eventFetching}
+            message={this.props.state.nomadPiglets.message}
         />}
 
         { this.state.tabs.cullingTab &&
-          <WS4CullingTab 
-          query={null}
-          getSections={this.props.getSections}
-          sections={this.props.state.ws4.sections}
-          getLocations={this.props.getIncomeTabLocations}
-          locations={this.props.state.ws4.incomeTabLocations}
-          cullingPiglets={this.props.cullingPiglets}
+          <WS4CullingTab
+            getSections={this.props.getSections}
+            sections={this.props.state.ws4.sections}
+
+            getLocations={this.props.getIncomeTabLocations}
+            locations={this.props.state.ws4.incomeTabLocations}
+
+            cullingPiglets={this.props.cullingPiglets}
+            cullingGilt={this.props.cullingGilt}
+            eventFetching={this.props.state.nomadPiglets.eventFetching}
+            message={this.props.state.nomadPiglets.message}
         />}
         
       </div>
@@ -184,6 +189,7 @@ const mapDispatchToProps = (dispatch) => ({
   getInnerTransferTabLocations2: query => dispatch(Ws4Actions.getInnerTransferTabLocations2Ws4Request(query)),
   weighingPiglets: data => dispatch(NomadPigletsActions.weighingPigletsRequest(data)),
   cullingPiglets: data => dispatch(NomadPigletsActions.cullingPigletsRequest(data)),
+  cullingGilt: data => dispatch(NomadPigletsActions.cullingGiltPigletsRequest(data)),
 })
 
 export default connect(

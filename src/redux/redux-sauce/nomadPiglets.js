@@ -111,7 +111,7 @@ export const cullingGiltPigletsRequest = (state, { payload }) => {
 
 export const cullingGiltPigletsSuccess = (state, { payload }) => {
     return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
-        event: payload.culling })
+        event: payload.culling, message: payload.message })
 }
 
 export const cullingGiltPigletsFail = (state, { error }) => {

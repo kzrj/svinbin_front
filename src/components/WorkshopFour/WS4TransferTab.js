@@ -13,18 +13,22 @@ class WS4TransferTab extends Component {
       activePiglets: null,
       activeSectionId: null,
       activeCellId: null,
-
+      needToRefresh: false
     }
+    this.clickSection = this.clickSection.bind(this);
+    this.clickCell = this.clickCell.bind(this);
+    this.clickTransfer = this.clickTransfer.bind(this);
   }
   
   componentDidMount() {
     this.props.getSections({workshop: 4})
   }
+
   showProps = () => {
     console.log(this.props)
   }
 
-  clickSection = (e) => {
+  clickSection (e) {
     const { sectionId } = e.target.dataset
     this.setState({
       ...this.state,
@@ -33,7 +37,7 @@ class WS4TransferTab extends Component {
     this.props.getLocations({by_section: sectionId})
   }
 
-  clickCell = (location) => {
+  clickCell (location) {
     this.setState({
       ...this.state,
       activeCellId: location.id,
@@ -42,7 +46,7 @@ class WS4TransferTab extends Component {
     })
   }
 
-  clickTransfer = () => {
+  clickTransfer () {
     let data = {
       id: this.state.activePiglets.id,
       quantity: this.state.activePiglets.quantity,
@@ -68,9 +72,8 @@ class WS4TransferTab extends Component {
   }
 
   render() {
-    this.refreshSowsList()
+    this.refreshSowsList ()
     const { sections, locations } = this.props
-    
     return (
         <div className='row workshop-content'>
           <div className='col-6'>

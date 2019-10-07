@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { toggleArray, toggleArrayLocations, lodashToggle } from '../utils';
 
 //components
 import { PigletsCells, Sections } from '../WorkshopThree/Components'
@@ -113,7 +112,7 @@ class WS3PigletsWeaningTab extends Component {
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
-          <Sections 
+            <Sections 
               sections={sections}
               activeSectionId={this.state.activeSectionId}
               clickSection={this.clickSection}
