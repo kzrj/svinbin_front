@@ -1,25 +1,24 @@
 import React, { Component } from 'react';
 
+//components
+import { PigletsCells, Sections } from '../WorkshopThree/Components'
+import { PigletsGroup } from '../WorkshopThree/PigletsComponents'
+
 
 class WS4TransferTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
       piglets: props.piglets,
-      activePiglets: {
-        id: 0,
-        quantity: 0,
-        gilt_quantity: 0
-      },
+      activePiglets: null,
       activeSectionId: null,
       activeCellId: null,
+
     }
   }
   
   componentDidMount() {
-    // query
     this.props.getSections({workshop: 4})
-    // this.props.getLocations({by_section: 8})
   }
   showProps = () => {
     console.log(this.props)
@@ -34,76 +33,69 @@ class WS4TransferTab extends Component {
     this.props.getLocations({by_section: sectionId})
   }
 
-  clickCell = (e) => {
-    const { locationId } = e.target.dataset    
-    this.props.getPiglets({location: locationId})
+  clickCell = (location) => {
     this.setState({
       ...this.state,
-      activeCellId: locationId
+      activeCellId: location.id,
+      activePiglets: location.nomadpigletsgroup_set.length > 0 ?
+       location.nomadpigletsgroup_set[0] : null
     })
   }
 
   clickTransfer = () => {
     let data = {
-      id: this.props.piglets[0].id,
-      quantity: this.props.piglets[0].quantity,
+      id: this.state.activePiglets.id,
+      quantity: this.state.activePiglets.quantity,
       gilt_quantity: 0,
-      to_location: 5 // hardcode
+      to_location: 5
     }
     this.props.movePiglets(data)
+    this.setState({
+      ...this.state,
+      activePiglets: null,
+      needToRefresh: true, 
+      activeCellId: null,
+    })
+  }
+
+  refreshSowsList () {
+    if (this.props.eventFetching && this.state.needToRefresh){
+      setTimeout(() => {
+        this.setState({...this.state, needToRefresh: false})
+        this.props.getLocations({by_section: this.state.activeSectionId})
+      }, 500)
+    }
   }
 
   render() {
+    this.refreshSowsList()
     const { sections, locations } = this.props
     
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
-            <div className='row'>
-                {sections.map((section, key) => 
-                    <div className={ this.state.activeSectionId == section.id ? 
-                      'col-sm section-button section-active': 'col-sm section-button '
-                      } onClick={this.clickSection}
-                      data-section-id={section.id}
-                      key={key}>
-                      ID{section.id} {section.name}
-                    </div>
-                )}
-            </div>
-            <div className='row'>
-              {locations.map(location =>
-                  <div className={this.state.activeCellId == location.id ? 
-                    'col-md-5 cell cell-active' : 'col-md-5 cell'}
-                    onClick={this.clickCell}
-                    data-location-id={location.id}
-                    data-piglets={location.nomadpigletsgroup_set}
-                    key={location.id}>
-                    ID{location.id} 
-                    {location.is_empty && 'Пустая'}
-                    
-                  </div>
-              )}
-              {locations.length < 1 && 'Выберите секцию'}
-            </div>
+            <Sections 
+              sections={sections}
+              activeSectionId={this.state.activeSectionId}
+              clickSection={this.clickSection}
+            />
+            <PigletsCells
+              locations={locations}
+              activeCellIds={[this.state.activeCellId]}
+              clickLocation={this.clickCell}
+            />
           </div>
           <div className='col-6'>
-            <div>
-              {this.props.piglets.length > 0 ? 
-                <div>
-                  <p>id {this.props.piglets[0].id}</p>
-                  <p>количество {this.props.piglets[0].quantity}</p>
-                  <p>количество ремонтных {this.props.piglets[0].gilts_quantity}</p>
-                  <input type='text' value={this.props.piglets[0].quantity}>
-
-                  </input>
-                </div>
-                : 'Пустая клетка'}
-            </div>
-            <div>
-              <button onClick={this.clickTransfer}>
-                Отправить в Цех8
-              </button>
-            </div>  
+            {this.state.activePiglets && 
+              <div>
+                <PigletsGroup piglets={this.state.activePiglets}/>
+                <button 
+                  className='btn btn-outline-secondary' type='button'
+                  onClick={this.clickTransfer}>
+                    Отправить в Цех8
+                </button>
+              </div>
+            }
         </div>
       </div>
     )
