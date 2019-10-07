@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
-import WS4IncomeTab from '../../components/WorkshopFour/WS4IncomeTab'
-import WS4ResettelmentTab from '../../components/WorkshopFour/WS4ResettelmentTab'
-import WS4TransferTab from '../../components/WorkshopFour/WS4TransferTab'
-import WS4InnerTransferTab from '../../components/WorkshopFour/WS4InnerTransferTab'
-import WS4CullingTab from '../../components/WorkshopFour/WS4CullingTab'
+import WSNomadCullingTab from '../../components/WorkshopTabs/WSNomadCullingTab'
+import WSNomadTransferTab from '../../components/WorkshopTabs/WSNomadTransferTab'
+import WSNomadInnerTransferTab from '../../components/WorkshopTabs/WSNomadInnerTransferTab'
+import WSNomadResettelmentTab from '../../components/WorkshopTabs/WSNomadResettelmentTab'
+import WSNomadIncomeTab from '../../components/WorkshopTabs/WSNomadIncomeTab'
 
 // actions
 import Ws4Actions from '../../redux/redux-sauce/ws4';
@@ -95,7 +95,10 @@ class WorkshopFourContainer extends Component {
         <div className='workshop-header-3'>
         </div>
         { this.state.tabs.incomeTab &&
-          <WS4IncomeTab 
+          <WSNomadIncomeTab 
+            workshopNumber={4}
+            weighingPlace={'3/4'}
+
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.ws4.incomingPigletsList}
 
@@ -104,40 +107,49 @@ class WorkshopFourContainer extends Component {
             eventFetching={this.props.state.nomadPiglets.eventFetching}
             message={this.props.state.nomadPiglets.message}
           />}
+
         { this.state.tabs.resettlementTab &&
-          <WS4ResettelmentTab 
-          getPiglets={this.props.getPiglets}
-          piglets={this.props.state.ws4.incomingPigletsList}
+          <WSNomadResettelmentTab 
+            workshopNumber={4}
 
-          getSections={this.props.getSections}
-          sections={this.props.state.ws4.sections}
+            getPiglets={this.props.getPiglets}
+            piglets={this.props.state.ws4.incomingPigletsList}
 
-          getLocations={this.props.getIncomeTabLocations}
-          locations={this.props.state.ws4.incomeTabLocations}
+            getSections={this.props.getSections}
+            sections={this.props.state.ws4.sections}
 
-          setllePiglets={this.props.moveToCellPiglets}
-          eventFetching={this.props.state.nomadPiglets.eventFetching}
-          message={this.props.state.nomadPiglets.message}
+            getLocations={this.props.getIncomeTabLocations}
+            locations={this.props.state.ws4.incomeTabLocations}
+
+            setllePiglets={this.props.moveToCellPiglets}
+            eventFetching={this.props.state.nomadPiglets.eventFetching}
+            message={this.props.state.nomadPiglets.message}
         />}
 
         { this.state.tabs.innerTransferTab &&
-          <WS4InnerTransferTab 
-          getSections={this.props.getSections}
-          sections={this.props.state.ws4.sections}
+          <WSNomadInnerTransferTab
+            workshopNumber={4}
 
-          getLocations1={this.props.getInnerTransferTabLocations1}
-          getLocations2={this.props.getInnerTransferTabLocations2}
+            getSections={this.props.getSections}
+            sections={this.props.state.ws4.sections}
 
-          locations1={this.props.state.ws4.innerTransferLocations1}
-          locations2={this.props.state.ws4.innerTransferLocations2}
+            getLocations1={this.props.getInnerTransferTabLocations1}
+            getLocations2={this.props.getInnerTransferTabLocations2}
 
-          movePiglets={this.props.moveToCellPiglets}
-          eventFetching={this.props.state.nomadPiglets.eventFetching}
-          message={this.props.state.nomadPiglets.message}
+            locations1={this.props.state.ws4.innerTransferLocations1}
+            locations2={this.props.state.ws4.innerTransferLocations2}
+
+            movePiglets={this.props.moveToCellPiglets}
+            eventFetching={this.props.state.nomadPiglets.eventFetching}
+            message={this.props.state.nomadPiglets.message}
         />}
 
         { this.state.tabs.transferTab &&
-          <WS4TransferTab 
+          <WSNomadTransferTab 
+            workshopNumber={4}
+            toLocation={5}
+            buttonName={'Отправить в Цех8'}
+
             getPiglets={this.props.getTransferPiglets}
             piglets={this.props.state.ws4.transferPiglets}
 
@@ -153,7 +165,9 @@ class WorkshopFourContainer extends Component {
         />}
 
         { this.state.tabs.cullingTab &&
-          <WS4CullingTab
+          <WSNomadCullingTab
+            workshopNumber={4}
+
             getSections={this.props.getSections}
             sections={this.props.state.ws4.sections}
 

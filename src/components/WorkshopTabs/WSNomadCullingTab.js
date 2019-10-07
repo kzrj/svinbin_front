@@ -6,7 +6,7 @@ import { PigletsGroup } from '../WorkshopThree/PigletsComponents'
 import { CullingTypeInput, CullingReasonInput } from '../WSComponents'
 
 
-class WS4TransferTab extends Component {
+class WSNomadCullingTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +27,7 @@ class WS4TransferTab extends Component {
   }
   
   componentDidMount() {
-    this.props.getSections({workshop: 4})
+    this.props.getSections({workshop: this.props.workshopNumber})
   }
 
   clickSection = (e) => {
@@ -54,7 +54,6 @@ class WS4TransferTab extends Component {
       [e.target.name]: e.target.value
     })
   }
-
 
   cullingPiglets () {
     const { culling_type, culling_reason, activePiglets } = this.state
@@ -148,4 +147,4 @@ class WS4TransferTab extends Component {
   }
 }
 
-export default WS4TransferTab
+export default WSNomadCullingTab

@@ -5,7 +5,7 @@ import { PigletsCells, Sections } from '../WorkshopThree/Components'
 import { PigletsGroup } from '../WorkshopThree/PigletsComponents'
 
 
-class WS4TransferTab extends Component {
+class WSNomadTransferTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -21,11 +21,7 @@ class WS4TransferTab extends Component {
   }
   
   componentDidMount() {
-    this.props.getSections({workshop: 4})
-  }
-
-  showProps = () => {
-    console.log(this.props)
+    this.props.getSections({workshop: this.props.workshopNumber})
   }
 
   clickSection (e) {
@@ -51,7 +47,7 @@ class WS4TransferTab extends Component {
       id: this.state.activePiglets.id,
       quantity: this.state.activePiglets.quantity,
       gilt_quantity: 0,
-      to_location: 5
+      to_location: this.props.toLocation
     }
     this.props.movePiglets(data)
     this.setState({
@@ -95,7 +91,7 @@ class WS4TransferTab extends Component {
                 <button 
                   className='btn btn-outline-secondary' type='button'
                   onClick={this.clickTransfer}>
-                    Отправить в Цех8
+                    {this.props.buttonName}
                 </button>
               </div>
             }
@@ -105,4 +101,4 @@ class WS4TransferTab extends Component {
   }
 }
 
-export default WS4TransferTab
+export default WSNomadTransferTab

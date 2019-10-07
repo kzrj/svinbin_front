@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 //components
 import { NomadGroupDetail, WeighingPigletsInput, WeighingDetail } from '../WSComponents'
 
-class WS4IncomeTab extends Component {
+class WSNomadIncomeTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -19,8 +19,8 @@ class WS4IncomeTab extends Component {
   }
   
   componentDidMount() {
-    // query
-    this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
+    this.props.getPiglets({status_title: "Готовы ко взвешиванию",
+      by_workshop_number: this.props.workshopNumber})
   }
 
   clickPiglets (piglets) {
@@ -40,12 +40,10 @@ class WS4IncomeTab extends Component {
   }
 
   weighing () {
-    // need initiator
     let data = {
       id: this.state.activePiglets.id,
-      place: '3/4',
+      place: this.props.weighingPlace,
       total_weight: this.state.totalWeight,
-      initiator: 1
     }
     this.props.weighingPiglets(data)
     this.setState({
@@ -54,14 +52,14 @@ class WS4IncomeTab extends Component {
       activePiglets: null,
       needToRefresh: true
     })
-    // this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
   }
 
   refreshSowsList () {
     if (this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        this.props.getPiglets({status_title: "Готовы ко взвешиванию"})
+        this.props.getPiglets({status_title: "Готовы ко взвешиванию",
+          by_workshop_number: this.props.workshopNumber})
       }, 500)
     }
   }
@@ -97,7 +95,7 @@ class WS4IncomeTab extends Component {
               <div>
                 <p>{this.props.message}</p> 
                 {this.props.weighingData && 
-                  <WeighingDetail weighingData={this.props.WeighingData} />
+                  <WeighingDetail weighingData={this.props.weighingData} />
                 }
               </div>
               :
@@ -109,4 +107,4 @@ class WS4IncomeTab extends Component {
   }
 }
 
-export default WS4IncomeTab
+export default WSNomadIncomeTab

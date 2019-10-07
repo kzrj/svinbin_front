@@ -5,7 +5,7 @@ import { PigletsCells, Sections } from '../WorkshopThree/Components'
 import { PigletsGroup } from '../WorkshopThree/PigletsComponents'
 
 
-class WS4InnerTransferTab extends Component {
+class WSNomadInnerTransferTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +24,7 @@ class WS4InnerTransferTab extends Component {
   }
   
   componentDidMount() {
-    this.props.getSections({workshop: 4})
+    this.props.getSections({workshop: this.props.workshopNumber})
   }
 
   clickFromSection (e) {
@@ -139,4 +139,4 @@ class WS4InnerTransferTab extends Component {
   }
 }
 
-export default WS4InnerTransferTab
+export default WSNomadInnerTransferTab

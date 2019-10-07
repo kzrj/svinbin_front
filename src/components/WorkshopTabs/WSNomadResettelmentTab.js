@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { PigletsCells, Sections } from '../WorkshopThree/Components'
 
 
-class WS4ResettelmentTab extends Component {
+class WSNomadResettelmentTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -22,8 +22,9 @@ class WS4ResettelmentTab extends Component {
   }
   
   componentDidMount() {
-    this.props.getPiglets({status_title: "Взвешены, готовы к заселению", by_workshop_number: 4})
-    this.props.getSections({workshop: 4})
+    this.props.getPiglets({status_title: "Взвешены, готовы к заселению",
+      by_workshop_number: this.props.workshopNumber})
+    this.props.getSections({workshop: this.props.workshopNumber})
   }
 
   setData (e) {
@@ -148,4 +149,4 @@ class WS4ResettelmentTab extends Component {
   }
 }
 
-export default WS4ResettelmentTab
+export default WSNomadResettelmentTab
