@@ -71,7 +71,6 @@ class WS4ResettelmentTab extends Component {
       gilt_quantity: 0,
       to_location: activeCellId
     }
-    console.log(this.state)
     this.props.setllePiglets(data)
     this.setState({
       ...this.state,

@@ -19,8 +19,8 @@ class WorkshopFourContainer extends Component {
     this.state = {
       tabs: {
         incomeTab: false,
-        resettlementTab: true,
-        innerTransferTab: false,
+        resettlementTab: false,
+        innerTransferTab: true,
         transferTab: false,
         cullingTab: false,
         // infoTab: false,
@@ -122,14 +122,18 @@ class WorkshopFourContainer extends Component {
 
       { this.state.tabs.innerTransferTab &&
           <WS4InnerTransferTab 
-          query={null}
           getSections={this.props.getSections}
           sections={this.props.state.ws4.sections}
+
           getLocations1={this.props.getInnerTransferTabLocations1}
           getLocations2={this.props.getInnerTransferTabLocations2}
+
           locations1={this.props.state.ws4.innerTransferLocations1}
           locations2={this.props.state.ws4.innerTransferLocations2}
-          movePiglets={this.props.movePiglets}
+
+          movePiglets={this.props.moveToCellPiglets}
+          eventFetching={this.props.state.nomadPiglets.eventFetching}
+          message={this.props.state.nomadPiglets.message}
         />}
 
         { this.state.tabs.transferTab &&

@@ -1,27 +1,33 @@
 import React, { Component } from 'react';
 
+//components
+import { PigletsCells, Sections } from '../WorkshopThree/Components'
+import { PigletsGroup } from '../WorkshopThree/PigletsComponents'
+
 
 class WS4InnerTransferTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      activePiglets: {
-        id: 0,
-        quantity: 0,
-        gilt_quantity: 0
-      },
+      activePiglets: null,
       activeFromSectionId: null,
       activeCellFromLocationId: null,
       activeToSectionId: null,
       activeCellToLocationId: null,
+      needToRefresh: false
     }
+    this.clickFromSection = this.clickFromSection.bind(this);
+    this.clickToSection = this.clickToSection.bind(this);
+    this.clickCellToLocation = this.clickCellToLocation.bind(this);
+    this.clickCellFromLocation = this.clickCellFromLocation.bind(this);
+    this.clickTransfer = this.clickTransfer.bind(this);
   }
   
   componentDidMount() {
     this.props.getSections({workshop: 4})
   }
 
-  clickFromSection = (e) => {
+  clickFromSection (e) {
     const { sectionId } = e.target.dataset
     this.setState({
       ...this.state,
@@ -31,7 +37,7 @@ class WS4InnerTransferTab extends Component {
     this.props.getLocations1({by_section: sectionId})
   }
 
-  clickToSection = (e) => {
+  clickToSection (e) {
     const { sectionId } = e.target.dataset
     this.setState({
       ...this.state,
@@ -40,24 +46,23 @@ class WS4InnerTransferTab extends Component {
     this.props.getLocations2({by_section: sectionId})
   }
 
-  clickCellFromLocation = (location) => {
+  clickCellFromLocation (location) {
     this.setState({
       ...this.state,
       activeCellFromLocationId: location.id,
       activePiglets: location.nomadpigletsgroup_set.length > 0 ?
-       location.nomadpigletsgroup_set[0] : 0
+       location.nomadpigletsgroup_set[0] : null
     })
   }
 
-  clickCellToLocation = (e) => {
-    const { locationId } = e.target.dataset
+  clickCellToLocation (location) {
     this.setState({
       ...this.state,
-      activeCellToLocationId: locationId
+      activeCellToLocationId: location.id
     })
   }
 
-  clickTransfer = () => {
+  clickTransfer () {
     let data = {
       id: this.state.activePiglets.id,
       quantity: this.state.activePiglets.quantity,
@@ -65,80 +70,69 @@ class WS4InnerTransferTab extends Component {
       to_location: this.state.activeCellToLocationId
     }
     this.props.movePiglets(data)
-    this.props.getLocations1({by_section: this.state.activeFromSectionId})
-    this.props.getLocations2({by_section: this.state.activeToSectionId})
+    this.setState({
+      ...this.state,
+      activePiglets: null,
+      quantity: null,
+      needToRefresh: true, 
+      activeCellFromLocationId: null,
+      activeCellToLocationId: null,
+    })
+  }
+
+  refreshSowsList () {
+    if (this.props.eventFetching && this.state.needToRefresh){
+      setTimeout(() => {
+        this.setState({...this.state, needToRefresh: false})
+        this.props.getLocations1({by_section: this.state.activeFromSectionId})
+        this.props.getLocations2({by_section: this.state.activeToSectionId})
+      }, 500)
+    }
   }
 
   render() {
     const { sections, locations1, locations2 } = this.props
+    this.refreshSowsList()
     
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
-            <div className='row'>
-                {sections.map((section, key) => 
-                    <div className={ this.state.activeFromSectionId == section.id ? 
-                      'col-sm section-button section-active': 'col-sm section-button '
-                      } onClick={this.clickFromSection}
-                      data-section-id={section.id}
-                      key={key}>
-                      ID{section.id} {section.name}
-                    </div>
-                )}
-            </div>
-            <div className='row'>
-              {locations1.map(location =>
-                  <div className={this.state.activeCellFromLocationId == location.id ? 
-                    'col-md-5 cell cell-active' : 'col-md-5 cell'}
-                    onClick={() => this.clickCellFromLocation(location)}
-                    key={location.id}>
-                    ID{location.id} 
-                    {location.is_empty && 'Пустая'}
-                  </div>
-              )}
-              {locations1.length < 1 && 'Выберите секцию'}
-            </div>
+            <Sections 
+              sections={sections}
+              activeSectionId={this.state.activeFromSectionId}
+              clickSection={this.clickFromSection}
+            />
+            <PigletsCells
+              locations={locations1}
+              activeCellIds={[this.state.activeCellFromLocationId]}
+              clickLocation={this.clickCellFromLocation}
+            />
           </div>
           <div className='col-6'>
-            <div className='row'>
-                {sections.map((section, key) => 
-                    <div className={ this.state.activeToSectionId == section.id ? 
-                      'col-sm section-button section-active': 'col-sm section-button '
-                      } onClick={this.clickToSection}
-                      data-section-id={section.id}
-                      key={key}>
-                      ID{section.id} {section.name}
-                    </div>
-                )}
-              </div>
-              <div className='row'>
-                {locations2.map((location, key) =>
-                  <div className={this.state.activeCellToLocationId == location.id ? 
-                    'col-md-5 cell cell-active' : 'col-md-5 cell'}
-                    onClick={this.clickCellToLocation}
-                    data-location-id={location.id}
-                    data-piglets={location.nomadpigletsgroup_set}
-                    key={key}>
-                    ID{location.id} 
-                    {location.is_empty && 'Пустая'}
-                  </div>
-                )}
-                {locations2.length < 1 && 'Выберите секцию'}
-              </div>
+            <Sections 
+              sections={sections}
+              activeSectionId={this.state.activeToSectionId}
+              clickSection={this.clickToSection}
+            />
+            <PigletsCells
+              locations={locations2}
+              activeCellIds={[this.state.activeCellToLocationId]}
+              clickLocation={this.clickCellToLocation}
+            />
           </div>
         <div>
           <div>
-            {this.state.activePiglets.id > 0 && 
-              <ul>
-                <li>{this.state.activePiglets.id}</li>
-                <li>{this.state.activePiglets.quantity}</li>
-                <li>{this.state.activePiglets.gilt_quantity}</li>
-              </ul>  
+            {this.state.activePiglets && 
+              <div>
+                <PigletsGroup piglets={this.state.activePiglets}/>
+                <button 
+                  className='btn btn-outline-secondary' type='button'
+                  onClick={this.clickTransfer}>
+                  Переместить
+                </button>
+              </div>
             }
           </div>
-          <button onClick={this.clickTransfer}>
-            Отправить в Цех8
-          </button>
         </div>
       </div>
     )
