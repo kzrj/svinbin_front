@@ -44,6 +44,7 @@ export default {
     cullingGiltPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/culling_gilts/`,
     moveGroupFromCellToCell: () => `${apiUrl}/nomadpiglets/move_group_from_cell_to_cell/`,
     moveToPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/move_to/`,
+    moveToCellPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/move_one_group_to_cell/`,
 
     GET_USERS: `${apiUrl}/users/`,
 

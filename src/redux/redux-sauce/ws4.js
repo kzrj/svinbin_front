@@ -53,6 +53,7 @@ export const INITIAL_STATE = Immutable({
     innerTransferLocations2: [],
     innerTransferPiglets: [],
     weighingData: {},
+    message: null,
     error: '',
 })
 
@@ -115,11 +116,12 @@ export const setllePigletsWs4Request = (state, { payload }) => {
 }
 
 export const setllePigletsWs4Success = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, setlledPiglets: payload.piglets_group })
+    return state.merge({ eventFetching: false, error: null, setlledPiglets: payload.piglets_group,
+        message: payload.message })
 }
 
 export const setllePigletsWs4Fail = (state, { error }) => {
-    return state.merge({ eventFetching: false, error, setlledPiglets: null })
+    return state.merge({ eventFetching: false, error, setlledPiglets: null, message: null })
 }
 
 // Get transfer piglets

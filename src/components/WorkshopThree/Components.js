@@ -98,7 +98,9 @@ export class SowCells extends Component {
         className={cellClassName}
         onClick={() => this.props.clickLocation(location)}
         key={location.id}>
-          #{location.sowAndPigletsCell && location.sowAndPigletsCell.number}
+          #
+          {location.sowAndPigletsCell && location.sowAndPigletsCell.number}
+          {location.pigletsGroupCell && location.pigletsGroupCell.number}
       </div>
   )}
  }

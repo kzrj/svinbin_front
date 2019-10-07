@@ -55,3 +55,12 @@ export function* moveToPiglets(api, action) {
         yield put(NomadPigletsActions.moveToPigletsFail(err))
     }
 }
+
+export function* moveToCellPiglets(api, action) {
+    try {
+        let response = yield call(api.moveToCellPiglets, action.payload);
+        yield put(NomadPigletsActions.moveToCellPigletsSuccess(response));
+    } catch (err) {
+        yield put(NomadPigletsActions.moveToCellPigletsFail(err))
+    }
+}

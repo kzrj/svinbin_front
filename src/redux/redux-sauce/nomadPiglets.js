@@ -26,6 +26,10 @@ const { Types, Creators } = createActions({
     moveToPigletsRequest: ['payload'],
     moveToPigletsFail: ['error'],
     moveToPigletsSuccess: ['payload'],
+
+    moveToCellPigletsRequest: ['payload'],
+    moveToCellPigletsFail: ['error'],
+    moveToCellPigletsSuccess: ['payload'],
 })
 
 export const NomadPigletsTypes = Types
@@ -53,6 +57,7 @@ export const NomadPigletsSelectors = {
     cullingGiltPiglets: state => state.nomadPiglets.nomadGroup,
     moveGroupFromCellToCell: state => state.nomadPiglets.nomadGroup,
     moveToPiglets: state => state.nomadPiglets.nomadGroup,
+    moveToCellPiglets: state => state.nomadPiglets.nomadGroup,
 }
 
 /* ------------- Reducers ------------- */
@@ -143,6 +148,22 @@ export const moveToPigletsFail = (state, { error }) => {
     return state.merge({ eventFetching: false, error, nomadGroup: null, 
         event: null })
 }
+
+// Move to cell
+export const moveToCellPigletsRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const moveToCellPigletsSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
+        event: payload.transaction, message: payload.message })
+}
+
+export const moveToCellPigletsFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, error, nomadGroup: null, 
+        event: null, })
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -169,4 +190,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MOVE_TO_PIGLETS_REQUEST]: moveToPigletsRequest,
     [Types.MOVE_TO_PIGLETS_SUCCESS]: moveToPigletsSuccess,
     [Types.MOVE_TO_PIGLETS_FAIL]: moveToPigletsFail,
+
+    [Types.MOVE_TO_CELL_PIGLETS_REQUEST]: moveToCellPigletsRequest,
+    [Types.MOVE_TO_CELL_PIGLETS_SUCCESS]: moveToCellPigletsSuccess,
+    [Types.MOVE_TO_CELL_PIGLETS_FAIL]: moveToCellPigletsFail,
 })

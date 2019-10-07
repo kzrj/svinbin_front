@@ -1,31 +1,39 @@
 import React, { Component } from 'react';
 
+// components
+import { PigletsCells, Sections } from '../WorkshopThree/Components'
+
 
 class WS4ResettelmentTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      activePiglets: {
-        id: 0,
-        quantity: 0,
-        gilt_quantity: 0
-      },
+      activePiglets: null,
       activeSectionId: null,
       activeCellId: null,
+      splitLabel: false,
+      quantity: 0,
     }
+    this.setData = this.setData.bind(this);
+    this.clickSection = this.clickSection.bind(this);
+    this.clickCell = this.clickCell.bind(this);
+    this.clickPiglets = this.clickPiglets.bind(this);
+    this.clickSetlle = this.clickSetlle.bind(this);
   }
   
   componentDidMount() {
-    // query
-    this.props.getPiglets({status_title: "Взвешены, готовы к заселению", by_workshop_number: 3})
+    this.props.getPiglets({status_title: "Взвешены, готовы к заселению", by_workshop_number: 4})
     this.props.getSections({workshop: 4})
-    // this.props.getLocations({by_section: 8})
-  }
-  showProps = () => {
-    console.log(this.props)
   }
 
-  clickSection = (e) => {
+  setData (e) {
+    this.setState({
+      ...this.state,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  clickSection (e) {
     const { sectionId } = e.target.dataset
     this.setState({
       ...this.state,
@@ -34,88 +42,107 @@ class WS4ResettelmentTab extends Component {
     this.props.getLocations({by_section: sectionId})
   }
 
-  clickCell = (e) => {
-    const { locationId } = e.target.dataset
+  clickCell (location) {
     this.setState({
       ...this.state,
-      activeCellId: locationId
+      activeCellId: location.id
     })
   }
 
-  clickPiglets = (e) => {
-    const { pigletsId, pigletsQuantity } = e.target.dataset
+  clickPiglets (piglets) {
     this.setState({
       ...this.state,
-      activePiglets: {
-        ...this.state.activePiglets,
-        id: pigletsId,
-        quantity: pigletsQuantity,
-      }
+      activePigletsId: piglets.id,
+      activePiglets: piglets,
+      weighingRecord: null
     })
   }
 
-  clickSetlle = () => {
-    const { activePiglets, activeSectionId, activeCellId } = this.state
+  clickSetlle () {
+    const { activePiglets, activeCellId, quantity } = this.state
+    let endQuantity = activePiglets.quantity;
+
+    if (quantity > 0)
+      endQuantity = quantity
+
     let data = {
       id: activePiglets.id,
-      quantity: activePiglets.quantity,
+      quantity: endQuantity,
       gilt_quantity: 0,
       to_location: activeCellId
     }
+    console.log(this.state)
     this.props.setllePiglets(data)
-    
-    // query
-    this.props.getPiglets({status_title: "Взвешены, готовы к заселению", by_workshop_number: 4})
+    this.setState({
+      ...this.state,
+      activePiglets: null,
+      quantity: null,
+      needToRefresh: true, 
+      activeCellId: null,
+    })
+  }
+
+  refreshSowsList () {
+    if (this.props.eventFetching && this.state.needToRefresh){
+      setTimeout(() => {
+        this.setState({...this.state, needToRefresh: false})
+        this.props.getLocations({by_section: this.state.activeSectionId})
+        this.props.getPiglets({status_title: "Взвешены, готовы к заселению", by_workshop_number: 4})
+      }, 500)
+    }
   }
 
   render() {
+    this.refreshSowsList()
     const { piglets, sections, locations } = this.props
-    
     return (
         <div className='row workshop-content'>
           <div className='col-3'>
             {piglets.map(group =>
-              <div className={this.state.activePiglets.id == group.id ?
-                 'piglets piglets-active' : 'piglets'}
-                 onClick={this.clickPiglets}
-                 data-piglets-id={group.id}
-                 data-piglets-quantity={group.quantity}
-                 key={group.id}
-                 >
-                ID{group.id} Количество{group.quantity}
+              <div className={this.state.activePigletsId == group.id ? 
+                'nomad-piglets-row piglets-active': 'nomad-piglets-row'}
+                onClick={() => this.clickPiglets(group)}
+                key={group.id}
+                >
+                №{group.merger_part_number} Партия {group.quantity} голов
               </div>
             )}
-            
           </div>
           <div className='col-9'>
-            <div className='row'>
-              {sections.map((section, key) => 
-                  <div className={ this.state.activeSectionId == section.id ? 
-                    'col-sm section-button section-active': 'col-sm section-button '
-                    } onClick={this.clickSection}
-                    data-section-id={section.id}
-                    key={key}>
-                    ID{section.id} {section.name}
-                  </div>
-              )}
-            </div>
-            <div className='row'>
-              {locations.map(location =>
-                  <div className={this.state.activeCellId == location.id ? 
-                    'col-md-5 cell cell-active' : 'col-md-5 cell'}
-                    onClick={this.clickCell}
-                    data-location-id={location.id}
-                    key={location.id}>
-                    ID{location.id} 
-                  </div>
-              )}
-              {locations.length < 1 && 'Выберите секцию'}
-            </div>
-            <div>
-              <button onClick={this.clickSetlle}>
-                Разместить группу
-              </button>
-            </div>
+            <Sections 
+                sections={sections}
+                activeSectionId={this.state.activeSectionId}
+                clickSection={this.clickSection}
+              />
+            <PigletsCells
+              locations={locations}
+              activeCellIds={[this.state.activeCellId]}
+              clickLocation={this.clickCell}
+            />
+            {this.state.activePiglets ?
+              <div>
+                <div className="input-group-append">
+                  <label>Разделить</label>
+                  <input type='checkbox' 
+                      onChange={this.setData}
+                      name='splitLabel' value={!this.state.splitLabel}/>
+                </div>
+                
+                <div className="input-group-append">
+                  {this.state.splitLabel && 
+                    <input type='text' 
+                        onChange={this.setData} 
+                        name='quantity' value={this.state.quantity}/>}
+                  <button className='btn btn-outline-secondary' type='button'
+                    onClick={this.clickSetlle}
+                    >
+                      Разместить группу
+                  </button>
+                </div>
+              </div>
+              :
+              this.props.message ? <p>{this.props.message}</p> : <p>Выберите группу поросят</p>
+            }
           </div>  
       </div>
     )

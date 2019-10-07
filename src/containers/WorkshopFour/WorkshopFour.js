@@ -18,8 +18,8 @@ class WorkshopFourContainer extends Component {
     super(props);
     this.state = {
       tabs: {
-        incomeTab: true,
-        resettlementTab: false,
+        incomeTab: false,
+        resettlementTab: true,
         innerTransferTab: false,
         transferTab: false,
         cullingTab: false,
@@ -106,14 +106,18 @@ class WorkshopFourContainer extends Component {
           />}
         { this.state.tabs.resettlementTab &&
           <WS4ResettelmentTab 
-          query={null}
           getPiglets={this.props.getPiglets}
           piglets={this.props.state.ws4.incomingPigletsList}
+
           getSections={this.props.getSections}
           sections={this.props.state.ws4.sections}
+
           getLocations={this.props.getIncomeTabLocations}
           locations={this.props.state.ws4.incomeTabLocations}
-          setllePiglets={this.props.setllePiglets}
+
+          setllePiglets={this.props.moveToCellPiglets}
+          eventFetching={this.props.state.nomadPiglets.eventFetching}
+          message={this.props.state.nomadPiglets.message}
         />}
 
       { this.state.tabs.innerTransferTab &&
@@ -169,6 +173,7 @@ const mapDispatchToProps = (dispatch) => ({
   setllePiglets: data => dispatch(Ws4Actions.setllePigletsWs4Request(data)),
   getTransferPiglets: query => dispatch(Ws4Actions.getTransferPigletsWs4Request(query)),
   movePiglets: data => dispatch(NomadPigletsActions.moveToPigletsRequest(data)),
+  moveToCellPiglets: data => dispatch(NomadPigletsActions.moveToCellPigletsRequest(data)),
   getInnerTransferTabLocations1: query => dispatch(Ws4Actions.getInnerTransferTabLocations1Ws4Request(query)),
   getInnerTransferTabLocations2: query => dispatch(Ws4Actions.getInnerTransferTabLocations2Ws4Request(query)),
   weighingPiglets: data => dispatch(NomadPigletsActions.weighingPigletsRequest(data)),

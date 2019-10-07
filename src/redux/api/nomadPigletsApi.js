@@ -143,6 +143,32 @@ const create = () => {
         })
     }
 
+    const moveToCellPiglets = payload => {
+        const { id, to_location, quantity, gilt_quantity } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.moveToCellPiglets(id);
+
+        const formData = new FormData();
+        formData.append("to_location", to_location);
+        formData.append("quantity", quantity);
+        formData.append("gilt_quantity", gilt_quantity);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getNomadPiglets,
         weighingPiglets,
@@ -150,6 +176,7 @@ const create = () => {
         cullingGiltPiglets,
         moveGroupFromCellToCell,
         moveToPiglets,
+        moveToCellPiglets
     }
 
 }
