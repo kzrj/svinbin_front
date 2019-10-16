@@ -62,6 +62,10 @@ const { Types, Creators } = createActions({
     abortionSowRequest: ['payload'],
     abortionSowFail: ['error'],
     abortionSowSuccess: ['payload'],
+
+    massInitTransferRequest: ['payload'],
+    massInitTransferFail: ['error'],
+    massInitTransferSuccess: ['payload'],
 })
 
 export const SowsTypes = Types
@@ -83,6 +87,7 @@ export const INITIAL_STATE = Immutable({
     nonameSowsCount: null,
     boars: [],
     initData: null,
+    message: null
 })
 
 /* ------------- Selectors ------------- */
@@ -302,6 +307,20 @@ export const abortionSowSuccess = (state, { payload }) => {
 export const abortionSowFail = (state, { error }) => {
     return state.merge({ fetching: false, error, sow: null })
 }
+
+
+// Mass init and transfer
+export const massInitTransferRequest = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const massInitTransferSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, message: payload.message})
+}
+
+export const massInitTransferFail = (state, { error }) => {
+    return state.merge({ fetching: false, error: error.data, message: null })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -364,4 +383,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.ABORTION_SOW_REQUEST]: abortionSowRequest,
     [Types.ABORTION_SOW_SUCCESS]: abortionSowSuccess,
     [Types.ABORTION_SOW_FAIL]: abortionSowFail,
+
+    [Types.MASS_INIT_TRANSFER_REQUEST]: massInitTransferRequest,
+    [Types.MASS_INIT_TRANSFER_SUCCESS]: massInitTransferSuccess,
+    [Types.MASS_INIT_TRANSFER_FAIL]: massInitTransferFail,
 })

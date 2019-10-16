@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import WS2TransferTab from '../../components/WorkshopTwo/WS2TransferTab'
 import WS2CullingTab from '../../components/WorkshopTwo/WS2CullingTab'
 import WS2UltrasoundTab from '../../components/WorkshopTwo/WS2UltrasoundTab'
+import WS2CreateTransferTab from '../../components/WorkshopTwo/WS2CreateTransferTab'
 
 // actions
 import Ws2Actions from '../../redux/redux-sauce/ws2';
@@ -18,9 +19,10 @@ class WorkshopTwoContainer extends Component {
     this.state = {
       tabs: {
         transferTab: false,
-        ultrasoundTab: true,
+        ultrasoundTab: false,
         cullingTab: false,
         infoTab: false,
+        initAndTransferTab: true,
       }
     }
 	}
@@ -85,9 +87,18 @@ class WorkshopTwoContainer extends Component {
           >
             ИНФО
           </div>
+
+          <div className={this.state.tabs.initAndTransferTab ? 'workshop-tab tab-active col-sm' 
+            : 'workshop-tab col-sm'}
+            onClick={() => this.setTab('initAndTransferTab')}
+          >
+            Создание и перевод в ЦЕХ 3
+            (Инициализация)
+          </div>
         </div>
         <div className='workshop-header-3'>
         </div>
+
         { this.state.tabs.transferTab &&
           <WS2TransferTab 
           getSows={this.props.getCullingSows}
@@ -127,6 +138,12 @@ class WorkshopTwoContainer extends Component {
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}
           />}
+
+        { this.state.tabs.initAndTransferTab &&
+          <WS2CreateTransferTab
+            massInitTransfer={this.props.massInitTransfer}
+            message={this.props.state.sows.message}
+          />}
       </div>
     );
   }
@@ -147,6 +164,7 @@ const mapDispatchToProps = (dispatch) => ({
   cullingSow: data => dispatch(Ws2Actions.cullingSowWs2Request(data)),
   massUltrasound: data => dispatch(SowsActions.massUltrasoundRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
+  massInitTransfer: data => dispatch(SowsActions.massInitTransferRequest(data)),
 
   getUltrasoundV2Sows: query => dispatch(Ws2Actions.getUltrasoundV2SowsWs2Request(query)),
   getUltrasoundV2Sow: id => dispatch(Ws2Actions.getUltrasoundV2SowWs2Request(id)),

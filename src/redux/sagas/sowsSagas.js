@@ -136,3 +136,12 @@ export function* abortionSow(api, action) {
         yield put(SowsActions.abortionSowFail(err))
     }
 }
+
+export function* massInitTransfer(api, action) {
+    try {
+        let response = yield call(api.massInitTransfer, action.payload);
+        yield put(SowsActions.massInitTransferSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.massInitTransferFail(err))
+    }
+}

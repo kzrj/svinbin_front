@@ -389,6 +389,31 @@ const create = () => {
         })
     }
 
+    const massInitTransfer = payload => {
+        const { sows, week } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.MASS_INIT_TRANSFER;
+
+        const formData = new FormData();
+        sows.map(sow => formData.append("sows", sow))
+        formData.append("week", week);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
 
     return {
         getSows,
@@ -408,6 +433,7 @@ const create = () => {
         massSemination,
         massUltrasound,
         abortionSow,
+        massInitTransfer,
 
         // init endpoints
         addNewSeminatedToWs1
