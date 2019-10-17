@@ -13,9 +13,7 @@ class WS1SeminationTab extends Component {
       query: {
           by_workshop_number: 1,
           to_seminate: true,
-          tour: null,
           farm_id_isnull: false,
-          status_title_in: []
         },
       choosedSows: [],
       farmId: null,
@@ -34,11 +32,8 @@ class WS1SeminationTab extends Component {
   }
   
   componentDidMount() {
-    // query
-    console.log('Did mount')
     this.props.getSows(this.state.query)
     this.props.getBoars()
-    this.props.getTours()
     this.props.getSeminators({is_seminator: true})
   }
 
@@ -55,7 +50,6 @@ class WS1SeminationTab extends Component {
       choosedSows: [],
       needToRefresh: true
     })
-    // this.props.getSows(query)
   }
 
   setStatusTitleInFilter (statusTitle) {
@@ -132,8 +126,8 @@ class WS1SeminationTab extends Component {
           <div className='commonfilter row'>
             <label className='sow-event-label'>Фильтр</label>
             <SowFarmIdFilter setQuery={this.setQuery} />
-            <SowTourFilter tours={tours} setQuery={this.setQuery}/>
-            <SowSeminatedFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>
+            {/* <SowTourFilter tours={tours} setQuery={this.setQuery}/> */}
+            {/* <SowSeminatedFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/> */}
           </div>
           <div>
             <div>

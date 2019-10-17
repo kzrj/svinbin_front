@@ -22,8 +22,8 @@ class WorkshopOneContainer extends Component {
     super(props);
     this.state = {
       tabs: {
-        seminationTab: false,
-        semination2Tab: true,
+        seminationTab: true,
+        semination2Tab: false,
         createTab: false,
         ultrasound30Tab: false,
         ultrasound60Tab: false,
@@ -42,14 +42,6 @@ class WorkshopOneContainer extends Component {
     // if (token) {
     //   this.props.checkToken(token);
     // }
-    console.log('Did mount WS1')
-    this.props.getSowsByTours()
-  }
-
-  showStateConsole = () => {
-    const { state } = this.props
-    console.log(state)
-    console.log(this.props.state.sowsByTours)
   }
 
   setTab = (tab) => {
