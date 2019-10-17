@@ -76,3 +76,13 @@ export const convertSowsByTours = (sowsByToursElemList) => {
   });
   return outputDict
 }
+
+
+export const getObjectbyId = (list, id) => {
+  let obj = null
+  list.map(element => {
+    if (element['id'] == id)
+      obj = element
+  })
+  return obj
+}

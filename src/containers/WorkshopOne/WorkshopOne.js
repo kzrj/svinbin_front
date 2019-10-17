@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 // components
 import WS1SeminationTab from '../../components/WorkshopOne/WS1SeminationTab'
+import WS1Semination2Tab from '../../components/WorkshopOne/WS1Semination2Tab'
 import WS1CreateTab from '../../components/WorkshopOne/WS1CreateTab'
 import WS1Ultrasound30Tab from '../../components/WorkshopOne/WS1Ultrasound30Tab'
 import WS1Ultrasound60Tab from '../../components/WorkshopOne/WS1Ultrasound60Tab'
@@ -21,7 +22,8 @@ class WorkshopOneContainer extends Component {
     super(props);
     this.state = {
       tabs: {
-        seminationTab: true,
+        seminationTab: false,
+        semination2Tab: true,
         createTab: false,
         ultrasound30Tab: false,
         ultrasound60Tab: false,
@@ -80,39 +82,52 @@ class WorkshopOneContainer extends Component {
           Цех №1
         </div>
         <div className='row workshop-menu'>
-            <div className={this.state.tabs.createTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
+            <div className={this.state.tabs.createTab ? 'workshop-tab tab-active col-sm' 
+              : 'col-sm workshop-tab'}
               onClick={() => this.setTab('createTab')}
             >
               Создание
             </div>
-            <div className={this.state.tabs.seminationTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
+            <div className={this.state.tabs.seminationTab ? 'workshop-tab tab-active col-sm' 
+              : 'col-sm workshop-tab'}
               onClick={() => this.setTab('seminationTab')}
             >
               Осеменение
             </div>
-            <div className={this.state.tabs.ultrasound30Tab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
+            <div className={this.state.tabs.semination2Tab ? 'workshop-tab tab-active col-sm' 
+              : 'col-sm workshop-tab'}
+              onClick={() => this.setTab('semination2Tab')}
+            >
+              Осеменение 2
+            </div>
+            <div className={this.state.tabs.ultrasound30Tab ? 'workshop-tab tab-active col-sm' 
+              : 'col-sm workshop-tab'}
               onClick={() => this.setTab('ultrasound30Tab')}
             >
               УЗИ 30
             </div>
 
-            <div className={this.state.tabs.ultrasound60Tab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
+            <div className={this.state.tabs.ultrasound60Tab ? 'workshop-tab tab-active col-sm' 
+              : 'col-sm workshop-tab'}
               onClick={() => this.setTab('ultrasound60Tab')}
             >
               УЗИ 60
             </div>
 
-            <div className={this.state.tabs.transferToWS2Tab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
+            <div className={this.state.tabs.transferToWS2Tab ? 'workshop-tab tab-active col-sm' 
+              : 'col-sm workshop-tab'}
               onClick={() => this.setTab('transferToWS2Tab')}
             >
               Перевод в ЦЕХ2
             </div>
-            <div className={this.state.tabs.cullingTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
+            <div className={this.state.tabs.cullingTab ? 'workshop-tab tab-active col-sm' 
+              : 'col-sm workshop-tab'}
               onClick={() => this.setTab('cullingTab')}
             >
               Выбраковка/Аборт
             </div>
-            <div className={this.state.tabs.infoTab ? 'workshop-tab tab-active col-sm' : 'col-sm workshop-tab'}
+            <div className={this.state.tabs.infoTab ? 'workshop-tab tab-active col-sm' 
+              : 'col-sm workshop-tab'}
               onClick={() => this.setTab('infoTab')}
             >
               ИНФО
@@ -136,6 +151,26 @@ class WorkshopOneContainer extends Component {
 
         { this.state.tabs.seminationTab && 
           <WS1SeminationTab 
+            getSows={this.props.getSeminationSows}
+            sows={this.props.state.ws1.seminationList}
+
+            getSeminators={this.props.getSeminators}
+            seminationEmployes={this.props.state.ws1.seminators}
+
+            getBoars={this.props.getBoars}
+            boars={this.props.state.sows.boars}
+            
+            getTours={this.props.getTours}
+            tours={this.props.state.tours.list}
+
+            massSemination={this.props.massSemination}
+
+            eventFetching={this.props.state.sows.fetching}
+            sowsListFetching={this.props.state.ws1.fetching}
+          />}
+
+        { this.state.tabs.semination2Tab && 
+          <WS1Semination2Tab 
             getSows={this.props.getSeminationSows}
             sows={this.props.state.ws1.seminationList}
 
