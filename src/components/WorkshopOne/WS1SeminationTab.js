@@ -140,7 +140,7 @@ class WS1SeminationTab extends Component {
                   <option selected>Выберите работника...</option>
                   {seminationEmployes.map(employee =>
                     <option value={employee.id} key={employee.id}>
-                      {employee.username}
+                      {employee.last_name}
                     </option>
                     )}
                 </select>
