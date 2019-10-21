@@ -16,6 +16,7 @@ class WS2CreateTransferTab extends Component {
     this.setData = this.setData.bind(this);
     this.addSow = this.addSow.bind(this);
     this.deleteSow = this.deleteSow.bind(this);
+    this.onPressEnter = this.onPressEnter.bind(this);
   }
  
   setData (e) {
@@ -37,11 +38,16 @@ class WS2CreateTransferTab extends Component {
     })
   }
 
+  onPressEnter (e) {
+    if (e.key === 'Enter') {
+      this.addSow()
+    }
+  }
+
   deleteSow (e) {
     let { sows } = this.state
     const { id } = e.target.dataset
     sows = toggleArray(sows, id)
-    
     this.setState({
       ...this.state,
       sows: sows
@@ -80,10 +86,10 @@ class WS2CreateTransferTab extends Component {
                       value={this.state.sowFarmId} 
                       onChange={this.setData}
                       name='sowFarmId' className="form-control search-input"
-                      placeholder="FarmId" />
+                      placeholder="FarmId" onKeyDown={this.onPressEnter} />
                   <div className="input-group-append">
                     <button className="btn btn-outline-secondary" type="button" 
-                      onClick={this.addSow}>
+                      onClick={this.addSow} >
                       Добавить
                     </button>
                   </div>

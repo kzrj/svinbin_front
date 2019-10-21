@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { toggleArray } from '../../components/utils'
 // components
 import { SowTable }  from '../../components/WorkshopOne/SowComponents'
-import { SowFilter, SowFarmIdFilter, SowTourFilter, SowSeminatedFilter }  from '../../components/WorkshopOne/SowComponents'
+import { SowFarmIdFilter }  from '../../components/WorkshopOne/SowComponents'
 
 
 class WS1SeminationTab extends Component {
@@ -126,8 +126,6 @@ class WS1SeminationTab extends Component {
           <div className='commonfilter row'>
             <label className='sow-event-label'>Фильтр</label>
             <SowFarmIdFilter setQuery={this.setQuery} />
-            {/* <SowTourFilter tours={tours} setQuery={this.setQuery}/> */}
-            {/* <SowSeminatedFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/> */}
           </div>
           <div>
             <div>
@@ -170,9 +168,6 @@ class WS1SeminationTab extends Component {
               <div className='col-6'>
                 Выбрано {this.state.choosedSows.length} из {sows.length}
               </div>
-              {/* <div className='col-6'>
-                <button onClick={this.chooseAll}>Выбрать всех</button>
-              </div> */}
             </div>
             {this.state.needToRefresh && this.props.sowsListFetching  ? 'Loading' :
             <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>}

@@ -5,11 +5,12 @@ export const parseErrorData = (error) => {
         return { 
             status: error.response.status, 
             statusText: error.response.statusText, 
-            errMessage: error.response.data.errMessage }
+            message: error.response.data.message }
     } else {
-        return { status: 'Connection Error',
+        return { 
+         status: 'Connection Error',
          statusText: 'An error occurred while sending your data!',
-         errMessage: 'An error occurred while sending your data!' }
+         message: 'An error occurred while sending your data!' }
     }
 }
 

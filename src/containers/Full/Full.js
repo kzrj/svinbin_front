@@ -1,12 +1,48 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import LocationsActions from '../../redux/redux-sauce/locations';
-import SowsActions from '../../redux/redux-sauce/sows';
-import NomadPigletsActions from '../../redux/redux-sauce/nomadPiglets';
 import AuthActions from '../../redux/redux-sauce/auth';
 
-import Ws1Actions from '../../redux/redux-sauce/ws1';
+
+class LoginForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: null,
+      password: null,
+    }
+    this.setData = this.setData.bind(this);
+  }
+
+  setData (e) {
+    this.setState({
+      ...this.state,
+      [e.target.name]: e.target.value
+    })
+  }
+  
+  render() {
+    return (
+      <div>
+        <h4>Войдите</h4>
+        <div className="input-group">
+          <input type='text' value={this.state.username} onChange={this.setData} 
+            name='username' className="form-control search-input"
+            placeholder="username" />
+          <input type='password' value={this.state.password} onChange={this.setData} 
+            name='password' className="form-control search-input"
+            placeholder="password" />
+          <button className="btn btn-outline-secondary" type="button" 
+            onClick={() =>
+              this.props.login({username: this.state.username, password: this.state.password})}>
+            Войти
+          </button>
+        </div>
+      </div>
+    );
+  }
+}
+
 
 
 class Full extends Component {
@@ -22,16 +58,6 @@ class Full extends Component {
   //   if (token) {
   //     this.props.checkToken(token);
   //   }
-  // }
-
-  showStateConsole = () => {
-    const { state } = this.props
-    console.log('Hi')
-    console.log(state)
-    console.log(this.props.state.sowsByTours)
-    console.log('JHIU')
-  }
-
 
   login = () => {
     this.props.login({username: 'test_seminator', password: 'qwerty123'})
@@ -39,21 +65,26 @@ class Full extends Component {
   }
 
   render() {
+    const { isLoggedIn, user, error } = this.props.state.auth
     return (
       <div className="app container">
         <div id="pageContent">
-          {this.props.children}
-          <div>
-            <button onClick={this.login}>
-              Button login
-            </button>
-          </div>
-          <br/>
-          <div>
-            <button onClick={this.showStateConsole}>
-              Button show store
-            </button>
-          </div>
+          {!isLoggedIn && 
+            <div>
+              {/* <button onClick={this.login}>
+                Button login
+              </button> */}
+              <h1>Свинокомплекс Николаевский</h1>
+              <LoginForm login={this.props.login}/>
+              {error && 
+                <p className='error'>{error}</p>
+              }
+            </div>
+          }
+          { isLoggedIn &&
+            this.props.children
+          }
+          
         </div>
       </div>
     );

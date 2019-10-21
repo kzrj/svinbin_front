@@ -22,9 +22,9 @@ class WorkshopOneContainer extends Component {
     super(props);
     this.state = {
       tabs: {
-        seminationTab: true,
+        seminationTab: false,
         semination2Tab: false,
-        createTab: false,
+        createTab: true,
         ultrasound30Tab: false,
         ultrasound60Tab: false,
         transferToWS2Tab: false,
@@ -72,6 +72,7 @@ class WorkshopOneContainer extends Component {
       <div className="workshop container">
         <div className='workshop-header'>
           Цех №1
+          <button onClick={this.showStateConsole}>o</button>
         </div>
         <div className='row workshop-menu'>
             <div className={this.state.tabs.createTab ? 'workshop-tab tab-active col-sm' 
@@ -139,6 +140,9 @@ class WorkshopOneContainer extends Component {
 
             createNewSow={this.props.createNewSow}
             createNewNonameSow={this.props.createNewNonameSow}
+
+            message={this.props.state.ws1.message}
+            error={this.props.state.ws1.error}
           />}
 
         { this.state.tabs.seminationTab && 

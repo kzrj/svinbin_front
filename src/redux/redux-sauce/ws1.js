@@ -86,7 +86,8 @@ export const INITIAL_STATE = Immutable({
     sowsByTours: [],
     seminators: [],
     createdSow: null,
-    error: '',
+    error: null,
+    message: null
 })
 
 /* ------------- Selectors ------------- */
@@ -318,7 +319,8 @@ export const createNewSowWs1Request = (state, { payload }) => {
 }
 
 export const createNewSowWs1Success = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, createdSow: payload })
+    return state.merge({ fetching: false, error: null, createdSow: payload.sow,
+        message: payload.message })
 }
 
 export const createNewSowWs1Fail = (state, { error }) => {
