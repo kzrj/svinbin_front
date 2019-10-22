@@ -29,6 +29,20 @@ export class SowFindById extends Component {
  }
 }
 
+export class SowLightDetail extends Component {
+  render() {
+    const { sow } = this.props
+    return (
+      <ul>
+        <li>{sow.id}</li>
+        <li>{sow.location}</li>
+        <li>{sow.status}</li>
+        <li>{sow.farm_id}</li>
+      </ul>
+    )
+  }
+ }
+
 export class SowCells extends Component {
 
   render() {

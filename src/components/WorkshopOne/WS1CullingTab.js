@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 // components
 import SowToursData from '../../components/WorkshopOne/SowComponents'
-import { SowFindById } from '../WorkshopThree/Components'
+import { SowFindById, SowLightDetail } from '../WorkshopThree/Components'
 
 
 class WS1CullingTab extends Component {
@@ -45,7 +45,7 @@ class WS1CullingTab extends Component {
 
   cullingSow = () => {
     let data = {
-      id: this.props.sow.sow.id,
+      id: this.props.sow.id,
       culling_type: this.state.cullingType,
       reason: this.state.cullingReason
     }
@@ -56,7 +56,7 @@ class WS1CullingTab extends Component {
 
   abortionSow = () => {
     let data = {
-      id: this.props.sow.sow.id,
+      id: this.props.sow.id,
     }
     
     this.props.abortionSow(data)
@@ -64,43 +64,22 @@ class WS1CullingTab extends Component {
   }
 
   render() {
-    const { sows, sow } = this.props
+    const { sows, sow, tours_info } = this.props
     return (
-      <div className='workshop-content'>
-        <div className='row'>
-
+      <div className='row workshop-content'>
           <div className='col-3 workshop-left-column'>
-            <div className='workshop-content-column-1'>
-              <div class="input-group mb-3">
-                <input type='text' onChange={this.getSowsById} 
-                className="form-control search-input"
-                placeholder="Поиск по ID"/>
-              </div>
-                <ul className='list-unstyled'>
-                  {sows.length > 0 && sow && sow.sow &&
-                      sows.map(sowInList => 
-                        <li className={sowInList.id == sow.sow.id ? 'sow-active sow-li text-center' :
-                          'sow-li text-center'} 
-                          key={sowInList.id} 
-                          onClick={() => this.props.getSow(sowInList.id)}>
-                          {sowInList.farm_id}
-                        </li>)
-                    }
-                </ul>
-            </div>
+            <SowFindById 
+                sows={sows} 
+                sow={sow} 
+                getSowsById={this.getSowsById} 
+                getSow={this.props.getSow}/>
           </div>
-
           <div className='col-9'>
             <div className='workshop-content-column-2'>
-              {sow && sow.sow &&
+              {sow &&
                 <div>
-                  <ul>
-                    <li>{sow.sow.id}</li>
-                    <li>{sow.sow.location}</li>
-                    <li>{sow.sow.status}</li>
-                    <li>{sow.sow.farm_id}</li>
-                  </ul>
-                  <SowToursData sow={sow} />
+                  <SowLightDetail sow={sow}/>
+                  <SowToursData tours_info={tours_info} />
                   <div className="input-group">
                       <select className="custom-select" onChange={this.setType}>
                         <option selected value='padej' >Падеж</option>
@@ -128,7 +107,6 @@ class WS1CullingTab extends Component {
               }
             </div>
         </div>
-      </div>
     </div>
     )
   }

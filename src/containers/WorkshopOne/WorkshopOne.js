@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 // components
 import WS1SeminationTab from '../../components/WorkshopOne/WS1SeminationTab'
 import WS1Semination2Tab from '../../components/WorkshopOne/WS1Semination2Tab'
+import WS1Semination12Tab from '../../components/WorkshopOne/WS1Semination12Tab'
 import WS1CreateTab from '../../components/WorkshopOne/WS1CreateTab'
 import WS1Ultrasound30Tab from '../../components/WorkshopOne/WS1Ultrasound30Tab'
 import WS1Ultrasound60Tab from '../../components/WorkshopOne/WS1Ultrasound60Tab'
@@ -24,7 +25,8 @@ class WorkshopOneContainer extends Component {
       tabs: {
         seminationTab: false,
         semination2Tab: false,
-        createTab: true,
+        semination12Tab: true,
+        createTab: false,
         ultrasound30Tab: false,
         ultrasound60Tab: false,
         transferToWS2Tab: false,
@@ -80,6 +82,12 @@ class WorkshopOneContainer extends Component {
               onClick={() => this.setTab('createTab')}
             >
               Создание
+            </div>
+            <div className={this.state.tabs.semination12Tab ? 'workshop-tab tab-active col-sm' 
+              : 'col-sm workshop-tab'}
+              onClick={() => this.setTab('semination12Tab')}
+            >
+              Осеменение 12
             </div>
             <div className={this.state.tabs.seminationTab ? 'workshop-tab tab-active col-sm' 
               : 'col-sm workshop-tab'}
@@ -185,6 +193,29 @@ class WorkshopOneContainer extends Component {
             sowsListFetching={this.props.state.ws1.fetching}
           />}
 
+        { this.state.tabs.semination12Tab && 
+          <WS1Semination12Tab 
+            getSows={this.props.getSeminationSows}
+            sows={this.props.state.ws1.seminationList}
+
+            getSow={this.props.getSeminationSow}
+            sow={this.props.state.ws1.seminationSow}
+
+            getSeminators={this.props.getSeminators}
+            seminationEmployes={this.props.state.ws1.seminators}
+
+            getBoars={this.props.getBoars}
+            boars={this.props.state.sows.boars}
+            
+            getTours={this.props.getTours}
+            tours={this.props.state.tours.list}
+
+            massSemination={this.props.massSemination}
+
+            eventFetching={this.props.state.sows.fetching}
+            sowsListFetching={this.props.state.ws1.fetching}
+          />}
+
         { this.state.tabs.ultrasound30Tab &&
           <WS1Ultrasound30Tab 
             getSows={this.props.getUltrasoundSows}
@@ -234,6 +265,7 @@ class WorkshopOneContainer extends Component {
 
             getSow={this.props.getCullingSow}
             sow={this.props.state.ws1.cullingSow}
+            tours_info={this.props.state.ws1.tours_info}
 
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}

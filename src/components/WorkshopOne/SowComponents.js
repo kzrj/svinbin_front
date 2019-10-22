@@ -10,11 +10,11 @@ export default class SowToursData extends Component {
   }
   
   render() {
-    const { sow } = this.props
+    const { tours_info } = this.props
     return (
       <div>
-        {sow.tours_info && sow.tours_info.length > 0 ?
-          sow.tours_info.map(tourInfo => 
+        {tours_info.length > 0 ?
+          tours_info.map(tourInfo => 
           <div>
             <table>
               <thead>

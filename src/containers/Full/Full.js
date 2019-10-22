@@ -44,20 +44,17 @@ class LoginForm extends Component {
 }
 
 
-
 class Full extends Component {
-  // constructor(props) {
-	// 	super(props);  
-	// }
+  constructor(props) {
+		super(props);  
+	}
 
-  // componentDidMount() {
-  //   $('body').addClass('loaded');
-  //   this.props.startup();
-
-  //   const token = localStorage.getItem('token');
-  //   if (token) {
-  //     this.props.checkToken(token);
-  //   }
+  componentDidMount() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.props.checkToken(token);
+    }
+  }
 
   login = () => {
     this.props.login({username: 'test_seminator', password: 'qwerty123'})
@@ -98,6 +95,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   login: (payload) => dispatch(AuthActions.loginRequest(payload)),
+  checkToken: (token) => dispatch(AuthActions.checkTokenRequest(token))
 })
 
 export default connect(
