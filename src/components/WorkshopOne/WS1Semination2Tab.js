@@ -119,7 +119,7 @@ class WS1SeminationTab extends Component {
   }
 
   refreshSowsList () {
-    if (this.props.eventFetching || this.state.needToRefresh) {
+    if (this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)  

@@ -9,7 +9,7 @@ export class SowFindById extends Component {
    return (
       <div className='workshop-content-column-1'>
         <div class="input-group mb-3">
-          <input type='text' onChange={this.props.getSowsById} 
+          <input type='number' onChange={this.props.getSowsById} 
             className="form-control search-input"
             placeholder="Поиск по ID"/>
         </div>

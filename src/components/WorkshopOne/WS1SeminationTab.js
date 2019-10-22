@@ -32,6 +32,7 @@ class WS1SeminationTab extends Component {
   }
   
   componentDidMount() {
+    console.log('did mount')
     this.props.getSows(this.state.query)
     this.props.getBoars()
     this.props.getSeminators({is_seminator: true})
@@ -73,6 +74,7 @@ class WS1SeminationTab extends Component {
       query: finalQuery,
       choosedSows: []
     })
+    console.log('setSeminatedSuporosStatus')
     this.props.getSows(finalQuery)
   }
 
@@ -109,7 +111,7 @@ class WS1SeminationTab extends Component {
   }
 
   refreshSowsList () {
-    if (this.props.eventFetching || this.state.needToRefresh) {
+    if (this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)  

@@ -5,7 +5,7 @@ class WS1CreateTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      farmId: null,
+      farmId: '',
       query: {
         by_workshop_number: 1,
         farm_id_isnull: true,
@@ -31,6 +31,12 @@ class WS1CreateTab extends Component {
     this.props.createNewSow({
       farmId: this.state.farmId
     })
+    this.props.getSows(this.state.query)
+
+    this.setState({
+      ...this.state,
+      farmId: ''
+    })
   }
 
   onPressEnter (e) {
@@ -47,9 +53,11 @@ class WS1CreateTab extends Component {
         <div>
           <div>
             <label className='sow-event-label'>Создать ремонтную свинку без ID</label>
-              {nonameSowsCount ? 
-              <p>Количество ремонтных свинок {nonameSowsCount}</p> :
-              <p>Количество ремонтных свинок {countSows}</p>}
+              {/* {nonameSowsCount ? 
+                <p>Количество ремонтных свинок {nonameSowsCount}</p> :
+                <p>Количество ремонтных свинок {countSows}</p>
+              } */}
+              <p>Количество ремонтных свинок {countSows}</p>
               <button onClick={this.props.createNewNonameSow} className='btn btn-outline-secondary'>
                 Создать
               </button>
