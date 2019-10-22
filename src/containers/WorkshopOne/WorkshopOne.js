@@ -193,13 +193,14 @@ class WorkshopOneContainer extends Component {
             sowsListFetching={this.props.state.ws1.fetching}
           />}
 
-        { this.state.tabs.semination12Tab && 
+        {/* { this.state.tabs.semination12Tab && 
           <WS1Semination12Tab 
             getSows={this.props.getSeminationSows}
             sows={this.props.state.ws1.seminationList}
 
             getSow={this.props.getSeminationSow}
             sow={this.props.state.ws1.seminationSow}
+            tours_info={this.props.state.ws1.tours_info}
 
             getSeminators={this.props.getSeminators}
             seminationEmployes={this.props.state.ws1.seminators}
@@ -214,7 +215,7 @@ class WorkshopOneContainer extends Component {
 
             eventFetching={this.props.state.sows.fetching}
             sowsListFetching={this.props.state.ws1.fetching}
-          />}
+          />} */}
 
         { this.state.tabs.ultrasound30Tab &&
           <WS1Ultrasound30Tab 

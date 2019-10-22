@@ -111,7 +111,7 @@ class WS1SeminationTab extends Component {
       ...this.state,
       query: {
         ...this.state.query,
-        tour: null
+        // tour: null
       },
       choosedSows: [],
       needToRefresh: true
