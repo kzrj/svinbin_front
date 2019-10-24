@@ -414,6 +414,33 @@ const create = () => {
         })
     }
 
+    const importSeminationsFromFarm = payload => {
+        const { file } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.IMPORT_SEMINATIONS_FROM_FARM;
+
+        const formData = new FormData();
+        formData.append("file", file);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 
+                        'content-type': 'multipart/form-data',
+                        'Authorization': `JWT ${token}` 
+                    }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
 
     return {
         getSows,
@@ -434,10 +461,10 @@ const create = () => {
         massUltrasound,
         abortionSow,
         massInitTransfer,
+        importSeminationsFromFarm,
 
         // init endpoints
         addNewSeminatedToWs1
-        // setSow
     }
 
 }

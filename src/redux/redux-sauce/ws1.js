@@ -65,6 +65,10 @@ const { Types, Creators } = createActions({
     createNewSowWs1Fail: ['error'],
     createNewSowWs1Success: ['payload'],
 
+    importSeminationsFromFarmRequest: ['payload'],
+    importSeminationsFromFarm1Fail: ['error'],
+    importSeminationsFromFarmSuccess: ['payload'],
+
 })
 
 export const Ws1Types = Types
@@ -87,6 +91,7 @@ export const INITIAL_STATE = Immutable({
     sowsByTours: [],
     seminators: [],
     createdSow: null,
+    import_from_file_data: null,
     error: null,
     message: null
 })
@@ -332,6 +337,20 @@ export const createNewSowWs1Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, createdSow: [] })
 }
 
+// Get create new
+export const importSeminationsFromFarmRequest = (state, { payload }) => {
+    return state.merge({ fetching: true, import_from_file_data: null })
+}
+
+export const importSeminationsFromFarmSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, import_from_file_data: payload,
+        message: payload.message })
+}
+
+export const importSeminationsFromFarmFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, import_from_file_data: null })
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -396,4 +415,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.CREATE_NEW_SOW_WS1_REQUEST]: createNewSowWs1Request,
     [Types.CREATE_NEW_SOW_WS1_SUCCESS]: createNewSowWs1Success,
     [Types.CREATE_NEW_SOW_WS1_FAIL]: createNewSowWs1Fail,
+
+    [Types.IMPORT_SEMINATIONS_FROM_FARM_REQUEST]: importSeminationsFromFarmRequest,
+    [Types.IMPORT_SEMINATIONS_FROM_FARM_SUCCESS]: importSeminationsFromFarmSuccess,
+    [Types.IMPORT_SEMINATIONS_FROM_FARM_FAIL]: importSeminationsFromFarmFail,
 })

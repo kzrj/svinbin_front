@@ -142,3 +142,12 @@ export function* createNewSowWs1(api, action) {
         yield put(WS1Actions.createNewSowWs1Fail(err))
     }
 }
+
+export function* importSeminationsFromFarm(api, action) {
+    try {
+        let response = yield call(api.importSeminationsFromFarm, action.payload);
+        yield put(WS1Actions.importSeminationsFromFarmSuccess(response));
+    } catch (err) {
+        yield put(WS1Actions.importSeminationsFromFarmFail(err))
+    }
+}

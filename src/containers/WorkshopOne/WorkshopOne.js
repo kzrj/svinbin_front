@@ -25,7 +25,8 @@ class WorkshopOneContainer extends Component {
       tabs: {
         seminationTab: false,
         semination2Tab: false,
-        semination12Tab: true,
+        semination12Tab: false,
+        importSeminationTab: true,
         createTab: false,
         ultrasound30Tab: false,
         ultrasound60Tab: false,
@@ -83,7 +84,7 @@ class WorkshopOneContainer extends Component {
             >
               Создание
             </div>
-            <div className={this.state.tabs.semination12Tab ? 'workshop-tab tab-active col-sm' 
+            {/* <div className={this.state.tabs.semination12Tab ? 'workshop-tab tab-active col-sm' 
               : 'col-sm workshop-tab'}
               onClick={() => this.setTab('semination12Tab')}
             >
@@ -100,6 +101,12 @@ class WorkshopOneContainer extends Component {
               onClick={() => this.setTab('semination2Tab')}
             >
               Осеменение 2
+            </div> */}
+            <div className={this.state.tabs.importSeminationTab ? 'workshop-tab tab-active col-sm' 
+              : 'col-sm workshop-tab'}
+              onClick={() => this.setTab('importSeminationTab')}
+            >
+              Осеменение(импорт из Фарма)
             </div>
             <div className={this.state.tabs.ultrasound30Tab ? 'workshop-tab tab-active col-sm' 
               : 'col-sm workshop-tab'}
@@ -193,7 +200,7 @@ class WorkshopOneContainer extends Component {
             sowsListFetching={this.props.state.ws1.fetching}
           />}
 
-        {/* { this.state.tabs.semination12Tab && 
+        { this.state.tabs.semination12Tab && 
           <WS1Semination12Tab 
             getSows={this.props.getSeminationSows}
             sows={this.props.state.ws1.seminationList}
@@ -215,7 +222,31 @@ class WorkshopOneContainer extends Component {
 
             eventFetching={this.props.state.sows.fetching}
             sowsListFetching={this.props.state.ws1.fetching}
-          />} */}
+          />}
+
+        { this.state.tabs.semination12Tab && 
+          <WS1ImportSeminationTab 
+            getSows={this.props.getSeminationSows}
+            sows={this.props.state.ws1.seminationList}
+
+            getSow={this.props.getSeminationSow}
+            sow={this.props.state.ws1.seminationSow}
+            tours_info={this.props.state.ws1.tours_info}
+
+            getSeminators={this.props.getSeminators}
+            seminationEmployes={this.props.state.ws1.seminators}
+
+            getBoars={this.props.getBoars}
+            boars={this.props.state.sows.boars}
+            
+            getTours={this.props.getTours}
+            tours={this.props.state.tours.list}
+
+            massSemination={this.props.massSemination}
+
+            eventFetching={this.props.state.sows.fetching}
+            sowsListFetching={this.props.state.ws1.fetching}
+          />}
 
         { this.state.tabs.ultrasound30Tab &&
           <WS1Ultrasound30Tab 

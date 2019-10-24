@@ -1,5 +1,5 @@
-// export const url = 'http://92.53.104.136';
-export const url = 'http://188.225.72.13';
+export const url = 'http://92.53.104.136';
+// export const url = 'http://188.225.72.13';
 export const apiUrl = `${url}/api`;
 
 export default {
@@ -28,6 +28,7 @@ export default {
     MASS_ULTRASOUND: `${apiUrl}/workshoponetwo/sows/mass_ultrasound/`,
     abortionSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/abortion/`,
     MASS_INIT_TRANSFER: `${apiUrl}/workshoponetwo/sows/mass_init_and_transfer/`,
+    IMPORT_SEMINATIONS_FROM_FARM: `${apiUrl}/workshoponetwo/sows/import_seminations_from_farm/`,
 
     // init endpoints
     INIT_ADD_NEW_SEMINATED_TO_WS1: `${apiUrl}/sows/add_new_seminated_to_ws1/`,

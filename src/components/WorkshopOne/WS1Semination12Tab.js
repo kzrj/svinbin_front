@@ -93,7 +93,7 @@ class WS1Semination12Tab extends Component {
                     < br/>
                     <select className="custom-select" id="inputGroupSelect04" 
                       onChange={this.setData} name='seminationEmployee'>
-                      <option selected>Выберите работника...</option>
+                      <option selected>осеменатор</option>
                       {seminationEmployes.map(employee =>
                         <option value={employee.id} key={employee.id}>
                           {employee.last_name}
@@ -102,7 +102,16 @@ class WS1Semination12Tab extends Component {
                     </select>
                     <select className="custom-select" id="inputGroupSelect04" 
                       onChange={this.setData} name='boar1'>
-                      <option selected>Выберите хряка...</option>
+                      <option selected>хряк 1</option>
+                      {boars.map(boar =>
+                        <option value={boar.id} key={boar.id}>
+                          {boar.birth_id}
+                        </option>
+                        )}
+                    </select>
+                    <select className="custom-select" id="inputGroupSelect04" 
+                      onChange={this.setData} name='boar2'>
+                      <option selected>хряк 2</option>
                       {boars.map(boar =>
                         <option value={boar.id} key={boar.id}>
                           {boar.birth_id}
