@@ -10,6 +10,7 @@ import WS1Ultrasound30Tab from '../../components/WorkshopOne/WS1Ultrasound30Tab'
 import WS1Ultrasound60Tab from '../../components/WorkshopOne/WS1Ultrasound60Tab'
 import WS1TransferToWS2Tab from '../../components/WorkshopOne/WS1TransferToWS2Tab'
 import WS1CullingTab from '../../components/WorkshopOne/WS1CullingTab'
+import WS1ImportSeminationTab from '../../components/WorkshopOne/WS1ImportSeminationTab'
 
 // actions
 import SowsActions from '../../redux/redux-sauce/sows';
@@ -224,28 +225,13 @@ class WorkshopOneContainer extends Component {
             sowsListFetching={this.props.state.ws1.fetching}
           />}
 
-        { this.state.tabs.semination12Tab && 
+        { this.state.tabs.importSeminationTab && 
           <WS1ImportSeminationTab 
-            getSows={this.props.getSeminationSows}
-            sows={this.props.state.ws1.seminationList}
-
-            getSow={this.props.getSeminationSow}
-            sow={this.props.state.ws1.seminationSow}
-            tours_info={this.props.state.ws1.tours_info}
-
-            getSeminators={this.props.getSeminators}
-            seminationEmployes={this.props.state.ws1.seminators}
-
-            getBoars={this.props.getBoars}
-            boars={this.props.state.sows.boars}
-            
-            getTours={this.props.getTours}
-            tours={this.props.state.tours.list}
-
-            massSemination={this.props.massSemination}
-
-            eventFetching={this.props.state.sows.fetching}
-            sowsListFetching={this.props.state.ws1.fetching}
+            eventFetching={this.props.state.ws1.fetching}
+            uploadFile={this.props.uploadFile}
+            message={this.props.state.ws1.message}
+            error={this.props.state.ws1.error}
+            responseData={this.props.state.ws1.import_from_file_data}
           />}
 
         { this.state.tabs.ultrasound30Tab &&
@@ -343,6 +329,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSowsByTours: data => dispatch(Ws1Actions.getSowsByToursRequest(data)),
   getSeminators: query => dispatch(Ws1Actions.getSeminatorsRequest(query)),
   createNewSow: data => dispatch(Ws1Actions.createNewSowWs1Request(data)),
+  uploadFile: data => dispatch(Ws1Actions.importSeminationsFromFarmRequest(data)),
   // setSeminationSow: sow => dispatch(Ws1Actions.setSeminationSow(sow)),
 })
 

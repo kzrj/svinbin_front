@@ -66,7 +66,7 @@ const { Types, Creators } = createActions({
     createNewSowWs1Success: ['payload'],
 
     importSeminationsFromFarmRequest: ['payload'],
-    importSeminationsFromFarm1Fail: ['error'],
+    importSeminationsFromFarmFail: ['error'],
     importSeminationsFromFarmSuccess: ['payload'],
 
 })
