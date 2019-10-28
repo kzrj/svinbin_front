@@ -10,6 +10,7 @@ export const reducers = combineReducers({
   routing: routerReducer,
   auth: require('../redux-sauce/auth').reducer,
   locations: require('../redux-sauce/locations').reducer,
+  sections: require('../redux-sauce/sections').reducer,
   tours: require('../redux-sauce/tours').reducer,
   sows: require('../redux-sauce/sows').reducer,
   nomadPiglets: require('../redux-sauce/nomadPiglets').reducer,
