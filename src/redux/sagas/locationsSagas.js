@@ -10,3 +10,12 @@ export function* getLocations(api, action) {
         yield put(LocationsActions.getLocationsFail(err.message))
     }
 }
+
+export function* getLocationsAdditional(api, action) {
+    try {
+        let response = yield call(api.getLocations, action.payload);
+        yield put(LocationsActions.getLocationsAdditionalSuccess(response.results));
+    } catch (err) {
+        yield put(LocationsActions.getLocationsAdditionalFail(err.message))
+    }
+}

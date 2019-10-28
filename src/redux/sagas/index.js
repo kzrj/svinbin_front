@@ -28,7 +28,7 @@ import { Ws7Types } from '../redux-sauce/ws7';
 import { Ws75Types } from '../redux-sauce/ws75';
 /* ------------- Sagas ------------- */
 import { logIn, logOut, checkToken, signUp, checkAuth } from "./authSagas";
-import { getLocations } from './locationsSagas';
+import { getLocations, getLocationsAdditional } from './locationsSagas';
 import { getSections, getSectionsAdditional, } from './sectionsSagas';
 import { getTours } from './toursSagas';
 import * as sowsSaga from './sowsSagas';
@@ -62,6 +62,7 @@ export default function* root() {
     takeLatest(AuthTypes.CHECK_AUTH_REQUEST, checkAuth, authApi),
     
     takeEvery(LocationsTypes.GET_LOCATIONS_REQUEST, getLocations, locationsApi),
+    takeEvery(LocationsTypes.GET_LOCATIONS_ADDITIONAL_REQUEST, getLocationsAdditional, locationsApi),
     takeEvery(SectionsTypes.GET_SECTIONS_REQUEST, getSections, locationsApi),
     takeEvery(SectionsTypes.GET_SECTIONS_ADDITIONAL_REQUEST, getSectionsAdditional, locationsApi),
     takeEvery(ToursTypes.GET_TOURS_REQUEST, getTours, toursApi),
