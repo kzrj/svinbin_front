@@ -64,8 +64,7 @@ class WorkshopThreeContainer extends Component {
       <div className="workshop container">
         <div className='workshop-header'>
           Цех №3
-          <button onClick={this.showStateConsole}>O</button>
-        </div>      
+        </div>
         <div className='row workshop-menu'>
           <div className={this.state.tabs.balanceTab ? 'workshop-tab tab-active col-sm' : 
             'workshop-tab col-sm'}

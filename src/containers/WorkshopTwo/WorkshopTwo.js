@@ -75,7 +75,7 @@ class WorkshopTwoContainer extends Component {
           <div className={this.state.tabs.ultrasoundTab ? 'workshop-tab tab-active col-sm' : 'workshop-tab col-sm'}
               onClick={() => this.setTab('ultrasoundTab')}
             >
-              УЗИ 60
+              УЗИ 35
             </div>
           <div className={this.state.tabs.cullingTab ? 'workshop-tab tab-active col-sm' : 'workshop-tab col-sm'}
             onClick={() => this.setTab('cullingTab')}

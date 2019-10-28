@@ -76,7 +76,6 @@ class WorkshopOneContainer extends Component {
       <div className="workshop container">
         <div className='workshop-header'>
           Цех №1
-          <button onClick={this.showStateConsole}>o</button>
         </div>
         <div className='row workshop-menu'>
             <div className={this.state.tabs.createTab ? 'workshop-tab tab-active col-sm' 
@@ -113,14 +112,14 @@ class WorkshopOneContainer extends Component {
               : 'col-sm workshop-tab'}
               onClick={() => this.setTab('ultrasound30Tab')}
             >
-              УЗИ 30
+              УЗИ 28
             </div>
 
             <div className={this.state.tabs.ultrasound60Tab ? 'workshop-tab tab-active col-sm' 
               : 'col-sm workshop-tab'}
               onClick={() => this.setTab('ultrasound60Tab')}
             >
-              УЗИ 60
+              УЗИ 35
             </div>
 
             <div className={this.state.tabs.transferToWS2Tab ? 'workshop-tab tab-active col-sm' 

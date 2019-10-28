@@ -66,6 +66,9 @@ export class SowCells extends Component {
 
   render() {
     const { location, activeCellIds } = this.props
+    const sow = location.sow_set.length > 0 ? location.sow_set[0] : null
+    const more_than_one_sow = location.sow_set.length > 1 ? true : false
+
     const cellClassName = activeCellIds.includes(location.id) ? 
       'col-sm cell cell-active' : 
         location.is_sow_empty ? 'col-sm cell' : 'col-sm cell-full' 
@@ -75,6 +78,9 @@ export class SowCells extends Component {
         onClick={() => this.props.clickLocation(location)}
         key={location.id}>
           #{location.sowAndPigletsCell && location.sowAndPigletsCell.number}
+          <br/>
+          {sow && sow.farm_id}
+          {more_than_one_sow && 'Ошибка! Больше одной свиньи в клетке!'}
       </div>
   )}
  }

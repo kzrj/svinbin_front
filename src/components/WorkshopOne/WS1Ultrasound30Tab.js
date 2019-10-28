@@ -90,7 +90,7 @@ class WS1Ultrasound30Tab extends Component {
   }
 
   refreshSowsList () {
-    if (this.props.eventFetching && this.state.needToRefresh) {
+    if (this.props.eventFetching || this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)  
@@ -112,12 +112,12 @@ class WS1Ultrasound30Tab extends Component {
           </div>
           <div>
             <div>
-              <label className='sow-event-label'>УЗИ 30 дней</label>
+              <label className='sow-event-label'>УЗИ 28 дней</label>
               <div className="input-group">
                 
                 <select className="custom-select" id="inputGroupSelect04" 
                   onChange={this.setData} name='days'>
-                  <option selected value='30'>30 дней</option>
+                  <option selected value='30'>28 дней</option>
                   {/* <option value='60' >60 дней</option> */}
                 </select>
                 <select className="custom-select" id="inputGroupSelect04" 

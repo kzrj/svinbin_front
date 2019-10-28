@@ -112,13 +112,13 @@ class WS1Ultrasound60Tab extends Component {
           </div>
           <div>
             <div>
-              <label className='sow-event-label'>УЗИ 60 дней</label>
+              <label className='sow-event-label'>УЗИ 35 дней</label>
               <div className="input-group">
                 
                 <select className="custom-select" id="inputGroupSelect04" 
                   onChange={this.setData} name='days'>
                   {/* <option selected value='30'>30 дней</option> */}
-                  <option selected value='60' >60 дней</option>
+                  <option selected value='60' >35 дней</option>
                 </select>
                 <select className="custom-select" id="inputGroupSelect04" 
                   onChange={this.setData} name='result'>

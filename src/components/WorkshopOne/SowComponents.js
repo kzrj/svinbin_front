@@ -186,7 +186,7 @@ export class SowUsound30Filter extends Component {
         <select className="custom-select" id="inputGroupSelect01"
           onChange={this.props.setQuery} name='status_title'>
           {/* <option selected value='Осеменена 2'>Осеменена 2</option> */}
-          <option selected value='Супорос 30'>Супорос 30</option>
+          <option selected value='Супорос 30'>Супорос 28</option>
         </select>
       </div>
     )
@@ -203,8 +203,8 @@ export class SowSemUsoundFilter extends Component {
           <option value='farm_id_isnull=true'>Ремонтные</option>
           <option value='status_title=Осеменена 1'>Осеменена 1</option>
           <option value='status_title=Осеменена 2'>Осеменена 2</option>
-          <option value='status_title=Супорос 30'>Супорос 30</option>
-          <option selected value='status_title=Супорос 60'>Супорос 60</option>
+          <option value='status_title=Супорос 30'>Супорос 28</option>
+          <option selected value='status_title=Супорос 60'>Супорос 35</option>
         </select>
       </div>
     )
@@ -223,8 +223,8 @@ export class SowTable extends Component {
           <th scope="col">Статус</th>
           <th scope="col">Тур</th>
           <th scope="col">Осеменения</th>
-          <th scope="col">УЗИ 30</th>
-          <th scope="col">УЗИ 60</th>
+          <th scope="col">УЗИ 28</th>
+          <th scope="col">УЗИ 35</th>
           <th scope="col">Выбрать</th>
         </tr>
       </thead>
@@ -239,13 +239,6 @@ export class SowTable extends Component {
 }
 
 export class SowRow extends Component {
-//   constructor(props) {
-//    super(props);
-//    this.state = {
-//      expand: false,
-//    }
-//  }
-
  render() {
    const { sow, sowClick, choosedSows } = this.props
    const sowClassName = choosedSows.includes(sow.id.toString()) ? 'sow-row-active' : 'sow-row'

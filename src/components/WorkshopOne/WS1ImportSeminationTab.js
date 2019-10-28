@@ -47,10 +47,26 @@ class WS1ImportSeminationTab extends Component {
               <p>Количество осемененных {responseData.seminated_list_count}</p>
               <p>Количество пропущенных(осеменили в прошлые разы) 
                 {responseData.already_seminated_in_tour_count}</p>
-              <p>Количество не осеменненых, которые еще в другом туре(цикле) {responseData.sows_in_another_tour_count}</p>
-              <ul>{responseData.sows_in_another_tour_farm_ids.map(sow2 =>
-                  <li>{sow2}</li>
-                )}</ul>
+              <p>Количество не осеменненых {responseData.sows_in_another_tour.length}. 
+                Эти свиньи находятся в другом туре.</p>
+              <table className='table table-sm'>
+                <thead>
+                  <th>ID</th>
+                  <th>Тур</th>
+                  <th>Местоположение</th>
+                  <th>Статус</th>
+                </thead>
+                <tbody>
+                  {responseData.sows_in_another_tour.map(sow =>
+                    <tr>
+                      <td>{sow.farm_id}</td>
+                      <td>{sow.tour}</td>
+                      <td>{sow.location}</td>
+                      <td>{sow.status}</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           }
         </div>
