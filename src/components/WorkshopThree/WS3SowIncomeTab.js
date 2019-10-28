@@ -8,7 +8,10 @@ class WS3SowIncomeTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      query: {by_workshop_number: 3,},
+      query: {
+        by_workshop_number: 3,
+        farm_id_starts: '',
+      },
       activeSectionId: null,
       activeCellId: null,
       needToRefresh: false
@@ -18,7 +21,6 @@ class WS3SowIncomeTab extends Component {
   componentDidMount() {
     this.props.getSows(this.state.query)
     this.props.getSections({workshop: 3})
-    
   }
 
   getSowsById = (e) => {
@@ -48,53 +50,56 @@ class WS3SowIncomeTab extends Component {
   }
 
   clickSetlle = () => {
-    const { activeCellId, sectionId } = this.state
+    const { activeCellId } = this.state
     this.props.sowMoveTo({id: this.props.sow.id, location: activeCellId})
-    this.props.getLocations({by_section: sectionId})
     this.setState({
-      query: {by_workshop_number: 3,},
-      activeSectionId: null,
+      query: {by_workshop_number: 3, farm_id_starts: ''},
       activeCellId: null,
       needToRefresh: true
     })
-    // this.props.getSows(this.state.query)
   }
 
-  refreshSowsList () {
-    if (this.props.eventFetching) {
+  refreshData () {
+    if (this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        this.props.getSows(this.state.query)  
+        this.props.getSows(this.state.query)
+        this.props.getLocations({by_section: this.state.activeSectionId})
       }, 500)
     }
   }
 
   render() {
-    this.refreshSowsList()
+    this.refreshData()
     const { sows, sow, sections, locations } = this.props
     
     return (
         <div className='row workshop-content'>
           <div className='col-3 workshop-left-column'>
             <SowFindById 
-              sows={sows} 
-              sow={sow} 
+              sows={sows}
+              sow={sow}
+              sowIdValue={this.state.query.farm_id_starts}
               getSowsById={this.getSowsById} 
-              getSow={this.props.getSow}/>
+              getSow={this.props.getSow}
+              fetching={this.props.listFetching}
+              />
           </div>
           <div className='col-9 workshop-right-column'>
             <Sections 
               sections={sections}
+              fetching={this.props.sectionFetching}
               activeSectionId={this.state.activeSectionId} 
               clickSection={this.clickSection}/>
             <SowCells 
-              locations={locations} 
-              clickLocation={this.clickCell} 
+              locations={locations}
+              clickLocation={this.clickCell}
+              fetching={this.props.locationsFetching}
               activeCellIds={[this.state.activeCellId]}
               />
             <div className='bottom-buttons-block'>
               <div className="input-group">
-                {this.state.activeCellId && 
+                {this.state.activeCellId && this.props.sow &&
                   <button onClick={this.clickSetlle} className='btn btn-outline-secondary'>
                     Разместить свиноматку
                   </button>

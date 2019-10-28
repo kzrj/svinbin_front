@@ -4,24 +4,25 @@ import React, { Component } from 'react';
 export class SowFindById extends Component {
 
  render() {
-   const { sows, sow } = this.props
+   const { sows, sow, fetching, sowIdValue } = this.props
     
    return (
       <div className='workshop-content-column-1'>
         <div class="input-group mb-3">
           <input type='number' onChange={this.props.getSowsById} 
-            className="form-control search-input"
+            className="form-control search-input" value={sowIdValue}
             placeholder="Поиск по ID"/>
         </div>
           <ul className='list-unstyled'>
-            {sows.length > 0 && sow &&
-              sows.map(sowInList => 
-                <li className={sowInList.id == sow.id ? 'sow-active sow-li text-center' :
-                   'sow-li text-center'} 
-                  key={sowInList.id} 
-                  onClick={() => this.props.getSow(sowInList.id)}>
-                  {sowInList.farm_id}
-                </li>)
+            {fetching ? <p className='loading'>Загрузка</p> :
+              (sows.length > 0 && sow) && 
+                sows.map(sowInList => 
+                  <li className={sowInList.id == sow.id ? 'sow-active sow-li text-center' :
+                    'sow-li text-center'} 
+                    key={sowInList.id} 
+                    onClick={() => this.props.getSow(sowInList.id)}>
+                    {sowInList.farm_id}
+                  </li>)
             }
           </ul>
       </div>
@@ -46,17 +47,18 @@ export class SowLightDetail extends Component {
 export class SowCells extends Component {
 
   render() {
-    let { locations, activeCellIds } = this.props
+    let { locations, activeCellIds, fetching } = this.props
 
     return (
       <div className='row'>
-        {locations.map(location =>
-            <SowCell 
-              location={location}
-              activeCellIds={activeCellIds}
-              clickLocation={this.props.clickLocation}/>
-        )}
-        {locations.length < 1 && 'Выберите секцию'}
+        {fetching ? <p className='loading'>Загрузка</p> :
+          locations.map(location =>
+              <SowCell 
+                location={location}
+                activeCellIds={activeCellIds}
+                clickLocation={this.props.clickLocation}/>
+          )}
+        {locations.length < 1 && !fetching && 'Выберите секцию'}
       </div>
     )
   }
@@ -128,11 +130,12 @@ export class SowCells extends Component {
  export class Sections extends Component {
 
   render() {
-    const { sections, activeSectionId } = this.props
+    const { sections, activeSectionId, fetching } = this.props
      
     return (
       <div className='row'>
-        {sections.map((section, key) => 
+        {fetching ? <p className='loading'>Загрузка</p> :
+          sections.map((section, key) => 
             <div className={ activeSectionId == section.id ? 
               'col-sm section-button section-active': 'col-sm section-button '
               } onClick={this.props.clickSection}

@@ -97,18 +97,18 @@ export const getIncomeSowWs3Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, incomeSow: null })
 }
 
-// Get sections
-export const getSectionsWs3Request = (state, { payload }) => {
-    return state.merge({ fetching: true, sections: [] })
-}
+// // Get sections
+// export const getSectionsWs3Request = (state, { payload }) => {
+//     return state.merge({ fetching: true, sections: [] })
+// }
 
-export const getSectionsWs3Success = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, sections: payload })
-}
+// export const getSectionsWs3Success = (state, { payload }) => {
+//     return state.merge({ fetching: false, error: null, sections: payload })
+// }
 
-export const getSectionsWs3Fail = (state, { error }) => {
-    return state.merge({ fetching: false, error, sections: [] })
-}
+// export const getSectionsWs3Fail = (state, { error }) => {
+//     return state.merge({ fetching: false, error, sections: [] })
+// }
 
 // Get SowIncomeTabLocations
 export const getSowIncomeTabLocationsWs3Request = (state, { payload }) => {
@@ -187,9 +187,9 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_INCOME_SOW_WS3_SUCCESS]: getIncomeSowWs3Success,
     [Types.GET_INCOME_SOW_WS3_FAIL]: getIncomeSowWs3Fail,
 
-    [Types.GET_SECTIONS_WS3_REQUEST]: getSectionsWs3Request,
-    [Types.GET_SECTIONS_WS3_SUCCESS]: getSectionsWs3Success,
-    [Types.GET_SECTIONS_WS3_FAIL]: getSectionsWs3Fail,
+    // [Types.GET_SECTIONS_WS3_REQUEST]: getSectionsWs3Request,
+    // [Types.GET_SECTIONS_WS3_SUCCESS]: getSectionsWs3Success,
+    // [Types.GET_SECTIONS_WS3_FAIL]: getSectionsWs3Fail,
 
     [Types.GET_SOW_INCOME_TAB_LOCATIONS_WS3_REQUEST]: getSowIncomeTabLocationsWs3Request,
     [Types.GET_SOW_INCOME_TAB_LOCATIONS_WS3_SUCCESS]: getSowIncomeTabLocationsWs3Success,

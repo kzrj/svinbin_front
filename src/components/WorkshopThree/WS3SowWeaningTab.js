@@ -66,7 +66,6 @@ class WS3SowWeaningTab extends Component {
 
   refreshSowsList () {
     if (this.props.eventFetching && this.state.needToRefresh){
-      console.log('refresh')
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations({by_section: this.state.activeSectionId})
@@ -83,11 +82,13 @@ class WS3SowWeaningTab extends Component {
           <div className='col-6'>
           <Sections 
               sections={sections}
+              fetching={this.props.sectionFetching}
               activeSectionId={this.state.activeSectionId}
               clickSection={this.clickSection}
             />
             <SowCells
               locations={locations}
+              fetching={this.props.locationsFetching}
               activeCellIds={this.state.activeLocationsIds}
               activeCellId={null}
               clickLocation={this.clickLocation}

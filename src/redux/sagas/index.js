@@ -129,7 +129,7 @@ export default function* root() {
 
     takeEvery(Ws3Types.GET_INCOME_SOWS_WS3_REQUEST, ws3Saga.getIncomeSowsWs3, sowsApi),
     takeEvery(Ws3Types.GET_INCOME_SOW_WS3_REQUEST, ws3Saga.getIncomeSowWs3, sowsApi),
-    takeEvery(Ws3Types.GET_SECTIONS_WS3_REQUEST, ws3Saga.getSectionsWs3, locationsApi),
+    // takeEvery(Ws3Types.GET_SECTIONS_WS3_REQUEST, ws3Saga.getSectionsWs3, locationsApi),
     takeEvery(Ws3Types.GET_SOW_INCOME_TAB_LOCATIONS_WS3_REQUEST, ws3Saga.getSowIncomeTabLocationsWs3, locationsApi),
     takeEvery(Ws3Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS1_WS3_REQUEST, ws3Saga.getSowInnerTransferTabLocations1Ws3, locationsApi),
     takeEvery(Ws3Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS2_WS3_REQUEST, ws3Saga.getSowInnerTransferTabLocations2Ws3, locationsApi),
@@ -137,7 +137,7 @@ export default function* root() {
     takeEvery(Ws3Types.GET_SOW_WEANING_TAB_LOCATIONS_WS3_REQUEST, ws3Saga.getSowWeaningTabLocationsWs3, locationsApi),
 
     takeEvery(Ws4Types.GET_NOMAD_PIGLETS_WS4_REQUEST, ws4Saga.getNomadPigletsWs4, nomadPigletsApi),
-    takeEvery(Ws4Types.GET_SECTIONS_WS4_REQUEST, ws4Saga.getSectionsWs4, locationsApi),
+    // takeEvery(Ws4Types.GET_SECTIONS_WS4_REQUEST, ws4Saga.getSectionsWs4, locationsApi),
     takeEvery(Ws4Types.GET_INCOME_TAB_LOCATIONS_WS4_REQUEST, ws4Saga.getIncomeTabLocationsWs4, locationsApi),
     takeEvery(Ws4Types.SETLLE_PIGLETS_WS4_REQUEST, ws4Saga.setllePigletsWs4, nomadPigletsApi),
     takeEvery(Ws4Types.GET_TRANSFER_PIGLETS_WS4_REQUEST, ws4Saga.getTransferPigletsWs4, nomadPigletsApi),
@@ -145,7 +145,7 @@ export default function* root() {
     takeEvery(Ws4Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_WS4_REQUEST, ws4Saga.getInnerTransferTabLocations2Ws4, locationsApi),
 
     takeEvery(Ws8Types.GET_NOMAD_PIGLETS_WS8_REQUEST, ws8Saga.getNomadPigletsWs8, nomadPigletsApi),
-    takeEvery(Ws8Types.GET_SECTIONS_REQUEST, ws8Saga.getSections, locationsApi),
+    // takeEvery(Ws8Types.GET_SECTIONS_REQUEST, ws8Saga.getSections, locationsApi),
     takeEvery(Ws8Types.GET_INCOME_TAB_LOCATIONS_REQUEST, ws8Saga.getIncomeTabLocations, locationsApi),
     takeEvery(Ws8Types.SETLLE_PIGLETS_REQUEST, ws8Saga.setllePiglets, nomadPigletsApi),
     takeEvery(Ws8Types.GET_TRANSFER_PIGLETS_REQUEST, ws8Saga.getTransferPiglets, nomadPigletsApi),
@@ -153,7 +153,7 @@ export default function* root() {
     takeEvery(Ws8Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_REQUEST, ws8Saga.getInnerTransferTabLocations2, locationsApi),
 
     takeEvery(Ws5Types.GET_NOMAD_PIGLETS_WS5_REQUEST, ws5Saga.getNomadPigletsWs5, nomadPigletsApi),
-    takeEvery(Ws5Types.GET_SECTIONS_REQUEST, ws5Saga.getSections, locationsApi),
+    // takeEvery(Ws5Types.GET_SECTIONS_REQUEST, ws5Saga.getSections, locationsApi),
     takeEvery(Ws5Types.GET_INCOME_TAB_LOCATIONS_REQUEST, ws5Saga.getIncomeTabLocations, locationsApi),
     takeEvery(Ws5Types.SETLLE_PIGLETS_REQUEST, ws5Saga.setllePiglets, nomadPigletsApi),
     takeEvery(Ws5Types.GET_TRANSFER_PIGLETS_REQUEST, ws5Saga.getTransferPiglets, nomadPigletsApi),
@@ -161,7 +161,7 @@ export default function* root() {
     takeEvery(Ws5Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_REQUEST, ws5Saga.getInnerTransferTabLocations2, locationsApi),
 
     // takeEvery(Ws6Types.GET_NOMAD_PIGLETS_REQUEST, ws6Saga.getNomadPiglets, nomadPigletsApi),
-    takeEvery(Ws6Types.GET_SECTIONS_REQUEST, ws6Saga.getSections, locationsApi),
+    // takeEvery(Ws6Types.GET_SECTIONS_REQUEST, ws6Saga.getSections, locationsApi),
     takeEvery(Ws6Types.GET_INCOME_TAB_LOCATIONS_REQUEST, ws6Saga.getIncomeTabLocations, locationsApi),
     takeEvery(Ws6Types.SETLLE_PIGLETS_REQUEST, ws6Saga.setllePiglets, nomadPigletsApi),
     takeEvery(Ws6Types.GET_TRANSFER_PIGLETS_REQUEST, ws6Saga.getTransferPiglets, nomadPigletsApi),
@@ -169,7 +169,7 @@ export default function* root() {
     takeEvery(Ws6Types.GET_INNER_TRANSFER_TAB_LOCATIONS2_REQUEST, ws6Saga.getInnerTransferTabLocations2, locationsApi),
 
     // takeEvery(Ws7Types.GET_NOMAD_PIGLETS_REQUEST, ws7Saga.getNomadPiglets, nomadPigletsApi),
-    takeEvery(Ws7Types.GET_SECTIONS_REQUEST, ws7Saga.getSections, locationsApi),
+    // takeEvery(Ws7Types.GET_SECTIONS_REQUEST, ws7Saga.getSections, locationsApi),
     takeEvery(Ws7Types.GET_INCOME_TAB_LOCATIONS_REQUEST, ws7Saga.getIncomeTabLocations, locationsApi),
     takeEvery(Ws7Types.SETLLE_PIGLETS_REQUEST, ws7Saga.setllePiglets, nomadPigletsApi),
     takeEvery(Ws7Types.GET_TRANSFER_PIGLETS_REQUEST, ws7Saga.getTransferPiglets, nomadPigletsApi),
@@ -178,6 +178,6 @@ export default function* root() {
 
     // takeEvery(Ws75Types.GET_NOMAD_PIGLETS_REQUEST, ws75Saga.getNomadPiglets, nomadPigletsApi),
     takeEvery(Ws75Types.SETLLE_PIGLETS_REQUEST, ws75Saga.setllePiglets, nomadPigletsApi),
-    takeEvery(Ws75Types.GET_LOCATIONS_REQUEST, ws75Saga.getLocations, locationsApi),
+    // takeEvery(Ws75Types.GET_LOCATIONS_REQUEST, ws75Saga.getLocations, locationsApi),
   ]);
 }

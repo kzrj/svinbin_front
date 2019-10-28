@@ -71,7 +71,6 @@ class WS3SowFarrowTab extends Component {
     })
     this.setState({
       activeSow: null,
-      // activeSectionId: null,
       needToRefresh: true,
       activeCellLocationId: null,
       total_piglets: 0,
@@ -101,11 +100,13 @@ class WS3SowFarrowTab extends Component {
           <div className='col-6'>
             <Sections 
               sections={sections}
+              fetching={this.props.sectionsFetching}
               activeSectionId={this.state.activeSectionId}
               clickSection={this.clickSection}
             />
             <SowCells 
               locations={locations}
+              fetching={this.props.locationsFetching}
               activeCellIds={[this.state.activeCellLocationId]}
               clickLocation={this.clickCellLocation}
             />

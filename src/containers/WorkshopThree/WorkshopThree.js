@@ -15,6 +15,8 @@ import WS3PigletsRecountTab from '../../components/WorkshopThree/WS3PigletsRecou
 
 // # actions
 import SowsActions from '../../redux/redux-sauce/sows';
+import SectionsActions from '../../redux/redux-sauce/sections';
+import LocationsActions from '../../redux/redux-sauce/locations';
 import NewbornPigletsActions from '../../redux/redux-sauce/newbornPiglets';
 import NomadPigletsActions from '../../redux/redux-sauce/nomadPiglets';
 import AuthActions from '../../redux/redux-sauce/auth';
@@ -28,11 +30,11 @@ class WorkshopThreeContainer extends Component {
       tabs: {
         balanceTab: false,
         returnPigletsTab: false,
-        comingSowsTab: false,
+        comingSowsTab: true,
         transferTab: false,
         farrowTab: false,
         weaningSowsTab: false,
-        recountTab: true,
+        recountTab: false,
         weaningPigletsTab: false,
         createGiltTab: false,
         sowCullingTab: false,
@@ -137,53 +139,70 @@ class WorkshopThreeContainer extends Component {
         </div>
         { this.state.tabs.comingSowsTab && 
           <WS3SowIncomeTab 
-            sow={this.props.state.ws3.incomeSow}
-            sows={this.props.state.ws3.incomeSows}
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            listFetching={this.props.state.sows.fetching}
 
-            getSows={this.props.getIncomeSows}
-            getSow={this.props.getIncomeSow}
+            getSow={this.props.getSow}
+            sow={this.props.state.sows.sow}
+            sowFetching={this.props.state.sows.sowSingleFetching}
 
             getSections={this.props.getSections}
-            sections={this.props.state.ws3.sections}
-            // sectionFetching={this.props.state.}
+            sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
 
-            getLocations={this.props.getSowIncomeTabLocations}
-            locations={this.props.state.ws3.incomeTabLocations}
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
 
             sowMoveTo={this.props.sowMoveTo}
-            eventFetching={this.props.state.sows.fetching}
+            eventFetching={this.props.state.sows.eventFetching}
+
           />}
 
         { this.state.tabs.transferTab && 
           <WS3SowInnerTransferTab 
             getSections={this.props.getSections}
-            sections={this.props.state.ws3.sections}
+            sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
 
-            getLocations1={this.props.getSowInnerTransferTabLocations1}
-            getLocations2={this.props.getSowInnerTransferTabLocations2}
-            locations1={this.props.state.ws3.sowInnerTransferLocations1}
-            locations2={this.props.state.ws3.sowInnerTransferLocations2}
+            getLocations1={this.props.getLocations}
+            locations1={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
+            
+            getLocations2={this.props.getLocationsAdditional}
+            locations2={this.props.state.locations.additional_list}
+            locationsAddFetching={this.props.state.locations.fetchingAdditional}
 
             sowMoveTo={this.props.sowMoveTo}
-            eventFetching={this.props.state.sows.fetching}
+            eventFetching={this.props.state.sows.eventFetching}
           />}
 
         { this.state.tabs.farrowTab && 
           <WS3SowFarrowTab 
             getSections={this.props.getSections}
-            sections={this.props.state.ws3.sections}
-            getLocations={this.props.getSowFarrowTabLocations}
-            locations={this.props.state.ws3.sowFarrowLocations}
+            sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
+
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
+
             sowFarrow={this.props.sowFarrow}
+            eventFetching={this.props.state.sows.eventFetching}
           />}
 
         { this.state.tabs.weaningSowsTab && 
           <WS3SowWeaningTab 
             getSections={this.props.getSections}
-            sections={this.props.state.ws3.sections}
-            getLocations={this.props.getSowWeaningTabLocations}
-            locations={this.props.state.ws3.sowWeaningLocations}
-            eventFetching={this.props.state.sows.fetching}
+            sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
+
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
+
+            eventFetching={this.props.state.sows.eventFetching}
             massMove={this.props.sowsMoveMany}
           />}
 
@@ -273,6 +292,10 @@ const mapDispatchToProps = (dispatch) => ({
   sowFarrow: data => dispatch(SowsActions.sowFarrowRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
 
+  getSections: query => dispatch(SectionsActions.getSectionsRequest(query)),
+  getLocations: query => dispatch(LocationsActions.getLocationsRequest(query)),
+  getLocationsAdditional: query => dispatch(LocationsActions.getLocationsAdditionalRequest(query)),
+
   getNewbornPiglets: query => dispatch(NewbornPigletsActions.getNewbornPigletsRequest(query)),
   mergeNewbornPiglets: data => dispatch(NewbornPigletsActions.mergeNewbornPigletsRequest(data)),
   createGilt: data => dispatch(NewbornPigletsActions.createGiltRequest(data)),
@@ -285,8 +308,8 @@ const mapDispatchToProps = (dispatch) => ({
 
   getIncomeSows: query => dispatch(Ws3Actions.getIncomeSowsWs3Request(query)),
   getIncomeSow: id => dispatch(Ws3Actions.getIncomeSowWs3Request(id)),
-  getSections: query => dispatch(Ws3Actions.getSectionsWs3Request(query)),
-  getSowIncomeTabLocations: query => dispatch(Ws3Actions.getSowIncomeTabLocationsWs3Request(query)),
+  // getSections: query => dispatch(Ws3Actions.getSectionsWs3Request(query)),
+  // getSowIncomeTabLocations: query => dispatch(Ws3Actions.getSowIncomeTabLocationsWs3Request(query)),
   getSowInnerTransferTabLocations1: query => dispatch(Ws3Actions.getSowInnerTransferTabLocations1Ws3Request(query)),
   getSowInnerTransferTabLocations2: query => dispatch(Ws3Actions.getSowInnerTransferTabLocations2Ws3Request(query)),
   getSowFarrowTabLocations: query => dispatch(Ws3Actions.getSowFarrowTabLocationsWs3Request(query)),

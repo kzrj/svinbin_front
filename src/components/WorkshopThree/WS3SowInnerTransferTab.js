@@ -16,7 +16,7 @@ class WS3SowInnerTransferTab extends Component {
   }
   
   componentDidMount() {
-    this.props.getSections({workshop: 3})    
+    this.props.getSections({workshop: 3})
   }
 
   clickFromSection = (e) => {
@@ -63,9 +63,7 @@ class WS3SowInnerTransferTab extends Component {
     this.setState({
       ...this.state,
       activeSow: null,
-      // activeFromSectionId: null,
       activeCellFromLocationId: null,
-      // activeToSectionId: null,
       activeCellToLocationId: null,
       needToRefresh: true,
     })
@@ -90,11 +88,13 @@ class WS3SowInnerTransferTab extends Component {
           <div className='col-6'>
             <Sections 
               sections={sections}
+              fetching={this.props.sectionsFetching}
               activeSectionId={this.state.activeFromSectionId}
               clickSection={this.clickFromSection}
             />
             <SowCells 
               locations={locations1}
+              fetching={this.props.locationsFetching}
               activeCellIds={[this.state.activeCellFromLocationId]}
               clickLocation={this.clickCellFromLocation}
             />
@@ -102,11 +102,13 @@ class WS3SowInnerTransferTab extends Component {
           <div className='col-6'>
               <Sections
                 sections={sections}
+                fetching={this.props.sectionsFetching}
                 activeSectionId={this.state.activeToSectionId}
                 clickSection={this.clickToSection}
               />
               <SowCells
                 locations={locations2}
+                fetching={this.props.locationsAddFetching}
                 activeCellIds={[this.state.activeCellToLocationId]}
                 clickLocation={this.clickCellToLocation}
               />
