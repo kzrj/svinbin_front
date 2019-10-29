@@ -6,18 +6,15 @@ import { SowTable }  from '../../components/WorkshopOne/SowComponents'
 import { SowFarmIdFilter, SowTourFilter, SowUsound30Filter }  from '../../components/WorkshopOne/SowComponents'
 
 
-class WS1Ultrasound30Tab extends Component {
+class WSSowUltrasoundTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
       query: {
-        by_workshop_number: 1,
-        status_title: 'Осеменена 2',
         tour: null,
       },
       choosedSows: [],
       farmId: null,
-      days: 30,
       result: true,
       needToRefresh: false
     };
@@ -29,21 +26,26 @@ class WS1Ultrasound30Tab extends Component {
   }
 
   componentDidMount() {
-    // query
-    this.props.getSows(this.state.query)
+    this.setState({
+      ...this.state,
+      query: {
+        ...this.state.query,
+        by_workshop_number: this.props.workshopNumber,
+        status_title: this.props.statusTitleFilter
+      }
+    })
+    this.props.getSows({
+      by_workshop_number: this.props.workshopNumber,
+      status_title: this.props.statusTitleFilter})
     this.props.getTours()
   }
 
   setQuery (e) {
     let { query } = this.state
     query[e.target.name] = e.target.value
-
     this.setState({
       ...this.state,
-      query: {
-        ...this.state.query,
-        query: query
-      },
+      query: query,
       choosedSows: [],
       needToRefresh: true
     })
@@ -59,7 +61,6 @@ class WS1Ultrasound30Tab extends Component {
     })
   }
 
-  // Usound data
   setData (e) {
     this.setState({
       ...this.state,
@@ -70,7 +71,7 @@ class WS1Ultrasound30Tab extends Component {
   massUltrasound () {
     const data = {
       sows: this.state.choosedSows,
-      days: this.state.days,
+      days: this.props.daysValue,
       result: this.state.result
     }
     this.props.massUltrasound(data)
@@ -82,7 +83,7 @@ class WS1Ultrasound30Tab extends Component {
   }
 
   refreshSowsList () {
-    if (this.props.eventFetching || this.state.needToRefresh) {
+    if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)  
@@ -91,7 +92,7 @@ class WS1Ultrasound30Tab extends Component {
   }
 
   render() {
-    let { sows, tours } = this.props
+    const { sows, tours, days } = this.props
     this.refreshSowsList()
     return (
       <div className='workshop-content'>
@@ -100,18 +101,11 @@ class WS1Ultrasound30Tab extends Component {
             <label className='sow-event-label'>Фильтр</label>
             <SowFarmIdFilter setQuery={this.setQuery} />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
-            <SowUsound30Filter setQuery={this.setQuery}/>
           </div>
           <div>
             <div>
-              <label className='sow-event-label'>УЗИ 28 дней</label>
               <div className="input-group">
-                
-                <select className="custom-select" id="inputGroupSelect04" 
-                  onChange={this.setData} name='days'>
-                  <option selected value='30'>28 дней</option>
-                  {/* <option value='60' >60 дней</option> */}
-                </select>
+                <label className='sow-event-label'>УЗИ {days} дней</label>
                 <select className="custom-select" id="inputGroupSelect04" 
                   onChange={this.setData} name='result'>
                   <option selected value={true}>Супорос</option>
@@ -132,17 +126,15 @@ class WS1Ultrasound30Tab extends Component {
               <div className='col-6'>
                 Выбрано {this.state.choosedSows.length} из {sows.length}
               </div>
-              {/* <div className='col-6'>
-                <button onClick={this.chooseAll}>Выбрать всех</button>
-              </div> */}
             </div>
           {this.props.sowsListFetching ? 
             <p className='loading'>Загрузка</p> :
-            <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>}
+            <SowTable sows={sows} sowClick={this.sowClick} 
+              choosedSows={this.state.choosedSows}/>}
         </div>
       </div>
     )
   }
 }
 
-export default WS1Ultrasound30Tab
+export default WSSowUltrasoundTab

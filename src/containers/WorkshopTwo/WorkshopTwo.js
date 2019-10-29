@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // components
 import WS2TransferTab from '../../components/WorkshopTwo/WS2TransferTab'
 import WSSowCullingTab from '../../components/WorkshopTabs/WSSowCullingTab'
-import WS2UltrasoundTab from '../../components/WorkshopTwo/WS2UltrasoundTab'
+import WSSowUltrasoundTab from '../../components/WorkshopTabs/WSSowUltrasoundTab'
 import WS2CreateTransferTab from '../../components/WorkshopTwo/WS2CreateTransferTab'
 
 // actions
@@ -93,7 +93,12 @@ class WorkshopTwoContainer extends Component {
           />}
 
         { this.state.tabs.ultrasoundTab &&
-          <WS2UltrasoundTab 
+          <WSSowUltrasoundTab
+            workshopNumber={2}
+            days={35}
+            daysValue={60}
+            statusTitleFilter={'Супорос 30'}
+
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
@@ -111,13 +116,16 @@ class WorkshopTwoContainer extends Component {
 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
+            sowsListFetching={this.props.state.sows.fetching}
 
             getSow={this.props.getSow}
             sow={this.props.state.sows.sow}
             tours_info={this.props.state.sows.tours_info}
+            singleSowFetching={this.props.state.sows.sowSingleFetching}
 
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}
+            eventFetching={this.props.state.sows.eventFetching}
           />}
 
         { this.state.tabs.initAndTransferTab &&

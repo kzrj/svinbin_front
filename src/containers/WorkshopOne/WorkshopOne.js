@@ -6,10 +6,9 @@ import WS1SeminationTab from '../../components/WorkshopOne/WS1SeminationTab'
 import WS1Semination2Tab from '../../components/WorkshopOne/WS1Semination2Tab'
 import WS1Semination12Tab from '../../components/WorkshopOne/WS1Semination12Tab'
 import WS1CreateTab from '../../components/WorkshopOne/WS1CreateTab'
-import WS1Ultrasound30Tab from '../../components/WorkshopOne/WS1Ultrasound30Tab'
-import WS1Ultrasound60Tab from '../../components/WorkshopOne/WS1Ultrasound60Tab'
 import WS1TransferToWS2Tab from '../../components/WorkshopOne/WS1TransferToWS2Tab'
 import WSSowCullingTab from '../../components/WorkshopTabs/WSSowCullingTab'
+import WSSowUltrasoundTab from '../../components/WorkshopTabs/WSSowUltrasoundTab'
 import WS1ImportSeminationTab from '../../components/WorkshopOne/WS1ImportSeminationTab'
 
 // actions
@@ -26,18 +25,19 @@ class WorkshopOneContainer extends Component {
         seminationTab: false,
         semination2Tab: false,
         semination12Tab: false,
-        importSeminationTab: true,
+        importSeminationTab: false,
         createTab: false,
-        ultrasound30Tab: false,
+        ultrasound30Tab: true,
         ultrasound60Tab: false,
         transferToWS2Tab: false,
         cullingTab: false,
         infoTab: false,
       }
     }
+    this.setTab = this.setTab.bind(this);
 	}
 
-  setTab = (tab) => {
+  setTab(tab) {
     let { tabs } = this.state
     Object.keys(tabs).forEach((key) => {
       tabs[key] = false
@@ -220,7 +220,12 @@ class WorkshopOneContainer extends Component {
           />}
 
         { this.state.tabs.ultrasound30Tab &&
-          <WS1Ultrasound30Tab 
+          <WSSowUltrasoundTab
+            workshopNumber={1}
+            days={28}
+            daysValue={30}
+            statusTitleFilter={'Осеменена 2'}
+          
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
@@ -233,7 +238,12 @@ class WorkshopOneContainer extends Component {
           />}
 
         { this.state.tabs.ultrasound60Tab &&
-          <WS1Ultrasound60Tab 
+          <WSSowUltrasoundTab
+            workshopNumber={1}
+            days={35}
+            daysValue={60}
+            statusTitleFilter={'Супорос 30'}
+
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
