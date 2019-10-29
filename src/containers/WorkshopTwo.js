@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
-import WS2TransferTab from '../../components/WorkshopTwo/WS2TransferTab'
-import WSSowCullingTab from '../../components/WorkshopTabs/WSSowCullingTab'
-import WSSowUltrasoundTab from '../../components/WorkshopTabs/WSSowUltrasoundTab'
-import WS2CreateTransferTab from '../../components/WorkshopTwo/WS2CreateTransferTab'
+import WS2TransferTab from '../components/WorkshopTwo/WS2TransferTab'
+import WSSowCullingTab from '../components/SowTabs/WSSowCullingTab'
+import WSSowUltrasoundTab from '../components/SowTabs/WSSowUltrasoundTab'
+import WS2CreateTransferTab from '../components/WorkshopTwo/WS2CreateTransferTab'
 
 // actions
-import SowsActions from '../../redux/redux-sauce/sows';
-import ToursActions from '../../redux/redux-sauce/tours';
+import SowsActions from '../redux/redux-sauce/sows';
+import ToursActions from '../redux/redux-sauce/tours';
 
 
 class WorkshopTwoContainer extends Component {

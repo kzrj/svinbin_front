@@ -2,23 +2,23 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
-import WS3SowIncomeTab from '../../components/WorkshopThree/WS3SowIncomeTab'
-import WS3SowInnerTransferTab from '../../components/WorkshopThree/WS3SowInnerTransferTab'
-import WS3SowFarrowTab from '../../components/WorkshopThree/WS3SowFarrowTab'
-import WS3SowWeaningTab from '../../components/WorkshopThree/WS3SowWeaningTab'
-import WSSowCullingTab from '../../components/WorkshopTabs/WSSowCullingTab'
+import WS3SowIncomeTab from '../components/WorkshopThree/WS3SowIncomeTab'
+import WS3SowInnerTransferTab from '../components/WorkshopThree/WS3SowInnerTransferTab'
+import WS3SowFarrowTab from '../components/WorkshopThree/WS3SowFarrowTab'
+import WS3SowWeaningTab from '../components/WorkshopThree/WS3SowWeaningTab'
+import WSSowCullingTab from '../components/SowTabs/WSSowCullingTab'
 
-import WS3PigletsWeaningTab from '../../components/WorkshopThree/WS3PigletsWeaningTab'
-import WS3CreateGiltTab from '../../components/WorkshopThree/WS3CreateGiltTab'
-import WS3PigletsCullingTab from '../../components/WorkshopThree/WS3PigletsCullingTab'
-import WS3PigletsRecountTab from '../../components/WorkshopThree/WS3PigletsRecountTab'
+import WS3PigletsWeaningTab from '../components/WorkshopThree/WS3PigletsWeaningTab'
+import WS3CreateGiltTab from '../components/WorkshopThree/WS3CreateGiltTab'
+import WS3PigletsCullingTab from '../components/WorkshopThree/WS3PigletsCullingTab'
+import WS3PigletsRecountTab from '../components/WorkshopThree/WS3PigletsRecountTab'
 
 // # actions
-import SowsActions from '../../redux/redux-sauce/sows';
-import SectionsActions from '../../redux/redux-sauce/sections';
-import LocationsActions from '../../redux/redux-sauce/locations';
-import NewbornPigletsActions from '../../redux/redux-sauce/newbornPiglets';
-import NomadPigletsActions from '../../redux/redux-sauce/nomadPiglets';
+import SowsActions from '../redux/redux-sauce/sows';
+import SectionsActions from '../redux/redux-sauce/sections';
+import LocationsActions from '../redux/redux-sauce/locations';
+import NewbornPigletsActions from '../redux/redux-sauce/newbornPiglets';
+import NomadPigletsActions from '../redux/redux-sauce/nomadPiglets';
 
 
 class WorkshopThreeContainer extends Component {

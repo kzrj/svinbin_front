@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
-import WS1SeminationTab from '../../components/WorkshopOne/WS1SeminationTab'
-import WS1Semination2Tab from '../../components/WorkshopOne/WS1Semination2Tab'
-import WS1Semination12Tab from '../../components/WorkshopOne/WS1Semination12Tab'
-import WS1CreateTab from '../../components/WorkshopOne/WS1CreateTab'
-import WS1TransferToWS2Tab from '../../components/WorkshopOne/WS1TransferToWS2Tab'
-import WSSowCullingTab from '../../components/WorkshopTabs/WSSowCullingTab'
-import WSSowUltrasoundTab from '../../components/WorkshopTabs/WSSowUltrasoundTab'
-import WS1ImportSeminationTab from '../../components/WorkshopOne/WS1ImportSeminationTab'
+import WS1SeminationTab from '../components/WorkshopOne/WS1SeminationTab'
+import WS1Semination2Tab from '../components/WorkshopOne/WS1Semination2Tab'
+import WS1Semination12Tab from '../components/WorkshopOne/WS1Semination12Tab'
+import WS1CreateTab from '../components/WorkshopOne/WS1CreateTab'
+import WS1TransferToWS2Tab from '../components/WorkshopOne/WS1TransferToWS2Tab'
+import WSSowCullingTab from '../components/SowTabs/WSSowCullingTab'
+import WSSowUltrasoundTab from '../components/SowTabs/WSSowUltrasoundTab'
+import WS1ImportSeminationTab from '../components/WorkshopOne/WS1ImportSeminationTab'
 
 // actions
-import SowsActions from '../../redux/redux-sauce/sows';
-import ToursActions from '../../redux/redux-sauce/tours';
-import Ws1Actions from '../../redux/redux-sauce/ws1';
+import SowsActions from '../redux/redux-sauce/sows';
+import ToursActions from '../redux/redux-sauce/tours';
+import Ws1Actions from '../redux/redux-sauce/ws1';
 
 
 class WorkshopOneContainer extends Component {

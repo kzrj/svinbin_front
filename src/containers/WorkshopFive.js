@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
-import WorkshopFattening from '../Workshop/WorkshopFattening';
 import WS5IncomeTab from '../../components/WorkshopFive/WS5IncomeTab'
 import WS5ResettelmentTab from '../../components/WorkshopFive/WS5ResettelmentTab'
 import WS5TransferTab from '../../components/WorkshopFive/WS5TransferTab'
@@ -15,7 +14,34 @@ import Ws5Actions from '../../redux/redux-sauce/ws5';
 import NomadPigletsActions from '../../redux/redux-sauce/nomadPiglets';
 
 
-class WorkshopFiveContainer extends WorkshopFattening {
+class WorkshopFiveContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tabs: {
+        incomeTab: true,
+        resettlementTab: false,
+        innerTransferTab: false,
+        transferTab: false,
+        cullingTab: false,
+        infoTab: false,
+      }
+    };
+    this.setTab = this.setTab.bind(this);
+  }
+
+  setTab (tab) {
+    let { tabs } = this.state
+    Object.keys(tabs).forEach((key) => {
+      tabs[key] = false
+    })
+    this.setState({
+      tabs: {
+        ...tabs,
+        [tab]: true
+      }
+    })
+  }
   render() {
     return (
       <div className="workshop container">
