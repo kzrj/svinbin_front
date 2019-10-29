@@ -19,8 +19,6 @@ import SectionsActions from '../../redux/redux-sauce/sections';
 import LocationsActions from '../../redux/redux-sauce/locations';
 import NewbornPigletsActions from '../../redux/redux-sauce/newbornPiglets';
 import NomadPigletsActions from '../../redux/redux-sauce/nomadPiglets';
-import AuthActions from '../../redux/redux-sauce/auth';
-import Ws3Actions from '../../redux/redux-sauce/ws3';
 
 
 class WorkshopThreeContainer extends Component {
@@ -55,10 +53,6 @@ class WorkshopThreeContainer extends Component {
         [tab]: true
       }
     })
-  }
-  showStateConsole = () => {
-    const { state } = this.props
-    console.log(state)
   }
 
   render() {
@@ -227,16 +221,19 @@ class WorkshopThreeContainer extends Component {
         { this.state.tabs.weaningPigletsTab && 
           <WS3PigletsWeaningTab 
             getSections={this.props.getSections}
-            sections={this.props.state.ws3.sections}
+            sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
 
-            getLocations={this.props.getSowWeaningTabLocations}
-            locations={this.props.state.ws3.sowWeaningLocations}
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
             
             mergeNewbornPiglets={this.props.mergeNewbornPiglets}
             megreFetching={this.props.state.newbornPiglets.eventFetching}
 
             getNomadPiglets={this.props.getNomadPiglets}
             nomadPiglets={this.props.state.nomadPiglets.list}
+
             moveNomadPiglets={this.props.moveNomadPiglets}
             moveNomadFetching={this.props.state.nomadPiglets.eventFetching}
           />}
@@ -244,10 +241,12 @@ class WorkshopThreeContainer extends Component {
         { this.state.tabs.createGiltTab && 
           <WS3CreateGiltTab 
             getSections={this.props.getSections}
-            sections={this.props.state.ws3.sections}
+            sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
 
-            getLocations={this.props.getSowWeaningTabLocations}
-            locations={this.props.state.ws3.sowWeaningLocations}
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
             
             createGilt={this.props.createGilt}
             eventFetching={this.props.state.newbornPiglets.eventFetching}
@@ -257,10 +256,12 @@ class WorkshopThreeContainer extends Component {
         { this.state.tabs.pigletsCullingTab && 
           <WS3PigletsCullingTab
             getSections={this.props.getSections}
-            sections={this.props.state.ws3.sections}
+            sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
 
-            getLocations={this.props.getSowWeaningTabLocations}
-            locations={this.props.state.ws3.sowWeaningLocations}
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
             
             cullingPiglets={this.props.cullingPiglets}
             cullingGilt={this.props.cullingGilt}
@@ -270,10 +271,12 @@ class WorkshopThreeContainer extends Component {
         { this.state.tabs.recountTab && 
           <WS3PigletsRecountTab
             getSections={this.props.getSections}
-            sections={this.props.state.ws3.sections}
+            sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
 
-            getLocations={this.props.getSowWeaningTabLocations}
-            locations={this.props.state.ws3.sowWeaningLocations}
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
             
             recountPiglets={this.props.recountPiglets}
             eventFetching={this.props.state.newbornPiglets.eventFetching}
@@ -290,8 +293,12 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  login: (payload) => dispatch(AuthActions.loginRequest(payload)),
+  // sections and locations
+  getSections: query => dispatch(SectionsActions.getSectionsRequest(query)),
+  getLocations: query => dispatch(LocationsActions.getLocationsRequest(query)),
+  getLocationsAdditional: query => dispatch(LocationsActions.getLocationsAdditionalRequest(query)),
 
+  //sows
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
@@ -300,10 +307,7 @@ const mapDispatchToProps = (dispatch) => ({
   sowFarrow: data => dispatch(SowsActions.sowFarrowRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
 
-  getSections: query => dispatch(SectionsActions.getSectionsRequest(query)),
-  getLocations: query => dispatch(LocationsActions.getLocationsRequest(query)),
-  getLocationsAdditional: query => dispatch(LocationsActions.getLocationsAdditionalRequest(query)),
-
+  // newborn piglets
   getNewbornPiglets: query => dispatch(NewbornPigletsActions.getNewbornPigletsRequest(query)),
   mergeNewbornPiglets: data => dispatch(NewbornPigletsActions.mergeNewbornPigletsRequest(data)),
   createGilt: data => dispatch(NewbornPigletsActions.createGiltRequest(data)),
@@ -311,17 +315,9 @@ const mapDispatchToProps = (dispatch) => ({
   cullingGilt: data => dispatch(NewbornPigletsActions.cullingGiltNewbornPigletsRequest(data)),
   recountPiglets: data => dispatch(NewbornPigletsActions.recountNewbornPigletsRequest(data)),
 
+  //nomad piglets
   getNomadPiglets: query => dispatch(NomadPigletsActions.getNomadPigletsRequest(query)),
   moveNomadPiglets: data => dispatch(NomadPigletsActions.moveToPigletsRequest(data)),
-
-  getIncomeSows: query => dispatch(Ws3Actions.getIncomeSowsWs3Request(query)),
-  getIncomeSow: id => dispatch(Ws3Actions.getIncomeSowWs3Request(id)),
-  // getSections: query => dispatch(Ws3Actions.getSectionsWs3Request(query)),
-  // getSowIncomeTabLocations: query => dispatch(Ws3Actions.getSowIncomeTabLocationsWs3Request(query)),
-  getSowInnerTransferTabLocations1: query => dispatch(Ws3Actions.getSowInnerTransferTabLocations1Ws3Request(query)),
-  getSowInnerTransferTabLocations2: query => dispatch(Ws3Actions.getSowInnerTransferTabLocations2Ws3Request(query)),
-  getSowFarrowTabLocations: query => dispatch(Ws3Actions.getSowFarrowTabLocationsWs3Request(query)),
-  getSowWeaningTabLocations: query => dispatch(Ws3Actions.getSowWeaningTabLocationsWs3Request(query)),
 })
 
 export default connect(

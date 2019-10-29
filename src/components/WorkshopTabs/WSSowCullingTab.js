@@ -61,7 +61,6 @@ class WSSowCullingTab extends Component {
     let data = {
       id: this.props.sow.id,
     }
-    
     this.props.abortionSow(data)
     this.props.getSows({
       by_workshop_number: this.props.workshopNumber,

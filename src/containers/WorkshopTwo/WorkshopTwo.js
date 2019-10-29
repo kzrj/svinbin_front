@@ -27,16 +27,6 @@ class WorkshopTwoContainer extends Component {
     }
 	}
 
-  componentDidMount() {
-    // $('body').addClass('loaded');
-    // this.props.startup();
-
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   this.props.checkToken(token);
-    // }
-  }
-
   setTab = (tab) => {
     let { tabs } = this.state
     Object.keys(tabs).forEach((key) => {

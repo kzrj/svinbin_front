@@ -19,7 +19,6 @@ import { NewbornPigletsTypes } from '../redux-sauce/newbornPiglets';
 
 import { Ws1Types } from '../redux-sauce/ws1';
 import { Ws2Types } from '../redux-sauce/ws2';
-import { Ws3Types } from '../redux-sauce/ws3';
 import { Ws4Types } from '../redux-sauce/ws4';
 import { Ws8Types } from '../redux-sauce/ws8';
 import { Ws5Types } from '../redux-sauce/ws5';
@@ -36,7 +35,6 @@ import * as nomadPigletsSaga from './nomadPigletsSagas';
 import * as newbornPigletsSaga from './newbornPigletsSagas';
 import * as ws1Saga from './ws1Sagas';
 import * as ws2Saga from './ws2Sagas';
-import * as ws3Saga from './ws3Sagas';
 import * as ws4Saga from './ws4Sagas';
 import * as ws8Saga from './ws8Sagas';
 import * as ws5Saga from './ws5Sagas';
@@ -126,15 +124,6 @@ export default function* root() {
     takeEvery(Ws2Types.GET_ULTRASOUND_V2_SOWS_WS2_REQUEST, ws2Saga.getUltrasoundV2SowsWs2, sowsApi),
     takeEvery(Ws2Types.GET_ULTRASOUND_V2_SOW_WS2_REQUEST, ws2Saga.getUltrasoundV2SowWs2, sowsApi),
     takeEvery(Ws2Types.ULTRASOUND_V2_SOW_WS2_REQUEST, ws2Saga.ultrasoundV2SowWs2, sowsApi),
-
-    takeEvery(Ws3Types.GET_INCOME_SOWS_WS3_REQUEST, ws3Saga.getIncomeSowsWs3, sowsApi),
-    takeEvery(Ws3Types.GET_INCOME_SOW_WS3_REQUEST, ws3Saga.getIncomeSowWs3, sowsApi),
-    // takeEvery(Ws3Types.GET_SECTIONS_WS3_REQUEST, ws3Saga.getSectionsWs3, locationsApi),
-    takeEvery(Ws3Types.GET_SOW_INCOME_TAB_LOCATIONS_WS3_REQUEST, ws3Saga.getSowIncomeTabLocationsWs3, locationsApi),
-    takeEvery(Ws3Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS1_WS3_REQUEST, ws3Saga.getSowInnerTransferTabLocations1Ws3, locationsApi),
-    takeEvery(Ws3Types.GET_SOW_INNER_TRANSFER_TAB_LOCATIONS2_WS3_REQUEST, ws3Saga.getSowInnerTransferTabLocations2Ws3, locationsApi),
-    takeEvery(Ws3Types.GET_SOW_FARROW_TAB_LOCATIONS_WS3_REQUEST, ws3Saga.getSowFarrowTabLocationsWs3, locationsApi),
-    takeEvery(Ws3Types.GET_SOW_WEANING_TAB_LOCATIONS_WS3_REQUEST, ws3Saga.getSowWeaningTabLocationsWs3, locationsApi),
 
     takeEvery(Ws4Types.GET_NOMAD_PIGLETS_WS4_REQUEST, ws4Saga.getNomadPigletsWs4, nomadPigletsApi),
     // takeEvery(Ws4Types.GET_SECTIONS_WS4_REQUEST, ws4Saga.getSectionsWs4, locationsApi),
