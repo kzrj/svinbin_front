@@ -35,13 +35,6 @@ class WS1TransferToWS2Tab extends Component {
     this.props.getTours()
   }
 
-  showState = () => {
-    console.log(this.state)
-    // <button onClick={this.showState}>
-    //   State
-    // </button>
-  }
-
   chooseAll () {
     let ids = []
     this.props.sows.map(sow => ids = toggleArray(ids, sow.id))
@@ -64,7 +57,6 @@ class WS1TransferToWS2Tab extends Component {
       choosedSows: [],
       needToRefresh: true
     })
-    // this.props.getSows(query)
   }
   
   setSeminatedSuporosStatus (e) {
@@ -155,7 +147,7 @@ class WS1TransferToWS2Tab extends Component {
               <button onClick={this.chooseAll}>Выбрать всех</button>
             </div> */}
           </div>
-          {this.state.needToRefresh && this.props.sowsListFetching  ? 'Loading' :
+          {this.props.sowsListFetching  ? <p className='loading'>Загрузка</p> :
             <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>}
         </div>
       </div>

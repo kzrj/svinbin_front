@@ -264,13 +264,16 @@ class WorkshopOneContainer extends Component {
 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
+            sowsListFetching={this.props.state.sows.fetching}
 
             getSow={this.props.getSow}
             sow={this.props.state.sows.sow}
             tours_info={this.props.state.sows.tours_info}
+            singleSowFetching={this.props.state.sows.sowSingleFetching}
 
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}
+            eventFetching={this.props.state.sows.eventFetching}
           />}
 
       </div>

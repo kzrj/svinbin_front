@@ -136,7 +136,8 @@ class WS1Ultrasound30Tab extends Component {
                 <button onClick={this.chooseAll}>Выбрать всех</button>
               </div> */}
             </div>
-          {this.state.needToRefresh && this.props.sowsListFetching  ? 'Loading' :
+          {this.props.sowsListFetching ? 
+            <p className='loading'>Загрузка</p> :
             <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>}
         </div>
       </div>

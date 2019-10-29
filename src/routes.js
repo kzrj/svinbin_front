@@ -12,13 +12,11 @@ import WorkshopFive from './containers/WorkshopFive/WorkshopFive'
 import WorkshopSix from './containers/WorkshopSix/WorkshopSix'
 import WorkshopSeven from './containers/WorkshopSeven/WorkshopSeven'
 import WorkshopSevenFive from './containers/WorkshopSevenFive/WorkshopSevenFive'
-import InitSows from './containers/InitSows/InitSows'
 
 // components
 import MainPage from './components/MainPage/MainPage'
 
 // Pages
-// import AboutPage from './views/About/About'
 
 // import requireAuthentication from './containers/AuthComponent';
 
@@ -40,7 +38,6 @@ export default function routes(store) {
       <Route path="/workshop75/" name="Цех7-5 Секция ремонтных свинок" component={WorkshopSevenFive} />
       <Route path="/workshop9/" name="Убойный Цех" component={WorkshopOne} />
       <Route path="/workshop10/" name="Крематорий" component={WorkshopOne} />
-      <Route path="/init_sows/" name="ИнитМатки" component={InitSows} />
     </Router>
   )
 };

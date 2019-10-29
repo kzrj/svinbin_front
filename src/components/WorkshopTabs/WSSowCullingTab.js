@@ -11,7 +11,7 @@ class WSSowCullingTab extends Component {
     this.state = {
       cullingReason: 'padej',
       cullingType: 'padej',
-      // query: { by_workshop_number: 1, farm_id_isnull: false },
+      needToRefresh: false,
     }
     this.getSowsById = this.getSowsById.bind(this);
     this.setData = this.setData.bind(this);
@@ -47,13 +47,12 @@ class WSSowCullingTab extends Component {
     let data = {
       id: this.props.sow.id,
       culling_type: this.state.cullingType,
-      reason: this.state.cullingReason
+      reason: this.state.cullingReason,
     }
-    
     this.props.cullingSow(data)
-    this.props.getSows({
-      by_workshop_number: this.props.workshopNumber,
-      farm_id_isnull: false
+    this.setState({
+      ...this.state,
+      needToRefresh: true
     })
   }
 
@@ -62,57 +61,74 @@ class WSSowCullingTab extends Component {
       id: this.props.sow.id,
     }
     this.props.abortionSow(data)
-    this.props.getSows({
-      by_workshop_number: this.props.workshopNumber,
-      farm_id_isnull: false
+    this.setState({
+      ...this.state,
+      needToRefresh: true
     })
   }
 
+  refreshSowsList () {
+    if (this.props.eventFetching && this.state.needToRefresh) {
+      setTimeout(() => {
+        this.setState({...this.state, needToRefresh: false})
+        this.props.getSows({
+          by_workshop_number: this.props.workshopNumber,
+          farm_id_isnull: false
+        })  
+      }, 500)
+    }
+  }
+
   render() {
+    this.refreshSowsList()
     const { sows, sow, tours_info } = this.props
     return (
       <div className='row workshop-content'>
-          <div className='col-3 workshop-left-column'>
-            <SowFindById 
-                sows={sows} 
-                sow={sow} 
-                getSowsById={this.getSowsById} 
-                getSow={this.props.getSow}/>
-          </div>
-          <div className='col-9'>
-            <div className='workshop-content-column-2'>
-              {sow &&
-                <div>
-                  <SowLightDetail sow={sow}/>
-                  <SowToursData tours_info={tours_info} />
-                  <div className="input-group">
-                      <select className="custom-select" onChange={this.setData}>
-                        <option selected value='padej' >Падеж</option>
-                        <option value='spec' >Спец. убой</option>
-                        <option value='prirezka' >Прирезка</option>
-                      </select>
-                      <input type='text' onChange={this.setData} placeholder='Напишите причину'/>
-                    <div className="input-group-append">
-                      <button className="btn btn-outline-secondary" type="button"  
-                      onClick={this.cullingSow}>
-                        Забраковать
-                      </button>
-                    </div>
-                  </div>
-                  <div className="input">
-                    <label className='sow-event-label'>Пометить как аборт</label>
-                    <div>
-                      <button className="btn btn-outline-secondary" type="button"  
-                      onClick={this.abortionSow}>
-                        Аборт
-                      </button>
-                    </div>
+        <div className='col-3 workshop-left-column'>
+          <SowFindById 
+              sows={sows} 
+              sow={sow} 
+              getSowsById={this.getSowsById} 
+              getSow={this.props.getSow}
+              fetching={this.props.sowsListFetching}
+              />
+        </div>
+        <div className='col-9'>
+          <div className='workshop-content-column-2'>
+            {this.props.singleSowFetching ?
+              <p className='loading'>Загрузка</p> :
+              sow &&
+              <div>
+                <SowLightDetail sow={sow}/>
+                <SowToursData tours_info={tours_info} />
+                <div className="input-group">
+                    <select className="custom-select" onChange={this.setData}>
+                      <option selected value='padej' >Падеж</option>
+                      <option value='spec' >Спец. убой</option>
+                      <option value='prirezka' >Прирезка</option>
+                    </select>
+                    <input type='text' onChange={this.setData} placeholder='Напишите причину'/>
+                  <div className="input-group-append">
+                    <button className="btn btn-outline-secondary" type="button"  
+                    onClick={this.cullingSow}>
+                      Забраковать
+                    </button>
                   </div>
                 </div>
-              }
-            </div>
+                <div className="input">
+                  <label className='sow-event-label'>Пометить как аборт</label>
+                  <div>
+                    <button className="btn btn-outline-secondary" type="button"  
+                    onClick={this.abortionSow}>
+                      Аборт
+                    </button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
         </div>
-    </div>
+      </div>
     )
   }
 }

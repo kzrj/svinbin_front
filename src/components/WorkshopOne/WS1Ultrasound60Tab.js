@@ -34,13 +34,6 @@ class WS1Ultrasound60Tab extends Component {
     this.props.getTours()
   }
 
-  showState = () => {
-    console.log(this.state)
-    // <button onClick={this.showState}>
-    //   State
-    // </button>
-  }
-
   setQuery (e) {
     let { query } = this.state
     query[e.target.name] = e.target.value
@@ -54,7 +47,6 @@ class WS1Ultrasound60Tab extends Component {
       choosedSows: [],
       needToRefresh: true
     })
-    // this.props.getSows(query)
   }
   
   sowClick (e) {
@@ -144,7 +136,7 @@ class WS1Ultrasound60Tab extends Component {
                 <button onClick={this.chooseAll}>Выбрать всех</button>
               </div> */}
             </div>
-            {this.state.needToRefresh && this.props.sowsListFetching  ? 'Loading' :
+            {this.props.sowsListFetching  ? <p className='loading'>Загрузка</p> :
               <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>}
         </div>
       </div>

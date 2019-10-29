@@ -24,9 +24,10 @@ class WorkshopTwoContainer extends Component {
         initAndTransferTab: true,
       }
     }
+    this.setTab = this.setTab.bind(this);
 	}
 
-  setTab = (tab) => {
+  setTab(tab) {
     let { tabs } = this.state
     Object.keys(tabs).forEach((key) => {
       tabs[key] = false
@@ -37,16 +38,6 @@ class WorkshopTwoContainer extends Component {
         [tab]: true
       }
     })
-  }
-
-  showStateConsole = () => {
-    const { state } = this.props
-    console.log('Hi')
-    console.log(state)
-  }
-
-  showState = () => {
-    console.log(this.state)
   }
 
   render() {
