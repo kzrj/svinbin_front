@@ -46,7 +46,6 @@ export const getSeminatorsFail = (state, { error }) => {
     return state.merge({ fetching: false, error, seminators: [] })
 }
 
-
 // import farm
 export const importSeminationsFromFarmRequest = (state, { payload }) => {
     return state.merge({ fetching: true, import_from_file_data: null })

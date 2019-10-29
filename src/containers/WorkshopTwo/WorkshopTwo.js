@@ -8,7 +8,6 @@ import WS2UltrasoundTab from '../../components/WorkshopTwo/WS2UltrasoundTab'
 import WS2CreateTransferTab from '../../components/WorkshopTwo/WS2CreateTransferTab'
 
 // actions
-import Ws2Actions from '../../redux/redux-sauce/ws2';
 import SowsActions from '../../redux/redux-sauce/sows';
 import ToursActions from '../../redux/redux-sauce/tours';
 
@@ -91,30 +90,28 @@ class WorkshopTwoContainer extends Component {
 
         { this.state.tabs.transferTab &&
           <WS2TransferTab 
-          getSows={this.props.getCullingSows}
-          sows={this.props.state.ws2.cullingList}
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sowsListFetching={this.props.state.sows.fetching}
 
-          getTours={this.props.getTours}
-          tours={this.props.state.tours.list}
+            getTours={this.props.getTours}
+            tours={this.props.state.tours.list}
 
-          massMove={this.props.sowsMoveMany}
-
-          eventFetching={this.props.state.sows.fetching}
-          sowsListFetching={this.props.state.ws2.fetching}
+            massMove={this.props.sowsMoveMany}
+            eventFetching={this.props.state.sows.eventFetching}
           />}
 
         { this.state.tabs.ultrasoundTab &&
           <WS2UltrasoundTab 
-            getSows={this.props.getUltrasoundV2Sows}
-            sows={this.props.state.ws2.ultrasoundV2List}
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sowsListFetching={this.props.state.sows.fetching}
 
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
 
             massUltrasound={this.props.massUltrasound}
-
-            eventFetching={this.props.state.sows.fetching}
-            sowsListFetching={this.props.state.ws2.fetching}
+            eventFetching={this.props.state.sows.eventFetching}
           />}
 
         { this.state.tabs.cullingTab &&
@@ -148,22 +145,14 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  // login: (payload) => dispatch(AuthActions.loginRequest(payload)),
   getTours: query => dispatch(ToursActions.getToursRequest(query)),
   
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
-  cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
-  
+  cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),  
   massUltrasound: data => dispatch(SowsActions.massUltrasoundRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
   massInitTransfer: data => dispatch(SowsActions.massInitTransferRequest(data)),
-
-  getUltrasoundV2Sows: query => dispatch(Ws2Actions.getUltrasoundV2SowsWs2Request(query)),
-  getUltrasoundV2Sow: id => dispatch(Ws2Actions.getUltrasoundV2SowWs2Request(id)),
-  ultrasoundV2Sow: data => dispatch(Ws2Actions.ultrasoundV2SowWs2Request(data)),
-  getSowsByTours: data => dispatch(Ws2Actions.getSowsByToursWs2Request(data)),
-
   sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),  
 })
 

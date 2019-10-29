@@ -15,7 +15,6 @@ import WS1ImportSeminationTab from '../../components/WorkshopOne/WS1ImportSemina
 // actions
 import SowsActions from '../../redux/redux-sauce/sows';
 import ToursActions from '../../redux/redux-sauce/tours';
-import AuthActions from '../../redux/redux-sauce/auth';
 import Ws1Actions from '../../redux/redux-sauce/ws1';
 
 
@@ -38,9 +37,6 @@ class WorkshopOneContainer extends Component {
     }
 	}
 
-  componentDidMount() {
-  }
-
   setTab = (tab) => {
     let { tabs } = this.state
     Object.keys(tabs).forEach((key) => {
@@ -60,15 +56,11 @@ class WorkshopOneContainer extends Component {
     console.log(state)
   }
 
-  login = () => {
-    this.props.login({username: 'test_seminator', password: 'qwerty123'})
-  }
-
   render() {
     return (
       <div className="workshop container">
         <div className='workshop-header'>
-          Цех №1 <button onClick={this.showStateConsole}>O</button>>
+          Цех №1
         </div>
         <div className='row workshop-menu'>
             <div className={this.state.tabs.createTab ? 'workshop-tab tab-active col-sm' 
@@ -297,7 +289,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getBoars: query => dispatch(SowsActions.getBoarsRequest(query)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
-  
+
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
   sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),
@@ -309,7 +301,6 @@ const mapDispatchToProps = (dispatch) => ({
 
   getSeminators: query => dispatch(Ws1Actions.getSeminatorsRequest(query)),
   uploadFile: data => dispatch(Ws1Actions.importSeminationsFromFarmRequest(data)),
-
 })
 
 export default connect(
