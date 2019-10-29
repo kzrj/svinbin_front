@@ -77,9 +77,8 @@ export const INITIAL_STATE = Immutable({
     fetching: false,
     list: [],
 
-    eventFetching: false,
-
     sow: null,
+    tours_info: [],
     sowSingleFetching: false,
 
     seminationSow: null,
@@ -89,6 +88,8 @@ export const INITIAL_STATE = Immutable({
     createdSow: null,
     createdNonameSow: null,
     nonameSowsCount: null,
+    eventFetching: false,
+
     boars: [],
     initData: null,
 
@@ -137,11 +138,12 @@ export const getSowRequest = (state, { payload }) => {
 }
 
 export const getSowSuccess = (state, { payload }) => {
-    return state.merge({ sowSingleFetching: false, error: null, sow: payload.sow })
+    return state.merge({ sowSingleFetching: false, error: null, sow: payload.sow,
+         tours_info: payload.tours_info})
 }
 
 export const getSowFail = (state, { error }) => {
-    return state.merge({ sowSingleFetching: false, error, sow: null })
+    return state.merge({ sowSingleFetching: false, error, sow: null, tours_info: [] })
 }
 
 // Semination

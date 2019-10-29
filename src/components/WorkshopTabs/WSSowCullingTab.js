@@ -5,13 +5,13 @@ import SowToursData from '../../components/WorkshopOne/SowComponents'
 import { SowFindById, SowLightDetail } from '../WorkshopThree/Components'
 
 
-class WS1CullingTab extends Component {
+class WSSowCullingTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
       cullingReason: 'padej',
       cullingType: 'padej',
-      query: { by_workshop_number: 1, farm_id_isnull: false },
+      // query: { by_workshop_number: 1, farm_id_isnull: false },
     }
     this.getSowsById = this.getSowsById.bind(this);
     this.setData = this.setData.bind(this);
@@ -51,7 +51,10 @@ class WS1CullingTab extends Component {
     }
     
     this.props.cullingSow(data)
-    this.props.getSows(this.state.query)
+    this.props.getSows({
+      by_workshop_number: this.props.workshopNumber,
+      farm_id_isnull: false
+    })
   }
 
   abortionSow() {
@@ -60,7 +63,10 @@ class WS1CullingTab extends Component {
     }
     
     this.props.abortionSow(data)
-    this.props.getSows(this.state.query)
+    this.props.getSows({
+      by_workshop_number: this.props.workshopNumber,
+      farm_id_isnull: false
+    })
   }
 
   render() {
@@ -112,4 +118,4 @@ class WS1CullingTab extends Component {
   }
 }
 
-export default WS1CullingTab
+export default WSSowCullingTab

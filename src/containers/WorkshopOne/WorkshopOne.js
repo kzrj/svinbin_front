@@ -9,7 +9,7 @@ import WS1CreateTab from '../../components/WorkshopOne/WS1CreateTab'
 import WS1Ultrasound30Tab from '../../components/WorkshopOne/WS1Ultrasound30Tab'
 import WS1Ultrasound60Tab from '../../components/WorkshopOne/WS1Ultrasound60Tab'
 import WS1TransferToWS2Tab from '../../components/WorkshopOne/WS1TransferToWS2Tab'
-import WS1CullingTab from '../../components/WorkshopOne/WS1CullingTab'
+import WSSowCullingTab from '../../components/WorkshopTabs/WSSowCullingTab'
 import WS1ImportSeminationTab from '../../components/WorkshopOne/WS1ImportSeminationTab'
 
 // actions
@@ -39,13 +39,6 @@ class WorkshopOneContainer extends Component {
 	}
 
   componentDidMount() {
-    // $('body').addClass('loaded');
-    // this.props.startup();
-
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   this.props.checkToken(token);
-    // }
   }
 
   setTab = (tab) => {
@@ -276,13 +269,15 @@ class WorkshopOneContainer extends Component {
           />}
 
         { this.state.tabs.cullingTab &&
-          <WS1CullingTab 
-            getSows={this.props.getCullingSows}
-            sows={this.props.state.ws1.cullingList}
+          <WSSowCullingTab 
+            workshopNumber={1}
 
-            getSow={this.props.getCullingSow}
-            sow={this.props.state.ws1.cullingSow}
-            tours_info={this.props.state.ws1.tours_info}
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+
+            getSow={this.props.getSow}
+            sow={this.props.state.sows.sow}
+            tours_info={this.props.state.sows.tours_info}
 
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}

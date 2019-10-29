@@ -6,7 +6,7 @@ import WS3SowIncomeTab from '../../components/WorkshopThree/WS3SowIncomeTab'
 import WS3SowInnerTransferTab from '../../components/WorkshopThree/WS3SowInnerTransferTab'
 import WS3SowFarrowTab from '../../components/WorkshopThree/WS3SowFarrowTab'
 import WS3SowWeaningTab from '../../components/WorkshopThree/WS3SowWeaningTab'
-import WS3SowCullingTab from '../../components/WorkshopThree/WS3SowCullingTab'
+import WSSowCullingTab from '../../components/WorkshopTabs/WSSowCullingTab'
 
 import WS3PigletsWeaningTab from '../../components/WorkshopThree/WS3PigletsWeaningTab'
 import WS3CreateGiltTab from '../../components/WorkshopThree/WS3CreateGiltTab'
@@ -207,11 +207,19 @@ class WorkshopThreeContainer extends Component {
           />}
 
         { this.state.tabs.sowCullingTab && 
-          <WS3SowCullingTab 
+          <WSSowCullingTab 
+            workshopNumber={3}
+
             getSows={this.props.getSows}
-            getSow={this.props.getSow}
             sows={this.props.state.sows.list}
+            listFetching={this.props.state.sows.fetching}
+
+            getSow={this.props.getSow}
             sow={this.props.state.sows.sow}
+            tours_info={this.props.state.sows.tours_info}
+            singleFetching={this.props.state.sows.sowSingleFetching}
+
+            eventFetching={this.props.state.sows.eventFetching}
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}
           />}

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 // components
 import WS2TransferTab from '../../components/WorkshopTwo/WS2TransferTab'
-import WS2CullingTab from '../../components/WorkshopTwo/WS2CullingTab'
+import WSSowCullingTab from '../../components/WorkshopTabs/WSSowCullingTab'
 import WS2UltrasoundTab from '../../components/WorkshopTwo/WS2UltrasoundTab'
 import WS2CreateTransferTab from '../../components/WorkshopTwo/WS2CreateTransferTab'
 
@@ -128,13 +128,16 @@ class WorkshopTwoContainer extends Component {
           />}
 
         { this.state.tabs.cullingTab &&
-          <WS2CullingTab
-            getSows={this.props.getCullingSows}
-            getSow={this.props.getCullingSow} 
+          <WSSowCullingTab
+            workshopNumber={2}
 
-            sows={this.props.state.ws2.cullingList}
-            sow={this.props.state.ws2.cullingSow}
-            
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+
+            getSow={this.props.getSow}
+            sow={this.props.state.sows.sow}
+            tours_info={this.props.state.sows.tours_info}
+
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}
           />}
@@ -159,9 +162,9 @@ const mapDispatchToProps = (dispatch) => ({
   getTours: query => dispatch(ToursActions.getToursRequest(query)),
   
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
-  getCullingSows: query => dispatch(Ws2Actions.getCullingSowsWs2Request(query)),
-  getCullingSow: id => dispatch(Ws2Actions.getCullingSowWs2Request(id)),
-  cullingSow: data => dispatch(Ws2Actions.cullingSowWs2Request(data)),
+  getSow: id => dispatch(SowsActions.getSowRequest(id)),
+  cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
+  
   massUltrasound: data => dispatch(SowsActions.massUltrasoundRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
   massInitTransfer: data => dispatch(SowsActions.massInitTransferRequest(data)),

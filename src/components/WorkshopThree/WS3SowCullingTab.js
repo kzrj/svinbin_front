@@ -75,9 +75,9 @@ class WS3CullingTab extends Component {
                placeholder="Поиск по ID"/>
              </div>
                <ul className='list-unstyled'>
-                 {sows.length > 0 && sow && sow.sow &&
+                 {sows.length > 0 && sow &&
                      sows.map(sowInList => 
-                       <li className={sowInList.id == sow.sow.id ? 'sow-active sow-li text-center' :
+                       <li className={sowInList.id == sow.id ? 'sow-active sow-li text-center' :
                          'sow-li text-center'} 
                          key={sowInList.id} 
                          onClick={() => this.props.getSow(sowInList.id)}>
@@ -90,13 +90,13 @@ class WS3CullingTab extends Component {
 
          <div className='col-9'>
            <div className='workshop-content-column-2'>
-             {sow && sow.sow &&
+             {sow && sow &&
                <div>
                  <ul>
-                   <li>{sow.sow.id}</li>
-                   <li>{sow.sow.location}</li>
-                   <li>{sow.sow.status}</li>
-                   <li>{sow.sow.farm_id}</li>
+                   <li>{sow.id}</li>
+                   <li>{sow.location}</li>
+                   <li>{sow.status}</li>
+                   <li>{sow.farm_id}</li>
                  </ul>
                  <SowToursData sow={sow} />
                  <div className="input-group">
