@@ -68,7 +68,7 @@ class WorkshopOneContainer extends Component {
     return (
       <div className="workshop container">
         <div className='workshop-header'>
-          Цех №1
+          Цех №1 <button onClick={this.showStateConsole}>O</button>>
         </div>
         <div className='row workshop-menu'>
             <div className={this.state.tabs.createTab ? 'workshop-tab tab-active col-sm' 
@@ -141,19 +141,18 @@ class WorkshopOneContainer extends Component {
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
 
-            sow={this.props.state.ws1.createdSow}
+            createNewSow={this.props.createNewSow}
+            sow={this.props.state.sows.createdSow}
 
             nonameSow={this.props.state.sows.createdNonameSow}
             nonameSowsCount={this.props.state.sows.nonameSowsCount}
-
-            createNewSow={this.props.createNewSow}
             createNewNonameSow={this.props.createNewNonameSow}
 
-            message={this.props.state.ws1.message}
-            error={this.props.state.ws1.error}
+            message={this.props.state.sows.message}
+            error={this.props.state.sows.error}
           />}
 
-        { this.state.tabs.seminationTab && 
+        {/* { this.state.tabs.seminationTab && 
           <WS1SeminationTab 
             getSows={this.props.getSeminationSows}
             sows={this.props.state.ws1.seminationList}
@@ -215,57 +214,56 @@ class WorkshopOneContainer extends Component {
 
             eventFetching={this.props.state.sows.fetching}
             sowsListFetching={this.props.state.ws1.fetching}
-          />}
+          />} */}
 
         { this.state.tabs.importSeminationTab && 
           <WS1ImportSeminationTab 
             eventFetching={this.props.state.ws1.fetching}
             uploadFile={this.props.uploadFile}
+
             message={this.props.state.ws1.message}
             error={this.props.state.ws1.error}
+
             responseData={this.props.state.ws1.import_from_file_data}
           />}
 
         { this.state.tabs.ultrasound30Tab &&
           <WS1Ultrasound30Tab 
-            getSows={this.props.getUltrasoundSows}
-            sows={this.props.state.ws1.ultrasoundList}
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sowsListFetching={this.props.state.sows.fetching}
 
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
 
             massUltrasound={this.props.massUltrasound}
-
-            eventFetching={this.props.state.sows.fetching}
-            sowsListFetching={this.props.state.ws1.fetching}
+            eventFetching={this.props.state.sows.eventFetching}
           />}
 
         { this.state.tabs.ultrasound60Tab &&
           <WS1Ultrasound60Tab 
-            getSows={this.props.getUltrasoundSows}
-            sows={this.props.state.ws1.ultrasoundList}
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sowsListFetching={this.props.state.sows.fetching}
 
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
 
             massUltrasound={this.props.massUltrasound}
-
-            eventFetching={this.props.state.sows.fetching}
-            sowsListFetching={this.props.state.ws1.fetching}
+            eventFetching={this.props.state.sows.eventFetching}
           />}
 
         { this.state.tabs.transferToWS2Tab &&
           <WS1TransferToWS2Tab 
-            getSows={this.props.getUltrasoundSows}
-            sows={this.props.state.ws1.ultrasoundList}
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sowsListFetching={this.props.state.sows.fetching}
 
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
 
             massMove={this.props.sowsMoveMany}
-
-            eventFetching={this.props.state.sows.fetching}
-            sowsListFetching={this.props.state.ws1.fetching}
+            eventFetching={this.props.state.sows.eventFetching}
           />}
 
         { this.state.tabs.cullingTab &&
@@ -294,37 +292,24 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  login: (payload) => dispatch(AuthActions.loginRequest(payload)),
-
   getTours: query => dispatch(ToursActions.getToursRequest(query)),
 
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getBoars: query => dispatch(SowsActions.getBoarsRequest(query)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
+  
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
-  sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),  
+  sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),
+  createNewSow: data => dispatch(SowsActions.createNewSowRequest(data)),
   createNewNonameSow: data => dispatch(SowsActions.createNewNonameSowRequest(data)),
   massSemination: data => dispatch(SowsActions.massSeminationRequest(data)),
   massUltrasound: data => dispatch(SowsActions.massUltrasoundRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
 
-  getSeminationSows: query => dispatch(Ws1Actions.getSeminationSowsRequest(query)),
-  getSeminationSow: id => dispatch(Ws1Actions.getSeminationSowRequest(id)),
-  getUltrasoundSows: query => dispatch(Ws1Actions.getUltrasoundSowsRequest(query)),
-  getUltrasoundSow: id => dispatch(Ws1Actions.getUltrasoundSowRequest(id)),
-  getUltrasoundV2Sows: query => dispatch(Ws1Actions.getUltrasoundV2SowsWs1Request(query)),
-  getCullingSows: query => dispatch(Ws1Actions.getCullingSowsWs1Request(query)),
-  getCullingSow: id => dispatch(Ws1Actions.getCullingSowWs1Request(id)),
-  seminationSow: data => dispatch(Ws1Actions.seminationSowWs1Request(data)),
-  ultrasoundSow: data => dispatch(Ws1Actions.ultrasoundSowWs1Request(data)),
-  ultrasoundV2Sow: data => dispatch(Ws1Actions.ultrasoundV2SowWs1Request(data)),
-  cullingSow: data => dispatch(Ws1Actions.cullingSowWs1Request(data)),
-  getSowsByTours: data => dispatch(Ws1Actions.getSowsByToursRequest(data)),
   getSeminators: query => dispatch(Ws1Actions.getSeminatorsRequest(query)),
-  createNewSow: data => dispatch(Ws1Actions.createNewSowWs1Request(data)),
   uploadFile: data => dispatch(Ws1Actions.importSeminationsFromFarmRequest(data)),
-  // setSeminationSow: sow => dispatch(Ws1Actions.setSeminationSow(sow)),
+
 })
 
 export default connect(

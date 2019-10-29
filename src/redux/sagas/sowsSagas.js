@@ -77,7 +77,7 @@ export function* sowFarrow(api, action) {
 export function* createNewSow(api, action) {
     try {
         let response = yield call(api.createNewSow, action.payload);
-        yield put(SowsActions.createNewSowSuccess(response.sow));
+        yield put(SowsActions.createNewSowSuccess(response));
     } catch (err) {
         yield put(SowsActions.createNewSowFail(err))
     }

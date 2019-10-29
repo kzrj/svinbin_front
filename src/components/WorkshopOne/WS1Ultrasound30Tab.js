@@ -34,13 +34,6 @@ class WS1Ultrasound30Tab extends Component {
     this.props.getTours()
   }
 
-  showState = () => {
-    console.log(this.state)
-    // <button onClick={this.showState}>
-    //   State
-    // </button>
-  }
-
   setQuery (e) {
     let { query } = this.state
     query[e.target.name] = e.target.value
@@ -54,7 +47,6 @@ class WS1Ultrasound30Tab extends Component {
       choosedSows: [],
       needToRefresh: true
     })
-    // this.props.getSows(query)
   }
   
   sowClick (e) {

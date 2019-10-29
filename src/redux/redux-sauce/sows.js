@@ -226,15 +226,16 @@ export const sowFarrowFail = (state, { error }) => {
 
 // Get create new
 export const createNewSowRequest = (state, { payload }) => {
-    return state.merge({ eventFetching: true, createdSow: [] })
+    return state.merge({ eventFetching: true, createdSow: null, error: null })
 }
 
 export const createNewSowSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, createdSow: payload })
+    return state.merge({ eventFetching: false, error: null, createdSow: payload.sow,
+        message: payload.message })
 }
 
 export const createNewSowFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, error, createdSow: [] })
+    return state.merge({ eventFetching: false, error, createdSow: null })
 }
 
 // Get create new noname
