@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 //components
-import { SowFindById, SowCells, Sections } from '../WorkshopThree/Components'
+import { SowCells, Sections } from '../Locations'
+import { SowFindById } from '../FiltersAndInputs'
 
 
 class WS3SowIncomeTab extends Component {

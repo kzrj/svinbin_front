@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import { toggleArray } from '../../components/utils'
 // components
-import { SowTable }  from '../../components/WorkshopOne/SowComponents'
-import { SowFarmIdFilter, SowTourFilter, SowUsound30Filter }  from '../../components/WorkshopOne/SowComponents'
+import { SowTable }  from '../../components/SowRepresentations'
+import { SowFarmIdFilter, SowTourFilter }  from '../../components/FiltersAndInputs'
 
 
 class WSSowUltrasoundTab extends Component {

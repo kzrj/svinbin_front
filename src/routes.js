@@ -14,7 +14,7 @@ import WorkshopThree from './containers/WorkshopThree'
 // import WorkshopSevenFive from './containers/WorkshopSevenFive/WorkshopSevenFive'
 
 // components
-import MainPage from './components/MainPage/MainPage'
+import MainPage from './components/MainPage'
 
 // Pages
 

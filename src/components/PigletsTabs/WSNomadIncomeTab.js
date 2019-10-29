@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 //components
-import { NomadGroupDetail, WeighingPigletsInput, WeighingDetail } from '../WSComponents'
+import { NomadGroupDetail, WeighingDetail } from '../PigletsRepresentations'
+import { WeighingPigletsInput } from '../FiltersAndInputs'
 
 class WSNomadIncomeTab extends Component {
    constructor(props) {

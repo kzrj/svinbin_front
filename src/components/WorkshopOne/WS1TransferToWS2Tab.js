@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 
 import { toggleArray } from '../../components/utils'
 // components
-import { SowTable }  from '../../components/WorkshopOne/SowComponents'
-import { SowFarmIdFilter, SowTourFilter, SowSemUsoundFilter }  from '../../components/WorkshopOne/SowComponents'
+import { SowTable }  from '../../components/SowRepresentations'
+import { SowFarmIdFilter, SowTourFilter, SowSemUsoundFilter }  from '../../components/FiltersAndInputs'
 
 
 class WS1TransferToWS2Tab extends Component {

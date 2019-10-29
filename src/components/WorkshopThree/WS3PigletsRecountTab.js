@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 //components
-import { PigletsCells, Sections } from '../WorkshopThree/Components'
-import { PigletsGroup } from '../WorkshopThree/PigletsComponents'
+import { PigletsCells, Sections } from '../Locations'
+import { PigletsGroup } from '../PigletsRepresentations'
 
 
 class WS3PigletsRecountTab extends Component {

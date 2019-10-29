@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { toggleArray, toggleArrayLocations, lodashToggle } from '../utils';
 
 //components
-import { PigletsCells, Sections } from '../WorkshopThree/Components'
+import { PigletsCells, Sections } from '../Locations'
 
 
 class WS3PigletsWeaningTab extends Component {

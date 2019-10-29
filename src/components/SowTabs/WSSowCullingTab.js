@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 // components
-import SowToursData from '../../components/WorkshopOne/SowComponents'
-import { SowFindById, SowLightDetail } from '../WorkshopThree/Components'
+import { SowFindById } from '../FiltersAndInputs'
+import { SowLightDetail, SowToursData } from '../SowRepresentations'
 
 
 class WSSowCullingTab extends Component {

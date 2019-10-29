@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
 
-import { toggleArray } from '../../components/utils'
-// components
-import { SowTable }  from '../../components/WorkshopOne/SowComponents'
-import { SowFarmIdFilter }  from '../../components/WorkshopOne/SowComponents'
-
-
 class WS1ImportSeminationTab extends Component {
    constructor(props) {
     super(props);
@@ -25,9 +19,6 @@ class WS1ImportSeminationTab extends Component {
 
   uploadFile () {
     this.props.uploadFile({file: this.state.file})
-    // this.setState({
-    //   file: null,
-    // })
   }
 
   render() {

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { toggleArray, toggleArrayLocations, lodashToggle } from '../utils';
 
 //components
-import { PigletsCells, Sections } from '../WorkshopThree/Components'
-import { NewBornGroupWeaningList } from '../WorkshopThree/PigletsComponents'
+import { PigletsCells, Sections } from '../Locations'
+import { NewBornGroupWeaningList } from '../PigletsRepresentations'
 
 
 class WS3PigletsWeaningTab extends Component {

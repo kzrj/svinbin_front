@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import { toggleArray } from '../../components/utils'
 // components
-import { SowTable }  from '../../components/WorkshopOne/SowComponents'
-import { SowFarmIdFilter }  from '../../components/WorkshopOne/SowComponents'
+import { SowTable }  from '../../components/SowRepresentations'
+import { SowFarmIdFilter }  from '../../components/FiltersAndInputs'
 
 
 class WS1SeminationTab extends Component {

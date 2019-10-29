@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 //components
-import { SowCells, Sections } from '../WorkshopThree/Components'
+import { SowCells, Sections } from '../Locations'
 
 class WS3SowFarrowTab extends Component {
    constructor(props) {

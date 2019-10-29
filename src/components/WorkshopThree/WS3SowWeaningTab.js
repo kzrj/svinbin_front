@@ -3,7 +3,7 @@ import { toggleArray, addItemToArray, removeItemFromArray,
   uniq} from '../utils';
 
 //components
-import { SowCells, Sections } from '../WorkshopThree/Components'
+import { SowCells, Sections } from '../Locations'
 
 
 class WS3SowWeaningTab extends Component {

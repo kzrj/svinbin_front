@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 //components
-import { PigletsCells, Sections } from '../WorkshopThree/Components'
-import { PigletsGroup } from '../WorkshopThree/PigletsComponents'
-import { CullingTypeInput, CullingReasonInput } from '../WSComponents'
+import { PigletsCells, Sections } from '../Locations'
+import { PigletsGroup } from '../PigletsRepresentations'
+import { CullingTypeInput, CullingReasonInput } from '../FiltersAndInputs'
 
 
 class WS3PigletsWeaningTab extends Component {

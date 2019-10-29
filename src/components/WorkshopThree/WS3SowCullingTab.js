@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 // components
-import SowToursData from '../../components/WorkshopOne/SowComponents'
+import { SowToursData } from '../../components/SowRepresentations'
 
 class WS3CullingTab extends Component {
   constructor(props) {

@@ -100,3 +100,34 @@ export class NewBornGroupWeaning extends Component {
     )
   }
  }
+
+export const NomadGroupDetail = (props) => (
+    <table className='table table-sm'>
+        <thead>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Количество</td><td>{props.piglets.quantity}</td>
+        </tr>
+        <tr>
+            <td>Количество ремонтных</td><td>{props.piglets.gilts_quantity}</td>
+        </tr>
+        <tr>
+            <td>Тур</td><td>{props.piglets.tour}</td>
+        </tr>
+        </tbody>
+    </table>
+)
+
+export const WeighingDetail = (props) => (
+    <table className='table table-sm'>
+        <tbody>
+        <tr>
+            <td>Средний вес</td><td>{props.weighingData.average_weight}</td>
+        </tr>
+        <tr>
+            <td>Общий вес</td><td>{props.weighingData.total_weight}</td>
+        </tr>
+        </tbody>
+    </table>
+)
