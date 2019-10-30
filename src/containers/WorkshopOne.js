@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
-import WS1SeminationTab from '../components/WorkshopOne/WS1SeminationTab'
-import WS1Semination2Tab from '../components/WorkshopOne/WS1Semination2Tab'
 import WS1Semination12Tab from '../components/WorkshopOne/WS1Semination12Tab'
 import WS1CreateTab from '../components/WorkshopOne/WS1CreateTab'
 import WS1TransferToWS2Tab from '../components/WorkshopOne/WS1TransferToWS2Tab'
@@ -22,8 +20,6 @@ class WorkshopOneContainer extends Component {
     super(props);
     this.state = {
       tabs: {
-        seminationTab: false,
-        semination2Tab: false,
         semination12Tab: false,
         importSeminationTab: false,
         createTab: false,

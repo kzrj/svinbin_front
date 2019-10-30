@@ -28,9 +28,9 @@ class WorkshopThreeContainer extends Component {
       tabs: {
         balanceTab: false,
         returnPigletsTab: false,
-        comingSowsTab: true,
+        comingSowsTab: false,
         transferTab: false,
-        farrowTab: false,
+        farrowTab: true,
         weaningSowsTab: false,
         recountTab: false,
         weaningPigletsTab: false,

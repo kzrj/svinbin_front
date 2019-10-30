@@ -17,13 +17,18 @@ class WS3SowFarrowTab extends Component {
       alive_piglets: 0,
       date: null,
     }
+    this.clickSection = this.clickSection.bind(this);
+    this.clickCellLocation = this.clickCellLocation.bind(this);
+    this.decreasePiglets = this.decreasePiglets.bind(this);
+    this.increasePiglets = this.increasePiglets.bind(this);
+    this.clickFarrow = this.clickFarrow.bind(this);
   }
   
   componentDidMount() {
     this.props.getSections({workshop: 3})    
   }
 
-  clickSection = (e) => {
+  clickSection (e) {
     const { sectionId } = e.target.dataset
     this.setState({
       ...this.state,
@@ -33,7 +38,7 @@ class WS3SowFarrowTab extends Component {
     this.props.getLocations({by_section: sectionId})
   }
 
-  clickCellLocation = (location) => {
+  clickCellLocation (location) {
     this.setState({
       ...this.state,
       activeCellLocationId: location.id,
@@ -44,7 +49,7 @@ class WS3SowFarrowTab extends Component {
     })
   }
 
-  decreasePiglets = (e) => {
+  decreasePiglets (e) {
     const { label } = e.target.dataset
     this.setState({
       ...this.state,
@@ -53,7 +58,7 @@ class WS3SowFarrowTab extends Component {
     })
   }
 
-  increasePiglets = (e) => {
+  increasePiglets (e) {
     const { label } = e.target.dataset
     this.setState({
       ...this.state,
@@ -62,7 +67,7 @@ class WS3SowFarrowTab extends Component {
     })
   }
 
-  clickFarrow = () => {
+  clickFarrow () {
     this.props.sowFarrow({
       id: this.state.activeSow.id,
       dead_quantity: this.state.dead_piglets,
@@ -79,11 +84,10 @@ class WS3SowFarrowTab extends Component {
       alive_piglets: 0,
       date: null,
     })
-    this.props.getLocations({by_section: this.state.activeSectionId})
   }
 
   refreshLocations () {
-    if (this.props.eventFetching || this.state.needToRefresh) {
+    if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations({by_section: this.state.activeSectionId})
@@ -115,47 +119,78 @@ class WS3SowFarrowTab extends Component {
               {this.state.activeSow && 
                 <div>
                   <h3>Свиноматка {this.state.activeSow.farm_id}</h3>
-                  <ul>
-                    <li>{this.state.activeSow.farm_id}</li>
-                    <li>{this.state.activeSow.status}</li>
-                    <li>
-                        Текущее число живых поросят в клетке {this.state.current_total_piglets}
-                    </li>
-                  </ul>
-                  <ul>
-                    <li>
-                        Общее число поросят в опоросе {this.state.total_piglets}
-                    </li>
-                    <li>Дата начала опороса {this.state.date}</li>
-                    <li>
-                      Мертворожденные {this.state.dead_piglets}
-                      <button onClick={this.decreasePiglets} data-label='dead_piglets'>
-                        -
-                      </button>
-                      <button onClick={this.increasePiglets} data-label='dead_piglets'>
+                  <p>{this.state.activeSow.status}</p>
+                  <table className='table table-sm'>
+                    <tbody>
+                      <tr>
+                        <td>Живых поросят в клетке</td>
+                        <td>{this.state.current_total_piglets}</td>
+                      </tr>
+                      <tr>
+                        <td>Общее число поросят в опоросе</td>
+                        <td>{this.state.total_piglets}</td>
+                      </tr>
+                      {/* <tr>
+                        <td>Дата начала опороса</td>
+                        <td>{this.state.date}</td>
+                      </tr> */}
+                    </tbody>
+                  </table>
+                  <div className='farrow-button-block'>
+                    <p>Живые {this.state.alive_piglets}</p>
+                    <div className='row'>
+                      <div className='col-6 btn btn-dark btn-inc-dec'
+                        onClick={this.increasePiglets}
+                        data-label='alive_piglets'
+                      >
                         +
-                      </button>
-                    </li>
-                    <li>
-                      Муммии {this.state.mummy_piglets}
-                      <button onClick={this.decreasePiglets} data-label='mummy_piglets'>
+                      </div>
+                      <div className='col-6 btn btn-dark btn-inc-dec'
+                        onClick={this.decreasePiglets}
+                        data-label='alive_piglets'
+                      >
                         -
-                      </button>
-                      <button onClick={this.increasePiglets} data-label='mummy_piglets'>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className='farrow-button-block'>
+                    <p>Мертворожденные {this.state.dead_piglets}</p>
+                    <div className='row'>
+                      <div className='col-6 btn btn-dark btn-inc-dec'
+                        onClick={this.increasePiglets}
+                        data-label='dead_piglets'
+                      >
                         +
-                      </button>
-                    </li>
-                    <li>
-                      Живые {this.state.alive_piglets}
-                      <button onClick={this.decreasePiglets} data-label='alive_piglets'>
+                      </div>
+                      <div className='col-6 btn btn-dark btn-inc-dec'
+                        onClick={this.decreasePiglets}
+                        data-label='dead_piglets'
+                      >
                         -
-                      </button>
-                      <button onClick={this.increasePiglets} data-label='alive_piglets'>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className='farrow-button-block'>
+                    <p>Муммии {this.state.mummy_piglets}</p>
+                    <div className='row'>
+                      <div className='col-6 btn btn-dark btn-inc-dec'
+                        onClick={this.increasePiglets}
+                        data-label='mummy_piglets'
+                      >
                         +
-                      </button>
-                    </li>
-                  </ul>
-                  <button onClick={this.clickFarrow}>
+                      </div>
+                      <div className='col-6 btn btn-dark btn-inc-dec'
+                        onClick={this.decreasePiglets}
+                        data-label='mummy_piglets'
+                      >
+                        -
+                      </div>
+                    </div>
+                  </div>
+                  <button onClick={this.clickFarrow}
+                    className="btn btn-outline-secondary btn-lg" type="button" >
                     Записать данные
                   </button>
                 </div>

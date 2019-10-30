@@ -143,6 +143,15 @@
 	background: #313131 !important;
 }
 
+.btn-dark{
+	background: #313131 !important;
+}
+
+.btn-inc-dec{
+	font-weight: bold !important;
+	font-size: 25px !important;
+}
+
 .bottom-buttons-block{
 	margin-top: 10px;
 }
@@ -183,4 +192,10 @@
 
 .loading{
 	font-weight: bold !important;
+}
+
+.farrow-button-block{
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #525252;
 }
