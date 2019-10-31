@@ -17,6 +17,11 @@ class WS3SowIncomeTab extends Component {
       activeCellId: null,
       needToRefresh: false
     }
+    this.clickSection = this.clickSection.bind(this);
+    this.clickCell = this.clickCell.bind(this);
+    this.getSowsById = this.getSowsById.bind(this);
+    this.clickSetlle = this.clickSetlle.bind(this);
+    this.refreshData = this.refreshData.bind(this);
   }
   
   componentDidMount() {
@@ -24,7 +29,7 @@ class WS3SowIncomeTab extends Component {
     this.props.getSections({workshop: 3})
   }
 
-  getSowsById = (e) => {
+  getSowsById (e) {
     let { query } = this.state
     query.farm_id_starts = e.target.value
     this.setState({
@@ -34,14 +39,14 @@ class WS3SowIncomeTab extends Component {
     this.props.getSows(query)
   }
 
-  clickCell = (location) => {
+  clickCell (location) {
     this.setState({
       ...this.state,
       activeCellId: location.id,
     })
   }
 
-  clickSection = (e) => {
+  clickSection (e) {
     const { sectionId } = e.target.dataset
     this.setState({
       ...this.state,
@@ -50,7 +55,7 @@ class WS3SowIncomeTab extends Component {
     this.props.getLocations({by_section: sectionId})
   }
 
-  clickSetlle = () => {
+  clickSetlle () {
     const { activeCellId } = this.state
     this.props.sowMoveTo({id: this.props.sow.id, location: activeCellId})
     this.setState({
@@ -61,7 +66,7 @@ class WS3SowIncomeTab extends Component {
   }
 
   refreshData () {
-    if (this.props.eventFetching && this.state.needToRefresh) {
+    if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)

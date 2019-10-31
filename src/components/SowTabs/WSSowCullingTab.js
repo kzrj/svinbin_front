@@ -9,6 +9,10 @@ class WSSowCullingTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
+      query: {
+        all_in_workshop_number: null,
+        farm_id_isnull: false
+      },
       cullingReason: 'padej',
       cullingType: 'padej',
       needToRefresh: false,
@@ -21,8 +25,15 @@ class WSSowCullingTab extends Component {
   
   componentDidMount() {
     this.props.getSows({
-      by_workshop_number: this.props.workshopNumber,
+      all_in_workshop_number: this.props.workshopNumber,
       farm_id_isnull: false
+    })
+    this.setState({
+      ...this.state,
+      query: {
+        ...this.state.query,
+        all_in_workshop_number: this.props.workshopNumber
+      }
     })
   }
 

@@ -15,12 +15,12 @@
 }
 
 .cell{
-	border: 1px solid #525252;
+	border: 1px solid white;
 	/*max-width: 65px !important;*/
 }
 
 .cell-full{
-	border: 1px solid #525252;
+	border: 1px solid white;
 	background-color: #525252 !important;
 	/*max-width: 65px !important;*/
 }

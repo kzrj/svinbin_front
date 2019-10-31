@@ -17,7 +17,7 @@ import { SowsTypes } from '../redux-sauce/sows';
 import { NomadPigletsTypes } from '../redux-sauce/nomadPiglets';
 import { NewbornPigletsTypes } from '../redux-sauce/newbornPiglets';
 
-import { Ws1Types } from '../redux-sauce/ws1';
+import { WsDataTypes } from '../redux-sauce/wsData';
 import { Ws4Types } from '../redux-sauce/ws4';
 import { Ws8Types } from '../redux-sauce/ws8';
 import { Ws5Types } from '../redux-sauce/ws5';
@@ -32,7 +32,7 @@ import { getTours } from './toursSagas';
 import * as sowsSaga from './sowsSagas';
 import * as nomadPigletsSaga from './nomadPigletsSagas';
 import * as newbornPigletsSaga from './newbornPigletsSagas';
-import * as ws1Saga from './ws1Sagas';
+import * as wsDataSaga from './wsDataSagas';
 import * as ws4Saga from './ws4Sagas';
 import * as ws8Saga from './ws8Sagas';
 import * as ws5Saga from './ws5Sagas';
@@ -97,8 +97,11 @@ export default function* root() {
     takeEvery(NewbornPigletsTypes.CULLING_GILT_NEWBORN_PIGLETS_REQUEST, newbornPigletsSaga.cullingGiltNewbornPiglets, newbornPigletsApi),
     takeEvery(NewbornPigletsTypes.RECOUNT_NEWBORN_PIGLETS_REQUEST, newbornPigletsSaga.recountNewbornPiglets, newbornPigletsApi),
 
-    takeEvery(Ws1Types.GET_SEMINATORS_REQUEST, ws1Saga.getSeminators, usersApi),
-    takeEvery(Ws1Types.IMPORT_SEMINATIONS_FROM_FARM_REQUEST, ws1Saga.importSeminationsFromFarm, sowsApi),
+    // takeEvery(Ws1Types.GET_SEMINATORS_REQUEST, ws1Saga.getSeminators, usersApi),
+    // takeEvery(Ws1Types.IMPORT_SEMINATIONS_FROM_FARM_REQUEST, ws1Saga.importSeminationsFromFarm, sowsApi),
+
+    takeEvery(WsDataTypes.GET_SEMINATORS_REQUEST, wsDataSaga.getSeminators, usersApi),
+    takeEvery(WsDataTypes.IMPORT_SEMINATIONS_FROM_FARM_REQUEST, wsDataSaga.importSeminationsFromFarm, sowsApi),
 
     takeEvery(Ws4Types.GET_NOMAD_PIGLETS_WS4_REQUEST, ws4Saga.getNomadPigletsWs4, nomadPigletsApi),
     // takeEvery(Ws4Types.GET_SECTIONS_WS4_REQUEST, ws4Saga.getSectionsWs4, locationsApi),

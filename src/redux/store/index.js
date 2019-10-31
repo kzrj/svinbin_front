@@ -15,7 +15,7 @@ export const reducers = combineReducers({
   sows: require('../redux-sauce/sows').reducer,
   nomadPiglets: require('../redux-sauce/nomadPiglets').reducer,
   newbornPiglets: require('../redux-sauce/newbornPiglets').reducer,
-  ws1: require('../redux-sauce/ws1').reducer,
+  wsData: require('../redux-sauce/wsData').reducer,
   ws4: require('../redux-sauce/ws4').reducer,
   ws8: require('../redux-sauce/ws8').reducer,
   ws5: require('../redux-sauce/ws5').reducer,

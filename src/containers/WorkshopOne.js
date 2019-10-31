@@ -12,7 +12,7 @@ import WS1ImportSeminationTab from '../components/WorkshopOne/WS1ImportSeminatio
 // actions
 import SowsActions from '../redux/redux-sauce/sows';
 import ToursActions from '../redux/redux-sauce/tours';
-import Ws1Actions from '../redux/redux-sauce/ws1';
+import WsDataActions from '../redux/redux-sauce/wsData';
 
 
 class WorkshopOneContainer extends Component {
@@ -206,13 +206,13 @@ class WorkshopOneContainer extends Component {
 
         { this.state.tabs.importSeminationTab && 
           <WS1ImportSeminationTab 
-            eventFetching={this.props.state.ws1.fetching}
+            eventFetching={this.props.state.wsData.fetching}
             uploadFile={this.props.uploadFile}
 
-            message={this.props.state.ws1.message}
-            error={this.props.state.ws1.error}
+            message={this.props.state.wsData.message}
+            error={this.props.state.wsData.error}
 
-            responseData={this.props.state.ws1.import_from_file_data}
+            responseData={this.props.state.wsData.import_from_file_data}
           />}
 
         { this.state.tabs.ultrasound30Tab &&
@@ -238,7 +238,7 @@ class WorkshopOneContainer extends Component {
             workshopNumber={1}
             days={35}
             daysValue={60}
-            statusTitleFilter={'Супорос 30'}
+            statusTitleFilter={'Супорос 28'}
 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
@@ -308,8 +308,8 @@ const mapDispatchToProps = (dispatch) => ({
   massUltrasound: data => dispatch(SowsActions.massUltrasoundRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
 
-  getSeminators: query => dispatch(Ws1Actions.getSeminatorsRequest(query)),
-  uploadFile: data => dispatch(Ws1Actions.importSeminationsFromFarmRequest(data)),
+  getSeminators: query => dispatch(WsDataActions.getSeminatorsRequest(query)),
+  uploadFile: data => dispatch(WsDataActions.importSeminationsFromFarmRequest(data)),
 })
 
 export default connect(

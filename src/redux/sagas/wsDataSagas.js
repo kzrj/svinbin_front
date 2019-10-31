@@ -1,21 +1,21 @@
 import { put, call } from 'redux-saga/effects';
 
-import WS1Actions from '../redux-sauce/ws1'
+import WSDataActions from '../redux-sauce/wsData'
 
 export function* getSeminators(api, action) {
     try {
         let response = yield call(api.getUsers, action.payload);
-        yield put(WS1Actions.getSeminatorsSuccess(response.results));
+        yield put(WSDataActions.getSeminatorsSuccess(response.results));
     } catch (err) {
-        yield put(WS1Actions.getSeminatorsFail(err))
+        yield put(WSDataActions.getSeminatorsFail(err))
     }
 }
 
 export function* importSeminationsFromFarm(api, action) {
     try {
         let response = yield call(api.importSeminationsFromFarm, action.payload);
-        yield put(WS1Actions.importSeminationsFromFarmSuccess(response));
+        yield put(WSDataActions.importSeminationsFromFarmSuccess(response));
     } catch (err) {
-        yield put(WS1Actions.importSeminationsFromFarmFail(err))
+        yield put(WSDataActions.importSeminationsFromFarmFail(err))
     }
 }

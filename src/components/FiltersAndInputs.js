@@ -141,7 +141,7 @@ render() {
         <select className="custom-select" id="inputGroupSelect01"
         onChange={this.props.setQuery} name='status_title'>
         {/* <option selected value='Осеменена 2'>Осеменена 2</option> */}
-        <option selected value='Супорос 30'>Супорос 28</option>
+        <option selected value='Супорос 28'>Супорос 28</option>
         </select>
     </div>
     )
@@ -158,8 +158,8 @@ render() {
         <option value='farm_id_isnull=true'>Ремонтные</option>
         <option value='status_title=Осеменена 1'>Осеменена 1</option>
         <option value='status_title=Осеменена 2'>Осеменена 2</option>
-        <option value='status_title=Супорос 30'>Супорос 28</option>
-        <option selected value='status_title=Супорос 60'>Супорос 35</option>
+        <option value='status_title=Супорос 28'>Супорос 28</option>
+        <option selected value='status_title=Супорос 35'>Супорос 35</option>
         </select>
     </div>
     )

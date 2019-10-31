@@ -12,7 +12,7 @@ const { Types, Creators } = createActions({
     importSeminationsFromFarmSuccess: ['payload'],
 })
 
-export const Ws1Types = Types
+export const WsDataTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
@@ -27,7 +27,7 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Selectors ------------- */
 
-export const Ws1Selectors = {
+export const WsDataSelectors = {
     getSeminators: state => state.ws1.seminators,
 }
 

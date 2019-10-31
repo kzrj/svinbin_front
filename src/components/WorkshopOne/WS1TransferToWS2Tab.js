@@ -14,7 +14,7 @@ class WS1TransferToWS2Tab extends Component {
       query: {
         by_workshop_number: 1,
         tour: null,
-        status_title: "Супорос 60",
+        status_title: "Супорос 35",
         to_seminate: null,
         farm_id_isnull: false
       },
