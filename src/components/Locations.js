@@ -26,18 +26,22 @@ export class Sections extends Component {
 export class SowCells extends Component {
 
   render() {
-    let { locations, activeCellIds, fetching } = this.props
-
+    let { locations, activeCellIds, fetching, isSection } = this.props
+    console.log('isSection', isSection)
     return (
       <div className='row'>
-        {fetching ? <p className='loading'>Загрузка</p> :
+        {isSection ? 
+          fetching ? <p className='loading'>Загрузка</p> :
           locations.map(location =>
               <SowCell 
                 location={location}
                 activeCellIds={activeCellIds}
                 clickLocation={this.props.clickLocation}/>
-          )}
-        {locations.length < 1 && !fetching && 'Выберите секцию'}
+          )
+          :
+          <p className='choose-section'>Выберите секцию</p>
+        }
+        {/* {locations.length < 1 && !fetching && <p className='choose-section'>Выберите секцию</p>} */}
       </div>
     )
   }
@@ -50,18 +54,37 @@ export class SowCells extends Component {
     const sow = location.sow_set.length > 0 ? location.sow_set[0] : null
     const more_than_one_sow = location.sow_set.length > 1 ? true : false
 
+    const piglets = location.newbornpigletsgroup_set.length > 0 ?
+      location.newbornpigletsgroup_set[0] : 
+      location.nomadpigletsgroup_set.length > 0 ?
+        location.nomadpigletsgroup_set[0] :
+        null
+
     const cellClassName = activeCellIds.includes(location.id) ? 
-      'col-sm cell cell-active' : 
-        location.is_sow_empty ? 'col-sm cell' : 'col-sm cell-full' 
+      'col-sm-2 cell cell-active' : 
+        location.is_sow_empty ? 'col-sm-2 cell' : 'col-sm-2 cell-full'
+    
+    const tour = sow ? sow.tour.replace(' 2019г','') : ''
+    const section = location.sowAndPigletsCell ? location.sowAndPigletsCell.section : ''
     return (
       <div 
         className={cellClassName}
         onClick={() => this.props.clickLocation(location)}
         key={location.id}>
-          #{location.sowAndPigletsCell && location.sowAndPigletsCell.number}
+          {location.sowAndPigletsCell && 
+            <span className='cell-setion-number'>#{section}-{location.sowAndPigletsCell.number}</span>}
           <br/>
-          {sow && sow.farm_id}
+          {sow && [
+              <span className='cell-sow-farmId'>{sow.farm_id}</span>,
+              <br/>,
+              <span className='cell-sow-status'>{sow.status}</span>,
+              <br/>,
+              <span className='cell-tour'>{tour}</span>
+            ]}
           {more_than_one_sow && 'Ошибка! Больше одной свиньи в клетке!'}
+          <br/>
+          {piglets && 
+            <span className='cell-piglets-count'>Поросят {piglets.quantity}</span>}
       </div>
   )}
  }
@@ -92,15 +115,29 @@ export class SowCells extends Component {
     const { location, activeCellIds } = this.props
     const cellClassName = activeCellIds.includes(location.id) ? 
       'col-sm cell cell-active' : 
-        location.is_piglets_empty ? 'col-sm cell' : 'col-sm cell-full' 
+        location.is_piglets_empty ? 'col-sm cell' : 'col-sm cell-full'
+    const piglets = location.newbornpigletsgroup_set.length > 0 ?
+      location.newbornpigletsgroup_set[0] : 
+      location.nomadpigletsgroup_set.length > 0 ?
+        location.nomadpigletsgroup_set[0] :
+        null
+    const tour = piglets ? piglets.tour.replace(' 2019г','') : ''
+    const section = location.sowAndPigletsCell ? location.sowAndPigletsCell.section : 
+      location.pigletsGroupCell ? location.pigletsGroupCell.section : null
     return (
       <div 
         className={cellClassName}
         onClick={() => this.props.clickLocation(location)}
         key={location.id}>
-          #
-          {location.sowAndPigletsCell && location.sowAndPigletsCell.number}
-          {location.pigletsGroupCell && location.pigletsGroupCell.number}
+          {location.sowAndPigletsCell && 
+            <span className='cell-setion-number'>#{section}-{location.sowAndPigletsCell.number}</span>}
+          {location.pigletsGroupCell && 
+            <span className='cell-setion-number'>#{section}-{location.pigletsGroupCell.number}</span>}
+          <br/>
+          {tour && <span className='cell-tour'>{tour}</span>}
+          <br/>
+          {piglets && 
+            <span className='cell-piglets-count'>Поросят {piglets.quantity}</span>}
       </div>
   )}
  }

@@ -12,6 +12,7 @@ import WS3PigletsWeaningTab from '../components/WorkshopThree/WS3PigletsWeaningT
 import WS3CreateGiltTab from '../components/WorkshopThree/WS3CreateGiltTab'
 import WS3PigletsCullingTab from '../components/WorkshopThree/WS3PigletsCullingTab'
 import WS3PigletsRecountTab from '../components/WorkshopThree/WS3PigletsRecountTab'
+import WS3InfoTab from '../components/WorkshopThree/WS3InfoTab'
 
 // # actions
 import SowsActions from '../redux/redux-sauce/sows';
@@ -19,6 +20,7 @@ import SectionsActions from '../redux/redux-sauce/sections';
 import LocationsActions from '../redux/redux-sauce/locations';
 import NewbornPigletsActions from '../redux/redux-sauce/newbornPiglets';
 import NomadPigletsActions from '../redux/redux-sauce/nomadPiglets';
+import WsDataActions from '../redux/redux-sauce/wsData';
 
 
 class WorkshopThreeContainer extends Component {
@@ -26,11 +28,11 @@ class WorkshopThreeContainer extends Component {
     super(props);
     this.state = {
       tabs: {
-        balanceTab: false,
+        balanceTab: true,
         returnPigletsTab: false,
         comingSowsTab: false,
         transferTab: false,
-        farrowTab: true,
+        farrowTab: false,
         weaningSowsTab: false,
         recountTab: false,
         weaningPigletsTab: false,
@@ -40,7 +42,11 @@ class WorkshopThreeContainer extends Component {
       }
     }
     this.setTab = this.setTab.bind(this);
-	}
+  }
+  
+  componentDidMount() {
+    this.props.getSections({workshop: 3})
+  }
 
   setTab (tab) {
     let { tabs } = this.state
@@ -66,7 +72,7 @@ class WorkshopThreeContainer extends Component {
             'workshop-tab col-sm'}
             onClick={() => this.setTab('balanceTab')}
           >
-            БАЛАНС
+            ИНФО
           </div>
           <div className={this.state.tabs.returnPigletsTab ? 'workshop-tab tab-active col-sm' :
            'workshop-tab col-sm'}
@@ -131,6 +137,12 @@ class WorkshopThreeContainer extends Component {
         </div>
         <div className='workshop-header-3'>
         </div>
+        { this.state.tabs.balanceTab && 
+          <WS3InfoTab 
+            getInfoWs3={this.props.getInfoWs3}
+            infoData={this.props.state.wsData.info_ws3}
+            fetching={this.props.state.wsData.fetching}
+          />}
         { this.state.tabs.comingSowsTab && 
           <WS3SowIncomeTab 
             getSows={this.props.getSows}
@@ -229,13 +241,13 @@ class WorkshopThreeContainer extends Component {
             locationsFetching={this.props.state.locations.fetching}
             
             mergeNewbornPiglets={this.props.mergeNewbornPiglets}
-            megreFetching={this.props.state.newbornPiglets.eventFetching}
+            eventFetching={this.props.state.newbornPiglets.eventFetching}
 
             getNomadPiglets={this.props.getNomadPiglets}
             nomadPiglets={this.props.state.nomadPiglets.list}
 
             moveNomadPiglets={this.props.moveNomadPiglets}
-            moveNomadFetching={this.props.state.nomadPiglets.eventFetching}
+            eventFetching={this.props.state.nomadPiglets.eventFetching}
           />}
 
         { this.state.tabs.createGiltTab && 
@@ -318,6 +330,9 @@ const mapDispatchToProps = (dispatch) => ({
   //nomad piglets
   getNomadPiglets: query => dispatch(NomadPigletsActions.getNomadPigletsRequest(query)),
   moveNomadPiglets: data => dispatch(NomadPigletsActions.moveToPigletsRequest(data)),
+
+  // info
+  getInfoWs3: () => dispatch(WsDataActions.getInfoWs3Request())
 })
 
 export default connect(

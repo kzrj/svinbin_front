@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 //components
-import { PigletsCells, Sections } from '../WorkshopThree/Components'
+import { PigletsCells, Sections } from '../Locations'
 import { PigletsGroup } from '../PigletsRepresentations'
-import { CullingTypeInput, CullingReasonInput } from '../WSComponents'
+import { CullingTypeInput, CullingReasonInput } from '../FiltersAndInputs'
 
 
 class WSNomadCullingTab extends Component {

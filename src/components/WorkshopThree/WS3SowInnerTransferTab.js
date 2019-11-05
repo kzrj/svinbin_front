@@ -15,10 +15,6 @@ class WS3SowInnerTransferTab extends Component {
     }
   }
   
-  componentDidMount() {
-    this.props.getSections({workshop: 3})
-  }
-
   clickFromSection = (e) => {
     const { sectionId } = e.target.dataset
     this.setState({
@@ -70,7 +66,7 @@ class WS3SowInnerTransferTab extends Component {
   }
 
   refreshLocations () {
-    if (this.props.eventFetching || this.state.needToRefresh) {
+    if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations1({by_section: this.state.activeFromSectionId})
@@ -93,6 +89,7 @@ class WS3SowInnerTransferTab extends Component {
               clickSection={this.clickFromSection}
             />
             <SowCells 
+              isSection={this.state.activeFromSectionId}
               locations={locations1}
               fetching={this.props.locationsFetching}
               activeCellIds={[this.state.activeCellFromLocationId]}
@@ -107,6 +104,7 @@ class WS3SowInnerTransferTab extends Component {
                 clickSection={this.clickToSection}
               />
               <SowCells
+                isSection={this.state.activeToSectionId}
                 locations={locations2}
                 fetching={this.props.locationsAddFetching}
                 activeCellIds={[this.state.activeCellToLocationId]}

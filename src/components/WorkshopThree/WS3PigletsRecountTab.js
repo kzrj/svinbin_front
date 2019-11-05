@@ -24,10 +24,6 @@ class WS3PigletsRecountTab extends Component {
     this.refreshSowsList = this.refreshSowsList.bind(this);
   }
   
-  componentDidMount() {
-    this.props.getSections({workshop: 3})
-  }
-
   clickSection (e) {
     const { sectionId } = e.target.dataset
     this.setState({
@@ -74,7 +70,7 @@ class WS3PigletsRecountTab extends Component {
   }
 
   refreshSowsList () {
-    if (this.props.eventFetching && this.state.needToRefresh){
+    if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations({by_section: this.state.activeSectionId})

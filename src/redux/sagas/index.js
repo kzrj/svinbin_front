@@ -8,6 +8,7 @@ import SowsApi from '../api/sowsApi';
 import NomadPigletsApi from '../api/nomadPigletsApi';
 import NewbornPigletsApi from '../api/newbornPigletsApi';
 import UsersApi from '../api/usersApi';
+import WsRestApi from '../api/wsRestApi';
 /* ------------- Types ------------- */
 import { AuthTypes } from "../redux-sauce/auth";
 import { LocationsTypes } from '../redux-sauce/locations';
@@ -47,6 +48,7 @@ const sowsApi = SowsApi.create();
 const nomadPigletsApi = NomadPigletsApi.create();
 const newbornPigletsApi = NewbornPigletsApi.create();
 const usersApi = UsersApi.create();
+const wsRestApi = WsRestApi.create();
 
 export default function* root() {
   yield all([
@@ -97,11 +99,9 @@ export default function* root() {
     takeEvery(NewbornPigletsTypes.CULLING_GILT_NEWBORN_PIGLETS_REQUEST, newbornPigletsSaga.cullingGiltNewbornPiglets, newbornPigletsApi),
     takeEvery(NewbornPigletsTypes.RECOUNT_NEWBORN_PIGLETS_REQUEST, newbornPigletsSaga.recountNewbornPiglets, newbornPigletsApi),
 
-    // takeEvery(Ws1Types.GET_SEMINATORS_REQUEST, ws1Saga.getSeminators, usersApi),
-    // takeEvery(Ws1Types.IMPORT_SEMINATIONS_FROM_FARM_REQUEST, ws1Saga.importSeminationsFromFarm, sowsApi),
-
     takeEvery(WsDataTypes.GET_SEMINATORS_REQUEST, wsDataSaga.getSeminators, usersApi),
     takeEvery(WsDataTypes.IMPORT_SEMINATIONS_FROM_FARM_REQUEST, wsDataSaga.importSeminationsFromFarm, sowsApi),
+    takeEvery(WsDataTypes.GET_INFO_WS3_REQUEST, wsDataSaga.getInfoWs3, wsRestApi),
 
     takeEvery(Ws4Types.GET_NOMAD_PIGLETS_WS4_REQUEST, ws4Saga.getNomadPigletsWs4, nomadPigletsApi),
     // takeEvery(Ws4Types.GET_SECTIONS_WS4_REQUEST, ws4Saga.getSectionsWs4, locationsApi),

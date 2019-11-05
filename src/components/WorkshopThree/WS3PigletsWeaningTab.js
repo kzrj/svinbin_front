@@ -27,7 +27,6 @@ class WS3PigletsWeaningTab extends Component {
   }
   
   componentDidMount() {
-    this.props.getSections({workshop: 3})
     this.props.getNomadPiglets({by_workshop_number: 3})
   }
 
@@ -97,13 +96,12 @@ class WS3PigletsWeaningTab extends Component {
   }
 
   refreshSowsList () {
-    if ((this.props.mergeFetching || this.props.moveNomadFetching) 
-        || this.state.needToRefresh){
+    if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations({by_section: this.state.activeSectionId})
         this.props.getNomadPiglets({by_workshop_number: 3})
-      }, 500)
+      }, 100)
     }
   }
 

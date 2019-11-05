@@ -23,10 +23,6 @@ class WS3SowFarrowTab extends Component {
     this.increasePiglets = this.increasePiglets.bind(this);
     this.clickFarrow = this.clickFarrow.bind(this);
   }
-  
-  componentDidMount() {
-    this.props.getSections({workshop: 3})    
-  }
 
   clickSection (e) {
     const { sectionId } = e.target.dataset
@@ -90,7 +86,9 @@ class WS3SowFarrowTab extends Component {
     if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        this.props.getLocations({by_section: this.state.activeSectionId})
+        if (this.state.activeCellLocationId){
+          this.props.getLocations({by_section: this.state.activeSectionId})
+            }
         }, 500)
     }
   }
@@ -109,6 +107,7 @@ class WS3SowFarrowTab extends Component {
               clickSection={this.clickSection}
             />
             <SowCells 
+              isSection={this.state.activeSectionId}
               locations={locations}
               fetching={this.props.locationsFetching}
               activeCellIds={[this.state.activeCellLocationId]}

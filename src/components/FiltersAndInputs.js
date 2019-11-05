@@ -7,23 +7,26 @@ export class SowFindById extends Component {
        
       return (
          <div className='workshop-content-column-1'>
-           <div class="input-group mb-3">
-             <input type='number' onChange={this.props.getSowsById} 
-               className="form-control search-input" value={sowIdValue}
-               placeholder="Поиск по ID"/>
-           </div>
-             <ul className='list-unstyled'>
-               {fetching ? <p className='loading'>Загрузка</p> :
-                 (sows.length > 0 && sow) && 
-                   sows.map(sowInList => 
-                     <li className={sowInList.id == sow.id ? 'sow-active sow-li text-center' :
-                       'sow-li text-center'} 
-                       key={sowInList.id} 
-                       onClick={() => this.props.getSow(sowInList.id)}>
-                       {sowInList.farm_id}
-                     </li>)
-               }
-             </ul>
+            <div class="input-group mb-3">
+                <input type='number' onChange={this.props.getSowsById} 
+                className="form-control search-input" value={sowIdValue}
+                placeholder="Поиск по ID"/>
+            <label>Количество: {sows.length}</label>
+            </div>
+            <div className='div-scroll'>
+                <ul className='list-unstyled'>
+                {fetching ? <p className='loading'>Загрузка</p> :
+                    (sows.length > 0 && sow) && 
+                    sows.map(sowInList => 
+                        <li className={sowInList.id == sow.id ? 'sow-active sow-li text-center' :
+                        'sow-li text-center'} 
+                        key={sowInList.id} 
+                        onClick={() => this.props.getSow(sowInList.id)}>
+                        {sowInList.farm_id}
+                        </li>)
+                }
+                </ul>
+            </div>
          </div>
       )
     }

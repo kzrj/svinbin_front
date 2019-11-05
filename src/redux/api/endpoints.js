@@ -1,5 +1,5 @@
-// export const url = 'http://92.53.104.136';
-export const url = 'http://188.225.72.13';
+export const url = 'http://92.53.104.136';
+// export const url = 'http://188.225.72.13';
 export const apiUrl = `${url}/api`;
 
 export default {
@@ -39,6 +39,7 @@ export default {
     cullingNewbornPiglets: (id) => `${apiUrl}/workshopthree/newbornpiglets/${id}/culling_piglets/`,
     cullingGiltNewbornPiglets: (id) => `${apiUrl}/workshopthree/newbornpiglets/${id}/culling_gilts/`,
     recountNewbornPiglets: (id) => `${apiUrl}/workshopthree/newbornpiglets/${id}/recount/`,
+    GET_INFO_WS3: `${apiUrl}/workshopthree/wsinfo/info/`,
 
     GET_NOMADS_PIGLETS: `${apiUrl}/nomadpiglets/`,
     weighingPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/weighing_piglets/`,

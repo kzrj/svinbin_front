@@ -19,3 +19,12 @@ export function* importSeminationsFromFarm(api, action) {
         yield put(WSDataActions.importSeminationsFromFarmFail(err))
     }
 }
+
+export function* getInfoWs3(api, action) {
+    try {
+        let response = yield call(api.getInfoWs3, action.payload);
+        yield put(WSDataActions.getInfoWs3Success(response));
+    } catch (err) {
+        yield put(WSDataActions.getInfoWs3Fail(err))
+    }
+}

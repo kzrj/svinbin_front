@@ -22,10 +22,6 @@ class WS3SowWeaningTab extends Component {
     this.clickLocation = this.clickLocation.bind(this);
   }
   
-  componentDidMount() {
-    this.props.getSections({workshop: 3})
-  }
-
   clickSection (e) {
     const { sectionId } = e.target.dataset
     this.setState({
@@ -65,7 +61,7 @@ class WS3SowWeaningTab extends Component {
   }
 
   refreshSowsList () {
-    if (this.props.eventFetching && this.state.needToRefresh){
+    if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations({by_section: this.state.activeSectionId})
@@ -87,6 +83,7 @@ class WS3SowWeaningTab extends Component {
               clickSection={this.clickSection}
             />
             <SowCells
+              isSection={this.state.activeSectionId}
               locations={locations}
               fetching={this.props.locationsFetching}
               activeCellIds={this.state.activeLocationsIds}

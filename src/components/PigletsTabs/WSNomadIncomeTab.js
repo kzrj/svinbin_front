@@ -22,7 +22,7 @@ class WSNomadIncomeTab extends Component {
   componentDidMount() {
     this.props.getPiglets({
       // status_title: "Готовы ко взвешиванию",
-      filter_by_weighing_place_reverse: this.props.weighingPlace,
+      piglets_without_weighing_record: this.props.weighingPlace,
       by_workshop_number: this.props.workshopNumber
     })
   }
@@ -59,10 +59,11 @@ class WSNomadIncomeTab extends Component {
   }
 
   refreshSowsList () {
-    if (this.props.eventFetching && this.state.needToRefresh){
+    if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        this.props.getPiglets({status_title: "Готовы ко взвешиванию",
+        this.props.getPiglets({
+          piglets_without_weighing_record: this.props.weighingPlace,
           by_workshop_number: this.props.workshopNumber})
       }, 500)
     }

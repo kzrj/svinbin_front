@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 // components
-import { PigletsCells, Sections } from '../WorkshopThree/Components'
+import { PigletsCells, Sections } from '../Locations'
 
 
 class WSNomadResettelmentTab extends Component {
@@ -83,7 +83,7 @@ class WSNomadResettelmentTab extends Component {
   }
 
   refreshSowsList () {
-    if (this.props.eventFetching && this.state.needToRefresh){
+    if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations({by_section: this.state.activeSectionId})

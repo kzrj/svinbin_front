@@ -26,7 +26,6 @@ class WS3SowIncomeTab extends Component {
   
   componentDidMount() {
     this.props.getSows(this.state.query)
-    this.props.getSections({workshop: 3})
   }
 
   getSowsById (e) {
@@ -78,7 +77,7 @@ class WS3SowIncomeTab extends Component {
   render() {
     this.refreshData()
     const { sows, sow, sections, locations } = this.props
-    
+    console.log(this.state.activeSectionId)
     return (
         <div className='row workshop-content'>
           <div className='col-3 workshop-left-column'>
@@ -97,7 +96,8 @@ class WS3SowIncomeTab extends Component {
               fetching={this.props.sectionFetching}
               activeSectionId={this.state.activeSectionId} 
               clickSection={this.clickSection}/>
-            <SowCells 
+            <SowCells
+              isSection={this.state.activeSectionId}
               locations={locations}
               clickLocation={this.clickCell}
               fetching={this.props.locationsFetching}
