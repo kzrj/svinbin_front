@@ -69,7 +69,8 @@ class WS3SowIncomeTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)
-        this.props.getLocations({by_section: this.state.activeSectionId})
+        if (this.state.activeSectionId) {
+          this.props.getLocations({by_section: this.state.activeSectionId})}
       }, 500)
     }
   }

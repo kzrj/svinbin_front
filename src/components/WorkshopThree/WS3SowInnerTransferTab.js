@@ -69,8 +69,9 @@ class WS3SowInnerTransferTab extends Component {
     if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        this.props.getLocations1({by_section: this.state.activeFromSectionId})
-        this.props.getLocations2({by_section: this.state.activeToSectionId})
+        if (this.state.activeFromSectionId && this.state.activeToSectionId) {
+          this.props.getLocations1({by_section: this.state.activeFromSectionId})
+          this.props.getLocations2({by_section: this.state.activeToSectionId})}
         }, 500)
     }
   }

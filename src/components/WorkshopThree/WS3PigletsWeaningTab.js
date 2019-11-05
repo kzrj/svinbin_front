@@ -99,7 +99,8 @@ class WS3PigletsWeaningTab extends Component {
     if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        this.props.getLocations({by_section: this.state.activeSectionId})
+        if (this.state.activeSectionId) {
+          this.props.getLocations({by_section: this.state.activeSectionId})}
         this.props.getNomadPiglets({by_workshop_number: 3})
       }, 100)
     }
