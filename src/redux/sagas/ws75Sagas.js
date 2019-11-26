@@ -20,11 +20,11 @@ export function* setllePiglets(api, action) {
     }
 }
 
-export function* getLocations(api, action) {
-    try {
-        let response = yield call(api.getLocations, action.payload);
-        yield put(WS75Actions.getLocationsSuccess(response.results));
-    } catch (err) {
-        yield put(WS75Actions.getLocationsFail(err))
-    }
-}
+// export function* getLocations(api, action) {
+//     try {
+//         let response = yield call(api.getLocations, action.payload);
+//         yield put(WS75Actions.getLocationsSuccess(response.results));
+//     } catch (err) {
+//         yield put(WS75Actions.getLocationsFail(err))
+//     }
+// }

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 //components
 import { SowCells, Sections } from '../Locations'
 
-class WS3SowInnerTransferTab extends Component {
+class WS3SowTransferCellToWsTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -53,7 +53,7 @@ class WS3SowInnerTransferTab extends Component {
   clickTransfer = () => {
     this.props.sowMoveTo({
       id: this.state.activeSow.id,
-      location: this.state.activeCellToLocationId
+      location: 3
     })
     this.setState({
       ...this.state,
@@ -68,20 +68,20 @@ class WS3SowInnerTransferTab extends Component {
     if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        if (this.state.activeFromSectionId && this.state.activeToSectionId) {
+        if (this.state.activeFromSectionId) {
           this.props.getLocations1({by_section: this.state.activeFromSectionId})
-          this.props.getLocations2({by_section: this.state.activeToSectionId})}
+          }
         }, 500)
     }
   }
 
   render() {
-    const { sections, locations1, locations2 } = this.props
+    const { sections, locations1 } = this.props
     this.refreshLocations()
     
     return (
         <div className='row workshop-content'>
-          <div className='col-6'>
+          <div className='col-9'>
             <Sections 
               sections={sections}
               fetching={this.props.sectionsFetching}
@@ -98,46 +98,29 @@ class WS3SowInnerTransferTab extends Component {
               error={this.props.locationsListError}
             />
           </div>
-          <div className='col-6'>
-              <Sections
-                sections={sections}
-                fetching={this.props.sectionsFetching}
-                activeSectionId={this.state.activeToSectionId}
-                clickSection={this.clickToSection}
-                error={this.props.sectionsListError}
-              />
-              <SowCells
-                isSection={this.state.activeToSectionId}
-                locations={locations2}
-                fetching={this.props.locationsAddFetching}
-                activeCellIds={[this.state.activeCellToLocationId]}
-                clickLocation={this.clickCellToLocation}
-                error={this.props.locationsList2Error}
-              />
-          </div>
-        <div>
-          <div>
-            {this.state.activeSow && 
-              <ul>
-                <li>{this.state.activeSow.id}</li>
-                <li>{this.state.activeSow.farm_id}</li>
-                <li>{this.state.activeSow.status}</li>
-              </ul>  
-            }
-          </div>
-          {this.state.activeSow && 
-            <div className='bottom-buttons-block'>
-              <div className="input-group">
-                <button onClick={this.clickTransfer} className='btn btn-outline-secondary'>
-                  Переместить
-                </button>
-              </div>
+          <div className='col-3'>
+            <div>
+              {this.state.activeSow && 
+                <ul>
+                  <li>{this.state.activeSow.id}</li>
+                  <li>{this.state.activeSow.farm_id}</li>
+                  <li>{this.state.activeSow.status}</li>
+                </ul>  
+              }
             </div>
-          } 
-        </div>
+            {this.state.activeSow && 
+              <div className='bottom-buttons-block'>
+                <div className="input-group">
+                  <button onClick={this.clickTransfer} className='btn btn-outline-secondary'>
+                    Переместить в цех
+                  </button>
+                </div>
+              </div>
+            } 
+          </div>
       </div>
     )
   }
 }
 
-export default WS3SowInnerTransferTab
+export default WS3SowTransferCellToWsTab

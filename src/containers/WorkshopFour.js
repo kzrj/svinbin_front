@@ -7,6 +7,7 @@ import WSNomadTransferTab from '../components/PigletsTabs/WSNomadTransferTab'
 import WSNomadInnerTransferTab from '../components/PigletsTabs/WSNomadInnerTransferTab'
 import WSNomadResettelmentTab from '../components/PigletsTabs/WSNomadResettelmentTab'
 import WSNomadIncomeTab from '../components/PigletsTabs/WSNomadIncomeTab'
+import { WhoIs }  from '../components/CommonComponents'
 
 // actions
 import SectionsActions from '../redux/redux-sauce/sections';
@@ -31,6 +32,10 @@ class WorkshopFourContainer extends Component {
     this.setTab = this.setTab.bind(this);
   }
 
+  componentDidMount() {
+    this.props.getSections({workshop: 4})
+  }
+
   setTab (tab) {
     let { tabs } = this.state
     Object.keys(tabs).forEach((key) => {
@@ -51,9 +56,11 @@ class WorkshopFourContainer extends Component {
 
   render() {
     return (
-      <div className="workshop container">
+      <div className="workshop container-fluid">
         <div className='workshop-header'>
-          Цех №4
+          Цех №4 
+          {/* <button onClick={this.showStateConsole}>O</button> */}
+          <WhoIs user={this.props.state.auth.user}/>
         </div>
         <div className='row workshop-menu'>
           <div className={this.state.tabs.incomeTab ? 'workshop-tab tab-active col-sm' : 

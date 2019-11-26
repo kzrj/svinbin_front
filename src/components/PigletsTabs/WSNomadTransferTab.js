@@ -20,10 +20,6 @@ class WSNomadTransferTab extends Component {
     this.clickTransfer = this.clickTransfer.bind(this);
   }
   
-  componentDidMount() {
-    this.props.getSections({workshop: this.props.workshopNumber})
-  }
-
   clickSection (e) {
     const { sectionId } = e.target.dataset
     this.setState({
@@ -79,6 +75,8 @@ class WSNomadTransferTab extends Component {
               clickSection={this.clickSection}
             />
             <PigletsCells
+              isSection={this.state.activeSectionId}
+              fetching={this.props.locationsFetching}
               locations={locations}
               activeCellIds={[this.state.activeCellId]}
               clickLocation={this.clickCell}

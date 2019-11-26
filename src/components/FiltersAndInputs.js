@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 
 export class SowFindById extends Component {
 
+    // const tour = sow ? sow.tour && sow.tour.replace(' 2019г','') : null
+
     render() {
-      const { sows, sow, fetching, sowIdValue } = this.props
+      const { sows, sow, fetching, sowIdValue, error } = this.props
        
       return (
          <div className='workshop-content-column-1'>
@@ -15,15 +17,19 @@ export class SowFindById extends Component {
             </div>
             <div className='div-scroll'>
                 <ul className='list-unstyled'>
-                {fetching ? <p className='loading'>Загрузка</p> :
+                {!error ? fetching ? <p className='loading'>Загрузка</p> :
                     (sows.length > 0 && sow) && 
                     sows.map(sowInList => 
                         <li className={sowInList.id == sow.id ? 'sow-active sow-li text-center' :
                         'sow-li text-center'} 
                         key={sowInList.id} 
                         onClick={() => this.props.getSow(sowInList.id)}>
-                        {sowInList.farm_id}
+                        <span className='sow-list-farm-id'>{sowInList.farm_id}</span>
+                        <span className='span-block span sow-list-tour'>
+                            {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}</span>
                         </li>)
+                    :
+                    <p className='error-message'>{error}</p>
                 }
                 </ul>
             </div>
@@ -45,15 +51,15 @@ render() {
             onChange={this.props.setSowFarmId} />
         </div>
         <div className="input-group mb-3 col-3">
-        <select className="custom-select" id="inputGroupSelect01" 
-            onChange={this.props.setTour}>
-            <option selected value=''>Выбрать тур</option>
-            {tours.map(tour =>
-                <option value={tour.id} key={tour.id}>
-                Неделя{tour.week_number}
-                </option>
-                )}
-            </select>
+            <select className="custom-select" id="inputGroupSelect01" 
+                onChange={this.props.setTour}>
+                <option selected value=''>Выбрать тур</option>
+                {tours.map(tour =>
+                    <option value={tour.id} key={tour.id}>
+                    Неделя{tour.week_number}
+                    </option>
+                    )}
+                </select>
         </div>
         {this.props.seminationTab &&
         <div className="input-group mb-3 col-3">

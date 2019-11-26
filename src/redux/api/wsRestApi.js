@@ -5,7 +5,6 @@ import { parseErrorData, createUrlParamsFromFilters } from './utils';
 const create = () => {
 
     const getInfoWs3 = () => {
-        console.log('getInfoW')
         return axios.get(endpoints.GET_INFO_WS3)
         .then(response => response.data)
         .catch(err => {
@@ -14,8 +13,20 @@ const create = () => {
             throw error;
         })
     }
+
+    const getBalancesByToursWs3 = () => {
+        return axios.get(endpoints.GET_BALANCES_BY_TOURS)
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getInfoWs3,
+        getBalancesByToursWs3
     }
 }
 

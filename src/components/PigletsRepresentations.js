@@ -15,18 +15,20 @@ export class NewBornGroupWeaningList extends Component {
   render() {
     const { locations } = this.props
     const total = this.calcTotalPiglets()
+    // const total = 0
     return (
       <div className='newborn-group-list'>
         <p>Выбрано клеток {locations.length} {'|'} Всего поросят {total}</p>
         {locations.length > 0 &&
-            <table className='table table-dark newborn-group-table'>
+            <table className='table table-sm newborn-group-table'>
               <thead>
                 <th>№ клетки</th>
                 <th>Кол-во поросят</th>
                 <th>Тур</th>
               </thead>
               <tbody>
-                {locations.map(location => <NewBornGroupWeaning location={location}/>)}
+                {locations.map(location => <NewBornGroupWeaning location={location}
+                   decreasePiglets={this.props.decreasePiglets}/>)}
               </tbody>
             </table>
         }
@@ -37,19 +39,26 @@ export class NewBornGroupWeaningList extends Component {
 
 
 export class NewBornGroupWeaning extends Component {
-
   render() {
     const { location } = this.props
     const cellNumber = location.sowAndPigletsCell.number
+    const cellSection = location.sowAndPigletsCell.section
     let newBornGroup = null
+    let pigletsTour = null
     if (location.newbornpigletsgroup_set.length > 0)
       newBornGroup = location.newbornpigletsgroup_set[0]
+      pigletsTour = newBornGroup ? newBornGroup.tour && newBornGroup.tour.replace(' 2019г','') : null
 
     return (
       <tr>
-        <td>{cellNumber}</td>
-        <td>{newBornGroup ? newBornGroup.quantity : 'Нет поросят'}</td>
-        <td>{newBornGroup ? newBornGroup.tour : 'Нет тура'}</td>
+        <td>{cellSection}-{cellNumber}</td>
+        <td>
+          <button className='btn btn-weaning btn-outline-dark' disabled>+</button>
+          {newBornGroup ? newBornGroup.quantity : 'Нет поросят'}
+          <button className='btn btn-weaning btn-outline-dark' 
+            onClick={() => this.props.decreasePiglets(location)}>-</button>
+        </td>
+        <td className='td-piglets-tour'>{newBornGroup ? pigletsTour : 'Нет тура'}</td>
       </tr>
     )
   }

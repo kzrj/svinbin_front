@@ -12,6 +12,7 @@ class WS3SowIncomeTab extends Component {
       query: {
         by_workshop_number: 3,
         farm_id_starts: '',
+        ordering: 'tour'
       },
       activeSectionId: null,
       activeCellId: null,
@@ -78,7 +79,6 @@ class WS3SowIncomeTab extends Component {
   render() {
     this.refreshData()
     const { sows, sow, sections, locations } = this.props
-    console.log(this.state.activeSectionId)
     return (
         <div className='row workshop-content'>
           <div className='col-3 workshop-left-column'>
@@ -89,6 +89,7 @@ class WS3SowIncomeTab extends Component {
               getSowsById={this.getSowsById} 
               getSow={this.props.getSow}
               fetching={this.props.listFetching}
+              error={this.props.sowsListError}
               />
           </div>
           <div className='col-9 workshop-right-column'>
@@ -96,13 +97,16 @@ class WS3SowIncomeTab extends Component {
               sections={sections}
               fetching={this.props.sectionFetching}
               activeSectionId={this.state.activeSectionId} 
-              clickSection={this.clickSection}/>
+              clickSection={this.clickSection}
+              error={this.props.sectionsListError}
+              />
             <SowCells
               isSection={this.state.activeSectionId}
               locations={locations}
               clickLocation={this.clickCell}
               fetching={this.props.locationsFetching}
               activeCellIds={[this.state.activeCellId]}
+              error={this.props.locationsListError}
               />
             <div className='bottom-buttons-block'>
               <div className="input-group">

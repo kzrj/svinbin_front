@@ -38,13 +38,16 @@ export const INITIAL_STATE = Immutable({
     eventFetching: false,
     list: [],
     newbornGroup: null,
+    errorList: null,
+
     event: null,
     merge: null,
     cullingPiglets: null,
     cullingGilt: null,
     recount: null,
-    error: '',
-    message: null,
+    errorEvent: null,
+
+    message: '',
 })
 
 /* ------------- Selectors ------------- */
@@ -64,11 +67,11 @@ export const getNewbornPigletsRequest = (state, { payload }) => {
 }
 
 export const getNewbornPigletsSuccess = (state, { payload }) => {
-    return state.merge({ listFetching: false, error: null, list: payload })
+    return state.merge({ listFetching: false, errorList: null, list: payload })
 }
 
 export const getNewbornPigletsFail = (state, { error }) => {
-    return state.merge({ listFetching: false, error, list: [] })
+    return state.merge({ listFetching: false, errorList:error, list: [] })
 }
 
 // Culling
@@ -77,12 +80,12 @@ export const cullingNewbornPigletsRequest = (state, { payload }) => {
 }
 
 export const cullingNewbornPigletsSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, newbornGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, errorEvent: null, newbornGroup: payload.piglets_group, 
         cullingPiglets: payload.culling })
 }
 
 export const cullingNewbornPigletsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, error, newbornGroup: null, 
+    return state.merge({ eventFetching: false, errorEvent:error, newbornGroup: null, 
         cullingPiglets: null })
 }
 
@@ -92,12 +95,12 @@ export const cullingGiltNewbornPigletsRequest = (state, { payload }) => {
 }
 
 export const cullingGiltNewbornPigletsSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, newbornGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, errorEvent: null, newbornGroup: payload.piglets_group, 
         cullingGilt: payload.culling })
 }
 
 export const cullingGiltNewbornPigletsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, error, newbornGroup: null, 
+    return state.merge({ eventFetching: false, errorEvent:error, newbornGroup: null, 
         cullingGilt: null })
 }
 
@@ -107,12 +110,12 @@ export const mergeNewbornPigletsRequest = (state, { payload }) => {
 }
 
 export const mergeNewbornPigletsSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, newbornGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, errorEvent: null, newbornGroup: payload.piglets_group, 
         merge: payload.transaction })
 }
 
 export const mergeNewbornPigletsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, error, newbornGroup: null, 
+    return state.merge({ eventFetching: false, errorEvent: error, newbornGroup: null, 
         merge: null })
 }
 
@@ -122,11 +125,11 @@ export const createGiltRequest = (state, { payload }) => {
 }
 
 export const createGiltSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, message: payload.message})
+    return state.merge({ eventFetching: false, errorEvent: null, message: payload.message})
 }
 
 export const createGiltFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, error, })
+    return state.merge({ eventFetching: false, errorEvent: error, })
 }
 
 // Recount
@@ -135,12 +138,12 @@ export const recountNewbornPigletsRequest = (state, { payload }) => {
 }
 
 export const recountNewbornPigletsSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, newbornGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, errorEvent: null, newbornGroup: payload.piglets_group, 
         recount: payload.transaction })
 }
 
 export const recountNewbornPigletsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, error, newbornGroup: null, 
+    return state.merge({ eventFetching: false, errorEvent: error, newbornGroup: null, 
         recount: null })
 }
 /* ------------- Hookup Reducers To Types ------------- */

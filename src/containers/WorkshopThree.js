@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 // components
 import WS3SowIncomeTab from '../components/WorkshopThree/WS3SowIncomeTab'
+import WS3SowTransferCellToWsTab from '../components/WorkshopThree/WS3SowTransferCellToWsTab'
 import WS3SowInnerTransferTab from '../components/WorkshopThree/WS3SowInnerTransferTab'
 import WS3SowFarrowTab from '../components/WorkshopThree/WS3SowFarrowTab'
 import WS3SowWeaningTab from '../components/WorkshopThree/WS3SowWeaningTab'
@@ -14,12 +15,15 @@ import WS3PigletsCullingTab from '../components/WorkshopThree/WS3PigletsCullingT
 import WS3PigletsRecountTab from '../components/WorkshopThree/WS3PigletsRecountTab'
 import WS3InfoTab from '../components/WorkshopThree/WS3InfoTab'
 
+import { WhoIs }  from '../components/CommonComponents'
+
 // # actions
 import SowsActions from '../redux/redux-sauce/sows';
 import SectionsActions from '../redux/redux-sauce/sections';
 import LocationsActions from '../redux/redux-sauce/locations';
 import NewbornPigletsActions from '../redux/redux-sauce/newbornPiglets';
 import NomadPigletsActions from '../redux/redux-sauce/nomadPiglets';
+import ToursActions from '../redux/redux-sauce/tours';
 import WsDataActions from '../redux/redux-sauce/wsData';
 
 
@@ -28,11 +32,12 @@ class WorkshopThreeContainer extends Component {
     super(props);
     this.state = {
       tabs: {
-        balanceTab: true,
+        balanceTab: false,
         returnPigletsTab: false,
         comingSowsTab: false,
         transferTab: false,
-        farrowTab: false,
+        transferCellToWsTab: false,
+        farrowTab: true,
         weaningSowsTab: false,
         recountTab: false,
         weaningPigletsTab: false,
@@ -63,9 +68,11 @@ class WorkshopThreeContainer extends Component {
 
   render() {
     return (
-      <div className="workshop container">
+      <div className="workshop container-fluid">
         <div className='workshop-header'>
           Цех №3
+          <button onClick={() => console.log(this.props.state)}>00</button>
+          <WhoIs user={this.props.state.auth.user}/>
         </div>
         <div className='row workshop-menu'>
           <div className={this.state.tabs.balanceTab ? 'workshop-tab tab-active col-sm' : 
@@ -85,6 +92,12 @@ class WorkshopThreeContainer extends Component {
             onClick={() => this.setTab('comingSowsTab')}
           >
             Поступление матки
+          </div>
+          <div className={this.state.tabs.transferCellToWsTab ? 'workshop-tab tab-active col-sm' :
+           'workshop-tab col-sm'}
+            onClick={() => this.setTab('transferCellToWsTab')}
+          >
+            Внутреннее перемещение(из клетки в цех)
           </div>
           <div className={this.state.tabs.transferTab ? 'workshop-tab tab-active col-sm' :
            'workshop-tab col-sm'}
@@ -142,28 +155,52 @@ class WorkshopThreeContainer extends Component {
             getInfoWs3={this.props.getInfoWs3}
             infoData={this.props.state.wsData.info_ws3}
             fetching={this.props.state.wsData.fetching}
+            error={this.props.state.wsData.error}
           />}
+
         { this.state.tabs.comingSowsTab && 
           <WS3SowIncomeTab 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             listFetching={this.props.state.sows.fetching}
+            sowsListError={this.props.state.sows.errorList}
 
             getSow={this.props.getSow}
             sow={this.props.state.sows.sow}
             sowFetching={this.props.state.sows.sowSingleFetching}
+            sowsSingleError={this.props.state.sows.errorSingle}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsListError={this.props.state.locations.errorList}
 
             sowMoveTo={this.props.sowMoveTo}
             eventFetching={this.props.state.sows.eventFetching}
+            eventError={this.props.state.sows.errorEvent}
+          />}
 
+        { this.state.tabs.transferCellToWsTab && 
+          <WS3SowTransferCellToWsTab 
+            getSections={this.props.getSections}
+            sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
+
+            getLocations1={this.props.getLocations}
+            locations1={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
+            locationsListError={this.props.state.locations.errorList}
+            
+            sowMoveTo={this.props.sowMoveTo}
+            eventFetching={this.props.state.sows.eventFetching}
+            eventError={this.props.state.sows.errorEvent}
+            message={this.props.state.sows.message}
           />}
 
         { this.state.tabs.transferTab && 
@@ -171,17 +208,22 @@ class WorkshopThreeContainer extends Component {
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations1={this.props.getLocations}
             locations1={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsListError={this.props.state.locations.errorList}
             
             getLocations2={this.props.getLocationsAdditional}
             locations2={this.props.state.locations.additional_list}
             locationsAddFetching={this.props.state.locations.fetchingAdditional}
+            locationsList2Error={this.props.state.locations.errorAdditional}
 
             sowMoveTo={this.props.sowMoveTo}
             eventFetching={this.props.state.sows.eventFetching}
+            eventError={this.props.state.sows.errorEvent}
+            message={this.props.state.sows.message}
           />}
 
         { this.state.tabs.farrowTab && 
@@ -189,13 +231,17 @@ class WorkshopThreeContainer extends Component {
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsListError={this.props.state.locations.errorList}
 
             sowFarrow={this.props.sowFarrow}
             eventFetching={this.props.state.sows.eventFetching}
+            eventError={this.props.state.sows.errorEvent}
+            message={this.props.state.sows.message}
           />}
 
         { this.state.tabs.weaningSowsTab && 
@@ -203,13 +249,25 @@ class WorkshopThreeContainer extends Component {
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsListError={this.props.state.locations.errorList}
 
             eventFetching={this.props.state.sows.eventFetching}
             massMove={this.props.sowsMoveMany}
+            markAsNurse={this.props.markAsNurse}
+            error={this.props.state.sows.error}
+            eventError={this.props.state.sows.errorEvent}
+
+            message={this.props.state.sows.message}
+
+            getTours={this.props.getTours}
+            tours={this.props.state.tours.list}
+            toursFetching={this.props.state.tours.fetching}
+            toursError={this.props.state.tours.error}
           />}
 
         { this.state.tabs.sowCullingTab && 
@@ -219,15 +277,18 @@ class WorkshopThreeContainer extends Component {
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             listFetching={this.props.state.sows.fetching}
+            sowsListError={this.props.state.sows.errorList}
 
             getSow={this.props.getSow}
             sow={this.props.state.sows.sow}
             tours_info={this.props.state.sows.tours_info}
             singleFetching={this.props.state.sows.sowSingleFetching}
+            sowsSingleError={this.props.state.sows.errorSingle}
 
             eventFetching={this.props.state.sows.eventFetching}
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}
+            eventError={this.props.state.sows.errorEvent}
           />}
 
         { this.state.tabs.weaningPigletsTab && 
@@ -235,19 +296,26 @@ class WorkshopThreeContainer extends Component {
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsListError={this.props.state.locations.errorList}
             
             mergeNewbornPiglets={this.props.mergeNewbornPiglets}
-            eventFetching={this.props.state.newbornPiglets.eventFetching}
+            nbEventFetching={this.props.state.newbornPiglets.eventFetching}
+            nbEventError={this.props.state.newbornPiglets.errorEvent}
+            nbMessage={this.props.state.newbornPiglets.message}
 
             getNomadPiglets={this.props.getNomadPiglets}
             nomadPiglets={this.props.state.nomadPiglets.list}
+            nomadListError={this.props.state.nomadPiglets.errorList}
 
             moveNomadPiglets={this.props.moveNomadPiglets}
-            eventFetching={this.props.state.nomadPiglets.eventFetching}
+            nomadEventFetching={this.props.state.nomadPiglets.eventFetching}
+            nomadEventError={this.props.state.nomadPiglets.eventError}
+            nomadMessage={this.props.state.nomadPiglets.message}
           />}
 
         { this.state.tabs.createGiltTab && 
@@ -255,10 +323,12 @@ class WorkshopThreeContainer extends Component {
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsListError={this.props.state.locations.errorList}
             
             createGilt={this.props.createGilt}
             eventFetching={this.props.state.newbornPiglets.eventFetching}
@@ -270,29 +340,42 @@ class WorkshopThreeContainer extends Component {
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsListError={this.props.state.locations.errorList}
             
             cullingPiglets={this.props.cullingPiglets}
             cullingGilt={this.props.cullingGilt}
             eventFetching={this.props.state.newbornPiglets.eventFetching}
+            eventError={this.props.state.newbornPiglets.errorEvent}
             message={this.props.state.newbornPiglets.message}
           />}
+
         { this.state.tabs.recountTab && 
           <WS3PigletsRecountTab
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsListError={this.props.state.locations.errorList}
             
             recountPiglets={this.props.recountPiglets}
             eventFetching={this.props.state.newbornPiglets.eventFetching}
+            eventError={this.props.state.newbornPiglets.errorEvent}
             message={this.props.state.newbornPiglets.message}
+
+            getBalancesbyTours={this.props.getBalancesbyToursWs3}
+            balancesData={this.props.state.wsData.balances_by_tours}
+            balancesFetching={this.props.state.wsData.fetching}
+            balancesMessage={this.props.state.wsData.message}
+            wsDataError={this.props.state.wsData.error}
           />}
       </div>
     );
@@ -310,6 +393,9 @@ const mapDispatchToProps = (dispatch) => ({
   getLocations: query => dispatch(LocationsActions.getLocationsRequest(query)),
   getLocationsAdditional: query => dispatch(LocationsActions.getLocationsAdditionalRequest(query)),
 
+  //tours
+  getTours: query => dispatch(ToursActions.getToursRequest(query)),
+
   //sows
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
@@ -318,6 +404,7 @@ const mapDispatchToProps = (dispatch) => ({
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
   sowFarrow: data => dispatch(SowsActions.sowFarrowRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
+  markAsNurse: id => dispatch(SowsActions.markAsNurseRequest(id)),
 
   // newborn piglets
   getNewbornPiglets: query => dispatch(NewbornPigletsActions.getNewbornPigletsRequest(query)),
@@ -332,7 +419,8 @@ const mapDispatchToProps = (dispatch) => ({
   moveNomadPiglets: data => dispatch(NomadPigletsActions.moveToPigletsRequest(data)),
 
   // info
-  getInfoWs3: () => dispatch(WsDataActions.getInfoWs3Request())
+  getInfoWs3: () => dispatch(WsDataActions.getInfoWs3Request()),
+  getBalancesbyToursWs3: () => dispatch(WsDataActions.getBalancesByToursWs3Request())
 })
 
 export default connect(

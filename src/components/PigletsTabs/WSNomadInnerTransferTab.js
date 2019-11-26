@@ -23,10 +23,6 @@ class WSNomadInnerTransferTab extends Component {
     this.clickTransfer = this.clickTransfer.bind(this);
   }
   
-  componentDidMount() {
-    this.props.getSections({workshop: this.props.workshopNumber})
-  }
-
   clickFromSection (e) {
     const { sectionId } = e.target.dataset
     this.setState({
@@ -81,7 +77,7 @@ class WSNomadInnerTransferTab extends Component {
   }
 
   refreshSowsList () {
-    if (this.props.eventFetching && this.state.needToRefresh){
+    if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations1({by_section: this.state.activeFromSectionId})
@@ -104,6 +100,8 @@ class WSNomadInnerTransferTab extends Component {
             />
             <PigletsCells
               locations={locations1}
+              isSection={this.state.activeFromSectionId}
+              fetching={this.props.listFetching}
               activeCellIds={[this.state.activeCellFromLocationId]}
               clickLocation={this.clickCellFromLocation}
             />
@@ -115,7 +113,9 @@ class WSNomadInnerTransferTab extends Component {
               clickSection={this.clickToSection}
             />
             <PigletsCells
+              isSection={this.state.activeToSectionId}
               locations={locations2}
+              fetching={this.props.list2Fetching}
               activeCellIds={[this.state.activeCellToLocationId]}
               clickLocation={this.clickCellToLocation}
             />

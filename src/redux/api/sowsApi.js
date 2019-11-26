@@ -6,8 +6,6 @@ const create = () => {
 
     const getSows = (filters) => {
         const params = createUrlParamsFromFilters(filters);
-        console.log(params)
-
         return axios.get(endpoints.GET_SOWS, { params })
         .then(response => response.data)
         .catch(err => {
@@ -441,6 +439,31 @@ const create = () => {
         })
     }
 
+    const markAsNurse = payload => {
+        const { id, piglets_tour } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.markAsNurse(id);
+
+        const formData = new FormData();
+        if (piglets_tour) {
+            formData.append("piglets_tour", piglets_tour)
+        }
+
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
 
     return {
         getSows,
@@ -461,6 +484,7 @@ const create = () => {
         massUltrasound,
         abortionSow,
         massInitTransfer,
+        markAsNurse,
         importSeminationsFromFarm,
 
         // init endpoints

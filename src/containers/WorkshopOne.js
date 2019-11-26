@@ -8,6 +8,7 @@ import WS1TransferToWS2Tab from '../components/WorkshopOne/WS1TransferToWS2Tab'
 import WSSowCullingTab from '../components/SowTabs/WSSowCullingTab'
 import WSSowUltrasoundTab from '../components/SowTabs/WSSowUltrasoundTab'
 import WS1ImportSeminationTab from '../components/WorkshopOne/WS1ImportSeminationTab'
+import { WhoIs }  from '../components/CommonComponents'
 
 // actions
 import SowsActions from '../redux/redux-sauce/sows';
@@ -54,9 +55,10 @@ class WorkshopOneContainer extends Component {
 
   render() {
     return (
-      <div className="workshop container">
+      <div className="workshop container-fluid">
         <div className='workshop-header'>
           Цех №1
+          <WhoIs user={this.props.state.auth.user}/>
         </div>
         <div className='row workshop-menu'>
             <div className={this.state.tabs.createTab ? 'workshop-tab tab-active col-sm' 

@@ -64,7 +64,7 @@ class Main extends Component {
   render() {
     const { isLoggedIn, user, error } = this.props.state.auth
     return (
-      <div className="app container">
+      <div className="app container-fluid">
         <div id="pageContent">
           {!isLoggedIn && 
             <div>

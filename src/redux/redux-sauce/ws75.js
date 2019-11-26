@@ -7,9 +7,9 @@ const { Types, Creators } = createActions({
     getNomadPigletsFail: ['error'],
     getNomadPigletsSuccess: ['payload'],
 
-    getLocationsRequest: ['payload'],
-    getLocationsFail: ['error'],
-    getLocationsSuccess: ['payload'],
+    // getLocationsRequest: ['payload'],
+    // getLocationsFail: ['error'],
+    // getLocationsSuccess: ['payload'],
 
     setllePigletsRequest: ['payload'],
     setllePigletsFail: ['error'],
@@ -33,7 +33,7 @@ export const INITIAL_STATE = Immutable({
 
 export const Ws75Selectors = {
     getNomadPiglets: state => state.ws75.incomingPigletsList,
-    getLocations: state => state.ws75.locations,
+    // getLocations: state => state.ws75.locations,
     settlePiglets: state => state.ws75.setlledPiglets,
 }
 
@@ -64,18 +64,18 @@ export const setllePigletsFail = (state, { error }) => {
     return state.merge({ fetching: false, error, setlledPiglets: null })
 }
 
-// Get Locations
-export const getLocationsRequest = (state, { payload }) => {
-    return state.merge({ fetching: true, locations: [] })
-}
+// // Get Locations
+// export const getLocationsRequest = (state, { payload }) => {
+//     return state.merge({ fetching: true, locations: [] })
+// }
 
-export const getLocationsSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false,  error: null, locations: payload })
-}
+// export const getLocationsSuccess = (state, { payload }) => {
+//     return state.merge({ fetching: false,  error: null, locations: payload })
+// }
 
-export const getLocationsFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, locations: [] })
-}
+// export const getLocationsFail = (state, { error }) => {
+//     return state.merge({ fetching: false, error, locations: [] })
+// }
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -88,7 +88,7 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.SETLLE_PIGLETS_SUCCESS]: setllePigletsSuccess,
     [Types.SETLLE_PIGLETS_FAIL]: setllePigletsFail,
 
-    [Types.GET_LOCATIONS_REQUEST]: getLocationsRequest,
-    [Types.GET_LOCATIONS_SUCCESS]: getLocationsSuccess,
-    [Types.GET_LOCATIONS_FAIL]: getLocationsFail,
+    // [Types.GET_LOCATIONS_REQUEST]: getLocationsRequest,
+    // [Types.GET_LOCATIONS_SUCCESS]: getLocationsSuccess,
+    // [Types.GET_LOCATIONS_FAIL]: getLocationsFail,
 })

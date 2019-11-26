@@ -14,6 +14,10 @@ const { Types, Creators } = createActions({
     getInfoWs3Request: ['payload'],
     getInfoWs3Fail: ['error'],
     getInfoWs3Success: ['payload'],
+
+    getBalancesByToursWs3Request: ['payload'],
+    getBalancesByToursWs3Fail: ['error'],
+    getBalancesByToursWs3Success: ['payload'],
 })
 
 export const WsDataTypes = Types
@@ -25,7 +29,9 @@ export const INITIAL_STATE = Immutable({
     fetching: false,
     seminators: [],
     import_from_file_data: null,
+    balances_by_tours: null,
     info_ws3: null,
+    
     error: null,
     message: null
 })
@@ -79,6 +85,20 @@ export const getInfoWs3Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, info_ws3: null })
 }
 
+// balances by tours ws3
+export const getBalancesByToursWs3Request = (state, { payload }) => {
+    return state.merge({ fetching: true, balances_by_tours: null })
+}
+
+export const getBalancesByToursWs3Success = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, balances_by_tours: payload,
+        message: payload.message })
+}
+
+export const getBalancesByToursWs3Fail = (state, { error }) => {
+    return state.merge({ fetching: false, error, balances_by_tours: null })
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -93,4 +113,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_INFO_WS3_REQUEST]: getInfoWs3Request,
     [Types.GET_INFO_WS3_SUCCESS]: getInfoWs3Success,
     [Types.GET_INFO_WS3_FAIL]: getInfoWs3Fail,
+
+    [Types.GET_BALANCES_BY_TOURS_WS3_REQUEST]: getBalancesByToursWs3Request,
+    [Types.GET_BALANCES_BY_TOURS_WS3_SUCCESS]: getBalancesByToursWs3Success,
+    [Types.GET_BALANCES_BY_TOURS_WS3_FAIL]: getBalancesByToursWs3Fail,
 })

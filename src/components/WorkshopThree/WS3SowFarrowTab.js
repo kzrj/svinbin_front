@@ -86,7 +86,7 @@ class WS3SowFarrowTab extends Component {
     if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        if (this.state.activeCellLocationId){
+        if (this.state.activeSectionId){
           this.props.getLocations({by_section: this.state.activeSectionId})
             }
         }, 500)
@@ -99,12 +99,13 @@ class WS3SowFarrowTab extends Component {
     
     return (
         <div className='row workshop-content'>
-          <div className='col-6'>
+          <div className='col-8'>
             <Sections 
               sections={sections}
               fetching={this.props.sectionsFetching}
               activeSectionId={this.state.activeSectionId}
               clickSection={this.clickSection}
+              error={this.props.sectionsListError}
             />
             <SowCells 
               isSection={this.state.activeSectionId}
@@ -112,9 +113,10 @@ class WS3SowFarrowTab extends Component {
               fetching={this.props.locationsFetching}
               activeCellIds={[this.state.activeCellLocationId]}
               clickLocation={this.clickCellLocation}
+              error={this.props.locationsListError}
             />
           </div>
-          <div className='col-6'>
+          <div className='col-4'>
               {this.state.activeSow && 
                 <div>
                   <h3>Свиноматка {this.state.activeSow.farm_id}</h3>
@@ -129,10 +131,6 @@ class WS3SowFarrowTab extends Component {
                         <td>Общее число поросят в опоросе</td>
                         <td>{this.state.total_piglets}</td>
                       </tr>
-                      {/* <tr>
-                        <td>Дата начала опороса</td>
-                        <td>{this.state.date}</td>
-                      </tr> */}
                     </tbody>
                   </table>
                   <div className='farrow-button-block'>

@@ -101,41 +101,45 @@ class WSSowCullingTab extends Component {
               sow={sow} 
               getSowsById={this.getSowsById} 
               getSow={this.props.getSow}
-              fetching={this.props.sowsListFetching}
+              fetching={this.props.listFetching}
+              error={this.props.sowsListError}
               />
         </div>
         <div className='col-9'>
           <div className='workshop-content-column-2'>
-            {this.props.singleSowFetching ?
-              <p className='loading'>Загрузка</p> :
-              sow &&
-              <div>
-                <SowLightDetail sow={sow}/>
-                <SowToursData tours_info={tours_info} />
-                <div className="input-group">
-                    <select className="custom-select" onChange={this.setData}>
-                      <option selected value='padej' >Падеж</option>
-                      <option value='spec' >Спец. убой</option>
-                      <option value='prirezka' >Прирезка</option>
-                    </select>
-                    <input type='text' onChange={this.setData} placeholder='Напишите причину'/>
-                  <div className="input-group-append">
-                    <button className="btn btn-outline-secondary" type="button"  
-                    onClick={this.cullingSow}>
-                      Забраковать
-                    </button>
-                  </div>
-                </div>
-                <div className="input">
-                  <label className='sow-event-label'>Пометить как аборт</label>
-                  <div>
-                    <button className="btn btn-outline-secondary" type="button"  
-                    onClick={this.abortionSow}>
-                      Аборт
-                    </button>
-                  </div>
-                </div>
-              </div>
+            {!this.props.sowsSingleError ?
+              this.props.singleFetching ?
+                <p className='loading'>Загрузка</p> :
+                  sow &&
+                    <div>
+                      <SowLightDetail sow={sow}/>
+                      <SowToursData tours_info={tours_info} />
+                      <div className="input-group">
+                          <select className="custom-select" onChange={this.setData}>
+                            <option selected value='padej' >Падеж</option>
+                            <option value='spec' >Спец. убой</option>
+                            <option value='prirezka' >Прирезка</option>
+                          </select>
+                          <input type='text' onChange={this.setData} placeholder='Напишите причину'/>
+                        <div className="input-group-append">
+                          <button className="btn btn-outline-secondary" type="button"  
+                          onClick={this.cullingSow}>
+                            Забраковать
+                          </button>
+                        </div>
+                      </div>
+                      <div className="input">
+                        <label className='sow-event-label'>Пометить как аборт</label>
+                        <div>
+                          <button className="btn btn-outline-secondary" type="button"  
+                          onClick={this.abortionSow}>
+                            Аборт
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+              :
+              <p className='error-message'>{this.props.sowsSingleError.message}</p>
             }
           </div>
         </div>

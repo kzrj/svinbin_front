@@ -23,6 +23,10 @@ class WS3PigletsRecountTab extends Component {
     this.recountPiglets = this.recountPiglets.bind(this);
     this.refreshSowsList = this.refreshSowsList.bind(this);
   }
+
+  componentDidMount(){
+    this.props.getBalancesbyTours()
+  }
   
   clickSection (e) {
     const { sectionId } = e.target.dataset
@@ -74,30 +78,56 @@ class WS3PigletsRecountTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         if (this.state.activeSectionId) {
-          this.props.getLocations({by_section: this.state.activeSectionId})}
+          this.props.getLocations({by_section: this.state.activeSectionId})
+          this.props.getBalancesbyTours()
+        }
       }, 500)
     }
   }
 
   render() {
     this.refreshSowsList()
-    const { sections, locations } = this.props
+    const { sections, locations, balancesData } = this.props
     
     return (
         <div className='row workshop-content'>
-          <div className='col-6'>
+          <div className='col-8'>
           <Sections 
               sections={sections}
               activeSectionId={this.state.activeSectionId}
               clickSection={this.clickSection}
+              error={this.props.sectionsListError}
             />
             <PigletsCells
+              isSection={this.state.activeSectionId}
               locations={locations}
               activeCellIds={[this.state.activeLocationsId]}
               clickLocation={this.clickLocation}
+              error={this.props.locationsListError}
             />
           </div>
-          <div className='col-6'>
+          <div className='col-4'>
+            {balancesData &&
+              <table className='table table-sm table-balances'>
+                <thead className='thead-dark'>
+                  <th>Тур(неделя)</th>
+                  <th>Отняли</th>
+                  <th>Прибавили</th>
+                  <th>Баланс</th>
+                  <th>Всего поросят</th>
+                </thead>
+                <tbody>
+                  {balancesData.map(tourData => 
+                    <tr>
+                      <th scope='row'>{tourData.title}</th>
+                      <td>{tourData.negative}</td>
+                      <td>+{tourData.positive}</td>
+                      <td>{tourData.balance}</td>
+                      <td>{tourData.count_newborn_piglets}</td>
+                    </tr>)}
+                </tbody>
+              </table>
+              }
             {this.state.activeNewbornGroup ?
               <div>
                 <PigletsGroup piglets={this.state.activeNewbornGroup}/>

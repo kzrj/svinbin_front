@@ -15,7 +15,7 @@ class WS3PigletsWeaningTab extends Component {
       activeLocations: [], // for newborn list
       activeNomadId: null,
       activeNomad: null,
-      partNumber: 0,
+      partNumber: '',
       needToRefresh: false
     };
     this.clickLocation = this.clickLocation.bind(this);
@@ -23,6 +23,7 @@ class WS3PigletsWeaningTab extends Component {
     this.createNomadPart = this.createNomadPart.bind(this);
     this.setData = this.setData.bind(this);
     this.moveNomad = this.moveNomad.bind(this);
+    this.decreasePiglets = this.decreasePiglets.bind(this);
     this.refreshSowsList = this.refreshSowsList.bind(this);
   }
   
@@ -95,6 +96,42 @@ class WS3PigletsWeaningTab extends Component {
     })
   }
 
+  decreasePiglets (location) {
+    // find location in activeLocations
+    // decrease activeLocations.location.newbornpiglets.quantity
+    // let { activeLocations } = this.state
+    // activeLocations.writable = true
+    console.log(location)
+    // console.log(activeLocations)
+    // console.log(activeLocations.find(element => element.id === location.id))
+    // let loc2 = activeLocations.find(element => element.id === location.id)
+    // loc2.newbornpigletsgroup_set[0].quantity = 1000
+    // console.log(loc2)
+    // console.log(loc2.newbornpigletsgroup_set[0])
+    // location.writable = true
+    // location.newbornpigletsgroup_set[0].quantity = 1000
+    // console.log(location)
+
+    this.setState(prevState => ({
+      ...prevState,
+      activeLocations: prevState.activeLocations.map((loc) =>{
+        if (loc.id !== location.id){
+          return loc
+        }
+        return {
+          ...loc,
+          newbornpigletsgroup_set: [
+              {
+                ...loc.newbornpigletsgroup_set[0],
+                quantity: loc.newbornpigletsgroup_set[0].quantity - 1
+              }
+            ]
+        }
+      })
+    }))
+    console.log(this.state)
+  }
+
   refreshSowsList () {
     if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
@@ -112,28 +149,35 @@ class WS3PigletsWeaningTab extends Component {
     
     return (
         <div className='row workshop-content'>
-          <div className='col-6'>
+          <button onClick={() => console.log(this.state)}>This state</button>
+          <button onClick={() => this.props.getLocations({by_section: this.state.activeSectionId})}>
+              get locations</button>
+          <div className='col-8'>
           <Sections 
               sections={sections}
               activeSectionId={this.state.activeSectionId}
               clickSection={this.clickSection}
+              error={this.props.sectionsListError}
             />
             <PigletsCells
+              isSection={this.state.activeSectionId}
               locations={locations}
               activeCellIds={this.state.activeLocationsIds}
               activeCellId={null}
               clickLocation={this.clickLocation}
+              error={this.props.locationsListError}
             />
           </div>
-          <div className='col-6'>
+          <div className='col-4'>
             <div className='newborns-to-merge'>
                 <NewBornGroupWeaningList 
                   locations={this.state.activeLocations}
                   createNomadPart={this.createNomadPart}
+                  decreasePiglets={this.decreasePiglets}
                    />
                 {locations.length > 0 && 
                   <div className="input-group-append">
-                    <input type='text' value={this.state.partNumber} 
+                    <input type='number' value={this.state.partNumber}
                         onChange={this.setData} 
                         name='partNumber' className="form-control search-input"
                         placeholder="Номер партии" />
@@ -143,44 +187,47 @@ class WS3PigletsWeaningTab extends Component {
                     </button>
                   </div>}
             </div>
+            <hr/>
             <div className='created-nomads'>
-              <p>Партии</p>
-              <div className='row'>
-                <div className='col-4'>
-                  № Партии
-                </div>
-                <div className='col-4'>
-                  Количество поросят
-                </div>
-                <div className='col-4'>
-                  Номера клеток
-                </div>
-              </div>
-              {nomadPiglets.map(nomadGroup => 
-                <div className={ this.state.activeNomadId == nomadGroup.id ? 
-                    'created-nomad created-nomad-active row': 'created-nomad row'}
-                  onClick={() => this.setState({
-                    ...this.state, activeNomadId: nomadGroup.id,
-                    activeNomad: nomadGroup
-                  })}
-                >
-                  <div className='col-4'>
-                    {nomadGroup.merger_part_number}
-                  </div>
-                  <div className='col-4'>
-                    {nomadGroup.quantity}
-                  </div>
-                  <div className='col-4'>
-                    {nomadGroup.cells_numbers_from_merger.map(cell => cell + ' ' )}
-                  </div>
-                </div>)}
-                {this.state.activeNomadId && 
-                  <div>
-                    <button className='btn btn-outline-secondary' type='button'
-                      onClick={this.moveNomad}>
-                        Отправить партию
-                    </button>
-                  </div>}
+              {!this.props.nomadListError ? 
+                nomadPiglets.length > 0 &&
+                <table className='table table-sm created-nomads-table'>
+                  <thead>
+                    <th>№ Партии</th>
+                    <th>Количество поросят</th>
+                    <th>Номера клеток</th>
+                  </thead>
+                  <tbody>
+                    {nomadPiglets.map(nomadGroup => 
+                      <tr className={ this.state.activeNomadId == nomadGroup.id ? 
+                          'created-nomad created-nomad-active': 'created-nomad'}
+                        onClick={() => this.setState({
+                          ...this.state, activeNomadId: nomadGroup.id,
+                          activeNomad: nomadGroup
+                      })}>
+                        <td>
+                          {nomadGroup.merger_part_number}
+                        </td>
+                        <td>
+                          {nomadGroup.quantity}
+                        </td>
+                        <td>
+                          {nomadGroup.cells_numbers_from_merger.map(cell => cell + ' ' )}
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+                :
+                <p className='error-message'>{this.props.nomadListError}</p>
+              }
+              {this.state.activeNomadId && 
+                <div>
+                  <button className='btn btn-outline-secondary' type='button'
+                    onClick={this.moveNomad}>
+                      Отправить партию
+                  </button>
+                </div>}
             </div>
           </div>
         </div>

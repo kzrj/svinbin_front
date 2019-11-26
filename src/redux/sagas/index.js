@@ -80,6 +80,7 @@ export default function* root() {
     takeEvery(SowsTypes.MASS_ULTRASOUND_REQUEST, sowsSaga.massUltrasound, sowsApi),
     takeEvery(SowsTypes.ABORTION_SOW_REQUEST, sowsSaga.abortionSow, sowsApi),
     takeEvery(SowsTypes.MASS_INIT_TRANSFER_REQUEST, sowsSaga.massInitTransfer, sowsApi),
+    takeEvery(SowsTypes.MARK_AS_NURSE_REQUEST, sowsSaga.markAsNurse, sowsApi),
 
     // INIT SOWS
     takeEvery(SowsTypes.ADD_NEW_SEMINATED_TO_WS1_REQUEST, sowsSaga.addNewSeminatedToWs1, sowsApi),
@@ -102,6 +103,7 @@ export default function* root() {
     takeEvery(WsDataTypes.GET_SEMINATORS_REQUEST, wsDataSaga.getSeminators, usersApi),
     takeEvery(WsDataTypes.IMPORT_SEMINATIONS_FROM_FARM_REQUEST, wsDataSaga.importSeminationsFromFarm, sowsApi),
     takeEvery(WsDataTypes.GET_INFO_WS3_REQUEST, wsDataSaga.getInfoWs3, wsRestApi),
+    takeEvery(WsDataTypes.GET_BALANCES_BY_TOURS_WS3_REQUEST, wsDataSaga.getBalancesByToursWs3, wsRestApi),
 
     takeEvery(Ws4Types.GET_NOMAD_PIGLETS_WS4_REQUEST, ws4Saga.getNomadPigletsWs4, nomadPigletsApi),
     // takeEvery(Ws4Types.GET_SECTIONS_WS4_REQUEST, ws4Saga.getSectionsWs4, locationsApi),

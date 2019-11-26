@@ -108,19 +108,22 @@ class WS3PigletsWeaningTab extends Component {
     
     return (
         <div className='row workshop-content'>
-          <div className='col-6'>
+          <div className='col-8'>
             <Sections 
               sections={sections}
               activeSectionId={this.state.activeSectionId}
               clickSection={this.clickSection}
+              error={this.props.sectionsListError}
             />
             <PigletsCells
+              isSection={this.state.activeSectionId}
               locations={locations}
               activeCellIds={[this.state.activeLocationsId]}
               clickLocation={this.clickLocation}
+              error={this.props.locationsListError}
             />
           </div>
-          <div className='col-6'>
+          <div className='col-4'>
             {this.state.activeNewbornGroup ?
               <div>
                 <PigletsGroup piglets={this.state.activeNewbornGroup}/>

@@ -26,10 +26,6 @@ class WSNomadCullingTab extends Component {
     this.cullingGilt = this.cullingGilt.bind(this);
   }
   
-  componentDidMount() {
-    this.props.getSections({workshop: this.props.workshopNumber})
-  }
-
   clickSection = (e) => {
     const { sectionId } = e.target.dataset
     this.setState({
@@ -90,7 +86,7 @@ class WSNomadCullingTab extends Component {
   }
 
   refreshSowsList () {
-    if (this.props.eventFetching && this.state.needToRefresh){
+    if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations({by_section: this.state.activeSectionId})
@@ -111,6 +107,8 @@ class WSNomadCullingTab extends Component {
               clickSection={this.clickSection}
             />
             <PigletsCells
+              isSection={this.state.activeSectionId}
+              fetching={this.props.locationsFetching}
               locations={locations}
               activeCellIds={[this.state.activeCellId]}
               clickLocation={this.clickLocation}

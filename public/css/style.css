@@ -17,6 +17,15 @@
 .cell{
 	border: 1px solid white;
 	/*max-width: 65px !important;*/
+	text-align: center;
+	vertical-align: middle;
+	height: 100px;
+	
+	padding-left: 2px !important;
+	padding-right: 2px !important;
+	padding-top: 10px !important;
+	padding-bottom: 10px !important;
+	line-height: 15px;
 }
 
 .cell-full{
@@ -32,6 +41,7 @@
 
 .section-button{
 	border: 1px solid #525252;
+	min-height: 50px !important;
 }
 
 .section-active{
@@ -57,7 +67,7 @@
 	margin-left: -15px;
 	margin-right: -15px;
 	padding-left: 0px !important;
-	padding-right: 0px !important;
+	padding-right: 10px !important;
 	background-color: #313131;
 	min-height: 24px;
 	color: white;
@@ -169,7 +179,8 @@
 .newborn-group-table{
 	text-align: center; 
     vertical-align: middle;
-	background: #313131 !important;
+	border-top: 1px solid #313131 !important;
+	/* background: #313131 !important; */
 	
 }
 
@@ -181,6 +192,7 @@
 .nomad-piglets-row{
 	border-bottom: 1px solid;
 	border-right: 1px solid;
+	min-height: 70px;
 }
 
 .input-group{
@@ -217,20 +229,25 @@
 }
 
 .cell-setion-number{
-	font-size: 12px;
+	font-size: 13px;
+	
 }
 
 .cell-sow-farmId{
-	font-size: 11px;
+	font-size: 13px;
+	font-weight: bold;
 }
 
 .cell-sow-status{
-	font-size: 9px;
+	font-size: 10px;
+	color: #b8b800;
+	font-weight: bold;
 }
 
 .cell-tour{
-	font-size: 8px;
+	font-size: 10px;
 	font-weight: bold;
+	color: #0a3382;
 }
 
 .cell-piglets-count{
@@ -242,4 +259,72 @@
 	/* flex: 1 !important; */
 	overflow-y: scroll !important;
 	height: 400px;
+}
+
+.whois{
+	float: right;
+}
+
+.div-cells{
+	overflow-y: scroll !important;
+	height: 400px;
+}
+
+.thead-dark th{
+	background-color: #313131 !important;
+}
+
+.table-balances{
+	font-size: 17px;
+}
+
+.table-balances td{
+	font-size: 19px;
+	font-weight: bold;
+}
+
+.block-border{
+	border-top: 1px solid #313131 !important;
+}
+
+.table{
+	text-align: center; 
+    vertical-align: middle;
+}
+
+.created-nomads-table{
+	border-top: 1px solid #313131 !important;
+}
+
+.created-nomads-table td{
+	border-top: 1px solid #313131 !important;
+}
+
+hr {
+	border-top: 2px solid #313131 !important;
+}
+
+.error-message{
+	color: red;
+	font-weight: bold;
+}
+
+.span-block{
+	display: block;
+}
+
+.sow-list-farm-id{
+	font-size: 20px;
+}
+
+.td-piglets-tour{
+	font-size: 10px;
+}
+
+.gilts-quantity{
+	font-size: 15px;
+}
+
+.btn-weaning{
+	
 }

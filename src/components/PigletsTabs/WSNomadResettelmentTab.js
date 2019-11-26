@@ -15,6 +15,7 @@ class WSNomadResettelmentTab extends Component {
       quantity: 0,
     }
     this.setData = this.setData.bind(this);
+    this.checked = this.checked.bind(this);
     this.clickSection = this.clickSection.bind(this);
     this.clickCell = this.clickCell.bind(this);
     this.clickPiglets = this.clickPiglets.bind(this);
@@ -24,13 +25,19 @@ class WSNomadResettelmentTab extends Component {
   componentDidMount() {
     this.props.getPiglets({status_title: "Взвешены, готовы к заселению",
       by_workshop_number: this.props.workshopNumber})
-    this.props.getSections({workshop: this.props.workshopNumber})
   }
 
   setData (e) {
     this.setState({
       ...this.state,
       [e.target.name]: e.target.value
+    })
+  }
+
+  checked () {
+    this.setState({
+      ...this.state,
+      splitLabel: !this.state.splitLabel
     })
   }
 
@@ -115,6 +122,8 @@ class WSNomadResettelmentTab extends Component {
                 clickSection={this.clickSection}
               />
             <PigletsCells
+              isSection={this.state.activeSectionId}
+              fetching={this.props.locationsFetching}
               locations={locations}
               activeCellIds={[this.state.activeCellId]}
               clickLocation={this.clickCell}
@@ -124,21 +133,19 @@ class WSNomadResettelmentTab extends Component {
                 <div className="input-group-append">
                   <label>Разделить</label>
                   <input type='checkbox' 
-                      onChange={this.setData}
-                      name='splitLabel' value={!this.state.splitLabel}/>
-                </div>
-                
-                <div className="input-group-append">
+                      onChange={this.checked}
+                      name='splitLabel'  checked={this.state.splitLabel}/>
+               
                   {this.state.splitLabel && 
                     <input type='text' 
                         onChange={this.setData} 
                         name='quantity' value={this.state.quantity}/>}
+                </div>
                   <button className='btn btn-outline-secondary' type='button'
                     onClick={this.clickSetlle}
                     >
                       Разместить группу
                   </button>
-                </div>
               </div>
               :
               this.props.message ? <p>{this.props.message}</p> : <p>Выберите группу поросят</p>

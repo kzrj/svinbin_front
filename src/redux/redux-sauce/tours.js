@@ -16,7 +16,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
     fetching: false,
     list: [],
-    error: ''
+    errorList: null
 })
 
 /* ------------- Selectors ------------- */
@@ -32,11 +32,11 @@ export const getToursRequest = (state, { payload }) => {
 }
 
 export const getToursSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, list: payload })
+    return state.merge({ fetching: false, errorList: null, list: payload })
 }
 
 export const getToursFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, list: [] })
+    return state.merge({ fetching: false, errorList: error, list: [] })
 }
 
 /* ------------- Hookup Reducers To Types ------------- */

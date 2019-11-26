@@ -41,11 +41,14 @@ export const INITIAL_STATE = Immutable({
     eventFetching: false,
     listFetching: false,
     list: [],
+    errorList: null,
+
     nomadGroup: null,
     weighing: null,
     event: null,
-    message: null,
-    error: ''
+    errorEvent: null,
+
+    message: '',
 })
 
 /* ------------- Selectors ------------- */
@@ -67,11 +70,11 @@ export const getNomadPigletsRequest = (state, { payload }) => {
 }
 
 export const getNomadPigletsSuccess = (state, { payload }) => {
-    return state.merge({ listFetching: false, error: null, list: payload })
+    return state.merge({ listFetching: false, errorList: null, list: payload })
 }
 
 export const getNomadPigletsFail = (state, { error }) => {
-    return state.merge({ listFetching: false, error, list: [] })
+    return state.merge({ listFetching: false, errorList:error, list: [] })
 }
 
 // Weighing
@@ -80,12 +83,12 @@ export const weighingPigletsRequest = (state, { payload }) => {
 }
 
 export const weighingPigletsSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, errorEvent: null, nomadGroup: payload.piglets_group, 
         weighing: payload.weighing_record, message: payload.message })
 }
 
 export const weighingPigletsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, error, nomadGroup: null, 
+    return state.merge({ eventFetching: false, errorEvent:error, nomadGroup: null, 
         weighing: null })
 }
 
@@ -95,12 +98,12 @@ export const cullingPigletsRequest = (state, { payload }) => {
 }
 
 export const cullingPigletsSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, errorEvent: null, nomadGroup: payload.piglets_group, 
         event: payload.culling })
 }
 
 export const cullingPigletsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, error, nomadGroup: null, 
+    return state.merge({ eventFetching: false, errorEvent:error, nomadGroup: null, 
         event: null })
 }
 
@@ -110,12 +113,12 @@ export const cullingGiltPigletsRequest = (state, { payload }) => {
 }
 
 export const cullingGiltPigletsSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, errorEvent: null, nomadGroup: payload.piglets_group, 
         event: payload.culling, message: payload.message })
 }
 
 export const cullingGiltPigletsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, error, nomadGroup: null, 
+    return state.merge({ eventFetching: false, errorEvent: error, nomadGroup: null, 
         event: null })
 }
 
@@ -125,12 +128,12 @@ export const moveGroupFromCellToCellRequest = (state, { payload }) => {
 }
 
 export const moveGroupFromCellToCellSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, errorEvent: null, nomadGroup: payload.piglets_group, 
         event: payload.transaction })
 }
 
 export const moveGroupFromCellToCellFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, error, nomadGroup: null, 
+    return state.merge({ eventFetching: false, errorEvent: error, nomadGroup: null, 
         event: null })
 }
 
@@ -140,12 +143,12 @@ export const moveToPigletsRequest = (state, { payload }) => {
 }
 
 export const moveToPigletsSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, errorEvent: null, nomadGroup: payload.piglets_group, 
         event: payload.transaction })
 }
 
 export const moveToPigletsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, error, nomadGroup: null, 
+    return state.merge({ eventFetching: false, errorEvent: error, nomadGroup: null, 
         event: null })
 }
 
@@ -155,12 +158,12 @@ export const moveToCellPigletsRequest = (state, { payload }) => {
 }
 
 export const moveToCellPigletsSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, error: null, nomadGroup: payload.piglets_group, 
+    return state.merge({ eventFetching: false, errorEvent: null, nomadGroup: payload.piglets_group, 
         event: payload.transaction, message: payload.message })
 }
 
 export const moveToCellPigletsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, error, nomadGroup: null, 
+    return state.merge({ eventFetching: false, errorEvent: error, nomadGroup: null, 
         event: null, })
 }
 

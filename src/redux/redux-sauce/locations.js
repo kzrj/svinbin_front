@@ -20,11 +20,13 @@ export default Creators
 export const INITIAL_STATE = Immutable({
     fetching: false,
     list: [],
+    errorList: null,
 
     additional_list: [],
     fetchingAdditional: false,
+    errorAdditional: null,
 
-    error: ''
+    message: ''
 })
 
 /* ------------- Selectors ------------- */
@@ -41,11 +43,11 @@ export const getLocationsRequest = (state, { payload }) => {
 }
 
 export const getLocationsSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, list: payload })
+    return state.merge({ fetching: false, errorList: null, list: payload })
 }
 
 export const getLocationsFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, list: [] })
+    return state.merge({ fetching: false, errorList: error, list: [] })
 }
 
 export const getLocationsAdditionalRequest = (state, { payload }) => {
@@ -53,11 +55,12 @@ export const getLocationsAdditionalRequest = (state, { payload }) => {
 }
 
 export const getLocationsAdditionalSuccess = (state, { payload }) => {
-    return state.merge({ fetchingAdditional: false, error: null, additional_list: payload })
+    return state.merge({ fetchingAdditional: false, errorAdditional: null, 
+        additional_list: payload })
 }
 
 export const getLocationsAdditionalFail = (state, { error }) => {
-    return state.merge({ fetchingAdditional: false, error, additional_list: [] })
+    return state.merge({ fetchingAdditional: false, errorAdditional: error, additional_list: []})
 }
 
 /* ------------- Hookup Reducers To Types ------------- */

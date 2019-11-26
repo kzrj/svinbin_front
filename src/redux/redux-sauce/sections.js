@@ -6,6 +6,7 @@ const { Types, Creators } = createActions({
     getSectionsRequest: ['payload'],
     getSectionsFail: ['error'],
     getSectionsSuccess: ['payload'],
+
     getSectionsAdditionalRequest: ['payload'],
     getSectionsAdditionalFail: ['error'],
     getSectionsAdditionalSuccess: ['payload'],
@@ -19,11 +20,13 @@ export default Creators
 export const INITIAL_STATE = Immutable({
     fetching: false,
     list: [],
+    errorList: null,
 
     additional_list: [],
     fetchingAdditional: false,
+    errorAdditional: null,
 
-    error: ''
+    message: ''
 })
 
 /* ------------- Selectors ------------- */
@@ -40,11 +43,11 @@ export const getSectionsRequest = (state, { payload }) => {
 }
 
 export const getSectionsSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, error: null, list: payload })
+    return state.merge({ fetching: false, errorList: null, list: payload })
 }
 
 export const getSectionsFail = (state, { error }) => {
-    return state.merge({ fetching: false, error, list: [] })
+    return state.merge({ fetching: false, errorList: error, list: [] })
 }
 
 export const getSectionsAdditionalRequest = (state, { payload }) => {
@@ -52,11 +55,12 @@ export const getSectionsAdditionalRequest = (state, { payload }) => {
 }
 
 export const getSectionsAdditionalSuccess = (state, { payload }) => {
-    return state.merge({ fetchingAdditional: false, error: null, additional_list: payload })
+    return state.merge({ fetchingAdditional: false, errorAdditional: null, 
+        additional_list: payload })
 }
 
 export const getSectionsAdditionalFail = (state, { error }) => {
-    return state.merge({ fetchingAdditional: false, error, additional_list: [] })
+    return state.merge({ fetchingAdditional: false, errorAdditional: error, additional_list: [] })
 }
 
 /* ------------- Hookup Reducers To Types ------------- */

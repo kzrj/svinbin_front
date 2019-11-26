@@ -28,3 +28,12 @@ export function* getInfoWs3(api, action) {
         yield put(WSDataActions.getInfoWs3Fail(err))
     }
 }
+
+export function* getBalancesByToursWs3(api, action) {
+    try {
+        let response = yield call(api.getBalancesByToursWs3, action.payload);
+        yield put(WSDataActions.getBalancesByToursWs3Success(response));
+    } catch (err) {
+        yield put(WSDataActions.getBalancesByToursWs3Fail(err))
+    }
+}
