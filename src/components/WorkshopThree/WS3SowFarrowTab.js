@@ -1,47 +1,72 @@
 import React, { Component } from 'react';
 
+import { toggleArray } from '../../components/utils'
 //components
-import { SowCells, Sections } from '../Locations'
+import { SowTable }  from '../../components/SowRepresentations'
+import { SowFarmIdFilter, SowTourFilter, SowSectionFilter }  from '../../components/FiltersAndInputs'
 
 class WS3SowFarrowTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      activeSow: null,
-      activeSectionId: null,
-      activeCellLocationId: null,
       current_total_piglets: null,
       total_piglets: 0,
       mummy_piglets: 0,
       dead_piglets: 0,
       alive_piglets: 0,
       date: null,
+
+      choosedSows: [],
+      query: {
+        tour: null,
+      },
+      activeSowFarmId: ''
     }
-    this.clickSection = this.clickSection.bind(this);
-    this.clickCellLocation = this.clickCellLocation.bind(this);
+    this.setQuery = this.setQuery.bind(this);
+    this.sowClick = this.sowClick.bind(this);
     this.decreasePiglets = this.decreasePiglets.bind(this);
     this.increasePiglets = this.increasePiglets.bind(this);
     this.clickFarrow = this.clickFarrow.bind(this);
   }
 
-  clickSection (e) {
-    const { sectionId } = e.target.dataset
+  componentDidMount() {
     this.setState({
       ...this.state,
-      activeSectionId: sectionId
+      query: {
+        ...this.state.query,
+        by_section: this.props.sectionId,
+        status_title: this.props.statusTitleFilter
+      }
     })
-
-    this.props.getLocations({by_section: sectionId})
+    this.props.getSows({
+      by_section: this.props.sectionId,
+      status_title: this.props.statusTitleFilter})
   }
 
-  clickCellLocation (location) {
+  setQuery (e) {
+    let { query } = this.state
+    query[e.target.name] = e.target.value
+
     this.setState({
       ...this.state,
-      activeCellLocationId: location.id,
-      activeSow: location.sow_set.length > 0 ?
-       location.sow_set[0] : null,
-      current_total_piglets: location.newbornpigletsgroup_set.length > 0 ?
-        location.newbornpigletsgroup_set[0].quantity : 0
+      query: query,
+      choosedSows: [],
+      needToRefresh: true
+    })
+  }
+
+  sowClick (e) {
+    this.setState({
+      ...this.state,
+      choosedSows: [e.target.dataset.id,],
+      activeSowFarmId: e.target.dataset.farm_id,
+    })
+  }
+
+  setData (e) {
+    this.setState({
+      ...this.state,
+      [e.target.name]: e.target.value
     })
   }
 
@@ -65,7 +90,7 @@ class WS3SowFarrowTab extends Component {
 
   clickFarrow () {
     this.props.sowFarrow({
-      id: this.state.activeSow.id,
+      id: this.state.choosedSows[0],
       dead_quantity: this.state.dead_piglets,
       mummy_quantity: this.state.mummy_piglets,
       alive_quantity: this.state.alive_piglets,
@@ -82,117 +107,107 @@ class WS3SowFarrowTab extends Component {
     })
   }
 
-  refreshLocations () {
+  refreshSowsList () {
     if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        if (this.state.activeSectionId){
-          this.props.getLocations({by_section: this.state.activeSectionId})
-            }
-        }, 500)
+        this.props.getSows(this.state.query)  
+      }, 500)
     }
   }
 
   render() {
-    const { sections, locations } = this.props
-    this.refreshLocations()
+    const { sows, tours, sections, eventError } = this.props
+    this.refreshSowsList()
     
     return (
-        <div className='row workshop-content'>
-          <div className='col-8'>
-            <Sections 
-              sections={sections}
-              fetching={this.props.sectionsFetching}
-              activeSectionId={this.state.activeSectionId}
-              clickSection={this.clickSection}
-              error={this.props.sectionsListError}
-            />
-            <SowCells 
-              isSection={this.state.activeSectionId}
-              locations={locations}
-              fetching={this.props.locationsFetching}
-              activeCellIds={[this.state.activeCellLocationId]}
-              clickLocation={this.clickCellLocation}
-              error={this.props.locationsListError}
-            />
+      <div className='workshop-content'>
+        <div>
+          <div className='commonfilter row'>
+            <label className='sow-event-label'>Фильтр</label>
+            <SowFarmIdFilter setQuery={this.setQuery} />
+            <SowTourFilter tours={tours} setQuery={this.setQuery}/>
+            <SowSectionFilter sections={sections} setQuery={this.setQuery} />
           </div>
-          <div className='col-4'>
-              {this.state.activeSow && 
+          <div>
+            <div className="input-group row">
+              <div className='col-3'>
+                <h4>Свиноматка {this.state.activeSowFarmId}</h4>
+                <p>Поросят  {this.state.total_piglets}</p>
+                <button onClick={this.clickFarrow}
+                  className="btn btn-outline-secondary btn-sm" type="button" >
+                  Записать данные
+                </button>
+                {eventError}
+              </div>
+              
+              <div className='farrow-button-block col-3'>
+                <label>Живые {this.state.alive_piglets}</label>
                 <div>
-                  <h3>Свиноматка {this.state.activeSow.farm_id}</h3>
-                  <p>{this.state.activeSow.status}</p>
-                  <table className='table table-sm'>
-                    <tbody>
-                      <tr>
-                        <td>Живых поросят в клетке</td>
-                        <td>{this.state.current_total_piglets}</td>
-                      </tr>
-                      <tr>
-                        <td>Общее число поросят в опоросе</td>
-                        <td>{this.state.total_piglets}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div className='farrow-button-block'>
-                    <p>Живые {this.state.alive_piglets}</p>
-                    <div className='row'>
-                      <div className='col-6 btn btn-dark btn-inc-dec'
-                        onClick={this.increasePiglets}
-                        data-label='alive_piglets'
-                      >
-                        +
-                      </div>
-                      <div className='col-6 btn btn-dark btn-inc-dec'
-                        onClick={this.decreasePiglets}
-                        data-label='alive_piglets'
-                      >
-                        -
-                      </div>
-                    </div>
+                  <div className='col-5 btn btn-dark btn-inc-dec'
+                    onClick={this.increasePiglets}
+                    data-label='alive_piglets'
+                  >
+                    +
                   </div>
-
-                  <div className='farrow-button-block'>
-                    <p>Мертворожденные {this.state.dead_piglets}</p>
-                    <div className='row'>
-                      <div className='col-6 btn btn-dark btn-inc-dec'
-                        onClick={this.increasePiglets}
-                        data-label='dead_piglets'
-                      >
-                        +
-                      </div>
-                      <div className='col-6 btn btn-dark btn-inc-dec'
-                        onClick={this.decreasePiglets}
-                        data-label='dead_piglets'
-                      >
-                        -
-                      </div>
-                    </div>
+                  <div className='col-5 btn btn-dark btn-inc-dec'
+                    onClick={this.decreasePiglets}
+                    data-label='alive_piglets'
+                  >
+                    -
                   </div>
-
-                  <div className='farrow-button-block'>
-                    <p>Муммии {this.state.mummy_piglets}</p>
-                    <div className='row'>
-                      <div className='col-6 btn btn-dark btn-inc-dec'
-                        onClick={this.increasePiglets}
-                        data-label='mummy_piglets'
-                      >
-                        +
-                      </div>
-                      <div className='col-6 btn btn-dark btn-inc-dec'
-                        onClick={this.decreasePiglets}
-                        data-label='mummy_piglets'
-                      >
-                        -
-                      </div>
-                    </div>
-                  </div>
-                  <button onClick={this.clickFarrow}
-                    className="btn btn-outline-secondary btn-lg" type="button" >
-                    Записать данные
-                  </button>
                 </div>
-              }
+              </div>
+
+              <div className='farrow-button-block col-3'>
+                <label>Мертвые {this.state.dead_piglets}</label>
+                <div >
+                  <div className='col-5 btn btn-dark btn-inc-dec'
+                    onClick={this.increasePiglets}
+                    data-label='dead_piglets'
+                  >
+                    +
+                  </div>
+                  <div className='col-5 btn btn-dark btn-inc-dec'
+                    onClick={this.decreasePiglets}
+                    data-label='dead_piglets'
+                  >
+                    -
+                  </div>
+                </div>
+              </div>
+              
+              <div className='farrow-button-block col-3'>
+                <label>Муммии {this.state.mummy_piglets}</label>
+                <div>
+                  <div className='col-5 btn btn-dark btn-inc-dec'
+                    onClick={this.increasePiglets}
+                    data-label='mummy_piglets'
+                  >
+                    +
+                  </div>
+                  <div className='col-5 btn btn-dark btn-inc-dec'
+                    onClick={this.decreasePiglets}
+                    data-label='mummy_piglets'
+                  >
+                    -
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+        <div className='commonfilter-results'>
+          <div className='count row'>
+              <div className='col-6'>
+                Выбрано {this.state.choosedSows.length} из {sows.length}
+              </div>
+            </div>
+          {this.props.sowsListFetching ? 
+            <p className='loading'>Загрузка</p> :
+            <SowTable sows={sows} sowClick={this.sowClick} 
+              choosedSows={this.state.choosedSows}/>}
+        </div>
       </div>
     )
   }

@@ -51,6 +51,7 @@ class WorkshopThreeContainer extends Component {
   
   componentDidMount() {
     this.props.getSections({workshop: 3})
+    this.props.getTours()
   }
 
   setTab (tab) {
@@ -227,16 +228,23 @@ class WorkshopThreeContainer extends Component {
           />}
 
         { this.state.tabs.farrowTab && 
-          <WS3SowFarrowTab 
-            getSections={this.props.getSections}
+          <WS3SowFarrowTab
+            workshopNumber={3}
+            statusTitleFilter={'Супорос 35'}
+            sectionId={6}
+
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sowsFetching={this.props.state.sows.fetching}
+            sowsError={this.props.state.sows.error}
+
+            tours={this.props.state.tours.list}
+            toursFetching={this.props.state.tours.fetching}
+            toursError={this.props.state.tours.error}
+
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
             sectionsListError={this.props.state.sections.errorList}
-
-            getLocations={this.props.getLocations}
-            locations={this.props.state.locations.list}
-            locationsFetching={this.props.state.locations.fetching}
-            locationsListError={this.props.state.locations.errorList}
 
             sowFarrow={this.props.sowFarrow}
             eventFetching={this.props.state.sows.eventFetching}

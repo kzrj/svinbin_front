@@ -88,7 +88,7 @@ export class SowFarmIdFilter extends Component {
     render() {
       return (
           <div className="input-group mb-3 col-3">
-            <input type="text" className="form-control" placeholder="Farm ID"
+            <input type="number" className="form-control" placeholder="Farm ID"
               aria-label="Farmid" aria-describedby="basic-addon1" name='farm_id_starts'
               onChange={this.props.setQuery} />
           </div>
@@ -112,8 +112,22 @@ render() {
         </select>
     </div>
     )
+    }
 }
-}
+
+export const SowSectionFilter = (props) => (
+    <div className="input-group mb-3 col-3">
+        <select className="custom-select" id="inputGroupSelect01" name='by_section'
+            onChange={props.setQuery}>
+            {/* <option selected value=''>Выбрать секцию</option> */}
+            {props.sections.map(section =>
+            <option value={section.id} key={section.id}>
+                Секция {' '} {section.number}
+            </option>
+            )}
+        </select>
+    </div>
+    )
 
 export class SowSeminatedFilter extends Component {
 render() {

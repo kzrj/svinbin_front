@@ -97,7 +97,7 @@ export class SowToursData extends Component {
            <th scope="col">Осеменения</th>
            <th scope="col">УЗИ 28</th>
            <th scope="col">УЗИ 35</th>
-           <th scope="col">Выбрать</th>
+           <th scope="col">Местоположение</th>
          </tr>
        </thead>
        <tbody>
@@ -117,30 +117,31 @@ export class SowToursData extends Component {
     
     return (
      <tr key={sow.id} className={sowClassName} >
-       <th scope="row" onClick={sowClick} data-id={sow.id}>{sow.farm_id}</th>
-       <td onClick={sowClick} data-id={sow.id}>{sow.status}</td>
-       <td onClick={sowClick} data-id={sow.id}>{sow.tour ? sow.tour : '-'}</td>
-       <td onClick={sowClick} data-id={sow.id} className="sow-row-date">
+       <th scope="row" onClick={sowClick} data-id={sow.id} data-farm_id={sow.farm_id}>{sow.farm_id}</th>
+       <td onClick={sowClick} data-id={sow.id} data-farm_id={sow.farm_id}>{sow.status}</td>
+       <td onClick={sowClick} data-id={sow.id} data-farm_id={sow.farm_id}>{sow.tour ? sow.tour : '-'}</td>
+       <td onClick={sowClick} data-id={sow.id} data-farm_id={sow.farm_id} className="sow-row-date">
          {sow.seminations_current_tour.length > 0 ? 
            <ul className='sow-seminations' onClick={sowClick}>
-             {sow.seminations_current_tour.map(seminationDate => <li onClick={sowClick}>{seminationDate}</li> )}
+             {sow.seminations_current_tour.map(seminationDate => <li onClick={sowClick}>
+              {seminationDate}</li> )}
            </ul>
            : '-'
          }
        </td>
-       <td onClick={sowClick} data-id={sow.id} className="sow-row-date">
+       <td onClick={sowClick} data-id={sow.id} data-farm_id={sow.farm_id} className="sow-row-date">
          {sow.ultrasound_30_current_tour.length > 0 ? 
              sow.ultrasound_30_current_tour.map(usound30Date => usound30Date)
              : '-'
            }
        </td>
-       <td onClick={sowClick} data-id={sow.id} className="sow-row-date">
+       <td onClick={sowClick} data-id={sow.id} data-farm_id={sow.farm_id} className="sow-row-date">
          {sow.ultrasound_60_current_tour.length > 0 ? 
              sow.ultrasound_60_current_tour.map(usound60Date => usound60Date)
              : '-'
            }
        </td>
-       <td >-</td>
+       <td onClick={sowClick} data-id={sow.id} data-farm_id={sow.farm_id}>{sow.location}</td>
      </tr>
     )
   }

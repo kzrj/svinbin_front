@@ -166,6 +166,7 @@
 .btn-inc-dec{
 	font-weight: bold !important;
 	font-size: 25px !important;
+	margin-right: 10px !important;
 }
 
 .bottom-buttons-block{
@@ -215,7 +216,7 @@
 .farrow-button-block{
 	margin-bottom: 10px;
 	padding-bottom: 10px;
-	border-bottom: 1px solid #525252;
+	
 }
 
 .info-table-head{
