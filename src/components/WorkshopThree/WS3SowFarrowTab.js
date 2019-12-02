@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import { toggleArray } from '../../components/utils'
 //components
 import { SowTable }  from '../../components/SowRepresentations'
 import { SowFarmIdFilter, SowTourFilter, SowSectionFilter }  from '../../components/FiltersAndInputs'

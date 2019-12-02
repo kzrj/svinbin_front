@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 //components
-import { SowCells, Sections } from '../Locations'
-import { SowFindById } from '../FiltersAndInputs'
+import { SowCells, Sections, SectionsWs3 } from '../Locations'
+import { SowFindById, SowFindByIdWithoutGet } from '../FiltersAndInputs'
 
 
 class WS3SowIncomeTab extends Component {
@@ -15,18 +15,28 @@ class WS3SowIncomeTab extends Component {
         ordering: 'tour'
       },
       activeSectionId: null,
+      activeSectionLocationId: null,
       activeCellId: null,
+      activeSowId: null,
       needToRefresh: false
     }
     this.clickSection = this.clickSection.bind(this);
-    this.clickCell = this.clickCell.bind(this);
     this.getSowsById = this.getSowsById.bind(this);
     this.clickSetlle = this.clickSetlle.bind(this);
+    this.clickSow = this.clickSow.bind(this);
     this.refreshData = this.refreshData.bind(this);
   }
   
   componentDidMount() {
     this.props.getSows(this.state.query)
+  }
+
+  clickSow (e) {
+    this.setState({
+      ...this.state,
+      activeSowId: e.target.dataset.id
+    })
+    console.log('click sow')
   }
 
   getSowsById (e) {
@@ -39,28 +49,23 @@ class WS3SowIncomeTab extends Component {
     this.props.getSows(query)
   }
 
-  clickCell (location) {
-    this.setState({
-      ...this.state,
-      activeCellId: location.id,
-    })
-  }
-
   clickSection (e) {
-    const { sectionId } = e.target.dataset
+    const { sectionId, locationId } = e.target.dataset
     this.setState({
       ...this.state,
-      activeSectionId: sectionId
+      activeSectionId: sectionId,
+      activeSectionLocationId: locationId
     })
-    this.props.getLocations({by_section: sectionId})
+    console.log(this.state)
   }
 
   clickSetlle () {
-    const { activeCellId } = this.state
-    this.props.sowMoveTo({id: this.props.sow.id, location: activeCellId})
+    const { activeSectionLocationId } = this.state
+    this.props.sowMoveTo({id: this.props.sow.id, location: activeSectionLocationId})
     this.setState({
-      query: {by_workshop_number: 3, farm_id_starts: ''},
+      ...this.state,
       activeCellId: null,
+      activeSectionLocationId:null,
       needToRefresh: true
     })
   }
@@ -70,15 +75,14 @@ class WS3SowIncomeTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)
-        if (this.state.activeSectionId) {
-          this.props.getLocations({by_section: this.state.activeSectionId})}
+        this.props.getSections({workshop: 3})
       }, 500)
     }
   }
 
   render() {
     this.refreshData()
-    const { sows, sow, sections, locations } = this.props
+    const { sows, sow, sections } = this.props
     return (
         <div className='row workshop-content'>
           <div className='col-3 workshop-left-column'>
@@ -93,24 +97,13 @@ class WS3SowIncomeTab extends Component {
               />
           </div>
           <div className='col-9 workshop-right-column'>
-            <Sections 
-              sections={sections}
-              fetching={this.props.sectionFetching}
-              activeSectionId={this.state.activeSectionId} 
-              clickSection={this.clickSection}
-              error={this.props.sectionsListError}
-              />
-            <SowCells
-              isSection={this.state.activeSectionId}
-              locations={locations}
-              clickLocation={this.clickCell}
-              fetching={this.props.locationsFetching}
-              activeCellIds={[this.state.activeCellId]}
-              error={this.props.locationsListError}
-              />
+            <SectionsWs3 
+              sections={sections} 
+              activeSectionId={this.state.activeSectionId}
+              clickSection={this.clickSection}/>
             <div className='bottom-buttons-block'>
               <div className="input-group">
-                {this.state.activeCellId && this.props.sow &&
+                {this.state.activeSectionLocationId && this.props.sow &&
                   <button onClick={this.clickSetlle} className='btn btn-outline-secondary'>
                     Разместить свиноматку
                   </button>

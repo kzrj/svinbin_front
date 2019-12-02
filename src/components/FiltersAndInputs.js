@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
+
 
 export class SowFindById extends Component {
-
-    // const tour = sow ? sow.tour && sow.tour.replace(' 2019г','') : null
-
     render() {
       const { sows, sow, fetching, sowIdValue, error } = this.props
        
@@ -24,6 +23,57 @@ export class SowFindById extends Component {
                         'sow-li text-center'} 
                         key={sowInList.id} 
                         onClick={() => this.props.getSow(sowInList.id)}>
+                        <span className='sow-list-farm-id'>{sowInList.farm_id}</span>
+                        <span className='span-block span sow-list-tour'>
+                            {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}</span>
+                        </li>)
+                    :
+                    <p className='error-message'>{error}</p>
+                }
+                </ul>
+            </div>
+         </div>
+      )
+    }
+   }
+
+   export class SowFindByIdWithoutGet extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          activeSowId: null,
+        }
+        this.clickSow = this.clickSow.bind(this);
+      }
+
+    clickSow (e) {
+        this.setState({
+          ...this.state,
+          activeSowId: e.target.dataset.id
+        })
+      }
+    render() {
+      const { sow, sows, fetching, sowIdValue, error } = this.props
+       
+      return (
+         <div className='workshop-content-column-1'>
+            <div class="input-group mb-3">
+                <input type='number' onChange={this.props.getSowsById} 
+                className="form-control search-input" value={sowIdValue}
+                placeholder="Поиск по ID"/>
+            <label>Количество: {sows.length}</label>
+            </div>
+            <div className='div-scroll'>
+                <ul className='list-unstyled'>
+                {!error ? fetching ? <p className='loading'>Загрузка</p> :
+                    sows.length > 0 && sow && sows.asMutable().map(sowInList => 
+                        <li className={sowInList.id == sow.id ? 
+                                'sow-active sow-li text-center' :
+                                'sow-li text-center'} 
+                            key={sowInList.id}
+                            data-id={sowInList.id}
+                            onClick={() => this.props.setSow()}
+                            >
                         <span className='sow-list-farm-id'>{sowInList.farm_id}</span>
                         <span className='span-block span sow-list-tour'>
                             {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}</span>

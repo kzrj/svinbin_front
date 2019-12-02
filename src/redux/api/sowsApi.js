@@ -465,6 +465,11 @@ const create = () => {
         })
     }
 
+    const setSow = sow => {
+        return sow
+    }
+
+
     return {
         getSows,
         getSow,
@@ -486,6 +491,7 @@ const create = () => {
         massInitTransfer,
         markAsNurse,
         importSeminationsFromFarm,
+        setSow,
 
         // init endpoints
         addNewSeminatedToWs1

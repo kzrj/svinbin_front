@@ -37,8 +37,8 @@ class WorkshopThreeContainer extends Component {
         comingSowsTab: false,
         transferTab: false,
         transferCellToWsTab: false,
-        farrowTab: true,
-        weaningSowsTab: false,
+        farrowTab: false,
+        weaningSowsTab: true,
         recountTab: false,
         weaningPigletsTab: false,
         createGiltTab: false,
@@ -73,6 +73,7 @@ class WorkshopThreeContainer extends Component {
         <div className='workshop-header'>
           Цех №3
           <button onClick={() => console.log(this.props.state)}>00</button>
+          {/* <button onClick={() => this.props.setSow()}>223</button> */}
           <WhoIs user={this.props.state.auth.user}/>
         </div>
         <div className='row workshop-menu'>
@@ -94,30 +95,30 @@ class WorkshopThreeContainer extends Component {
           >
             Поступление матки
           </div>
-          <div className={this.state.tabs.transferCellToWsTab ? 'workshop-tab tab-active col-sm' :
+          {/* <div className={this.state.tabs.transferCellToWsTab ? 'workshop-tab tab-active col-sm' :
            'workshop-tab col-sm'}
             onClick={() => this.setTab('transferCellToWsTab')}
           >
             Внутреннее перемещение(из клетки в цех)
-          </div>
-          <div className={this.state.tabs.transferTab ? 'workshop-tab tab-active col-sm' :
+          </div> */}
+          {/* <div className={this.state.tabs.transferTab ? 'workshop-tab tab-active col-sm' :
            'workshop-tab col-sm'}
             onClick={() => this.setTab('transferTab')}
           >
             Внутреннее перемещение
-          </div>
+          </div> */}
           <div className={this.state.tabs.farrowTab ? 'workshop-tab tab-active col-sm' : 
             'workshop-tab col-sm'}
             onClick={() => this.setTab('farrowTab')}
           >
             ОПОРОС
           </div>
-          <div className={this.state.tabs.recountTab ? 'workshop-tab tab-active col-sm' : 
+          {/* <div className={this.state.tabs.recountTab ? 'workshop-tab tab-active col-sm' : 
             'workshop-tab col-sm'}
             onClick={() => this.setTab('recountTab')}
           >
             Пересчет
-          </div>
+          </div> */}
           <div className={this.state.tabs.weaningSowsTab ? 'workshop-tab tab-active col-sm' : 
             'workshop-tab col-sm'}
             onClick={() => this.setTab('weaningSowsTab')}
@@ -170,6 +171,7 @@ class WorkshopThreeContainer extends Component {
             sow={this.props.state.sows.sow}
             sowFetching={this.props.state.sows.sowSingleFetching}
             sowsSingleError={this.props.state.sows.errorSingle}
+            setSow={this.props.setSow}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
@@ -253,16 +255,20 @@ class WorkshopThreeContainer extends Component {
           />}
 
         { this.state.tabs.weaningSowsTab && 
-          <WS3SowWeaningTab 
+          <WS3SowWeaningTab
+            workshopNumber={3}
+            statusTitleFilter={''}
+            sectionId={6}
+
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
             sectionsListError={this.props.state.sections.errorList}
 
-            getLocations={this.props.getLocations}
-            locations={this.props.state.locations.list}
-            locationsFetching={this.props.state.locations.fetching}
-            locationsListError={this.props.state.locations.errorList}
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            listFetching={this.props.state.sows.fetching}
+            sowsListError={this.props.state.sows.errorList}
 
             eventFetching={this.props.state.sows.eventFetching}
             massMove={this.props.sowsMoveMany}
@@ -413,6 +419,7 @@ const mapDispatchToProps = (dispatch) => ({
   sowFarrow: data => dispatch(SowsActions.sowFarrowRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
   markAsNurse: id => dispatch(SowsActions.markAsNurseRequest(id)),
+  setSow: () => dispatch(SowsActions.setSow()),
 
   // newborn piglets
   getNewbornPiglets: query => dispatch(NewbornPigletsActions.getNewbornPigletsRequest(query)),

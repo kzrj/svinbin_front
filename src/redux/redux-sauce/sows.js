@@ -70,6 +70,9 @@ const { Types, Creators } = createActions({
     markAsNurseRequest: ['payload'],
     markAsNurseFail: ['error'],
     markAsNurseSuccess: ['payload'],
+
+    setSow: [''],
+    resetSow: ['payload'],
 })
 
 export const SowsTypes = Types
@@ -151,6 +154,15 @@ export const getSowSuccess = (state, { payload }) => {
 
 export const getSowFail = (state, { error }) => {
     return state.merge({ sowSingleFetching: false, errorSingle: error, sow: null, tours_info: [] })
+}
+
+export const setSow = (state) => {
+    console.log('setSow Reducer')
+    return state.merge({ sow: 'hui', })
+}
+
+export const resetSow = (state, { payload }) => {
+    return state.merge({ sow: null, })
 }
 
 // Semination
@@ -425,4 +437,7 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MARK_AS_NURSE_REQUEST]: markAsNurseRequest,
     [Types.MARK_AS_NURSE_SUCCESS]: markAsNurseSuccess,
     [Types.MARK_AS_NURSE_FAIL]: markAsNurseFail,
+
+    [Types.SET_SOW]: setSow,
+    [Types.RESET_SOW]: resetSow,
 })

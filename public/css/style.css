@@ -329,3 +329,20 @@ hr {
 .btn-weaning{
 	
 }
+
+.section-ws3-button{
+	border: 1px solid #525252;
+	min-height: 100px !important;
+	margin-left: 10px !important;
+	margin-right: 10px !important;
+	margin-bottom: 10px !important;
+}
+
+.section-ws3-active{
+	background-color: #525252;
+	color: white !important;
+}
+
+.section-name{
+	font-weight: bold;
+}

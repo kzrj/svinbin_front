@@ -1,32 +1,54 @@
 import React, { Component } from 'react';
-import { toggleArray } from '../utils';
-
-//components
-import { SowCells, Sections } from '../Locations'
+import { toggleArray } from '../../components/utils'
+// components
+import { SowTable }  from '../../components/SowRepresentations'
+import { SowFarmIdFilter, SowTourFilter, SowSectionFilter }  from '../../components/FiltersAndInputs'
 
 
 class WS3SowWeaningTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      activeSows: [],
-      activeSectionId: 6,
-      activeLocationsIds: [],
-      addPiglets: false,
-      pigletsTour: null,
+      query: {
+        tour: null,
+      },
       needToRefresh: false,
+      choosedSows: [],
+      farmId: null,
     };
 
+    this.sowClick = this.sowClick.bind(this);
     this.massMove = this.massMove.bind(this);
     this.setData = this.setData.bind(this);
     this.markAsNurse = this.markAsNurse.bind(this);
+    this.setQuery = this.setQuery.bind(this);
     this.refreshSowsList = this.refreshSowsList.bind(this);
-    this.clickSection = this.clickSection.bind(this);
-    this.clickLocation = this.clickLocation.bind(this);
   }
 
   componentDidMount(){
+    this.setState({
+      ...this.state,
+      query: {
+        ...this.state.query,
+        by_section: this.props.sectionId,
+        
+      }
+    })
+    this.props.getSows({
+      by_section: this.props.sectionId,
+      })
     this.props.getTours()
+  }
+
+  setQuery (e) {
+    let { query } = this.state
+    query[e.target.name] = e.target.value
+    this.setState({
+      ...this.state,
+      query: query,
+      choosedSows: [],
+      needToRefresh: true
+    })
   }
 
   setData (e) {
@@ -35,57 +57,36 @@ class WS3SowWeaningTab extends Component {
       [e.target.name]: e.target.value
     })
   }
+
+  sowClick (e) {
+    let { choosedSows } = this.state
+    const { id } = e.target.dataset
+    choosedSows = toggleArray(choosedSows, id)
+    this.setState({
+      ...this.state,
+      choosedSows: choosedSows
+    })
+  }
   
-  clickSection (e) {
-    const { sectionId } = e.target.dataset
-    this.setState({
-      ...this.state,
-      activeSectionId: sectionId
-    })
-
-    this.props.getLocations({by_section: sectionId})
-  }
-
-  clickLocation (location) {
-    let { activeLocationsIds, activeSows } = this.state
-    activeLocationsIds = toggleArray(activeLocationsIds, location.id)
-    !location.is_sow_empty ?
-      activeSows = toggleArray(activeSows, location.sow_set[0].id) 
-      : null
-
-    this.setState({
-      ...this.state,
-      activeLocationsIds: activeLocationsIds,
-      activeSows: activeSows
-    })
-  }
-
   massMove () {
     const data = {
-      sows: this.state.activeSows,
+      sows: this.state.choosedSows,
       to_location: 1
     }
     this.props.massMove(data)
     this.setState({
-      activeSows: [],
-      activeSectionId: 6,
-      activeLocationsIds: [],
+      choosedSows: [],
       needToRefresh: true,
     })
   }
 
   markAsNurse () {
     this.props.markAsNurse({
-      id: this.state.activeSows[0],
-      piglets_tour: this.state.pigletsTour
+      id: this.state.choosedSows[0],
     })
     this.setState({
-      activeSows: [],
-      activeSectionId: 6,
-      activeLocationsIds: [],
+      choosedSows: [],
       needToRefresh: true,
-      addPiglets: false,
-      pigletsTour: null,
     })
   }
 
@@ -93,87 +94,48 @@ class WS3SowWeaningTab extends Component {
     if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        if (this.state.activeSectionId) {
-          this.props.getLocations({by_section: this.state.activeSectionId})}
+          this.props.getSows(this.state.query)
       }, 500)
     }
   }
 
   render() {
     this.refreshSowsList()
-    const { sections, locations, tours } = this.props
+    const { sows, tours, sections } = this.props
+    const { choosedSows } = this.state
     
     return (
-        <div className='row workshop-content'>
-          <div className='col-8'>
-          <Sections 
-              sections={sections}
-              fetching={this.props.sectionFetching}
-              activeSectionId={this.state.activeSectionId}
-              clickSection={this.clickSection}
-              error={this.props.sectionsListError}
-            />
-            <SowCells
-              isSection={this.state.activeSectionId}
-              locations={locations}
-              fetching={this.props.locationsFetching}
-              activeCellIds={this.state.activeLocationsIds}
-              activeCellId={null}
-              clickLocation={this.clickLocation}
-              error={this.props.locationsListError}
-            />
+      <div className='workshop-content'>
+        <div>
+          <div className='commonfilter row'>
+            <label className='sow-event-label'>Фильтр</label>
+            <SowFarmIdFilter setQuery={this.setQuery} />
+            <SowTourFilter tours={tours} setQuery={this.setQuery}/>
+            <SowSectionFilter setQuery={this.setQuery} sections={sections}/>
           </div>
-          <div className='col-4'>
-            <div>
-              Выбрано {this.state.activeSows.length} маток
-              {this.state.activeSows.length > 0 &&
-                <div className='bottom-buttons-block'>
-                  Перевести в ЦЕХ 1
-                  <div className="input-group">
-                    <div className="input-group-append">
-                      <button className="btn btn-outline-secondary" type="button" 
-                        onClick={this.massMove}>
-                        Перевести в ЦЕХ 1
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              }
+          <div className='row'>
+            <div className='col-6'>
+              <button className='btn btn-dark' 
+                onClick={this.massMove}>Перевести в Цех1</button>
             </div>
-            <hr/>
-            <div>
-              <p>Отметить как кормилицу. Добавить группу поросят.</p>
-              {this.state.activeSows.length === 1 ? 
-                <div>
-                  <div className="input-group">
-                    <label>Добавить пустую группу поросят c туром</label>
-                    <input type='checkbox' onChange={() => this.setState(
-                      {...this.state, addPiglets: !this.state.addPiglets})} 
-                      checked={this.state.addPiglets}
-                      />
-                    {this.state.addPiglets &&
-                      <select className="custom-select" id="inputGroupSelect01" 
-                        onChange={this.setData} name='pigletsTour'>
-                        <option selected value=''>Выбрать тур</option>
-                        {tours.map(tour =>
-                            <option value={tour.id} key={tour.id}>
-                            Неделя{tour.week_number}
-                            </option>
-                            )}
-                      </select>
-                    }
-                  </div>
-                  <button className="btn btn-outline-secondary" type="button" 
-                            onClick={this.markAsNurse}>
-                      Кормилица
-                  </button>
-                </div>
-                :
-                <p>Выберите одну клетку</p>
-              }
+            <div className='col-6'>
+              <button className='btn btn-dark' disabled={choosedSows.length !=1}
+                onClick={this.markAsNurse}>Отметить как кормилицу</button>
             </div>
           </div>
         </div>
+        <div className='commonfilter-results'>
+          <div className='count row'>
+              <div className='col-6'>
+                Выбрано {choosedSows.length} из {sows.length}
+              </div>
+            </div>
+          {this.props.sowsListFetching ? 
+            <p className='loading'>Загрузка</p> :
+            <SowTable sows={sows} sowClick={this.sowClick} 
+              choosedSows={choosedSows}/>}
+        </div>
+      </div>
     )
   }
 }

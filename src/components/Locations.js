@@ -161,3 +161,41 @@ export class SowCells extends Component {
       </div>
   )}
  }
+
+
+ export class SectionsWs3 extends Component {
+
+  render() {
+    const { sections, activeSectionId, fetching, error } = this.props
+     
+    return (
+      <div className='row'>
+        {!error ? 
+          fetching ? <p className='loading'>Загрузка</p> :
+            sections.map((section, key) => 
+              <div className={ activeSectionId == section.id ? 
+                'col-5 section-ws3-button section-ws3-active': 'col-5 section-ws3-button '
+                } onClick={this.props.clickSection}
+                data-section-id={section.id}
+                data-location-id={section.location}
+                key={key}>
+                <span className='section-name'>{section.name}</span>
+                {section.sows_count_by_tour.map(tour => 
+                  <div>
+                    <span className='section-tour' 
+                      onClick={this.props.clickSection}
+                      data-section-id={section.id}
+                      data-location-id={section.location}>Тур {tour.week_number} - </span>
+                    <span className='section-count-sows' 
+                      onClick={this.props.clickSection}
+                      data-section-id={section.id}
+                      data-location-id={section.location}> свиноматок {tour.count_sows}</span>
+                  </div>)}
+              </div>)
+          :
+          <p className='error-message'>{error}</p>
+        }
+      </div>
+    )
+  }
+ }
