@@ -86,3 +86,30 @@ export const getObjectbyId = (list, id) => {
   })
   return obj
 }
+
+export const toggleArrayDictById= (arr: Array<Object>, obj: Object) => {
+  let alreadyIn = false;
+  let index = -1;
+  for (var i = 0; i < arr.length; i++){
+    if (_.isEqual(arr[i], obj)){
+      alreadyIn = true;
+      index = i;
+      break;
+    }
+  }
+
+  for (var i = 0; i < arr.length; i++){
+    if (arr[i].id === obj.id){
+      alreadyIn = true;
+      index = i;
+      break;
+    }
+  }
+
+  if (alreadyIn){
+    arr.splice(index, 1);
+    return arr
+  } else {
+    return [...arr, obj]
+  }
+}

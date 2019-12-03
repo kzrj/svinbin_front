@@ -140,3 +140,57 @@ export const WeighingDetail = (props) => (
         </tbody>
     </table>
 )
+
+export class PigletsWeaningSectionsTable extends Component {
+  render() {
+    const { locations, activePigletsIds } = this.props
+    return (
+      <table className='table table-sm newborn-group-table'>
+        <tbody>
+          {locations.map(location => 
+            <td>
+              <tr>{location.section}</tr>
+              {location.piglets.length > 0 && location.piglets.map(piglets => 
+                <tr 
+                  className={activePigletsIds.includes(piglets.id) ? 
+                    'col-sm-1 cell cell-active' : 'col-sm-1 cell' } 
+                  onClick={() => this.props.clickPiglets(piglets)}>
+                  {piglets.quantity}
+                </tr>
+                )}
+            </td>)}
+        </tbody>
+      </table>
+    )
+  }
+ }
+
+
+ 
+export class PigletsWeaningInput extends Component {
+  render() {
+    return (
+    <table className='table table-sm'>
+      <tbody>
+        {this.props.piglets.map(piglets => 
+          <tr>
+            <td>{piglets.location}</td>
+            <td>{piglets.metatour_repr.map(tour => 
+              <span>{tour.tour}-{tour.percentage}</span>
+              )}
+            </td>
+            {/* <td>{piglets.quantity}</td> */}
+            <td>
+              <input type='number' 
+                onChange={this.props.setQuantity}
+                data-piglets-id={piglets.id}
+                defaultValue={piglets.quantity}
+                />
+            </td>
+          </tr>
+          )}
+      </tbody>
+    </table>
+    )
+  }
+}
