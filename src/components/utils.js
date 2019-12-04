@@ -90,13 +90,6 @@ export const getObjectbyId = (list, id) => {
 export const toggleArrayDictById= (arr: Array<Object>, obj: Object) => {
   let alreadyIn = false;
   let index = -1;
-  for (var i = 0; i < arr.length; i++){
-    if (_.isEqual(arr[i], obj)){
-      alreadyIn = true;
-      index = i;
-      break;
-    }
-  }
 
   for (var i = 0; i < arr.length; i++){
     if (arr[i].id === obj.id){

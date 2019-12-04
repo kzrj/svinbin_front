@@ -41,7 +41,8 @@ class WS3PigletsWeaningTab extends Component {
       id: piglets.id,
       quantity: piglets.quantity,
       metatour_repr: piglets.metatour_repr,
-      location: piglets.location
+      location: piglets.location,
+      changed: false
     }
     activePigletsInputList = toggleArrayDictById(activePigletsInputList, weaningRecord)
 
@@ -60,8 +61,11 @@ class WS3PigletsWeaningTab extends Component {
     // find weaning record in activePigletsInputList with id == pigletsId
     let weaningRecord = getObjectbyId(activePigletsInputList, pigletsId)
     // replace weaningRecord.quantity with e.target.value
-    weaningRecord.quantity = e.target.value
-    
+    if (weaningRecord.quantity >= e.target.value) {
+      weaningRecord.changed = true
+      weaningRecord.quantity = e.target.value
+    }
+
     this.setState({
       ...this.state,
       activePigletsInputList: activePigletsInputList

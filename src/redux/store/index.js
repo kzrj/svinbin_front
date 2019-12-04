@@ -13,15 +13,8 @@ export const reducers = combineReducers({
   sections: require('../redux-sauce/sections').reducer,
   tours: require('../redux-sauce/tours').reducer,
   sows: require('../redux-sauce/sows').reducer,
-  nomadPiglets: require('../redux-sauce/nomadPiglets').reducer,
-  newbornPiglets: require('../redux-sauce/newbornPiglets').reducer,
+  piglets: require('../redux-sauce/piglets').reducer,
   wsData: require('../redux-sauce/wsData').reducer,
-  ws4: require('../redux-sauce/ws4').reducer,
-  ws8: require('../redux-sauce/ws8').reducer,
-  ws5: require('../redux-sauce/ws5').reducer,
-  ws6: require('../redux-sauce/ws6').reducer,
-  ws7: require('../redux-sauce/ws7').reducer,
-  ws75: require('../redux-sauce/ws75').reducer,
   form: formReducer,
   // notifications: notifications
 })

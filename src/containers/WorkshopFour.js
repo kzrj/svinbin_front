@@ -12,8 +12,7 @@ import { WhoIs }  from '../components/CommonComponents'
 // actions
 import SectionsActions from '../redux/redux-sauce/sections';
 import LocationsActions from '../redux/redux-sauce/locations';
-import NomadPigletsActions from '../redux/redux-sauce/nomadPiglets';
-import Ws4Actions from '../redux/redux-sauce/ws4';
+import PigletsActions from '../redux/redux-sauce/piglets';
 
 
 class WorkshopFourContainer extends Component {
@@ -214,15 +213,15 @@ const mapDispatchToProps = (dispatch) => ({
   getLocationsAdditional: query => dispatch(LocationsActions.getLocationsAdditionalRequest(query)),
 
   //piglets
-  getPiglets: query => dispatch(NomadPigletsActions.getNomadPigletsRequest(query)),
-  setllePiglets: data => dispatch(Ws4Actions.setllePigletsWs4Request(data)),
-  getTransferPiglets: query => dispatch(Ws4Actions.getTransferPigletsWs4Request(query)),
+  getPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  setllePiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  getTransferPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
 
-  movePiglets: data => dispatch(NomadPigletsActions.moveToPigletsRequest(data)),
-  moveToCellPiglets: data => dispatch(NomadPigletsActions.moveToCellPigletsRequest(data)),
-  weighingPiglets: data => dispatch(NomadPigletsActions.weighingPigletsRequest(data)),
-  cullingPiglets: data => dispatch(NomadPigletsActions.cullingPigletsRequest(data)),
-  cullingGilt: data => dispatch(NomadPigletsActions.cullingGiltPigletsRequest(data)),
+  movePiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  moveToCellPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  weighingPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  cullingPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  cullingGilt: query => dispatch(PigletsActions.getPigletsRequest(query)),
 })
 
 export default connect(

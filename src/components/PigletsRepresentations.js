@@ -155,7 +155,7 @@ export class PigletsWeaningSectionsTable extends Component {
                   className={activePigletsIds.includes(piglets.id) ? 
                     'col-sm-1 cell cell-active' : 'col-sm-1 cell' } 
                   onClick={() => this.props.clickPiglets(piglets)}>
-                  {piglets.quantity}
+                  {piglets.id} - {piglets.quantity}
                 </tr>
                 )}
             </td>)}
@@ -165,7 +165,6 @@ export class PigletsWeaningSectionsTable extends Component {
   }
  }
 
-
  
 export class PigletsWeaningInput extends Component {
   render() {
@@ -173,8 +172,10 @@ export class PigletsWeaningInput extends Component {
     <table className='table table-sm'>
       <tbody>
         {this.props.piglets.map(piglets => 
-          <tr>
-            <td>{piglets.location}</td>
+          <tr key={piglets.id}>
+            <td>Loc id {piglets.location}</td>
+            <td>pig id {piglets.id}</td>
+            <td>pig quantity {piglets.quantity}</td>
             <td>{piglets.metatour_repr.map(tour => 
               <span>{tour.tour}-{tour.percentage}</span>
               )}

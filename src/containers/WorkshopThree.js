@@ -21,8 +21,7 @@ import { WhoIs }  from '../components/CommonComponents'
 import SowsActions from '../redux/redux-sauce/sows';
 import SectionsActions from '../redux/redux-sauce/sections';
 import LocationsActions from '../redux/redux-sauce/locations';
-import NewbornPigletsActions from '../redux/redux-sauce/newbornPiglets';
-import NomadPigletsActions from '../redux/redux-sauce/nomadPiglets';
+import PigletsActions from '../redux/redux-sauce/piglets';
 import ToursActions from '../redux/redux-sauce/tours';
 import WsDataActions from '../redux/redux-sauce/wsData';
 
@@ -317,19 +316,14 @@ class WorkshopThreeContainer extends Component {
             locationsFetching={this.props.state.locations.fetching}
             locationsListError={this.props.state.locations.errorList}
             
-            mergeNewbornPiglets={this.props.mergeNewbornPiglets}
-            nbEventFetching={this.props.state.newbornPiglets.eventFetching}
-            nbEventError={this.props.state.newbornPiglets.errorEvent}
-            nbMessage={this.props.state.newbornPiglets.message}
+            getPiglets={this.props.getPiglets}
+            listPiglets={this.props.state.piglets.list}
+            listError={this.props.state.piglets.errorList}
 
-            getNomadPiglets={this.props.getNomadPiglets}
-            nomadPiglets={this.props.state.nomadPiglets.list}
-            nomadListError={this.props.state.nomadPiglets.errorList}
-
-            moveNomadPiglets={this.props.moveNomadPiglets}
-            nomadEventFetching={this.props.state.nomadPiglets.eventFetching}
-            nomadEventError={this.props.state.nomadPiglets.eventError}
-            nomadMessage={this.props.state.nomadPiglets.message}
+            mergeFromListPiglets={this.props.mergeFromListPiglets}
+            eventFetching={this.props.state.piglets.eventFetching}
+            eventError={this.props.state.piglets.eventError}
+            eventMessage={this.props.state.piglets.message}
           />}
 
         { this.state.tabs.createGiltTab && 
@@ -349,7 +343,7 @@ class WorkshopThreeContainer extends Component {
             message={this.props.state.newbornPiglets.message}
           />}
 
-        { this.state.tabs.pigletsCullingTab && 
+        {/* { this.state.tabs.pigletsCullingTab && 
           <WS3PigletsCullingTab
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
@@ -366,9 +360,9 @@ class WorkshopThreeContainer extends Component {
             eventFetching={this.props.state.newbornPiglets.eventFetching}
             eventError={this.props.state.newbornPiglets.errorEvent}
             message={this.props.state.newbornPiglets.message}
-          />}
+          />} */}
 
-        { this.state.tabs.recountTab && 
+        {/* { this.state.tabs.recountTab && 
           <WS3PigletsRecountTab
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
@@ -390,7 +384,7 @@ class WorkshopThreeContainer extends Component {
             balancesFetching={this.props.state.wsData.fetching}
             balancesMessage={this.props.state.wsData.message}
             wsDataError={this.props.state.wsData.error}
-          />}
+          />} */}
       </div>
     );
   }
@@ -421,17 +415,9 @@ const mapDispatchToProps = (dispatch) => ({
   markAsNurse: id => dispatch(SowsActions.markAsNurseRequest(id)),
   setSow: () => dispatch(SowsActions.setSow()),
 
-  // newborn piglets
-  getNewbornPiglets: query => dispatch(NewbornPigletsActions.getNewbornPigletsRequest(query)),
-  mergeNewbornPiglets: data => dispatch(NewbornPigletsActions.mergeNewbornPigletsRequest(data)),
-  createGilt: data => dispatch(NewbornPigletsActions.createGiltRequest(data)),
-  cullingPiglets: data => dispatch(NewbornPigletsActions.cullingNewbornPigletsRequest(data)),
-  cullingGilt: data => dispatch(NewbornPigletsActions.cullingGiltNewbornPigletsRequest(data)),
-  recountPiglets: data => dispatch(NewbornPigletsActions.recountNewbornPigletsRequest(data)),
-
-  //nomad piglets
-  getNomadPiglets: query => dispatch(NomadPigletsActions.getNomadPigletsRequest(query)),
-  moveNomadPiglets: data => dispatch(NomadPigletsActions.moveToPigletsRequest(data)),
+  //piglets
+  getPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  mergeFromListPiglets: data => dispatch(PigletsActions.mergeFromListPigletsRequest(data)),
 
   // info
   getInfoWs3: () => dispatch(WsDataActions.getInfoWs3Request()),
