@@ -39,8 +39,8 @@ class WorkshopThreeContainer extends Component {
         farrowTab: false,
         weaningSowsTab: false,
         recountTab: false,
-        weaningPigletsTab: true,
-        createGiltTab: false,
+        weaningPigletsTab: false,
+        createGiltTab: true,
         sowCullingTab: false,
         pigletsCullingTab: false,
       }
@@ -328,19 +328,27 @@ class WorkshopThreeContainer extends Component {
 
         { this.state.tabs.createGiltTab && 
           <WS3CreateGiltTab 
-            getSections={this.props.getSections}
+            workshopNumber={3}
+            // statusTitleFilter={'Супорос 35'}
+            sectionId={6}
+
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sowsFetching={this.props.state.sows.fetching}
+            sowsError={this.props.state.sows.error}
+
+            tours={this.props.state.tours.list}
+            toursFetching={this.props.state.tours.fetching}
+            toursError={this.props.state.tours.error}
+
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
             sectionsListError={this.props.state.sections.errorList}
-
-            getLocations={this.props.getLocations}
-            locations={this.props.state.locations.list}
-            locationsFetching={this.props.state.locations.fetching}
-            locationsListError={this.props.state.locations.errorList}
             
             createGilt={this.props.createGilt}
-            eventFetching={this.props.state.newbornPiglets.eventFetching}
-            message={this.props.state.newbornPiglets.message}
+            eventFetching={this.props.state.sows.eventFetching}
+            eventError={this.props.state.sows.errorEvent}
+            message={this.props.state.sows.message}
           />}
 
         {/* { this.state.tabs.pigletsCullingTab && 
@@ -413,6 +421,7 @@ const mapDispatchToProps = (dispatch) => ({
   sowFarrow: data => dispatch(SowsActions.sowFarrowRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
   markAsNurse: id => dispatch(SowsActions.markAsNurseRequest(id)),
+  createGilt: data => dispatch(SowsActions.createGiltRequest(data)),
   setSow: () => dispatch(SowsActions.setSow()),
 
   //piglets

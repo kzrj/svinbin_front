@@ -12,16 +12,15 @@ class WS3PigletsWeaningTab extends Component {
       activeSectionId: 6,
       activePigletsIds: [],
       activePiglets: [], 
-      activePigletsInputList: [], 
-      activeNomadId: null,
-      activeNomad: null,
-      partNumber: '',
+      activePigletsInputList: [],
+      totalInPart: null,
       needToRefresh: false
     };
     this.clickPiglets = this.clickPiglets.bind(this);
     this.createNomadPart = this.createNomadPart.bind(this);
     this.setData = this.setData.bind(this);
     this.moveNomad = this.moveNomad.bind(this);
+    this.countTotal = this.countTotal.bind(this);
     this.setQuantity = this.setQuantity.bind(this);
     this.refreshSowsList = this.refreshSowsList.bind(this);
   }
@@ -30,7 +29,15 @@ class WS3PigletsWeaningTab extends Component {
     this.props.getLocations({sections_by_workshop_number: 3})
   }
 
-  clickPiglets (piglets) {
+  countTotal (activePigletsInputList) {
+    let total = 0
+    activePigletsInputList.map(record => {
+      total += parseInt(record.quantity)
+    })
+    return total
+  }
+
+  clickPiglets (piglets, location) {
     let { activePigletsIds, activePiglets, activePigletsInputList } = this.state
     // here I can check is cell need to add to activeCells
 
@@ -39,58 +46,54 @@ class WS3PigletsWeaningTab extends Component {
 
     let weaningRecord = {
       id: piglets.id,
+      piglets_id: piglets.id,
       quantity: piglets.quantity,
       metatour_repr: piglets.metatour_repr,
-      location: piglets.location,
+      location: location.section,
       changed: false
     }
-    activePigletsInputList = toggleArrayDictById(activePigletsInputList, weaningRecord)
 
+    activePigletsInputList = toggleArrayDictById(activePigletsInputList, weaningRecord)
+    
     this.setState({
       ...this.state,
       activePigletsIds: activePigletsIds,
       activePiglets: activePiglets,
-      activePigletsInputList: activePigletsInputList
+      activePigletsInputList: activePigletsInputList,
+      totalInPart: this.countTotal(activePigletsInputList)
     })
   }
 
   setQuantity (e) {
     const { pigletsId } = e.target.dataset
-    let { activePigletsInputList } = this.state
+    let { activePigletsInputList, totalInPart } = this.state
 
     // find weaning record in activePigletsInputList with id == pigletsId
     let weaningRecord = getObjectbyId(activePigletsInputList, pigletsId)
     // replace weaningRecord.quantity with e.target.value
-    if (weaningRecord.quantity >= e.target.value) {
+    if (parseInt(weaningRecord.quantity) >= parseInt(e.target.value)) {
       weaningRecord.changed = true
-      weaningRecord.quantity = e.target.value
+      weaningRecord.quantity = parseInt(e.target.value)
     }
 
     this.setState({
       ...this.state,
-      activePigletsInputList: activePigletsInputList
+      activePigletsInputList: activePigletsInputList,
+      totalInPart: this.countTotal(activePigletsInputList)
     })
-    
   }
 
   createNomadPart () {
-    console.log(this.state)
-    // const locations  = this.state.activeLocations
-    // let newBornGroupsIds = []
-    // locations.map(location => {
-    //   if (location.newbornpigletsgroup_set.length > 0)
-    //   newBornGroupsIds = toggleArray(newBornGroupsIds, location.newbornpigletsgroup_set[0].id)
-    // })
-    // this.props.mergeNewbornPiglets({piglets_groups: newBornGroupsIds,
-    //    part_number: this.state.partNumber})
-    // this.setState({
-    //   ...this.state, partNumber: 0,
-    //   activeLocationsIds: [],
-    //   activeLocations: [],
-    //   activeNomadId: null,
-    //   activeNomad: null,
-    //   needToRefresh: true
-    // })
+    const { activePigletsInputList } = this.state
+    this.props.mergeFromListPiglets(activePigletsInputList)
+
+    this.setState({
+      ...this.state, 
+      activePigletsIds: [],
+      activePiglets: [], 
+      activePigletsInputList: [], 
+      needToRefresh: true,
+    })
   }
 
   moveNomad () {
@@ -120,9 +123,7 @@ class WS3PigletsWeaningTab extends Component {
     if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        if (this.state.activeSectionId) {
-          this.props.getLocations({by_section: this.state.activeSectionId})}
-        this.props.getNomadPiglets({by_workshop_number: 3})
+        this.props.getLocations({sections_by_workshop_number: 3})
       }, 100)
     }
   }
@@ -137,17 +138,15 @@ class WS3PigletsWeaningTab extends Component {
             locations={locations}
             activePigletsIds={this.state.activePigletsIds}
             clickPiglets={this.clickPiglets}/>
-          <div className='row'>
-            <div className='col-5'>
-              <button className='btn btn-outline-dark' onClick={this.createNomadPart}>
-                Создать партию
-              </button>
-              <PigletsWeaningInput 
-                piglets={this.state.activePigletsInputList} setQuantity={this.setQuantity} />
-            </div>
-            <div className='col-5'>
-              Созданные партии
-            </div>
+          <div className=''>
+            <button className='btn btn-outline-dark' 
+              disabled={this.state.activePigletsIds.length < 1}
+              onClick={this.createNomadPart}>
+              Создать партию
+            </button>
+            <p>{this.state.totalInPart && <span>Всего в партии {this.state.totalInPart}</span>}</p>
+            <PigletsWeaningInput 
+              piglets={this.state.activePigletsInputList} setQuantity={this.setQuantity} />
           </div>
         </div>
     )

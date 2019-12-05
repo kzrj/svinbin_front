@@ -145,7 +145,7 @@ export class PigletsWeaningSectionsTable extends Component {
   render() {
     const { locations, activePigletsIds } = this.props
     return (
-      <table className='table table-sm newborn-group-table'>
+      <table className='table table-sm table-piglets-weaning'>
         <tbody>
           {locations.map(location => 
             <td>
@@ -153,9 +153,12 @@ export class PigletsWeaningSectionsTable extends Component {
               {location.piglets.length > 0 && location.piglets.map(piglets => 
                 <tr 
                   className={activePigletsIds.includes(piglets.id) ? 
-                    'col-sm-1 cell cell-active' : 'col-sm-1 cell' } 
-                  onClick={() => this.props.clickPiglets(piglets)}>
-                  {piglets.id} - {piglets.quantity}
+                    'col-sm-1 weaning-cell cell-active' : 'col-sm-1 weaning-cell' } 
+                  onClick={() => this.props.clickPiglets(piglets, location)}>
+                    {piglets.metatour_repr.map(tour => 
+                      <span>Тур {tour.tour} - {tour.percentage}%</span>
+                      )}
+                    <p>{piglets.quantity}</p>
                 </tr>
                 )}
             </td>)}
@@ -169,15 +172,13 @@ export class PigletsWeaningSectionsTable extends Component {
 export class PigletsWeaningInput extends Component {
   render() {
     return (
-    <table className='table table-sm'>
+    <table className='table table-sm table-piglets-weaning'>
       <tbody>
         {this.props.piglets.map(piglets => 
           <tr key={piglets.id}>
-            <td>Loc id {piglets.location}</td>
-            <td>pig id {piglets.id}</td>
-            <td>pig quantity {piglets.quantity}</td>
+            <td>{piglets.location}</td>
             <td>{piglets.metatour_repr.map(tour => 
-              <span>{tour.tour}-{tour.percentage}</span>
+              <span>Тур {tour.tour} - {tour.percentage}%</span>
               )}
             </td>
             {/* <td>{piglets.quantity}</td> */}

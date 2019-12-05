@@ -71,6 +71,10 @@ const { Types, Creators } = createActions({
     markAsNurseFail: ['error'],
     markAsNurseSuccess: ['payload'],
 
+    createGiltRequest: ['payload'],
+    createGiltFail: ['error'],
+    createGiltSuccess: ['payload'],
+
     setSow: [''],
     resetSow: ['payload'],
 })
@@ -123,7 +127,8 @@ export const SowsSelectors = {
     createNewNonameSow: state => state.sows.nonameSowsCount,
     getBoars: state => state.sows.boars,
     addNewSeminatedToWs1: state => state.sows.initData,
-    abortionsSow: state => state.sows.sow
+    abortionsSow: state => state.sows.sow,
+    createGilt: state => state.sows.message
 }
 
 /* ------------- Reducers ------------- */
@@ -367,6 +372,19 @@ export const markAsNurseSuccess = (state, { payload }) => {
 export const markAsNurseFail = (state, { error }) => {
     return state.merge({ eventFetching: false, errorEvent: error })
 }
+
+// Create gilt
+export const createGiltRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const createGiltSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, errorEvent: null, message: payload.message })
+}
+
+export const createGiltFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, errorEvent: error, message: '' })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -437,6 +455,10 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MARK_AS_NURSE_REQUEST]: markAsNurseRequest,
     [Types.MARK_AS_NURSE_SUCCESS]: markAsNurseSuccess,
     [Types.MARK_AS_NURSE_FAIL]: markAsNurseFail,
+
+    [Types.CREATE_GILT_REQUEST]: createGiltRequest,
+    [Types.CREATE_GILT_SUCCESS]: createGiltSuccess,
+    [Types.CREATE_GILT_FAIL]: createGiltFail,
 
     [Types.SET_SOW]: setSow,
     [Types.RESET_SOW]: resetSow,

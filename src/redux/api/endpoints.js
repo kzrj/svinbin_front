@@ -31,6 +31,7 @@ export default {
     MASS_INIT_TRANSFER: `${apiUrl}/workshoponetwo/sows/mass_init_and_transfer/`,
     sowFarrow: (id) => `${apiUrl}/workshopthree/sows/${id}/sow_farrow/`,
     markAsNurse: (id) => `${apiUrl}/workshopthree/sows/${id}/mark_as_nurse/`,
+    createGilt: (id) => `${apiUrl}/workshopthree/sows/${id}/create_gilt/`,
 
     // init endpoints
     INIT_ADD_NEW_SEMINATED_TO_WS1: `${apiUrl}/sows/add_new_seminated_to_ws1/`,

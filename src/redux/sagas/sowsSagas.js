@@ -160,3 +160,12 @@ export function* markAsNurse(api, action) {
         yield put(SowsActions.markAsNurseFail(err.message))
     }
 }
+
+export function* createGilt(api, action) {
+    try {
+        let response = yield call(api.createGilt, action.payload);
+        yield put(SowsActions.createGiltSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.createGiltFail(err))
+    }
+}

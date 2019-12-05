@@ -346,3 +346,11 @@ hr {
 .section-name{
 	font-weight: bold;
 }
+
+.table-piglets-weaning table, td {
+	border: 1px solid !important;
+}
+
+.weaning-cell {
+	border: 1px solid !important;
+}

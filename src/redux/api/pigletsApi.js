@@ -16,18 +16,12 @@ const create = () => {
     }
 
     const mergeFromListPiglets = payload => {
-        // const { piglets_groups, part_number } = payload;
         const token = localStorage.getItem('token') || '';
-
-        // const formData = new FormData();
-        // piglets_groups.map(group => formData.append("piglets_groups", group))
-        // formData.append("part_number", part_number)
-        
         return axios({
                     method: 'post',
                     url: endpoints.MERGE_FROM_LIST_PIGLETS,
                     data: payload,
-                    headers: { 'content-type': 'multipart/JSON', 'Authorization': `JWT ${token}` }
+                    headers: { 'content-type': 'application/JSON', 'Authorization': `JWT ${token}` }
         })
         .then(response => {
             return response.data
@@ -39,13 +33,10 @@ const create = () => {
         })
     }
 
-    
-
     return {
         getPiglets,
         mergeFromListPiglets
     }
-
 }
 
 export default {

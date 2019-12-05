@@ -137,7 +137,7 @@ class WS3SowFarrowTab extends Component {
                   className="btn btn-outline-secondary btn-sm" type="button" >
                   Записать данные
                 </button>
-                {eventError}
+                {eventError && <p className='error-message'>{eventError.data.message}</p>}
               </div>
               
               <div className='farrow-button-block col-3'>

@@ -1,52 +1,60 @@
 import React, { Component } from 'react';
-import { toggleArray, toggleArrayLocations, lodashToggle } from '../utils';
 
 //components
-import { PigletsCells, Sections } from '../Locations'
+import { SowTable }  from '../../components/SowRepresentations'
+import { SowFarmIdFilter, SowTourFilter, SowSectionFilter }  from '../../components/FiltersAndInputs'
 
 
 class WS3PigletsWeaningTab extends Component {
-   constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
-      activeSectionId: 6,
-      activeLocationsId: null, // cell multiple selection
-      activeLocation: null, // for newborn list
-      activeNewbornGroup: null,
-      
-      birth_id: '',
-      needToRefresh: false
-    };
-    this.clickLocation = this.clickLocation.bind(this);
-    this.clickSection = this.clickSection.bind(this);
-    this.setData = this.setData.bind(this);
-    this.createGilt = this.createGilt.bind(this);
-    this.refreshSowsList = this.refreshSowsList.bind(this);
-  }
-  
-  clickSection (e) {
-    const { sectionId } = e.target.dataset
-    this.setState({
-      ...this.state,
-      activeSectionId: sectionId
-    })
-
-    this.props.getLocations({by_section: sectionId})
-  }
-
-  clickLocation (location) {
-    let activeNewbornGroup = null
-    if (location.newbornpigletsgroup_set.length > 0){
-      activeNewbornGroup = location.newbornpigletsgroup_set[0]
+      giltBirthId: '',
+      choosedSows: [],
+      query: {
+        tour: null,
+      },
+      activeSowId: ''
     }
+    this.setQuery = this.setQuery.bind(this);
+    this.setData = this.setData.bind(this);
+    this.sowClick = this.sowClick.bind(this);
+    this.createGilt = this.createGilt.bind(this);
+  }
+
+  componentDidMount() {
     this.setState({
       ...this.state,
-      activeLocationsId: location.id,
-      activeLocation: location,
-      activeNewbornGroup: activeNewbornGroup
+      query: {
+        ...this.state.query,
+        by_section: this.props.sectionId,
+      }
+    })
+    this.props.getSows({
+      by_section: this.props.sectionId,
     })
   }
-  
+
+  setQuery (e) {
+    let { query } = this.state
+    query[e.target.name] = e.target.value
+
+    this.setState({
+      ...this.state,
+      query: query,
+      choosedSows: [],
+      needToRefresh: true
+    })
+  }
+
+  sowClick (e) {
+    this.setState({
+      ...this.state,
+      choosedSows: [e.target.dataset.id,],
+      activeSowId: e.target.dataset.id,
+    })
+  }
+
   setData (e) {
     this.setState({
       ...this.state,
@@ -55,65 +63,63 @@ class WS3PigletsWeaningTab extends Component {
   }
 
   createGilt () {
-    const { birth_id, activeNewbornGroup } = this.state
-    this.props.createGilt({id: activeNewbornGroup.id, birth_id: birth_id})
-    this.setState({...this.state, needToRefresh: true, 
-      activeLocation: null, activeNewbornGroup: null, birth_id: ''})
+    console.log(this.state)
+    this.props.createGilt({
+      birthId: this.state.giltBirthId,
+      id: this.state.activeSowId
+    })
+    this.setState({
+      giltBirthId: ''
+    })
   }
 
   refreshSowsList () {
-    if (!this.props.eventFetching && this.state.needToRefresh){
+    if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        if (this.state.activeSectionId) {
-          this.props.getLocations({by_section: this.state.activeSectionId})}
+        this.props.getSows(this.state.query)  
       }, 500)
     }
   }
 
   render() {
+    const { sows, tours, sections, eventError, message } = this.props
     this.refreshSowsList()
-    const { sections, locations } = this.props
     
     return (
-        <div className='row workshop-content'>
-          <div className='col-8'>
-          <Sections 
-              sections={sections}
-              activeSectionId={this.state.activeSectionId}
-              clickSection={this.clickSection}
-              error={this.props.sectionsListError}
-            />
-            <PigletsCells
-              isSection={this.state.activeSectionId}
-              locations={locations}
-              activeCellIds={[this.state.activeLocationsId]}
-              clickLocation={this.clickLocation}
-              error={this.props.locationsListError}
-              gilts={true}
-            />
+      <div className='workshop-content'>
+        <div>
+          <div className='commonfilter row'>
+            <label className='sow-event-label'>Фильтр</label>
+            <SowFarmIdFilter setQuery={this.setQuery} />
+            <SowTourFilter tours={tours} setQuery={this.setQuery}/>
+            <SowSectionFilter sections={sections} setQuery={this.setQuery} />
           </div>
-          <div className='col-4'>
-            {this.state.activeNewbornGroup ?
-              <div>
-                <div className="input-group-append">
-                  <input type='text' value={this.state.birth_id} 
-                      onChange={this.setData} 
-                      name='birth_id' className="form-control search-input"
-                      placeholder="Уникальный номер" />
-                </div>
-                <div>
-                    <button className='btn btn-outline-secondary span-block' type='button'
-                      onClick={this.createGilt}>
-                        Создать ремонтную свинку
-                    </button>
-                </div>
-              </div>
-              :
-              this.props.message ? <p>{this.props.message}</p> : <p>Выберите клетку</p>
-            }
+          <div>
+            <div className="input-group">
+              <input type='text' name='giltBirthId' onChange={this.setData} value={this.state.giltBirthId}/>
+              <button onClick={this.createGilt}
+                  className="btn btn-outline-secondary" type="button" >
+                  Создать ремонтную свинку
+              </button>
+              {eventError && <p className='error-message'>{eventError.data.message}</p>}
+              {message}
+            </div>
           </div>
+            
         </div>
+        <div className='commonfilter-results'>
+          <div className='count row'>
+              <div className='col-6'>
+                Выбрано {this.state.choosedSows.length} из {sows.length}
+              </div>
+            </div>
+          {this.props.sowsListFetching ? 
+            <p className='loading'>Загрузка</p> :
+            <SowTable sows={sows} sowClick={this.sowClick} 
+              choosedSows={this.state.choosedSows}/>}
+        </div>
+      </div>
     )
   }
 }
