@@ -241,7 +241,7 @@ render() {
 
 export const CullingTypeInput = (props) => (
     <select className="custom-select" name='culling_type' 
-      onChange={props.setData}>
+      onChange={props.setData} value={props.culling_type}>
       <option selected>Выберите тип падежа...</option>
       <option value='padej' >Падеж</option>
       <option value='spec' >Спец. убой</option>

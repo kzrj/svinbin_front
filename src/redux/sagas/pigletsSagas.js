@@ -19,3 +19,12 @@ export function* mergeFromListPiglets(api, action) {
         yield put(PigletsActions.mergeFromListPigletsFail(err))
     }
 }
+
+export function* cullingPiglets(api, action) {
+    try {
+        let response = yield call(api.cullingPiglets, action.payload);
+        yield put(PigletsActions.cullingPigletsSuccess(response));
+    } catch (err) {
+        yield put(PigletsActions.cullingPigletsFail(err))
+    }
+}

@@ -83,7 +83,7 @@ class WSSowCullingTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows({
-          by_workshop_number: this.props.workshopNumber,
+          all_in_workshop_number: this.props.workshopNumber,
           farm_id_isnull: false
         })  
       }, 500)

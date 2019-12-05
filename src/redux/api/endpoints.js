@@ -39,6 +39,7 @@ export default {
     // piglets
     GET_PIGLETS: `${apiUrl}/piglets/`,
     MERGE_FROM_LIST_PIGLETS: `${apiUrl}/piglets/create_from_merging_list_and_move_to_ws4/`,
+    cullingPiglets: (id) => `${apiUrl}/piglets/${id}/culling/`,
 
     // // new born piglets
     // GET_NEWBORN_PIGLETS: `${apiUrl}/workshopthree/newbornpiglets/`,

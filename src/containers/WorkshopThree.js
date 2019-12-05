@@ -33,14 +33,14 @@ class WorkshopThreeContainer extends Component {
       tabs: {
         balanceTab: false,
         returnPigletsTab: false,
-        comingSowsTab: false,
+        comingSowsTab: true,
         transferTab: false,
         transferCellToWsTab: false,
         farrowTab: false,
         weaningSowsTab: false,
         recountTab: false,
         weaningPigletsTab: false,
-        createGiltTab: true,
+        createGiltTab: false,
         sowCullingTab: false,
         pigletsCullingTab: false,
       }
@@ -71,7 +71,7 @@ class WorkshopThreeContainer extends Component {
       <div className="workshop container-fluid">
         <div className='workshop-header'>
           Цех №3
-          <button onClick={() => console.log(this.props.state)}>00</button>
+          {/* <button onClick={() => console.log(this.props.state)}>00</button> */}
           {/* <button onClick={() => this.props.setSow()}>223</button> */}
           <WhoIs user={this.props.state.auth.user}/>
         </div>
@@ -82,12 +82,12 @@ class WorkshopThreeContainer extends Component {
           >
             ИНФО
           </div>
-          <div className={this.state.tabs.returnPigletsTab ? 'workshop-tab tab-active col-sm' :
+          {/* <div className={this.state.tabs.returnPigletsTab ? 'workshop-tab tab-active col-sm' :
            'workshop-tab col-sm'}
             onClick={() => this.setTab('returnPigletsTab')}
           >
             Возврат поросята
-          </div>
+          </div> */}
           <div className={this.state.tabs.comingSowsTab ? 'workshop-tab tab-active col-sm' : 
             'workshop-tab col-sm'}
             onClick={() => this.setTab('comingSowsTab')}
@@ -329,7 +329,7 @@ class WorkshopThreeContainer extends Component {
         { this.state.tabs.createGiltTab && 
           <WS3CreateGiltTab 
             workshopNumber={3}
-            // statusTitleFilter={'Супорос 35'}
+            statusTitleFilter={''}
             sectionId={6}
 
             getSows={this.props.getSows}
@@ -344,14 +344,14 @@ class WorkshopThreeContainer extends Component {
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
             sectionsListError={this.props.state.sections.errorList}
-            
+
             createGilt={this.props.createGilt}
             eventFetching={this.props.state.sows.eventFetching}
             eventError={this.props.state.sows.errorEvent}
             message={this.props.state.sows.message}
           />}
 
-        {/* { this.state.tabs.pigletsCullingTab && 
+        { this.state.tabs.pigletsCullingTab && 
           <WS3PigletsCullingTab
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
@@ -363,12 +363,15 @@ class WorkshopThreeContainer extends Component {
             locationsFetching={this.props.state.locations.fetching}
             locationsListError={this.props.state.locations.errorList}
             
+            getPiglets={this.props.getPiglets}
+            listPiglets={this.props.state.piglets.list}
+            listError={this.props.state.piglets.errorList}
+
             cullingPiglets={this.props.cullingPiglets}
-            cullingGilt={this.props.cullingGilt}
-            eventFetching={this.props.state.newbornPiglets.eventFetching}
-            eventError={this.props.state.newbornPiglets.errorEvent}
-            message={this.props.state.newbornPiglets.message}
-          />} */}
+            eventFetching={this.props.state.piglets.eventFetching}
+            eventError={this.props.state.piglets.eventError}
+            eventMessage={this.props.state.piglets.message}
+          />}
 
         {/* { this.state.tabs.recountTab && 
           <WS3PigletsRecountTab
@@ -427,6 +430,7 @@ const mapDispatchToProps = (dispatch) => ({
   //piglets
   getPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
   mergeFromListPiglets: data => dispatch(PigletsActions.mergeFromListPigletsRequest(data)),
+  cullingPiglets: data => dispatch(PigletsActions.cullingPigletsRequest(data)),
 
   // info
   getInfoWs3: () => dispatch(WsDataActions.getInfoWs3Request()),

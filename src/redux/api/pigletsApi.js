@@ -33,9 +33,35 @@ const create = () => {
         })
     }
 
+    const cullingPiglets = payload => {
+        const { id, culling_type, reason } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.cullingPiglets(id);
+
+        const formData = new FormData();
+        formData.append("culling_type", culling_type);
+        formData.append("reason", reason);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getPiglets,
-        mergeFromListPiglets
+        mergeFromListPiglets,
+        cullingPiglets
     }
 }
 

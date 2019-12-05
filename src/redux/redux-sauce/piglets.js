@@ -10,6 +10,10 @@ const { Types, Creators } = createActions({
     mergeFromListPigletsRequest: ['payload'],
     mergeFromListPigletsFail: ['payload'],
     mergeFromListPigletsSuccess: ['payload'],
+
+    cullingPigletsRequest: ['payload'],
+    cullingPigletsFail: ['payload'],
+    cullingPigletsSuccess: ['payload'],
 })
 
 export const PigletsTypes = Types
@@ -36,6 +40,7 @@ export const INITIAL_STATE = Immutable({
 export const PigletsSelectors = {
     getPiglets: state => state.piglets.list,
     mergeFromListPiglets: state => state.piglets.message,
+    cullingPiglets: state => state.piglets.message,
 }
 
 /* ------------- Reducers ------------- */
@@ -65,6 +70,19 @@ export const mergeFromListPigletsFail = (state, { error }) => {
     return state.merge({ eventFetching: false, errorEvent: error, message: ''})
 }
 
+// culling
+export const cullingPigletsRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const cullingPigletsSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, message: payload.message })
+}
+
+export const cullingPigletsFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, errorEvent: error, message: ''})
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -75,4 +93,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MERGE_FROM_LIST_PIGLETS_REQUEST]: mergeFromListPigletsRequest,
     [Types.MERGE_FROM_LIST_PIGLETS_SUCCESS]: mergeFromListPigletsSuccess,
     [Types.MERGE_FROM_LIST_PIGLETS_FAIL]: mergeFromListPigletsFail,
+
+    [Types.CULLING_PIGLETS_REQUEST]: cullingPigletsRequest,
+    [Types.CULLING_PIGLETS_SUCCESS]: cullingPigletsSuccess,
+    [Types.CULLING_PIGLETS_FAIL]: cullingPigletsFail,
 })
