@@ -20,6 +20,7 @@ class WSNomadIncomeTab extends Component {
   }
   
   componentDidMount() {
+    console.log('did mount')
     this.props.getPiglets({
       status_title: "Готовы ко взвешиванию",
       piglets_without_weighing_record: this.props.weighingPlace,

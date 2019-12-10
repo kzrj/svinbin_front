@@ -40,23 +40,8 @@ export default {
     GET_PIGLETS: `${apiUrl}/piglets/`,
     MERGE_FROM_LIST_PIGLETS: `${apiUrl}/piglets/create_from_merging_list_and_move_to_ws4/`,
     cullingPiglets: (id) => `${apiUrl}/piglets/${id}/culling/`,
-
-    // // new born piglets
-    // GET_NEWBORN_PIGLETS: `${apiUrl}/workshopthree/newbornpiglets/`,
-    // MERGE_NEWBORN: `${apiUrl}/workshopthree/newbornpiglets/create_nomad_group_from_merge/`,
-    // create_gilt: (id) => `${apiUrl}/workshopthree/newbornpiglets/${id}/create_gilt/`,
-    // cullingNewbornPiglets: (id) => `${apiUrl}/workshopthree/newbornpiglets/${id}/culling_piglets/`,
-    // cullingGiltNewbornPiglets: (id) => `${apiUrl}/workshopthree/newbornpiglets/${id}/culling_gilts/`,
-    // recountNewbornPiglets: (id) => `${apiUrl}/workshopthree/newbornpiglets/${id}/recount/`,
-
-    // // nomad piglets
-    // GET_NOMADS_PIGLETS: `${apiUrl}/nomadpiglets/`,
-    // weighingPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/weighing_piglets/`,
-    // cullingPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/culling_piglets/`,
-    // cullingGiltPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/culling_gilts/`,
-    // moveGroupFromCellToCell: () => `${apiUrl}/nomadpiglets/move_group_from_cell_to_cell/`,
-    // moveToPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/move_to/`,
-    // moveToCellPiglets: (id) => `${apiUrl}/nomadpiglets/${id}/move_one_group_to_cell/`,
+    weighingPiglets: (id) => `${apiUrl}/piglets/${id}/weighing_piglets/`,
+    movePiglets: (id) => `${apiUrl}/piglets/${id}/move_piglets/`,
 
     // staff users
     GET_USERS: `${apiUrl}/users/`,

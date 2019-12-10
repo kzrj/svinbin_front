@@ -4,10 +4,10 @@ import PigletsActions from '../redux-sauce/piglets'
 
 export function* getPiglets(api, action) {
     try {
-        let response = yield call(api.getNomadPiglets, action.payload);
-        yield put(PigletsActions.getNomadPigletsSuccess(response.results));
+        let response = yield call(api.getPiglets, action.payload);
+        yield put(PigletsActions.getPigletsSuccess(response.results));
     } catch (err) {
-        yield put(PigletsActions.getNomadPigletsFail(err))
+        yield put(PigletsActions.getPigletsFail(err))
     }
 }
 
@@ -26,5 +26,23 @@ export function* cullingPiglets(api, action) {
         yield put(PigletsActions.cullingPigletsSuccess(response));
     } catch (err) {
         yield put(PigletsActions.cullingPigletsFail(err))
+    }
+}
+
+export function* weighingPiglets(api, action) {
+    try {
+        let response = yield call(api.weighingPiglets, action.payload);
+        yield put(PigletsActions.weighingPigletsSuccess(response));
+    } catch (err) {
+        yield put(PigletsActions.weighingPigletsFail(err))
+    }
+}
+
+export function* movePiglets(api, action) {
+    try {
+        let response = yield call(api.movePiglets, action.payload);
+        yield put(PigletsActions.movePigletsSuccess(response));
+    } catch (err) {
+        yield put(PigletsActions.movePigletsFail(err))
     }
 }

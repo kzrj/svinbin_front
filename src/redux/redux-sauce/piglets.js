@@ -14,6 +14,14 @@ const { Types, Creators } = createActions({
     cullingPigletsRequest: ['payload'],
     cullingPigletsFail: ['payload'],
     cullingPigletsSuccess: ['payload'],
+
+    weighingPigletsRequest: ['payload'],
+    weighingPigletsFail: ['payload'],
+    weighingPigletsSuccess: ['payload'],
+
+    movePigletsRequest: ['payload'],
+    movePigletsFail: ['payload'],
+    movePigletsSuccess: ['payload'],
 })
 
 export const PigletsTypes = Types
@@ -41,6 +49,8 @@ export const PigletsSelectors = {
     getPiglets: state => state.piglets.list,
     mergeFromListPiglets: state => state.piglets.message,
     cullingPiglets: state => state.piglets.message,
+    weighingPiglets: state => state.piglets.weighing,
+    movePiglets: state => state.piglets.message,
 }
 
 /* ------------- Reducers ------------- */
@@ -83,6 +93,32 @@ export const cullingPigletsFail = (state, { error }) => {
     return state.merge({ eventFetching: false, errorEvent: error, message: ''})
 }
 
+// weighing
+export const weighingPigletsRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const weighingPigletsSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, message: payload.message, weighing: payload.weighing_record })
+}
+
+export const weighingPigletsFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, errorEvent: error, message: ''})
+}
+
+// move
+export const movePigletsRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const movePigletsSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, message: payload.message })
+}
+
+export const movePigletsFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, errorEvent: error, message: ''})
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -97,4 +133,12 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.CULLING_PIGLETS_REQUEST]: cullingPigletsRequest,
     [Types.CULLING_PIGLETS_SUCCESS]: cullingPigletsSuccess,
     [Types.CULLING_PIGLETS_FAIL]: cullingPigletsFail,
+
+    [Types.WEIGHING_PIGLETS_REQUEST]: weighingPigletsRequest,
+    [Types.WEIGHING_PIGLETS_SUCCESS]: weighingPigletsSuccess,
+    [Types.WEIGHING_PIGLETS_FAIL]: weighingPigletsFail,
+
+    [Types.MOVE_PIGLETS_REQUEST]: movePigletsRequest,
+    [Types.MOVE_PIGLETS_SUCCESS]: movePigletsSuccess,
+    [Types.MOVE_PIGLETS_FAIL]: movePigletsFail,
 })

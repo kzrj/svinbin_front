@@ -58,10 +58,63 @@ const create = () => {
         })
     }
 
+    const weighingPiglets = payload => {
+        const { id, total_weight, place } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.weighingPiglets(id);
+
+        const formData = new FormData();
+        formData.append("total_weight", total_weight);
+        formData.append("place", place);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const movePiglets = payload => {
+        const { id, to_location, new_amount, merge } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.movePiglets(id);
+
+        const formData = new FormData();
+        formData.append("to_location", to_location);
+        formData.append("new_amount", new_amount);
+        formData.append("merge", merge);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getPiglets,
         mergeFromListPiglets,
-        cullingPiglets
+        cullingPiglets,
+        weighingPiglets,
+        movePiglets
     }
 }
 

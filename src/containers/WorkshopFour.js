@@ -107,13 +107,13 @@ class WorkshopFourContainer extends Component {
             weighingPlace={'3/4'}
 
             getPiglets={this.props.getPiglets}
-            piglets={this.props.state.nomadPiglets.list}
-            listFetching={this.props.state.nomadPiglets.listFetching}
+            piglets={this.props.state.piglets.list}
+            listFetching={this.props.state.piglets.listFetching}
 
-            weighingPiglets={this.props.weighingPiglets}
-            weighingData={this.props.state.nomadPiglets.weighing}
-            eventFetching={this.props.state.nomadPiglets.eventFetching}
-            message={this.props.state.nomadPiglets.message}
+            // weighingPiglets={this.props.weighingPiglets}
+            // weighingData={this.props.state.piglets.weighing}
+            // eventFetching={this.props.state.piglets.eventFetching}
+            // message={this.props.state.piglets.message}
           />}
 
         { this.state.tabs.resettlementTab &&
@@ -121,8 +121,8 @@ class WorkshopFourContainer extends Component {
             workshopNumber={4}
 
             getPiglets={this.props.getPiglets}
-            piglets={this.props.state.nomadPiglets.list}
-            listFetching={this.props.state.nomadPiglets.listFetching}
+            piglets={this.props.state.piglets.list}
+            listFetching={this.props.state.piglets.listFetching}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
@@ -131,9 +131,9 @@ class WorkshopFourContainer extends Component {
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
 
-            setllePiglets={this.props.moveToCellPiglets}
-            eventFetching={this.props.state.nomadPiglets.eventFetching}
-            message={this.props.state.nomadPiglets.message}
+            // setllePiglets={this.props.moveToCellPiglets}
+            // eventFetching={this.props.state.piglets.eventFetching}
+            // message={this.props.state.piglets.message}
         />}
 
         { this.state.tabs.innerTransferTab &&
@@ -151,9 +151,9 @@ class WorkshopFourContainer extends Component {
             locations2={this.props.state.locations.additional_list}
             list2Fetching={this.props.state.locations.fetchingAdditional}
 
-            movePiglets={this.props.moveToCellPiglets}
-            eventFetching={this.props.state.nomadPiglets.eventFetching}
-            message={this.props.state.nomadPiglets.message}
+            // movePiglets={this.props.moveToCellPiglets}
+            // eventFetching={this.props.state.piglets.eventFetching}
+            // message={this.props.state.piglets.message}
         />}
 
         { this.state.tabs.transferTab &&
@@ -163,8 +163,8 @@ class WorkshopFourContainer extends Component {
             buttonName={'Отправить в Цех8'}
 
             getPiglets={this.props.getPiglets}
-            piglets={this.props.state.nomadPiglets.list}
-            listFetching={this.props.state.nomadPiglets.listFetching}
+            piglets={this.props.state.piglets.list}
+            listFetching={this.props.state.piglets.listFetching}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
@@ -173,9 +173,9 @@ class WorkshopFourContainer extends Component {
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
 
-            movePiglets={this.props.movePiglets}
-            eventFetching={this.props.state.nomadPiglets.eventFetching}
-            message={this.props.state.nomadPiglets.message}
+            // movePiglets={this.props.movePiglets}
+            // eventFetching={this.props.state.piglets.eventFetching}
+            // message={this.props.state.nomadPiglets.message}
         />}
 
         { this.state.tabs.cullingTab &&
@@ -191,8 +191,8 @@ class WorkshopFourContainer extends Component {
 
             cullingPiglets={this.props.cullingPiglets}
             cullingGilt={this.props.cullingGilt}
-            eventFetching={this.props.state.nomadPiglets.eventFetching}
-            message={this.props.state.nomadPiglets.message}
+            eventFetching={this.props.state.piglets.eventFetching}
+            message={this.props.state.piglets.message}
         />}
         
       </div>
@@ -214,14 +214,14 @@ const mapDispatchToProps = (dispatch) => ({
 
   //piglets
   getPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
-  setllePiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
-  getTransferPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  // setllePiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  // getTransferPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
 
-  movePiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
-  moveToCellPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
-  weighingPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  // movePiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  // moveToCellPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  // weighingPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
   cullingPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
-  cullingGilt: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  // cullingGilt: query => dispatch(PigletsActions.getPigletsRequest(query)),
 })
 
 export default connect(
