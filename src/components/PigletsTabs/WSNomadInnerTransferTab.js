@@ -46,8 +46,8 @@ class WSNomadInnerTransferTab extends Component {
     this.setState({
       ...this.state,
       activeCellFromLocationId: location.id,
-      activePiglets: location.nomadpigletsgroup_set.length > 0 ?
-       location.nomadpigletsgroup_set[0] : null
+      activePiglets: location.piglets.length > 0 ?
+       location.piglets[0] : null
     })
   }
 
@@ -59,12 +59,15 @@ class WSNomadInnerTransferTab extends Component {
   }
 
   clickTransfer () {
+    const { activePiglets, activeCellToLocationId, quantity } = this.state
     let data = {
-      id: this.state.activePiglets.id,
-      quantity: this.state.activePiglets.quantity,
-      gilt_quantity: 0,
-      to_location: this.state.activeCellToLocationId
+      id: activePiglets.id,
+      to_location: activeCellToLocationId,
+      merge: true
     }
+
+    if (quantity > 0)
+      data['new_amount'] = quantity
     this.props.movePiglets(data)
     this.setState({
       ...this.state,

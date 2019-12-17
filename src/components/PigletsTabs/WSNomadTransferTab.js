@@ -33,24 +33,27 @@ class WSNomadTransferTab extends Component {
     this.setState({
       ...this.state,
       activeCellId: location.id,
-      activePiglets: location.nomadpigletsgroup_set.length > 0 ?
-       location.nomadpigletsgroup_set[0] : null
+      activePiglets: location.piglets.length > 0 ?
+       location.piglets[0] : null
     })
   }
 
   clickTransfer () {
+    const { activePiglets, quantity } = this.state
     let data = {
-      id: this.state.activePiglets.id,
-      quantity: this.state.activePiglets.quantity,
-      gilt_quantity: 0,
-      to_location: this.props.toLocation
+      id: activePiglets.id,
+      to_location: this.props.toLocation,
+      merge: false
     }
+
+    if (quantity > 0)
+      data['new_amount'] = quantity
+
     this.props.movePiglets(data)
     this.setState({
       ...this.state,
       activePiglets: null,
       needToRefresh: true, 
-      activeCellId: null,
     })
   }
 

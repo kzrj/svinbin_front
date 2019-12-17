@@ -90,8 +90,32 @@ const create = () => {
 
         const formData = new FormData();
         formData.append("to_location", to_location);
-        formData.append("new_amount", new_amount);
+        if (new_amount)
+            formData.append("new_amount", new_amount);
         formData.append("merge", merge);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const markAsGilts = payload => {
+        const { id } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.markAsGilts(id);
+
+        const formData = new FormData();
         
         return axios({
                     method: 'post',
@@ -114,7 +138,8 @@ const create = () => {
         mergeFromListPiglets,
         cullingPiglets,
         weighingPiglets,
-        movePiglets
+        movePiglets,
+        markAsGilts
     }
 }
 

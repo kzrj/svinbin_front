@@ -166,11 +166,11 @@ class WorkshopThreeContainer extends Component {
             listFetching={this.props.state.sows.fetching}
             sowsListError={this.props.state.sows.errorList}
 
-            getSow={this.props.getSow}
-            sow={this.props.state.sows.sow}
-            sowFetching={this.props.state.sows.sowSingleFetching}
-            sowsSingleError={this.props.state.sows.errorSingle}
-            setSow={this.props.setSow}
+            // getSow={this.props.getSow}
+            // sow={this.props.state.sows.sow}
+            // sowFetching={this.props.state.sows.sowSingleFetching}
+            // sowsSingleError={this.props.state.sows.errorSingle}
+            // setSow={this.props.setSow}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
@@ -182,7 +182,7 @@ class WorkshopThreeContainer extends Component {
             locationsFetching={this.props.state.locations.fetching}
             locationsListError={this.props.state.locations.errorList}
 
-            sowMoveTo={this.props.sowMoveTo}
+            sowsMoveMany={this.props.sowsMoveMany}
             eventFetching={this.props.state.sows.eventFetching}
             eventError={this.props.state.sows.errorEvent}
           />}

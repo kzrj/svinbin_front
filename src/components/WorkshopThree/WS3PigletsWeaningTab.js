@@ -71,10 +71,10 @@ class WS3PigletsWeaningTab extends Component {
     // find weaning record in activePigletsInputList with id == pigletsId
     let weaningRecord = getObjectbyId(activePigletsInputList, pigletsId)
     // replace weaningRecord.quantity with e.target.value
-    if (parseInt(weaningRecord.quantity) >= parseInt(e.target.value)) {
+    if (parseInt(weaningRecord.quantity) != parseInt(e.target.value)) {
       weaningRecord.changed = true
-      weaningRecord.quantity = parseInt(e.target.value)
     }
+    weaningRecord.quantity = parseInt(e.target.value)
 
     this.setState({
       ...this.state,

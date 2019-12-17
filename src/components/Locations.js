@@ -111,7 +111,7 @@ export class SowCells extends Component {
                       location={location}
                       activeCellIds={activeCellIds}
                       clickLocation={this.props.clickLocation}
-                      gilts={this.props.gilts}
+                      // gilts={this.props.gilts}
                       />
                     )
           :
@@ -132,31 +132,26 @@ export class SowCells extends Component {
     const cellClassName = activeCellIds.includes(location.id) ? 
       'col-sm-1 cell cell-active' : 
         location.is_piglets_empty ? 'col-sm-1 cell' : 'col-sm-1 cell-full cell'
-    const piglets = location.newbornpigletsgroup_set.length > 0 ?
-      location.newbornpigletsgroup_set[0] : 
-      location.nomadpigletsgroup_set.length > 0 ?
-        location.nomadpigletsgroup_set[0] :
-        null
-    const tour = piglets ? piglets.tour && piglets.tour.replace(' 2019г','') : ''
-    const section = location.sowAndPigletsCell ? location.sowAndPigletsCell.section : 
-      location.pigletsGroupCell ? location.pigletsGroupCell.section : null
+    const piglets = location.piglets.length > 0 ? location.piglets[0] : null
+    // const tour = piglets ? piglets.tour && piglets.tour.replace(' 2019г','') : ''
+    // const section = location.pigletsGroupCell ? location.pigletsGroupCell.section : null
     return (
       <div 
         className={cellClassName}
         onClick={() => this.props.clickLocation(location)}
         key={location.id}>
-          {location.sowAndPigletsCell && 
-            <span className='cell-setion-number'>#{section}-{location.sowAndPigletsCell.number}</span>}
+          {/* {location.sowAndPigletsCell && 
+            <span className='cell-setion-number'>#{section}-{location.sowAndPigletsCell.number}</span>} */}
           {location.pigletsGroupCell && 
-            <span className='cell-setion-number'>#{section}-{location.pigletsGroupCell.number}</span>}
+            <span className='cell-setion-number'>#{location.pigletsGroupCell.number}</span>}
           <br/>
           {piglets && 
             <span className='cell-piglets-count'>П {piglets.quantity}</span>}
+          {/* <br/>
+          {tour && <span className='cell-tour'>{tour}</span>} */}
           <br/>
-          {tour && <span className='cell-tour'>{tour}</span>}
-          <br/>
-          {this.props.gilts && piglets && 
-            <span className='gilts-quantity'>рем {piglets.gilts_quantity}</span>}
+          {/* {this.props.gilts && piglets && 
+            <span className='gilts-quantity'>рем {piglets.gilts_quantity}</span>} */}
           
       </div>
   )}

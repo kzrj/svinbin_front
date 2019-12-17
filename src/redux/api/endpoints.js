@@ -1,5 +1,5 @@
-export const url = 'http://92.53.104.136';
-// export const url = 'http://188.225.72.13';
+ export const url = 'http://92.53.104.136';
+//export const url = 'http://188.225.72.13';
 export const apiUrl = `${url}/api`;
 
 export default {
@@ -42,6 +42,7 @@ export default {
     cullingPiglets: (id) => `${apiUrl}/piglets/${id}/culling/`,
     weighingPiglets: (id) => `${apiUrl}/piglets/${id}/weighing_piglets/`,
     movePiglets: (id) => `${apiUrl}/piglets/${id}/move_piglets/`,
+    markAsGilts: (id) => `${apiUrl}/piglets/${id}/mark_as_gilts/`,
 
     // staff users
     GET_USERS: `${apiUrl}/users/`,

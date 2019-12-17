@@ -22,6 +22,10 @@ const { Types, Creators } = createActions({
     movePigletsRequest: ['payload'],
     movePigletsFail: ['payload'],
     movePigletsSuccess: ['payload'],
+
+    markAsGiltsRequest: ['payload'],
+    markAsGiltsFail: ['payload'],
+    markAsGiltsSuccess: ['payload'],
 })
 
 export const PigletsTypes = Types
@@ -51,6 +55,7 @@ export const PigletsSelectors = {
     cullingPiglets: state => state.piglets.message,
     weighingPiglets: state => state.piglets.weighing,
     movePiglets: state => state.piglets.message,
+    markAsGilts: state => state.piglets.message,
 }
 
 /* ------------- Reducers ------------- */
@@ -119,6 +124,19 @@ export const movePigletsFail = (state, { error }) => {
     return state.merge({ eventFetching: false, errorEvent: error, message: ''})
 }
 
+// mark as gilts
+export const markAsGiltsRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const markAsGiltsSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, message: payload.message })
+}
+
+export const markAsGiltsFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, errorEvent: error, message: ''})
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -141,4 +159,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MOVE_PIGLETS_REQUEST]: movePigletsRequest,
     [Types.MOVE_PIGLETS_SUCCESS]: movePigletsSuccess,
     [Types.MOVE_PIGLETS_FAIL]: movePigletsFail,
+
+    [Types.MARK_AS_GILTS_REQUEST]: markAsGiltsRequest,
+    [Types.MARK_AS_GILTS_SUCCESS]: markAsGiltsSuccess,
+    [Types.MARK_AS_GILTS_FAIL]: markAsGiltsFail,
 })

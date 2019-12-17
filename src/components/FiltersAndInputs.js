@@ -37,26 +37,26 @@ export class SowFindById extends Component {
     }
    }
 
-   export class SowFindByIdWithoutGet extends Component {
+export class SowFindByIdWithoutGet extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          activeSowId: null,
+            activeSowId: null,
         }
         this.clickSow = this.clickSow.bind(this);
-      }
+        }
 
     clickSow (e) {
         this.setState({
-          ...this.state,
-          activeSowId: e.target.dataset.id
+            ...this.state,
+            activeSowId: e.target.dataset.id
         })
-      }
+        }
     render() {
-      const { sow, sows, fetching, sowIdValue, error } = this.props
-       
-      return (
-         <div className='workshop-content-column-1'>
+        const { sow, sows, fetching, sowIdValue, error } = this.props
+        
+        return (
+            <div className='workshop-content-column-1'>
             <div class="input-group mb-3">
                 <input type='number' onChange={this.props.getSowsById} 
                 className="form-control search-input" value={sowIdValue}
@@ -83,53 +83,100 @@ export class SowFindById extends Component {
                 }
                 </ul>
             </div>
+            </div>
+        )
+    }
+}
+
+export class SowFindByIdMany extends Component {
+    render() {
+      const { sows, choosedSows, fetching, sowIdValue, error } = this.props
+      return (
+         <div className='workshop-content-column-1'>
+            <div class="input-group mb-3">
+                <input type='number' onChange={this.props.getSowsById} 
+                className="form-control search-input" value={sowIdValue}
+                placeholder="Поиск по ID"/>
+            <label>Количество: {sows.length}</label>
+            </div>
+            <div className='div-scroll'>
+                <ul className='list-unstyled'>
+                {!error ? fetching ? <p className='loading'>Загрузка</p> :
+                    (sows.length > 0 ) && 
+                        sows.map(sowInList => 
+                            <SowRowFindByIdMany sow={sowInList} clickSow={this.props.clickSow}
+                                choosedSows={choosedSows} />
+                        )
+                    :
+                    <p className='error-message'>{error}</p>
+                }
+                </ul>
+            </div>
          </div>
       )
     }
    }
 
+export class SowRowFindByIdMany extends Component {
+  render() {
+    const { sow, choosedSows } = this.props
+    const sowClassName = choosedSows.includes(sow.id.toString()) ? 'sow-row-active' : 'sow-row'
+    return (
+        <li className={sowClassName} 
+            key={sow.id} 
+            data-id={sow.id}
+            onClick={this.props.clickSow}>
+            <span className='sow-list-farm-id' onClick={this.props.clickSow}>{sow.farm_id}</span>
+            <br/>
+            <span className='sow-list-tour' onClick={this.props.clickSow}>
+                {sow.tour ? sow.tour.replace(' 2019г','') : ''}</span>
+            </li>
+    )
+}
+}
+
 
 export class SowFilter extends Component {
 
-render() {
-    const { tours } = this.props
-    return (
-    <div className='commonfilter row'>
-        <div className="input-group mb-3 col-3">
-        <input type="text" className="form-control" placeholder="Farm ID"
-            aria-label="Farmid" aria-describedby="basic-addon1"
-            onChange={this.props.setSowFarmId} />
-        </div>
-        <div className="input-group mb-3 col-3">
-            <select className="custom-select" id="inputGroupSelect01" 
-                onChange={this.props.setTour}>
-                <option selected value=''>Выбрать тур</option>
-                {tours.map(tour =>
-                    <option value={tour.id} key={tour.id}>
-                    Неделя{tour.week_number}
-                    </option>
-                    )}
+    render() {
+        const { tours } = this.props
+        return (
+        <div className='commonfilter row'>
+            <div className="input-group mb-3 col-3">
+            <input type="text" className="form-control" placeholder="Farm ID"
+                aria-label="Farmid" aria-describedby="basic-addon1"
+                onChange={this.props.setSowFarmId} />
+            </div>
+            <div className="input-group mb-3 col-3">
+                <select className="custom-select" id="inputGroupSelect01" 
+                    onChange={this.props.setTour}>
+                    <option selected value=''>Выбрать тур</option>
+                    {tours.map(tour =>
+                        <option value={tour.id} key={tour.id}>
+                        Неделя{tour.week_number}
+                        </option>
+                        )}
+                    </select>
+            </div>
+            {this.props.seminationTab &&
+            <div className="input-group mb-3 col-3">
+                <select className="custom-select" id="inputGroupSelect01"
+                onChange={this.props.setSeminatedStatus}>
+                <option selected value='seminated=0'>Ожидает осеменения</option>
+                <option value='seminated=1'>Осеменена 1</option>
                 </select>
+            </div>
+            }
+            {this.props.usoundTab &&
+            <div className="input-group mb-3 col-3">
+                <select className="custom-select" id="inputGroupSelect01"
+                onChange={this.props.setSeminatedStatus}>
+                <option selected value='seminated=2'>Осеменена 2</option>
+                <option value='seminated=1'>Осеменена 1</option>
+                </select>
+            </div>
+            }
         </div>
-        {this.props.seminationTab &&
-        <div className="input-group mb-3 col-3">
-            <select className="custom-select" id="inputGroupSelect01"
-            onChange={this.props.setSeminatedStatus}>
-            <option selected value='seminated=0'>Ожидает осеменения</option>
-            <option value='seminated=1'>Осеменена 1</option>
-            </select>
-        </div>
-        }
-        {this.props.usoundTab &&
-        <div className="input-group mb-3 col-3">
-            <select className="custom-select" id="inputGroupSelect01"
-            onChange={this.props.setSeminatedStatus}>
-            <option selected value='seminated=2'>Осеменена 2</option>
-            <option value='seminated=1'>Осеменена 1</option>
-            </select>
-        </div>
-        }
-    </div>
     )
   }
 }

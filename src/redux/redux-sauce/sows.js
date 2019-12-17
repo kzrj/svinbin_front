@@ -162,7 +162,7 @@ export const getSowFail = (state, { error }) => {
 }
 
 export const setSow = (state) => {
-    console.log('setSow Reducer')
+    
     return state.merge({ sow: 'hui', })
 }
 

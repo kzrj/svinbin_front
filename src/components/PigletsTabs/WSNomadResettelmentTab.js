@@ -23,8 +23,11 @@ class WSNomadResettelmentTab extends Component {
   }
   
   componentDidMount() {
-    this.props.getPiglets({status_title: "Взвешены, готовы к заселению",
-      by_workshop_number: this.props.workshopNumber})
+    this.props.getPiglets({
+      // piglets_with_weighing_record: this.props.weighingPlace,
+      status_title: "Взвешены, готовы к заселению",
+      by_workshop_number: this.props.workshopNumber
+    })
   }
 
   setData (e) {
@@ -68,18 +71,15 @@ class WSNomadResettelmentTab extends Component {
 
   clickSetlle () {
     const { activePiglets, activeCellId, quantity } = this.state
-    let endQuantity = activePiglets.quantity;
-
-    if (quantity > 0)
-      endQuantity = quantity
-
     let data = {
       id: activePiglets.id,
-      quantity: endQuantity,
-      gilt_quantity: 0,
-      to_location: activeCellId
+      to_location: activeCellId,
+      merge: true
     }
-    this.props.setllePiglets(data)
+
+    if (quantity > 0)
+      data['new_amount'] = quantity
+    this.props.movePiglets(data)
     this.setState({
       ...this.state,
       activePiglets: null,
@@ -94,7 +94,11 @@ class WSNomadResettelmentTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations({by_section: this.state.activeSectionId})
-        this.props.getPiglets({status_title: "Взвешены, готовы к заселению", by_workshop_number: 4})
+        this.props.getPiglets({
+          status_title: "Взвешены, готовы к заселению",
+          // piglets_with_weighing_record: this.props.weighingPlace,
+          by_workshop_number: this.props.workshopNumber
+        })
       }, 500)
     }
   }

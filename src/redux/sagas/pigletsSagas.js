@@ -46,3 +46,12 @@ export function* movePiglets(api, action) {
         yield put(PigletsActions.movePigletsFail(err))
     }
 }
+
+export function* markAsGilts(api, action) {
+    try {
+        let response = yield call(api.markAsGilts, action.payload);
+        yield put(PigletsActions.markAsGiltsSuccess(response));
+    } catch (err) {
+        yield put(PigletsActions.markAsGiltsFail(err))
+    }
+}

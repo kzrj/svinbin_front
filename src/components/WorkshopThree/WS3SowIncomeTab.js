@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
 //components
+import { toggleArray } from '../../components/utils'
 import { SowCells, Sections, SectionsWs3 } from '../Locations'
-import { SowFindById, SowFindByIdWithoutGet } from '../FiltersAndInputs'
+import { SowFindById, SowFindByIdMany } from '../FiltersAndInputs'
 
 
 class WS3SowIncomeTab extends Component {
@@ -18,6 +19,8 @@ class WS3SowIncomeTab extends Component {
       activeSectionLocationId: null,
       activeCellId: null,
       activeSowId: null,
+      choosedSows: [],
+
       needToRefresh: false
     }
     this.clickSection = this.clickSection.bind(this);
@@ -32,11 +35,13 @@ class WS3SowIncomeTab extends Component {
   }
 
   clickSow (e) {
+    let { choosedSows } = this.state
+    const { id } = e.target.dataset
+    choosedSows = toggleArray(choosedSows, id)
     this.setState({
       ...this.state,
-      activeSowId: e.target.dataset.id
+      choosedSows: choosedSows
     })
-    console.log('click sow')
   }
 
   getSowsById (e) {
@@ -56,16 +61,16 @@ class WS3SowIncomeTab extends Component {
       activeSectionId: sectionId,
       activeSectionLocationId: locationId
     })
-    console.log(this.state)
   }
 
   clickSetlle () {
-    const { activeSectionLocationId } = this.state
-    this.props.sowMoveTo({id: this.props.sow.id, location: activeSectionLocationId})
+    const { activeSectionLocationId, choosedSows } = this.state
+    this.props.sowsMoveMany({sows: choosedSows, to_location: activeSectionLocationId})
     this.setState({
       ...this.state,
       activeCellId: null,
       activeSectionLocationId:null,
+      choosedSows: [],
       needToRefresh: true
     })
   }
@@ -82,16 +87,18 @@ class WS3SowIncomeTab extends Component {
 
   render() {
     this.refreshData()
-    const { sows, sow, sections } = this.props
+    const { sows, sections } = this.props
     return (
         <div className='row workshop-content'>
           <div className='col-3 workshop-left-column'>
-            <SowFindById 
+            <SowFindByIdMany 
               sows={sows}
-              sow={sow}
+              choosedSows={this.state.choosedSows}
+              clickSow={this.clickSow}
+
               sowIdValue={this.state.query.farm_id_starts}
               getSowsById={this.getSowsById} 
-              getSow={this.props.getSow}
+              
               fetching={this.props.listFetching}
               error={this.props.sowsListError}
               />
@@ -103,7 +110,7 @@ class WS3SowIncomeTab extends Component {
               clickSection={this.clickSection}/>
             <div className='bottom-buttons-block'>
               <div className="input-group">
-                {this.state.activeSectionLocationId && this.props.sow &&
+                {this.state.activeSectionLocationId && this.state.choosedSows.length > 0 &&
                   <button onClick={this.clickSetlle} className='btn btn-outline-secondary'>
                     Разместить свиноматку
                   </button>

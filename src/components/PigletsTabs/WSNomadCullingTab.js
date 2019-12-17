@@ -23,7 +23,6 @@ class WSNomadCullingTab extends Component {
     this.clickLocation = this.clickLocation.bind(this);
     this.setData = this.setData.bind(this);
     this.cullingPiglets = this.cullingPiglets.bind(this);
-    this.cullingGilt = this.cullingGilt.bind(this);
   }
   
   clickSection = (e) => {
@@ -39,8 +38,8 @@ class WSNomadCullingTab extends Component {
     this.setState({
       ...this.state,
       activeCellId: location.id,
-      activePiglets: location.nomadpigletsgroup_set.length > 0 ?
-        location.nomadpigletsgroup_set[0] : null
+      activePiglets: location.piglets.length > 0 ?
+        location.piglets[0] : null
     })
   }
 
@@ -54,23 +53,6 @@ class WSNomadCullingTab extends Component {
   cullingPiglets () {
     const { culling_type, culling_reason, activePiglets } = this.state
     this.props.cullingPiglets({
-      id: activePiglets.id,
-      culling_type: culling_type,
-      culling_reason: culling_reason
-    })
-    this.setState({
-      ...this.state,
-      culling_reason: null,
-      culling_type: null,
-      needToRefresh: true, 
-      activeLocation: null,
-      activePiglets: null,
-    })
-  }
-
-  cullingGilt () {
-    const { culling_type, culling_reason, activePiglets } = this.state    
-    this.props.cullingGilt({
       id: activePiglets.id,
       culling_type: culling_type,
       culling_reason: culling_reason
@@ -118,19 +100,12 @@ class WSNomadCullingTab extends Component {
             {this.state.activePiglets ?
               <div>
                 <PigletsGroup piglets={this.state.activePiglets}/>
-                {this.state.activePiglets.gilts_quantity > 0 &&
-                  <div className="input-group-append">
-                    <label>ремонтная свинка</label>
-                    <input type='checkbox' 
-                        onChange={this.setData} 
-                        name='is_it_gilt' value={!this.state.is_it_gilt}/>
-                  </div>}
                 <div className="input-group-append">
                   <CullingTypeInput setData={this.setData}/>
                   <CullingReasonInput setData={this.setData} 
                     culling_reason={this.state.culling_reason}/>
                   <button className='btn btn-outline-secondary' type='button'
-                    onClick={this.state.is_it_gilt ? this.cullingGilt : this.cullingPiglets}
+                    onClick={this.cullingPiglets}
                     >
                       Выбраковка
                   </button>
