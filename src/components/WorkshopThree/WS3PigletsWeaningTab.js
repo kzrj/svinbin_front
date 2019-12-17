@@ -14,12 +14,12 @@ class WS3PigletsWeaningTab extends Component {
       activePiglets: [], 
       activePigletsInputList: [],
       totalInPart: null,
+      is_it_gilts_part: false,
       needToRefresh: false
     };
     this.clickPiglets = this.clickPiglets.bind(this);
     this.createNomadPart = this.createNomadPart.bind(this);
     this.setData = this.setData.bind(this);
-    this.moveNomad = this.moveNomad.bind(this);
     this.countTotal = this.countTotal.bind(this);
     this.setQuantity = this.setQuantity.bind(this);
     this.refreshSowsList = this.refreshSowsList.bind(this);
@@ -84,31 +84,20 @@ class WS3PigletsWeaningTab extends Component {
   }
 
   createNomadPart () {
-    const { activePigletsInputList } = this.state
-    this.props.mergeFromListPiglets(activePigletsInputList)
+    const { activePigletsInputList, is_it_gilts_part } = this.state
+    
+    this.props.mergeFromListPiglets({
+      records: activePigletsInputList,
+      is_it_gilts_part: is_it_gilts_part
+    })
 
     this.setState({
       ...this.state, 
       activePigletsIds: [],
       activePiglets: [], 
-      activePigletsInputList: [], 
+      activePigletsInputList: [],
+      is_it_gilts_part: false,
       needToRefresh: true,
-    })
-  }
-
-  moveNomad () {
-    let data = {
-      id: this.state.activeNomadId,
-      quantity: this.state.activeNomad.quantity,
-      gilt_quantity: 0,
-      to_location: 4
-    }
-    this.props.moveNomadPiglets(data)
-    this.setState({
-      ...this.state,
-      activeNomadId: null,
-      activeNomad: null,
-      needToRefresh: true
     })
   }
 
@@ -145,6 +134,11 @@ class WS3PigletsWeaningTab extends Component {
               Создать партию
             </button>
             <p>{this.state.totalInPart && <span>Всего в партии {this.state.totalInPart}</span>}</p>
+            <div className='input-group'>
+              <label>Эта партия ремонтных свинок?</label>
+              <input type='checkbox' checked={this.state.is_it_gilts_part} 
+                onChange={() => this.setState({...this.state, is_it_gilts_part: !this.state.is_it_gilts_part})}/>
+            </div>
             <PigletsWeaningInput 
               piglets={this.state.activePigletsInputList} setQuantity={this.setQuantity} />
           </div>
