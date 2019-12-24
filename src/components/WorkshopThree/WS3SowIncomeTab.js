@@ -17,14 +17,14 @@ class WS3SowIncomeTab extends Component {
         ordering: 'tour'
       },
       activeSectionId: null,
-      activeSectionLocationId: null,
+      activeLocationId: null,
       activeCellId: null,
       activeSowId: null,
-      choosedSows: [],
 
       needToRefresh: false
     }
     this.clickSection = this.clickSection.bind(this);
+    this.clickLocation = this.clickLocation.bind(this);
     this.getSowsById = this.getSowsById.bind(this);
     this.clickSetlle = this.clickSetlle.bind(this);
     this.clickSow = this.clickSow.bind(this);
@@ -33,6 +33,7 @@ class WS3SowIncomeTab extends Component {
   
   componentDidMount() {
     this.props.getSows(this.state.query)
+    // this.props.getLocations({by_section: this.props.sections.length > 0 ? this.props.sections[0].id : 1})
   }
 
   clickSow (e) {
@@ -54,22 +55,30 @@ class WS3SowIncomeTab extends Component {
   }
 
   clickSection (e) {
-    const { sectionId, locationId } = e.target.dataset
+    const { sectionId } = e.target.dataset
+    this.props.getLocations({by_section: sectionId})
     this.setState({
       ...this.state,
       activeSectionId: sectionId,
-      activeSectionLocationId: locationId
+    })
+  }
+
+  clickLocation (location) {
+    console.log('clickLocation', location.id)
+    this.setState({
+      ...this.state,
+      activeCellId: location.id,
     })
   }
 
   clickSetlle () {
-    const { activeSectionLocationId, choosedSows } = this.state
-    this.props.sowsMoveMany({sows: choosedSows, to_location: activeSectionLocationId})
+    const { activeCellId, activeSowId } = this.state
+    this.props.sowMoveTo({id: activeSowId, location: activeCellId})
     this.setState({
       ...this.state,
       activeCellId: null,
-      activeSectionLocationId:null,
-      choosedSows: [],
+      activeSectionId: null,
+      activeSowId: null,
       needToRefresh: true
     })
   }
@@ -79,14 +88,14 @@ class WS3SowIncomeTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)
-        this.props.getSections({workshop: 3})
       }, 500)
     }
   }
 
   render() {
     this.refreshData()
-    const { sows, sections } = this.props
+    const { sows, sections, sectionsFetching, sectionsListError, locationsFetching,
+       locationsListError } = this.props
     return (
         <div className='row workshop-content'>
           <div className='col-3 workshop-left-column'>
@@ -103,13 +112,26 @@ class WS3SowIncomeTab extends Component {
               />
           </div>
           <div className='col-9 workshop-right-column'>
-            <SectionsWs3 
-              sections={sections} 
-              activeSectionId={this.state.activeSectionId}
-              clickSection={this.clickSection}/>
+            <Sections 
+               sections={sections}
+               activeSectionId={this.state.activeSectionId}
+               fetching={sectionsFetching}
+               error={sectionsListError}
+
+               clickSection={this.clickSection}
+            />
+            <SowCells 
+              locations={this.props.locations}
+              activeCellIds={[this.state.activeCellId]}
+              fetching={locationsFetching}
+              error={locationsListError}
+              isSection={this.state.activeSectionId}
+    
+              clickLocation={this.clickLocation}
+            />
             <div className='bottom-buttons-block'>
               <div className="input-group">
-                {this.state.activeSectionLocationId && this.state.choosedSows.length > 0 &&
+                {this.state.activeCellId && this.state.activeSowId &&
                   <button onClick={this.clickSetlle} className='btn btn-outline-secondary'>
                     Разместить свиноматку
                   </button>

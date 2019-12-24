@@ -58,18 +58,16 @@ export class SowCells extends Component {
     const sow = location.sow_set.length > 0 ? location.sow_set[0] : null
     const more_than_one_sow = location.sow_set.length > 1 ? true : false
 
-    const piglets = location.newbornpigletsgroup_set.length > 0 ?
-      location.newbornpigletsgroup_set[0] : 
-      location.nomadpigletsgroup_set.length > 0 ?
-        location.nomadpigletsgroup_set[0] :
-        null
+    const piglets = location.piglets.length > 0 ?
+      location.piglets[0] : null
 
     const cellClassName = activeCellIds.includes(location.id) ? 
       'col-sm-1 cell cell-active' : 
         location.is_sow_empty ? 'col-sm-1 cell' : 'col-sm-1 cell-full cell'
     
     const tour = sow ? sow.tour && sow.tour.replace(' 2019г','') : null
-    const pigletsTour = piglets ? piglets.tour && piglets.tour.replace(' 2019г','') : null
+    // const pigletsTour = piglets ? piglets.tour && piglets.tour.replace(' 2019г','') : null
+    const pigletsTour = null
     const section = location.sowAndPigletsCell ? location.sowAndPigletsCell.section : ''
     return (
       <div 
