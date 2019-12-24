@@ -144,10 +144,11 @@ export const WeighingDetail = (props) => (
 export class PigletsWeaningSectionsTable extends Component {
   render() {
     const { locations, activePigletsIds } = this.props
+    console.log(locations)
     return (
       <table className='table table-sm table-piglets-weaning'>
         <tbody>
-          {locations.map(location => 
+          {locations.length > 0 && locations.map(location => 
             <td>
               <tr>{location.section}</tr>
               {location.piglets.length > 0 && location.piglets.map(piglets => 
@@ -155,13 +156,14 @@ export class PigletsWeaningSectionsTable extends Component {
                   className={activePigletsIds.includes(piglets.id) ? 
                     'col-sm-1 weaning-cell cell-active' : 'col-sm-1 weaning-cell' } 
                   onClick={() => this.props.clickPiglets(piglets, location)}>
-                    {piglets.metatour_repr.map(tour => 
+                    {/* {piglets.metatour_repr.map(tour => 
                       <span>Тур {tour.tour} - {tour.percentage}%</span>
-                      )}
+                      )} */}
                     <p>{piglets.quantity}</p>
                 </tr>
                 )}
-            </td>)}
+            </td>)
+          }
         </tbody>
       </table>
     )

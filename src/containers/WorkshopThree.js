@@ -315,7 +315,7 @@ class WorkshopThreeContainer extends Component {
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
             locationsListError={this.props.state.locations.errorList}
-            
+
             getPiglets={this.props.getPiglets}
             listPiglets={this.props.state.piglets.list}
             listError={this.props.state.piglets.errorList}

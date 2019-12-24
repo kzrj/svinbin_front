@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { toggleArray } from '../../components/utils'
 import { SowCells, Sections, SectionsWs3 } from '../Locations'
 import { SowFindById, SowFindByIdMany } from '../FiltersAndInputs'
+import { SowFindByIdWithoutGet } from '../SowRepresentations'
 
 
 class WS3SowIncomeTab extends Component {
@@ -35,12 +36,10 @@ class WS3SowIncomeTab extends Component {
   }
 
   clickSow (e) {
-    let { choosedSows } = this.state
     const { id } = e.target.dataset
-    choosedSows = toggleArray(choosedSows, id)
     this.setState({
       ...this.state,
-      choosedSows: choosedSows
+      activeSowId: id
     })
   }
 
@@ -91,9 +90,9 @@ class WS3SowIncomeTab extends Component {
     return (
         <div className='row workshop-content'>
           <div className='col-3 workshop-left-column'>
-            <SowFindByIdMany 
+            <SowFindByIdWithoutGet 
               sows={sows}
-              choosedSows={this.state.choosedSows}
+              activeSowId={this.state.activeSowId}
               clickSow={this.clickSow}
 
               sowIdValue={this.state.query.farm_id_starts}

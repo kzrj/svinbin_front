@@ -146,3 +146,42 @@ export class SowToursData extends Component {
     )
   }
  }
+
+
+ export class SowFindByIdWithoutGet extends Component {
+  render() {
+    const { sows, activeSowId, fetching, sowIdValue, error } = this.props
+    return (
+       <div className='workshop-content-column-1'>
+          <div class="input-group mb-3">
+              <input type='number' onChange={this.props.getSowsById} 
+              className="form-control search-input" value={sowIdValue}
+              placeholder="Поиск по ID"/>
+          <label>Количество: {sows.length}</label>
+          </div>
+          <div className='div-scroll'>
+              <ul className='list-unstyled'>
+              {!error ? fetching ? <p className='loading'>Загрузка</p> :
+                  (sows.length > 0 ) && 
+                      sows.map(sowInList => 
+                        <li className={sowInList.id == activeSowId ? 'sow-row-active' : 'sow-row'} 
+                          key={sowInList.id} 
+                          data-id={sowInList.id}
+                          onClick={this.props.clickSow}>
+                          <span className='sow-list-farm-id' onClick={this.props.clickSow}>
+                            {sowInList.farm_id}
+                          </span>
+                          <br/>
+                          <span className='sow-list-tour' onClick={this.props.clickSow}>
+                              {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}</span>
+                        </li>
+                      )
+                  :
+                  <p className='error-message'>{error}</p>
+              }
+              </ul>
+          </div>
+       </div>
+    )
+  }
+ }
