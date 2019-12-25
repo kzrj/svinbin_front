@@ -164,7 +164,7 @@ export class SowToursData extends Component {
               {!error ? fetching ? <p className='loading'>Загрузка</p> :
                   (sows.length > 0 ) && 
                       sows.map(sowInList => 
-                        <li className={sowInList.id == activeSowId ? 'sow-row-active' : 'sow-row'} 
+                        <li className={sowInList.id == activeSowId ? 'sow-row sow-row-active' : 'sow-row'} 
                           key={sowInList.id} 
                           data-id={sowInList.id}
                           onClick={this.props.clickSow}>

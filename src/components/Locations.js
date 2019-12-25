@@ -68,14 +68,12 @@ export class SowCells extends Component {
     const tour = sow ? sow.tour && sow.tour.replace(' 2019г','') : null
     // const pigletsTour = piglets ? piglets.tour && piglets.tour.replace(' 2019г','') : null
     const pigletsTour = null
-    const section = location.sowAndPigletsCell ? location.sowAndPigletsCell.section : ''
     return (
       <div 
         className={cellClassName}
         onClick={() => this.props.clickLocation(location)}
         key={location.id}>
-          {location.sowAndPigletsCell && 
-            <span className='cell-setion-number'>#{section}-{location.sowAndPigletsCell.number}</span>}
+          <span className='cell-setion-number'>#{location.cell}</span>
           <br/>
           {sow && [
               <span className='cell-sow-farmId'>{sow.farm_id}</span>,
@@ -89,7 +87,7 @@ export class SowCells extends Component {
           <br/>
           {piglets && 
             <span className='cell-piglets-count'>П {piglets.quantity}</span>}
-          {!tour && pigletsTour && [<br/>, <span className='cell-tour'>{pigletsTour}</span>]}
+          {/* {!tour && pigletsTour && [<br/>, <span className='cell-tour'>{pigletsTour}</span>]} */}
       </div>
   )}
  }

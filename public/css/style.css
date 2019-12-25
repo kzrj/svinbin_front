@@ -137,6 +137,10 @@
 	background: #43ab92;
 }
 
+.sow-row{
+	border-bottom: 1px solid;
+}
+
 .sow-seminations {
 	list-style: none;
 	padding-left: 0px;

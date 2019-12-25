@@ -56,7 +56,7 @@ class WS3SowIncomeTab extends Component {
 
   clickSection (e) {
     const { sectionId } = e.target.dataset
-    this.props.getLocations({by_section: sectionId})
+    this.props.getLocations({by_section: sectionId, cells: true})
     this.setState({
       ...this.state,
       activeSectionId: sectionId,
