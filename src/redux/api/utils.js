@@ -5,7 +5,9 @@ export const parseErrorData = (error) => {
         return { 
             status: error.response.status, 
             statusText: error.response.statusText, 
-            message: error.response.data.message }
+            message: error.response.data.message,
+            errMsg: error.message
+         }
     } else {
         return { 
          status: 'Connection Error',

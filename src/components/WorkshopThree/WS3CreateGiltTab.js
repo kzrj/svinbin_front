@@ -27,11 +27,13 @@ class WS3PigletsWeaningTab extends Component {
       ...this.state,
       query: {
         ...this.state.query,
-        by_section: this.props.sectionId,
+        by_section_in_cell: this.props.sectionId,
+        status_title: this.props.statusTitleFilter
       }
     })
     this.props.getSows({
-      by_section: this.props.sectionId,
+      by_section_in_cell: this.props.sectionId,
+      status_title: this.props.statusTitleFilter
     })
   }
 
@@ -63,7 +65,6 @@ class WS3PigletsWeaningTab extends Component {
   }
 
   createGilt () {
-    console.log(this.state)
     this.props.createGilt({
       birthId: this.state.giltBirthId,
       id: this.state.activeSowId

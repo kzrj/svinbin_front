@@ -20,6 +20,7 @@ class WSNomadInnerTransferTab extends Component {
     this.clickToSection = this.clickToSection.bind(this);
     this.clickCellToLocation = this.clickCellToLocation.bind(this);
     this.clickCellFromLocation = this.clickCellFromLocation.bind(this);
+    this.setQuantity = this.setQuantity.bind(this);
     this.clickTransfer = this.clickTransfer.bind(this);
   }
   
@@ -30,7 +31,7 @@ class WSNomadInnerTransferTab extends Component {
       activeFromSectionId: sectionId
     })
 
-    this.props.getLocations1({by_section: sectionId})
+    this.props.getLocations1({by_section: sectionId, cells: true})
   }
 
   clickToSection (e) {
@@ -39,7 +40,7 @@ class WSNomadInnerTransferTab extends Component {
       ...this.state,
       activeToSectionId: sectionId
     })
-    this.props.getLocations2({by_section: sectionId})
+    this.props.getLocations2({by_section: sectionId, cells: true})
   }
 
   clickCellFromLocation (location) {
@@ -79,12 +80,19 @@ class WSNomadInnerTransferTab extends Component {
     })
   }
 
+  setQuantity (e) {
+    this.setState({
+      ...this.state,
+      quantity: e.target.value
+    })
+  }
+
   refreshSowsList () {
     if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        this.props.getLocations1({by_section: this.state.activeFromSectionId})
-        this.props.getLocations2({by_section: this.state.activeToSectionId})
+        this.props.getLocations1({by_section: this.state.activeFromSectionId, cells: true})
+        this.props.getLocations2({by_section: this.state.activeToSectionId, cells: true})
       }, 500)
     }
   }
@@ -123,15 +131,24 @@ class WSNomadInnerTransferTab extends Component {
               clickLocation={this.clickCellToLocation}
             />
           </div>
-        <div>
-          <div>
+        <div className='row'>
+          <div className='col-6'>
+            {this.state.activePiglets && 
+                <PigletsGroup piglets={this.state.activePiglets}/>
+            }
+          </div>
+          <div className='col-6'>
             {this.state.activePiglets && 
               <div>
-                <PigletsGroup piglets={this.state.activePiglets}/>
+                <input type='number' 
+                  onChange={this.setQuantity}
+                  value={this.state.quantity}
+                  defaultValue={this.state.activePiglets.quantity}
+                  />
                 <button 
                   className='btn btn-outline-secondary' type='button'
                   onClick={this.clickTransfer}>
-                  Переместить
+                    Переместить
                 </button>
               </div>
             }

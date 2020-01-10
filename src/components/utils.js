@@ -87,6 +87,15 @@ export const getObjectbyId = (list, id) => {
   return obj
 }
 
+export const getObjectInListbyFieldValue = (list, field, value) => {
+  let obj = null
+  list.map(element => {
+    if (element[field] == value)
+      obj = element
+  })
+  return obj
+}
+
 export const toggleArrayDictById= (arr: Array<Object>, obj: Object) => {
   let alreadyIn = false;
   let index = -1;

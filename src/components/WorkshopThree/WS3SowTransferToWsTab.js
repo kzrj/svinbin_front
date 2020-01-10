@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 //components
 import { SowCells, Sections } from '../Locations'
 
-class WS3SowTransferCellToWsTab extends Component {
+class WS3SowTransferToWsTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -13,28 +13,23 @@ class WS3SowTransferCellToWsTab extends Component {
       activeToSectionId: null,
       activeCellToLocationId: null,
     }
+
+    this.clickSection = this.clickSection.bind(this);
+    this.clickCell = this.clickCell.bind(this);
+    this.clickTransfer = this.clickTransfer.bind(this);
   }
   
-  clickFromSection = (e) => {
+  clickSection (e) {
     const { sectionId } = e.target.dataset
     this.setState({
       ...this.state,
       activeFromSectionId: sectionId,
       needToRefresh: false
     })
-    this.props.getLocations1({by_section: sectionId})
+    this.props.getLocations({by_section: sectionId, cells: true})
   }
 
-  clickToSection = (e) => {
-    const { sectionId } = e.target.dataset
-    this.setState({
-      ...this.state,
-      activeToSectionId: sectionId
-    })
-    this.props.getLocations2({by_section: sectionId})
-  }
-
-  clickCellFromLocation = (location) => {
+  clickCell (location) {
     this.setState({
       ...this.state,
       activeCellFromLocationId: location.id,
@@ -43,18 +38,14 @@ class WS3SowTransferCellToWsTab extends Component {
     })
   }
 
-  clickCellToLocation = (location) => {
-    this.setState({
-      ...this.state,
-      activeCellToLocationId: location.id,
-    })
-  }
+  clickTransfer (e) {
+    const { tows } = e.target.dataset
 
-  clickTransfer = () => {
     this.props.sowMoveTo({
       id: this.state.activeSow.id,
-      location: 3
+      location: tows
     })
+
     this.setState({
       ...this.state,
       activeSow: null,
@@ -69,14 +60,15 @@ class WS3SowTransferCellToWsTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         if (this.state.activeFromSectionId) {
-          this.props.getLocations1({by_section: this.state.activeFromSectionId})
+          this.props.getLocations({by_section: this.state.activeFromSectionId, cells: true})
           }
         }, 500)
     }
   }
 
   render() {
-    const { sections, locations1 } = this.props
+    const { sections, locations, locationsFetching, locationsListError,
+       sectionsFetching, sectionsListError } = this.props
     this.refreshLocations()
     
     return (
@@ -84,18 +76,18 @@ class WS3SowTransferCellToWsTab extends Component {
           <div className='col-9'>
             <Sections 
               sections={sections}
-              fetching={this.props.sectionsFetching}
+              fetching={sectionsFetching}
               activeSectionId={this.state.activeFromSectionId}
-              clickSection={this.clickFromSection}
-              error={this.props.sectionsListError}
+              clickSection={this.clickSection}
+              error={sectionsListError}
             />
             <SowCells 
               isSection={this.state.activeFromSectionId}
-              locations={locations1}
-              fetching={this.props.locationsFetching}
+              locations={locations}
+              fetching={locationsFetching}
               activeCellIds={[this.state.activeCellFromLocationId]}
-              clickLocation={this.clickCellFromLocation}
-              error={this.props.locationsListError}
+              clickLocation={this.clickCell}
+              error={locationsListError}
             />
           </div>
           <div className='col-3'>
@@ -111,8 +103,15 @@ class WS3SowTransferCellToWsTab extends Component {
             {this.state.activeSow && 
               <div className='bottom-buttons-block'>
                 <div className="input-group">
-                  <button onClick={this.clickTransfer} className='btn btn-outline-secondary'>
-                    Переместить в цех
+                  <button onClick={this.clickTransfer} data-tows={3}
+                    className='btn btn-outline-secondary'>
+                    Переместить в цех 3
+                  </button>
+                </div>
+                <div className="input-group">
+                  <button onClick={this.clickTransfer} data-tows={1}
+                    className='btn btn-outline-secondary'>
+                    Переместить в цех 1
                   </button>
                 </div>
               </div>
@@ -123,4 +122,4 @@ class WS3SowTransferCellToWsTab extends Component {
   }
 }
 
-export default WS3SowTransferCellToWsTab
+export default WS3SowTransferToWsTab

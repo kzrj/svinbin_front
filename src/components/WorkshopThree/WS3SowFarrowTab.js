@@ -33,18 +33,19 @@ class WS3SowFarrowTab extends Component {
       ...this.state,
       query: {
         ...this.state.query,
-        by_section: this.props.sectionId,
+        by_section_in_cell: this.props.sectionId,
         status_title: this.props.statusTitleFilter
       }
     })
     this.props.getSows({
-      by_section: this.props.sectionId,
+      by_section_in_cell: this.props.sectionId,
       status_title: this.props.statusTitleFilter})
   }
 
   setQuery (e) {
     let { query } = this.state
     query[e.target.name] = e.target.value
+    console.log(query)
 
     this.setState({
       ...this.state,

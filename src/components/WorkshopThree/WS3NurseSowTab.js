@@ -5,7 +5,7 @@ import { SowTable }  from '../../components/SowRepresentations'
 import { SowFarmIdFilter, SowTourFilter, SowSectionFilter }  from '../../components/FiltersAndInputs'
 
 
-class WS3SowWeaningTab extends Component {
+class WS3NurseSowTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +18,6 @@ class WS3SowWeaningTab extends Component {
     };
 
     this.sowClick = this.sowClick.bind(this);
-    this.massMove = this.massMove.bind(this);
     this.setData = this.setData.bind(this);
     this.markAsNurse = this.markAsNurse.bind(this);
     this.setQuery = this.setQuery.bind(this);
@@ -30,12 +29,13 @@ class WS3SowWeaningTab extends Component {
       ...this.state,
       query: {
         ...this.state.query,
-        by_section: this.props.sectionId,
-        
+        by_section_in_cell: this.props.sectionId,
+        status_title: this.props.statusTitleFilter
       }
     })
     this.props.getSows({
-      by_section: this.props.sectionId,
+      by_section_in_cell: this.props.sectionId,
+      status_title: this.props.statusTitleFilter
       })
     this.props.getTours()
   }
@@ -68,18 +68,6 @@ class WS3SowWeaningTab extends Component {
     })
   }
   
-  massMove () {
-    const data = {
-      sows: this.state.choosedSows,
-      to_location: 1
-    }
-    this.props.massMove(data)
-    this.setState({
-      choosedSows: [],
-      needToRefresh: true,
-    })
-  }
-
   markAsNurse () {
     this.props.markAsNurse({
       id: this.state.choosedSows[0],
@@ -115,12 +103,11 @@ class WS3SowWeaningTab extends Component {
           </div>
           <div className='row'>
             <div className='col-6'>
-              <button className='btn btn-dark' 
-                onClick={this.massMove}>Перевести в Цех1</button>
-            </div>
-            <div className='col-6'>
               <button className='btn btn-dark' disabled={choosedSows.length !=1}
                 onClick={this.markAsNurse}>Отметить как кормилицу</button>
+              {this.props.eventError && !this.props.eventFetching &&
+                 <p className='error-message'>{this.props.eventError}</p>
+              }
             </div>
           </div>
         </div>
@@ -140,4 +127,4 @@ class WS3SowWeaningTab extends Component {
   }
 }
 
-export default WS3SowWeaningTab
+export default WS3NurseSowTab

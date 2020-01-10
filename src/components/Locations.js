@@ -35,8 +35,9 @@ export class SowCells extends Component {
         {!error ?
           isSection ? 
             fetching ? <p className='loading'>Загрузка</p> :
-            locations.map(location =>
+            locations.map((location, key) =>
                 <SowCell 
+                  key={key}
                   location={location}
                   activeCellIds={activeCellIds}
                   clickLocation={this.props.clickLocation}/>
@@ -102,8 +103,9 @@ export class SowCells extends Component {
         {!error ? 
           isSection ? 
             fetching ? <p className='loading'>Загрузка</p> :
-              locations.map(location =>
-                    <PigletsCell 
+              locations.length > 0 && locations.map((location, key) =>
+                    <PigletsCell
+                      key={key}
                       location={location}
                       activeCellIds={activeCellIds}
                       clickLocation={this.props.clickLocation}
@@ -128,18 +130,14 @@ export class SowCells extends Component {
     const cellClassName = activeCellIds.includes(location.id) ? 
       'col-sm-1 cell cell-active' : 
         location.is_piglets_empty ? 'col-sm-1 cell' : 'col-sm-1 cell-full cell'
-    const piglets = location.piglets.length > 0 ? location.piglets[0] : null
+    const piglets = location.piglets && location.piglets.length > 0 ? location.piglets[0] : null
     // const tour = piglets ? piglets.tour && piglets.tour.replace(' 2019г','') : ''
-    // const section = location.pigletsGroupCell ? location.pigletsGroupCell.section : null
     return (
       <div 
         className={cellClassName}
         onClick={() => this.props.clickLocation(location)}
         key={location.id}>
-          {/* {location.sowAndPigletsCell && 
-            <span className='cell-setion-number'>#{section}-{location.sowAndPigletsCell.number}</span>} */}
-          {location.pigletsGroupCell && 
-            <span className='cell-setion-number'>#{location.pigletsGroupCell.number}</span>}
+          <span className='cell-setion-number'>#{location.cell}</span>
           <br/>
           {piglets && 
             <span className='cell-piglets-count'>П {piglets.quantity}</span>}
@@ -147,8 +145,7 @@ export class SowCells extends Component {
           {tour && <span className='cell-tour'>{tour}</span>} */}
           <br/>
           {/* {this.props.gilts && piglets && 
-            <span className='gilts-quantity'>рем {piglets.gilts_quantity}</span>} */}
-          
+            <span className='gilts-quantity'>рем {piglets.gilts_quantity}</span>} */}          
       </div>
   )}
  }

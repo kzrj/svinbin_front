@@ -81,8 +81,8 @@ export const mergeFromListPigletsSuccess = (state, { payload }) => {
     return state.merge({ eventFetching: false, errorEvent: null, message: payload.message })
 }
 
-export const mergeFromListPigletsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error, message: ''})
+export const mergeFromListPigletsFail = (state, { payload } ) => {
+    return state.merge({ eventFetching: false, errorEvent: payload, message: ''})
 }
 
 // culling

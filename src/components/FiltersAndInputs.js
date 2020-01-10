@@ -214,11 +214,11 @@ render() {
 
 export const SowSectionFilter = (props) => (
     <div className="input-group mb-3 col-3">
-        <select className="custom-select" id="inputGroupSelect01" name='by_section'
+        <select className="custom-select" id="inputGroupSelect01" name='by_section_in_cell'
             onChange={props.setQuery}>
             {/* <option selected value=''>Выбрать секцию</option> */}
-            {props.sections.map(section =>
-            <option value={section.id} key={section.id}>
+            {props.sections.map((section, key) =>
+            <option value={section.id} key={key}>
                 Секция {' '} {section.number}
             </option>
             )}

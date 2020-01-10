@@ -22,7 +22,7 @@ class WS3SowInnerTransferTab extends Component {
       activeFromSectionId: sectionId,
       needToRefresh: false
     })
-    this.props.getLocations1({by_section: sectionId})
+    this.props.getLocations1({by_section: sectionId, cells: true})
   }
 
   clickToSection = (e) => {
@@ -31,7 +31,7 @@ class WS3SowInnerTransferTab extends Component {
       ...this.state,
       activeToSectionId: sectionId
     })
-    this.props.getLocations2({by_section: sectionId})
+    this.props.getLocations2({by_section: sectionId, cells: true})
   }
 
   clickCellFromLocation = (location) => {
@@ -69,8 +69,8 @@ class WS3SowInnerTransferTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         if (this.state.activeFromSectionId && this.state.activeToSectionId) {
-          this.props.getLocations1({by_section: this.state.activeFromSectionId})
-          this.props.getLocations2({by_section: this.state.activeToSectionId})}
+          this.props.getLocations1({by_section: this.state.activeFromSectionId, cells: true})
+          this.props.getLocations2({by_section: this.state.activeToSectionId, cells: true})}
         }, 500)
     }
   }

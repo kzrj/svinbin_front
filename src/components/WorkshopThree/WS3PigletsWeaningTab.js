@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { toggleArray, toggleArrayLocations, getObjectbyId, toggleArrayDictById } from '../utils';
 
 //components
-import { PigletsWeaningSectionsTable, PigletsWeaningInput } from '../PigletsRepresentations'
+import { PigletsCells, Sections } from '../Locations'
+import { PigletsWeaningInput } from '../PigletsRepresentations'
 
 
 class WS3PigletsWeaningTab extends Component {
@@ -10,23 +11,66 @@ class WS3PigletsWeaningTab extends Component {
     super(props);
     this.state = {
       activeSectionId: 6,
-      activePigletsIds: [],
-      activePiglets: [], 
+      activeLocationsId: [],
+
       activePigletsInputList: [],
       totalInPart: null,
-      is_it_gilts_part: false,
+
       needToRefresh: false
     };
-    this.clickPiglets = this.clickPiglets.bind(this);
+    this.clickSection = this.clickSection.bind(this);
+    this.clickLocation = this.clickLocation.bind(this);
     this.createNomadPart = this.createNomadPart.bind(this);
     this.setData = this.setData.bind(this);
     this.countTotal = this.countTotal.bind(this);
     this.setQuantity = this.setQuantity.bind(this);
+    this.setGiltsContain = this.setGiltsContain.bind(this);
     this.refreshSowsList = this.refreshSowsList.bind(this);
   }
   
   componentDidMount() {
-    this.props.getLocations({sections_by_workshop_number: 3})
+  }
+
+  clickSection (e) {
+    const { sectionId } = e.target.dataset
+    this.setState({
+      ...this.state,
+      activeSectionId: sectionId,
+      needToRefresh: false
+    })
+    this.props.getLocations({by_section: sectionId, cells: true})
+  }
+
+  clickLocation (location) {
+    let { activeLocationsId, activePigletsInputList } = this.state
+    // if there are not piglets location is not active
+    // else add to active locationsIds
+    if (location.piglets.length > 0) {
+      activeLocationsId = toggleArray(activeLocationsId, location.id)
+      let piglets = location.piglets[0]
+
+      // create weaningRecord 
+      let weaningRecord = {
+        id: piglets.id,
+        piglets_id: piglets.id,
+        quantity: piglets.quantity,
+        metatour_repr: piglets.metatour_repr,
+        location: location,
+        gilts_quantity: piglets.gilts_quantity,
+        gilts_contains: false,
+        changed: false
+      }
+
+      // add piglets to activePigletsInputList
+      activePigletsInputList = toggleArrayDictById(activePigletsInputList, weaningRecord)
+      
+      this.setState({
+        ...this.state,
+        activeLocationsId: activeLocationsId,
+        activePigletsInputList: activePigletsInputList,
+        totalInPart: this.countTotal(activePigletsInputList)
+      })
+    }
   }
 
   countTotal (activePigletsInputList) {
@@ -35,33 +79,6 @@ class WS3PigletsWeaningTab extends Component {
       total += parseInt(record.quantity)
     })
     return total
-  }
-
-  clickPiglets (piglets, location) {
-    let { activePigletsIds, activePiglets, activePigletsInputList } = this.state
-    // here I can check is cell need to add to activeCells
-
-    activePigletsIds = toggleArray(activePigletsIds, piglets.id)
-    activePiglets = toggleArrayLocations(activePiglets, piglets)
-
-    let weaningRecord = {
-      id: piglets.id,
-      piglets_id: piglets.id,
-      quantity: piglets.quantity,
-      metatour_repr: piglets.metatour_repr,
-      location: location.section,
-      changed: false
-    }
-
-    activePigletsInputList = toggleArrayDictById(activePigletsInputList, weaningRecord)
-    
-    this.setState({
-      ...this.state,
-      activePigletsIds: activePigletsIds,
-      activePiglets: activePiglets,
-      activePigletsInputList: activePigletsInputList,
-      totalInPart: this.countTotal(activePigletsInputList)
-    })
   }
 
   setQuantity (e) {
@@ -83,20 +100,37 @@ class WS3PigletsWeaningTab extends Component {
     })
   }
 
+  setGiltsContain (e) {
+    const { pigletsId } = e.target.dataset
+    let { activePigletsInputList} = this.state
+
+    // find weaning record in activePigletsInputList with id == pigletsId
+    let weaningRecord = getObjectbyId(activePigletsInputList, pigletsId)
+    if (weaningRecord.gilts_quantity > 0){
+      weaningRecord.gilts_contains = !weaningRecord.gilts_contains
+    } else {
+      weaningRecord.gilts_contains = false
+    }
+
+    this.setState({
+      ...this.state,
+      activePigletsInputList: activePigletsInputList,
+    })
+
+  }
+
   createNomadPart () {
-    const { activePigletsInputList, is_it_gilts_part } = this.state
+    const { activePigletsInputList } = this.state
     
     this.props.mergeFromListPiglets({
       records: activePigletsInputList,
-      is_it_gilts_part: is_it_gilts_part
     })
 
     this.setState({
       ...this.state, 
-      activePigletsIds: [],
-      activePiglets: [], 
+      activeLocationsId: [],
       activePigletsInputList: [],
-      is_it_gilts_part: false,
+      totalInPart: null,
       needToRefresh: true,
     })
   }
@@ -119,28 +153,39 @@ class WS3PigletsWeaningTab extends Component {
 
   render() {
     this.refreshSowsList()
-    const { locations } = this.props
-    
+    const { locations, sections, eventMessage, eventError } = this.props
     return (
         <div className='workshop-content'>
-          <PigletsWeaningSectionsTable 
-            locations={locations}
-            activePigletsIds={this.state.activePigletsIds}
-            clickPiglets={this.clickPiglets}/>
+          <div className='col-12'>
+            <Sections 
+                sections={sections}
+                activeSectionId={this.state.activeSectionId}
+                clickSection={this.clickSection}
+                error={this.props.sectionsListError}
+              />
+            <PigletsCells
+              isSection={this.state.activeSectionId}
+              locations={locations}
+              activeCellIds={this.state.activeLocationsId}
+              clickLocation={this.clickLocation}
+              error={this.props.locationsListError}
+            />
+          </div>
           <div className=''>
             <button className='btn btn-outline-dark' 
-              disabled={this.state.activePigletsIds.length < 1}
+              disabled={this.state.activePigletsInputList.length < 1}
               onClick={this.createNomadPart}>
               Создать партию
             </button>
             <p>{this.state.totalInPart && <span>Всего в партии {this.state.totalInPart}</span>}</p>
-            <div className='input-group'>
-              <label>Эта партия ремонтных свинок?</label>
-              <input type='checkbox' checked={this.state.is_it_gilts_part} 
-                onChange={() => this.setState({...this.state, is_it_gilts_part: !this.state.is_it_gilts_part})}/>
-            </div>
-            <PigletsWeaningInput 
-              piglets={this.state.activePigletsInputList} setQuantity={this.setQuantity} />
+            <p>{eventMessage}</p>
+            {eventError && <p className='error-message'>{eventError.data.message}</p>}
+            {this.state.activePigletsInputList.length > 0 &&
+              <PigletsWeaningInput 
+                weaningRecords={this.state.activePigletsInputList} 
+                setQuantity={this.setQuantity} 
+                setGiltsContain={this.setGiltsContain}/>
+            }
           </div>
         </div>
     )

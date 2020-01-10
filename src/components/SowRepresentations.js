@@ -130,13 +130,13 @@ export class SowToursData extends Component {
          }
        </td>
        <td onClick={sowClick} data-id={sow.id} data-farm_id={sow.farm_id} className="sow-row-date">
-         {sow.ultrasound_30_current_tour.length > 0 ? 
+         {sow.ultrasound_30_current_tour && sow.ultrasound_30_current_tour.length > 0 ? 
              sow.ultrasound_30_current_tour.map(usound30Date => usound30Date)
              : '-'
            }
        </td>
        <td onClick={sowClick} data-id={sow.id} data-farm_id={sow.farm_id} className="sow-row-date">
-         {sow.ultrasound_60_current_tour.length > 0 ? 
+         {sow.ultrasound_60_current_tour && sow.ultrasound_60_current_tour.length > 0 ? 
              sow.ultrasound_60_current_tour.map(usound60Date => usound60Date)
              : '-'
            }

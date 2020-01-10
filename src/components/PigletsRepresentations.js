@@ -1,87 +1,15 @@
 import React, { Component } from 'react';
 
-
-export class NewBornGroupWeaningList extends Component {
-  calcTotalPiglets (){
-    const { locations } = this.props
-    let total = 0
-    locations.map(location => {
-      if (location.newbornpigletsgroup_set.length > 0)
-        total = total + location.newbornpigletsgroup_set[0].quantity
-    })
-    return total
-  }
-
-  render() {
-    const { locations } = this.props
-    const total = this.calcTotalPiglets()
-    // const total = 0
-    return (
-      <div className='newborn-group-list'>
-        <p>Выбрано клеток {locations.length} {'|'} Всего поросят {total}</p>
-        {locations.length > 0 &&
-            <table className='table table-sm newborn-group-table'>
-              <thead>
-                <th>№ клетки</th>
-                <th>Кол-во поросят</th>
-                <th>Тур</th>
-              </thead>
-              <tbody>
-                {locations.map(location => <NewBornGroupWeaning location={location}
-                   decreasePiglets={this.props.decreasePiglets}/>)}
-              </tbody>
-            </table>
-        }
-      </div>
-    )
-  }
- }
-
-
-export class NewBornGroupWeaning extends Component {
-  render() {
-    const { location } = this.props
-    const cellNumber = location.sowAndPigletsCell.number
-    const cellSection = location.sowAndPigletsCell.section
-    let newBornGroup = null
-    let pigletsTour = null
-    if (location.newbornpigletsgroup_set.length > 0)
-      newBornGroup = location.newbornpigletsgroup_set[0]
-      pigletsTour = newBornGroup ? newBornGroup.tour && newBornGroup.tour.replace(' 2019г','') : null
-
-    return (
-      <tr>
-        <td>{cellSection}-{cellNumber}</td>
-        <td>
-          <button className='btn btn-weaning btn-outline-dark' disabled>+</button>
-          {newBornGroup ? newBornGroup.quantity : 'Нет поросят'}
-          <button className='btn btn-weaning btn-outline-dark' 
-            onClick={() => this.props.decreasePiglets(location)}>-</button>
-        </td>
-        <td className='td-piglets-tour'>{newBornGroup ? pigletsTour : 'Нет тура'}</td>
-      </tr>
-    )
-  }
- }
-
- export class NomadGroupsFromMerge extends Component {
-
-  render() {
-    const { location } = this.props
-    const cellNumber = location.sowAndPigletsCell.number
-    let newBornGroup = null
-    if (location.newbornpigletsgroup_set.length > 0)
-      newBornGroup = location.newbornpigletsgroup_set[0]
-
-    return (
-      <tr>
-        <td>{cellNumber}</td>
-        <td>{newBornGroup ? newBornGroup.quantity : 'Нет поросят'}</td>
-        <td>{newBornGroup ? newBornGroup.tour : 'Нет тура'}</td>
-      </tr>
-    )
-  }
- }
+ export const PigletsMetaTour = (props) => (
+  <div>
+      {props.metatours.map(metatour => 
+        <p>
+          <span>Тур {metatour.tour}</span>
+          {/* <span>-{metatour.percentage}%</span> */}
+        </p>
+        )}
+  </div>
+)
 
  export class PigletsGroup extends Component {
 
@@ -99,11 +27,11 @@ export class NewBornGroupWeaning extends Component {
             <td>Количество ремонтных</td><td>{piglets.gilts_quantity}</td>
           </tr>
           <tr>
-            <td>Тур</td><td>{piglets.tour}</td>
+            <td>Тур</td><td><PigletsMetaTour metatours={piglets.metatour_repr} /></td>
           </tr>
-          <tr>
+          {/* <tr>
             <td>Дата рождения</td><td>{piglets.created_at}</td>
-          </tr>
+          </tr> */}
         </tbody>
       </table>
     )
@@ -144,7 +72,6 @@ export const WeighingDetail = (props) => (
 export class PigletsWeaningSectionsTable extends Component {
   render() {
     const { locations, activePigletsIds } = this.props
-    console.log(locations)
     return (
       <table className='table table-sm table-piglets-weaning'>
         <tbody>
@@ -174,27 +101,53 @@ export class PigletsWeaningSectionsTable extends Component {
 export class PigletsWeaningInput extends Component {
   render() {
     return (
-    <table className='table table-sm table-piglets-weaning'>
-      <tbody>
-        {this.props.piglets.map(piglets => 
-          <tr key={piglets.id}>
-            <td>{piglets.location}</td>
-            <td>{piglets.metatour_repr.map(tour => 
-              <span>Тур {tour.tour} - {tour.percentage}%</span>
-              )}
-            </td>
-            {/* <td>{piglets.quantity}</td> */}
-            <td>
-              <input type='number' 
-                onChange={this.props.setQuantity}
-                data-piglets-id={piglets.id}
-                defaultValue={piglets.quantity}
-                />
-            </td>
+      <table className='table table-sm table-piglets-weaning'>
+        <thead>
+          <tr>
+            <th>
+              Клетка - секция
+            </th>
+            <th>
+              Тур - %
+            </th>
+            <th>
+              Количество в партию
+            </th>
+            <th>
+              есть ремонтные?
+            </th>
           </tr>
-          )}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {this.props.weaningRecords.length > 0 && this.props.weaningRecords.map((weaningRecord, key) => 
+            <tr key={key}>
+              <td>{weaningRecord.location.cell}</td>
+              <td>{weaningRecord.metatour_repr.map((tour, key) => 
+                <span key={key}>Тур {tour.tour} - {tour.percentage}%</span>
+                )}
+              </td>
+              <td>
+                <input type='number' 
+                  onChange={this.props.setQuantity}
+                  data-piglets-id={weaningRecord.id}
+                  defaultValue={weaningRecord.quantity}
+                  />
+              </td>
+              <td>
+                {weaningRecord.gilts_quantity}{' '}
+                <input type='checkbox' 
+                  disabled={weaningRecord.gilts_quantity <= 0}
+                  onChange={this.props.setGiltsContain}
+                  data-piglets-id={weaningRecord.id}
+                  value={weaningRecord.gilts_contains}
+                  checked={weaningRecord.gilts_contains}
+                  defaultValue={weaningRecord.gilts_quantity <= 0}
+                  />
+              </td>
+            </tr>
+            )}
+        </tbody>
+      </table>
     )
   }
 }
