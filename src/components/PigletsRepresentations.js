@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
  export const PigletsMetaTour = (props) => (
   <div>
-      {props.metatours.map(metatour => 
-        <p>
+      {props.metatours.map((metatour, key) => 
+        <p key={key}>
           <span>Тур {metatour.tour}</span>
           {/* <span>-{metatour.percentage}%</span> */}
         </p>
@@ -34,6 +34,46 @@ import React, { Component } from 'react';
           </tr> */}
         </tbody>
       </table>
+    )
+  }
+ }
+
+ export class PigletsWeighing extends Component {
+
+  render() {
+    const { piglets } = this.props
+    return (
+      <table className='table table-sm'>
+        <thead>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Количество</td>
+            <td><button > - </button>{piglets.quantity}</td>
+          </tr>
+          <tr>
+            <td>Количество ремонтных</td><td>{piglets.gilts_quantity}</td>
+          </tr>
+          <tr>
+            <td>Тур</td><td><PigletsMetaTour metatours={piglets.metatour_repr} /></td>
+          </tr>
+        </tbody>
+      </table>
+    )
+  }
+ }
+
+ export class PigletsListElem extends Component {
+
+  render() {
+    const { piglets } = this.props
+    return (
+      <div className='piglets-list-elem'>
+        <p>Количество {piglets.quantity}</p>
+        {piglets.gilts_quantity > 0 && <p>Количество ремонтных {piglets.gilts_quantity}</p>}
+        {/* <PigletsMetaTour metatours={piglets.metatour_repr} /> */}
+        {/* <td>Дата рождения</td><td>{piglets.created_at}</td> */}
+      </div>
     )
   }
  }

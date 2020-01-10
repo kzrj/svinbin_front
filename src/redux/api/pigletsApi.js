@@ -34,13 +34,14 @@ const create = () => {
     }
 
     const cullingPiglets = payload => {
-        const { id, culling_type, reason } = payload;
+        const { id, culling_type, reason, is_it_gilt } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.cullingPiglets(id);
 
         const formData = new FormData();
         formData.append("culling_type", culling_type);
         formData.append("reason", reason);
+        formData.append("is_it_gilt", is_it_gilt);
         
         return axios({
                     method: 'post',
@@ -59,13 +60,15 @@ const create = () => {
     }
 
     const weighingPiglets = payload => {
-        const { id, total_weight, place } = payload;
+        const { id, total_weight, place, new_amount, to_location } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.weighingPiglets(id);
 
         const formData = new FormData();
         formData.append("total_weight", total_weight);
         formData.append("place", place);
+        formData.append("new_amount", new_amount);
+        formData.append("to_location", to_location);
         
         return axios({
                     method: 'post',

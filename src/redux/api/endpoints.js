@@ -40,7 +40,7 @@ export default {
     GET_PIGLETS: `${apiUrl}/piglets/`,
     MERGE_FROM_LIST_PIGLETS: `${apiUrl}/piglets/create_from_merging_list_and_move_to_ws4/`,
     cullingPiglets: (id) => `${apiUrl}/piglets/${id}/culling/`,
-    weighingPiglets: (id) => `${apiUrl}/piglets/${id}/weighing_piglets/`,
+    weighingPiglets: (id) => `${apiUrl}/piglets/${id}/weighing_piglets_split_return/`,
     movePiglets: (id) => `${apiUrl}/piglets/${id}/move_piglets/`,
     markAsGilts: (id) => `${apiUrl}/piglets/${id}/mark_as_gilts/`,
 

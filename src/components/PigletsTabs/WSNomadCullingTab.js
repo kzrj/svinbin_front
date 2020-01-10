@@ -22,6 +22,7 @@ class WSNomadCullingTab extends Component {
     this.clickSection = this.clickSection.bind(this);
     this.clickLocation = this.clickLocation.bind(this);
     this.setData = this.setData.bind(this);
+    this.setIsGilt = this.setIsGilt.bind(this);
     this.cullingPiglets = this.cullingPiglets.bind(this);
   }
   
@@ -31,7 +32,7 @@ class WSNomadCullingTab extends Component {
       ...this.state,
       activeSectionId: sectionId
     })
-    this.props.getLocations({by_section: sectionId})
+    this.props.getLocations({by_section: sectionId, cells: true})
   }
 
   clickLocation (location) {
@@ -50,12 +51,20 @@ class WSNomadCullingTab extends Component {
     })
   }
 
+  setIsGilt () {
+    this.setState({
+      ...this.state,
+      is_it_gilt: !this.state.is_it_gilt
+    })
+  }
+
   cullingPiglets () {
-    const { culling_type, culling_reason, activePiglets } = this.state
+    const { culling_type, culling_reason, activePiglets, is_it_gilt } = this.state
     this.props.cullingPiglets({
       id: activePiglets.id,
       culling_type: culling_type,
-      culling_reason: culling_reason
+      reason: culling_reason,
+      is_it_gilt: is_it_gilt
     })
     this.setState({
       ...this.state,
@@ -64,6 +73,7 @@ class WSNomadCullingTab extends Component {
       needToRefresh: true, 
       activeLocation: null,
       activePiglets: null,
+      is_it_gilt: false,
     })
   }
 
@@ -71,7 +81,7 @@ class WSNomadCullingTab extends Component {
     if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        this.props.getLocations({by_section: this.state.activeSectionId})
+        this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
       }, 500)
     }
   }
@@ -100,6 +110,12 @@ class WSNomadCullingTab extends Component {
             {this.state.activePiglets ?
               <div>
                 <PigletsGroup piglets={this.state.activePiglets}/>
+                {this.state.activePiglets.gilts_quantity > 0 && 
+                  <div>
+                    <label>Ремонтная свинка?</label>
+                    <input type='checkbox' onChange={this.setIsGilt} value={this.state.is_it_gilt} />
+                  </div>
+                }
                 <div className="input-group-append">
                   <CullingTypeInput setData={this.setData}/>
                   <CullingReasonInput setData={this.setData} 

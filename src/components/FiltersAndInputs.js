@@ -297,22 +297,52 @@ export const CullingTypeInput = (props) => (
     )
   
 export const CullingReasonInput = (props) => (
-<input type='text' value={props.culling_reason} 
-    onChange={props.setData} 
-    name='culling_reason' className="form-control search-input"
-    placeholder="Причина" />
+    <input type='text' value={props.culling_reason} 
+        onChange={props.setData} 
+        name='culling_reason' className="form-control search-input"
+        placeholder="Причина" />
 )
 
 export const WeighingPigletsInput = (props) => (
-<div className="input-group-append">
-    <input type='text' 
-    className="form-control search-input"
-    value={props.totalWeight}  
-    name='totalWeight'
-    placeholder="Укажите вес"
-    onChange={props.setData}/>
-    <button className='btn btn-outline-secondary' onClick={props.weighing}>
-    Взвесить
-    </button>
-</div>
+    <form className="">
+
+        <div className="form-check">
+            <input type="checkbox" className="form-check-input" id="new-amount-check"
+                onChange={props.turnOnNewAmount} />
+            <label className="form-check-label" htmlFor="new-amount-check">
+                Другое количество поросят?
+            </label>
+        </div>
+
+        {props.checkNewAmount &&
+            <div className="form-group">
+                {/* <label htmlFor="new_amount">Вес</label> */}
+                <input type='number'
+                    id='new_amount'
+                    className="form-control search-input"
+                    value={props.newAmount}
+                    name='newAmount'
+                    placeholder="Другое количество поросят, которое хотите взвесить."
+                    aria-describedby="newAmountHelp"
+                    onChange={props.setData}/>
+                <small id="newAmountHelp" className="form-text text-muted">
+                    Укажите меньшее число поросят. Оставшиеся поросята будут переведены обратно.</small>
+            </div>
+        }
+
+        <div className="form-group">
+            {/* <label for="weighing">Вес</label> */}
+            <input type='number'
+                id='weighing'
+                className="form-control search-input"
+                value={props.totalWeight}
+                name='totalWeight'
+                placeholder="Укажите вес"
+                onChange={props.setData}/>
+        </div>
+
+        <button type='submit' className='btn btn-outline-secondary' onClick={props.weighing}>
+            Взвесить
+        </button>
+    </form>
 )

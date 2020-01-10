@@ -14,6 +14,7 @@ import WS3CreateGiltTab from '../components/WorkshopThree/WS3CreateGiltTab'
 import WS3PigletsCullingTab from '../components/WorkshopThree/WS3PigletsCullingTab'
 
 import WSNomadInnerTransferTab from '../components/PigletsTabs/WSNomadInnerTransferTab'
+import WSNomadCullingTab from '../components/PigletsTabs/WSNomadCullingTab'
 import WS3InfoTab from '../components/WorkshopThree/WS3InfoTab'
 
 import { WhoIs }  from '../components/CommonComponents'
@@ -43,8 +44,8 @@ class WorkshopThreeContainer extends Component {
         {name: 'weaningPigletsTab',       active: false, title: 'Отъем поросят'},
         {name: 'createGiltTab',           active: false, title: 'Биркование'},
         {name: 'sowCullingTab',           active: false, title: 'Выбраковка свиноматок'},
-        {name: 'pigletsCullingTab',       active: false, title: 'Выбраковка поросят'},
-        {name: 'pigletsInnerTransferTab', active: true, title: 'Перемещение поросят из клетки в клетку'},
+        {name: 'pigletsCullingTab',       active: true, title: 'Выбраковка поросят'},
+        {name: 'pigletsInnerTransferTab', active: false, title: 'Перемещение поросят из клетки в клетку'},
       ]
     }
     this.setTab = this.setTab.bind(this);
@@ -294,26 +295,20 @@ class WorkshopThreeContainer extends Component {
             message={this.props.state.sows.message}
           />}
         {activeTab.name === 'pigletsCullingTab' &&
-          <WS3PigletsCullingTab
+          <WSNomadCullingTab
+            workshopNumber={3}
+
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
-            sectionsFetching={this.props.state.sections.fetching}
-            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
-            locationsListError={this.props.state.locations.errorList}
-            
-            getPiglets={this.props.getPiglets}
-            listPiglets={this.props.state.piglets.list}
-            listError={this.props.state.piglets.errorList}
 
             cullingPiglets={this.props.cullingPiglets}
             eventFetching={this.props.state.piglets.eventFetching}
-            eventError={this.props.state.piglets.eventError}
-            eventMessage={this.props.state.piglets.message}
-          />}
+            message={this.props.state.piglets.message}
+        />}
         {activeTab.name === 'pigletsInnerTransferTab' &&
           <WSNomadInnerTransferTab
             workshopNumber={3}

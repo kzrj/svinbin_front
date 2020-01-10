@@ -20,9 +20,9 @@ class WorkshopFourContainer extends Component {
     super(props);
     this.state = {
       tabs: {
-        incomeTab: false,
+        incomeTab: true,
         resettlementTab: false,
-        innerTransferTab: true,
+        innerTransferTab: false,
         transferTab: false,
         cullingTab: false,
         // infoTab: false,

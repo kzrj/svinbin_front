@@ -370,4 +370,11 @@ hr {
 	text-align: center;
 	font-weight: bold;
 }
+
+.piglets-list-elem p{
+	margin-bottom: 0px ! important;	
+}
+
+.message {
+	font-weight: bold;
 }

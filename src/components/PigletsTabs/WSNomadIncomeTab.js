@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
 //components
-import { NomadGroupDetail, WeighingDetail } from '../PigletsRepresentations'
+import { PigletsGroup, WeighingDetail, PigletsListElem } from '../PigletsRepresentations'
 import { WeighingPigletsInput } from '../FiltersAndInputs'
+import { Message } from '../CommonComponents'
 
 class WSNomadIncomeTab extends Component {
    constructor(props) {
@@ -10,12 +11,15 @@ class WSNomadIncomeTab extends Component {
     this.state = {
       activePigletsId: 0,
       activePiglets: null,
-      totalWeight: 0,
+      totalWeight: '',
       weighingRecord: null,
+      checkNewAmount: false,
+      newAmount: null,
       needToRefresh: false
     }
     this.setData = this.setData.bind(this);
     this.weighing = this.weighing.bind(this);
+    this.turnOnNewAmount = this.turnOnNewAmount.bind(this);
     this.refreshSowsList = this.refreshSowsList.bind(this);
   }
   
@@ -43,17 +47,28 @@ class WSNomadIncomeTab extends Component {
     })
   }
 
+  turnOnNewAmount () {
+    this.setState({
+      ...this.state,
+      checkNewAmount: !this.state.checkNewAmount
+    })
+  }
+
   weighing () {
     let data = {
       id: this.state.activePiglets.id,
       place: this.props.weighingPlace,
       total_weight: this.state.totalWeight,
+      new_amount: this.state.newAmount,
+      to_location: 3
     }
     this.props.weighingPiglets(data)
     this.setState({
       ...this.state,
       weighingRecord: this.props.weighingData,
       activePiglets: null,
+      newAmount: null,
+      checkNewAmount: false,
       needToRefresh: true
     })
   }
@@ -81,30 +96,33 @@ class WSNomadIncomeTab extends Component {
               onClick={() => this.clickPiglets(group)}
               key={group.id}
               >
-              Партия №{group.merger_part_number} {group.quantity} голов
+              <PigletsListElem piglets={group} />
             </div>
           )}
         </div>
         <div className='col-9'>
           {this.state.activePiglets ?
             <div>
-              <NomadGroupDetail piglets={this.state.activePiglets}/>
+              <PigletsGroup piglets={this.state.activePiglets}/>
               <WeighingPigletsInput 
                 totalWeight={this.state.totalWeight}
                 setData={this.setData}
                 weighing={this.weighing}
+                turnOnNewAmount={this.turnOnNewAmount}
+                checkNewAmount={this.state.checkNewAmount}
+                newAmount={this.state.newAmount}
               />
             </div>
             :
             this.props.message ? 
               <div>
-                <p>{this.props.message}</p> 
+                <Message message={this.props.message}/>
                 {this.props.weighingData && 
                   <WeighingDetail weighingData={this.props.weighingData} />
                 }
               </div>
               :
-                <p>Выберите партию для взвешивания</p>
+                <Message message={'Выберите партию для взвешивания'}/>
           }
         </div>
       </div>
