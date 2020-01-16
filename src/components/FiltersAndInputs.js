@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
+import { ErrorMessage } from './CommonComponents'
+
 
 export class SowFindById extends Component {
     render() {
@@ -28,7 +30,7 @@ export class SowFindById extends Component {
                             {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}</span>
                         </li>)
                     :
-                    <p className='error-message'>{error}</p>
+                    <ErrorMessage error={error} />
                 }
                 </ul>
             </div>
@@ -79,7 +81,7 @@ export class SowFindByIdWithoutGet extends Component {
                             {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}</span>
                         </li>)
                     :
-                    <p className='error-message'>{error}</p>
+                    <ErrorMessage error={error} />
                 }
                 </ul>
             </div>
@@ -108,7 +110,7 @@ export class SowFindByIdMany extends Component {
                                 choosedSows={choosedSows} />
                         )
                     :
-                    <p className='error-message'>{error}</p>
+                    <ErrorMessage error={error} />
                 }
                 </ul>
             </div>
@@ -291,7 +293,7 @@ export const CullingTypeInput = (props) => (
       onChange={props.setData} value={props.culling_type}>
       <option selected>Выберите тип падежа...</option>
       <option value='padej' >Падеж</option>
-      <option value='spec' >Спец. убой</option>
+      <option value='spec' >Вынужден. убой</option>
       <option value='prirezka' >Прирезка</option>
     </select>
     )
@@ -332,7 +334,7 @@ export const WeighingPigletsInput = (props) => (
 
         <div className="form-group">
             {/* <label for="weighing">Вес</label> */}
-            <input type='number'
+            <input type='text'
                 id='weighing'
                 className="form-control search-input"
                 value={props.totalWeight}
@@ -344,5 +346,52 @@ export const WeighingPigletsInput = (props) => (
         <button type='submit' className='btn btn-outline-secondary' onClick={props.weighing}>
             Взвесить
         </button>
+    </form>
+)
+
+export const SplitPigletsInput = (props) => (
+    <form className="">
+        <div className="form-check">
+            <input type="checkbox" className="form-check-input" id="new-amount-check"
+                name='changeQuantity'
+                onChange={props.checked} />
+            <label className="form-check-label" htmlFor="new-amount-check">
+                Изменить количество
+            </label>
+        </div>
+        {props.changeQuantity &&
+            <div className="form-row">
+                {/* <label htmlFor="quantity">Вес</label> */}
+                <div className='col'>
+                    <input type='number'
+                        id='quantity'
+                        className="form-control search-input"
+                        value={props.quantity}
+                        name='quantity'
+                        placeholder={props.helpMessage}
+                        aria-describedby="quantityHelp"
+                        onChange={props.setData}/>
+                    <small id="quantityHelp" className="form-text text-muted">
+                        {props.helpMessage}
+                    </small>
+                </div>
+
+                <div className='col'>
+                    Переводим ремонтных?
+                    <input type='checkbox'
+                        id='gilts_contains'
+                        className="form-control"
+                        value={props.gilts_contains}
+                        checked={props.gilts_contains}
+                        name='gilts_contains'
+                        // placeholder={props.helpMessage}
+                        aria-describedby="giltHelp"
+                        onChange={props.checked}/>
+                    {/* <small id="giltHelp" className="form-text text-muted">
+                        Переводим ремонтных?
+                    </small> */}
+                </div>
+            </div>
+        }
     </form>
 )

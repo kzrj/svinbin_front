@@ -4,7 +4,7 @@ import Immutable from 'seamless-immutable'
 
 const { Types, Creators } = createActions({
     getPigletsRequest: ['payload'],
-    getPigletsFail: ['error'],
+    getPigletsFail: ['payload'],
     getPigletsSuccess: ['payload'],
 
     mergeFromListPigletsRequest: ['payload'],
@@ -26,6 +26,10 @@ const { Types, Creators } = createActions({
     markAsGiltsRequest: ['payload'],
     markAsGiltsFail: ['payload'],
     markAsGiltsSuccess: ['payload'],
+
+    moveGiltsToWs1Request: ['payload'],
+    moveGiltsToWs1Fail: ['payload'],
+    moveGiltsToWs1Success: ['payload'],
 })
 
 export const PigletsTypes = Types
@@ -42,7 +46,7 @@ export const INITIAL_STATE = Immutable({
     eventFetching: false,
     weighing: null,
     event: null,
-    errorEvent: null,
+    eventError: null,
 
     message: '',
 })
@@ -55,6 +59,7 @@ export const PigletsSelectors = {
     cullingPiglets: state => state.piglets.message,
     weighingPiglets: state => state.piglets.weighing,
     movePiglets: state => state.piglets.message,
+    moveGiltsToWs1: state => state.piglets.message,
     markAsGilts: state => state.piglets.message,
 }
 
@@ -68,8 +73,8 @@ export const getPigletsSuccess = (state, { payload }) => {
     return state.merge({ listFetching: false, errorList: null, list: payload })
 }
 
-export const getPigletsFail = (state, { error }) => {
-    return state.merge({ listFetching: false, errorList:error, list: [] })
+export const getPigletsFail = (state, { payload }) => {
+    return state.merge({ listFetching: false, errorList:payload, list: [] })
 }
 
 // mergeFromListPiglets
@@ -78,11 +83,11 @@ export const mergeFromListPigletsRequest = (state, { payload }) => {
 }
 
 export const mergeFromListPigletsSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null, message: payload.message })
+    return state.merge({ eventFetching: false, eventError: null, message: payload.message })
 }
 
 export const mergeFromListPigletsFail = (state, { payload } ) => {
-    return state.merge({ eventFetching: false, errorEvent: payload, message: ''})
+    return state.merge({ eventFetching: false, eventError: payload, message: ''})
 }
 
 // culling
@@ -94,8 +99,8 @@ export const cullingPigletsSuccess = (state, { payload }) => {
     return state.merge({ eventFetching: false, message: payload.message })
 }
 
-export const cullingPigletsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error, message: ''})
+export const cullingPigletsFail = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: payload, message: ''})
 }
 
 // weighing
@@ -107,8 +112,8 @@ export const weighingPigletsSuccess = (state, { payload }) => {
     return state.merge({ eventFetching: false, message: payload.message, weighing: payload.weighing_record })
 }
 
-export const weighingPigletsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error, message: ''})
+export const weighingPigletsFail = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: payload, message: ''})
 }
 
 // move
@@ -120,8 +125,21 @@ export const movePigletsSuccess = (state, { payload }) => {
     return state.merge({ eventFetching: false, message: payload.message })
 }
 
-export const movePigletsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error, message: ''})
+export const movePigletsFail = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: payload, message: ''})
+}
+
+// moveGiltsToWs1
+export const moveGiltsToWs1Request = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const moveGiltsToWs1Success = (state, { payload }) => {
+    return state.merge({ eventFetching: false, message: payload.message })
+}
+
+export const moveGiltsToWs1Fail = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: payload, message: ''})
 }
 
 // mark as gilts
@@ -133,8 +151,8 @@ export const markAsGiltsSuccess = (state, { payload }) => {
     return state.merge({ eventFetching: false, message: payload.message })
 }
 
-export const markAsGiltsFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error, message: ''})
+export const markAsGiltsFail = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: payload, message: ''})
 }
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -159,6 +177,10 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MOVE_PIGLETS_REQUEST]: movePigletsRequest,
     [Types.MOVE_PIGLETS_SUCCESS]: movePigletsSuccess,
     [Types.MOVE_PIGLETS_FAIL]: movePigletsFail,
+
+    [Types.MOVE_GILTS_TO_WS1_REQUEST]: moveGiltsToWs1Request,
+    [Types.MOVE_GILTS_TO_WS1_SUCCESS]: moveGiltsToWs1Success,
+    [Types.MOVE_GILTS_TO_WS1_FAIL]: moveGiltsToWs1Fail,
 
     [Types.MARK_AS_GILTS_REQUEST]: markAsGiltsRequest,
     [Types.MARK_AS_GILTS_SUCCESS]: markAsGiltsSuccess,

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 //components
 import { SowTable }  from '../../components/SowRepresentations'
 import { SowFarmIdFilter, SowTourFilter, SowSectionFilter }  from '../../components/FiltersAndInputs'
+import { ErrorMessage, Message } from '../CommonComponents'
 
 
 class WS3PigletsWeaningTab extends Component {
@@ -103,8 +104,8 @@ class WS3PigletsWeaningTab extends Component {
                   className="btn btn-outline-secondary" type="button" >
                   Создать ремонтную свинку
               </button>
-              {eventError && <p className='error-message'>{eventError.data.message}</p>}
-              {message}
+              {eventError && <ErrorMessage error={eventError} />}
+              {message && <Message message={message} />}
             </div>
           </div>
             

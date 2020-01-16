@@ -42,6 +42,7 @@ export default {
     cullingPiglets: (id) => `${apiUrl}/piglets/${id}/culling/`,
     weighingPiglets: (id) => `${apiUrl}/piglets/${id}/weighing_piglets_split_return/`,
     movePiglets: (id) => `${apiUrl}/piglets/${id}/move_piglets/`,
+    moveGiltsToWs1: (id) => `${apiUrl}/piglets/${id}/move_gilts_to_ws1/`,
     markAsGilts: (id) => `${apiUrl}/piglets/${id}/mark_as_gilts/`,
 
     // staff users

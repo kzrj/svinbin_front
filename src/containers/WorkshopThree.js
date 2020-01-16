@@ -15,9 +15,10 @@ import WS3PigletsCullingTab from '../components/WorkshopThree/WS3PigletsCullingT
 
 import WSNomadInnerTransferTab from '../components/PigletsTabs/WSNomadInnerTransferTab'
 import WSNomadCullingTab from '../components/PigletsTabs/WSNomadCullingTab'
+import WSNomadResettelmentTab from '../components/PigletsTabs/WSNomadResettelmentTab'
 import WS3InfoTab from '../components/WorkshopThree/WS3InfoTab'
 
-import { WhoIs }  from '../components/CommonComponents'
+import { TabMenu }  from '../components/CommonComponents'
 
 // # actions
 import SowsActions from '../redux/redux-sauce/sows'
@@ -41,10 +42,10 @@ class WorkshopThreeContainer extends Component {
         {name: 'farrowTab',               active: false, title: 'Опорос'},
         {name: 'nurseSowTab',             active: false, title: 'Кормилица'},
         // {name: 'recountTab',           active: false, title: 'Пересчет'},
-        {name: 'weaningPigletsTab',       active: false, title: 'Отъем поросят'},
+        {name: 'weaningPigletsTab',       active: true, title: 'Отъем поросят'},
         {name: 'createGiltTab',           active: false, title: 'Биркование'},
         {name: 'sowCullingTab',           active: false, title: 'Выбраковка свиноматок'},
-        {name: 'pigletsCullingTab',       active: true, title: 'Выбраковка поросят'},
+        {name: 'pigletsCullingTab',       active: false, title: 'Выбраковка поросят'},
         {name: 'pigletsInnerTransferTab', active: false, title: 'Перемещение поросят из клетки в клетку'},
       ]
     }
@@ -86,34 +87,10 @@ class WorkshopThreeContainer extends Component {
 
     return (
       <div className="workshop container-fluid">
-        <div className="pos-f-t">
-          <div className="collapse" id="navbarToggleExternalContent">
-            <div className='workshop-header-3'>
-            </div>
-            <div className='row workshop-menu'>
-              {this.state.tabs.map((tab, key) =>
-                <div 
-                  key={key}
-                  className={tab.active ? 'workshop-tab tab-active col-sm' : 'workshop-tab col-sm'}
-                  onClick={() => this.setTab(tab)}
-                >
-                  {tab.title}
-                </div>
-                )}
-            </div>
-          </div>
-          <nav className="navbar navbar-dark nav-workshop-header">
-            <button className="navbar-toggler" type="button" data-toggle="collapse" 
-              data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" 
-              aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            Цех №3 {activeTab.title}
-            {/* <button onClick={() => console.log(this.props.state)}>00</button> */}
-            <WhoIs user={this.props.state.auth.user}/>
-          </nav>
-        </div>
-        
+        <TabMenu 
+          tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №3'} activeTab={activeTab}
+          user={this.props.state.auth.user}
+        />
         {activeTab.name === 'balanceTab' &&
           <WS3InfoTab 
             getInfoWs3={this.props.getInfoWs3}
@@ -267,7 +244,7 @@ class WorkshopThreeContainer extends Component {
 
             mergeFromListPiglets={this.props.mergeFromListPiglets}
             eventFetching={this.props.state.piglets.eventFetching}
-            eventError={this.props.state.piglets.errorEvent}
+            eventError={this.props.state.piglets.eventError}
             eventMessage={this.props.state.piglets.message}
           />}
         {activeTab.name === 'createGiltTab' &&
@@ -325,6 +302,27 @@ class WorkshopThreeContainer extends Component {
             getLocations2={this.props.getLocationsAdditional}
             locations2={this.props.state.locations.additional_list}
             list2Fetching={this.props.state.locations.fetchingAdditional}
+
+            movePiglets={this.props.movePiglets}
+            eventFetching={this.props.state.piglets.eventFetching}
+            message={this.props.state.piglets.message}
+          />}
+        {activeTab.name === 'returnPigletsTab' &&
+          <WSNomadResettelmentTab
+            workshopNumber={3}
+            // weighingPlace={'3/4'}
+            // pigletsStatus={null}
+
+            getPiglets={this.props.getPiglets}
+            piglets={this.props.state.piglets.list}
+            listFetching={this.props.state.piglets.listFetching}
+
+            getSections={this.props.getSections}
+            sections={this.props.state.sections.list}
+
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
 
             movePiglets={this.props.movePiglets}
             eventFetching={this.props.state.piglets.eventFetching}

@@ -8,10 +8,10 @@ import WorkshopTwo from './containers/WorkshopTwo'
 import WorkshopThree from './containers/WorkshopThree'
 import WorkshopFour from './containers/WorkshopFour'
 import WorkshopEight from './containers/WorkshopEight'
-// import WorkshopFive from './containers/WorkshopFive/WorkshopFive'
-// import WorkshopSix from './containers/WorkshopSix/WorkshopSix'
-// import WorkshopSeven from './containers/WorkshopSeven/WorkshopSeven'
-// import WorkshopSevenFive from './containers/WorkshopSevenFive/WorkshopSevenFive'
+import WorkshopFive from './containers/WorkshopFive'
+import WorkshopSix from './containers/WorkshopSix'
+import WorkshopSeven from './containers/WorkshopSeven'
+import WorkshopSevenFive from './containers/WorkshopSevenFive'
 
 // components
 import MainPage from './components/MainPage'
@@ -32,11 +32,11 @@ export default function routes(store) {
       <Route path="/workshop3/" name="Цех3 Маточник" component={WorkshopThree} />
       <Route path="/workshop4/" name="Цех4 Доращивание" component={WorkshopFour} />
       <Route path="/workshop8/" name="Цех8 Доращивание" component={WorkshopEight} />
-      {/* <Route path="/workshop5/" name="Цех5 Откорм" component={WorkshopFive} />
+      <Route path="/workshop5/" name="Цех5 Откорм" component={WorkshopFive} />
       <Route path="/workshop6/" name="Цех6 Откорм" component={WorkshopSix} />
       <Route path="/workshop7/" name="Цех7 Откорм" component={WorkshopSeven} />
       <Route path="/workshop75/" name="Цех7-5 Секция ремонтных свинок" component={WorkshopSevenFive} />
-      <Route path="/workshop9/" name="Убойный Цех" component={WorkshopOne} />
+      {/* <Route path="/workshop9/" name="Убойный Цех" component={WorkshopOne} />
       <Route path="/workshop10/" name="Крематорий" component={WorkshopOne} /> */}
     </Router>
   )

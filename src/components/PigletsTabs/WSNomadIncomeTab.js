@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 //components
 import { PigletsGroup, WeighingDetail, PigletsListElem } from '../PigletsRepresentations'
 import { WeighingPigletsInput } from '../FiltersAndInputs'
-import { Message } from '../CommonComponents'
+import { Message, ErrorMessage } from '../CommonComponents'
 
 class WSNomadIncomeTab extends Component {
    constructor(props) {
@@ -14,7 +14,7 @@ class WSNomadIncomeTab extends Component {
       totalWeight: '',
       weighingRecord: null,
       checkNewAmount: false,
-      newAmount: null,
+      newAmount: 0,
       needToRefresh: false
     }
     this.setData = this.setData.bind(this);
@@ -60,14 +60,14 @@ class WSNomadIncomeTab extends Component {
       place: this.props.weighingPlace,
       total_weight: this.state.totalWeight,
       new_amount: this.state.newAmount,
-      to_location: 3
+      to_location: this.props.returnLocation
     }
     this.props.weighingPiglets(data)
     this.setState({
       ...this.state,
       weighingRecord: this.props.weighingData,
       activePiglets: null,
-      newAmount: null,
+      newAmount: 0,
       checkNewAmount: false,
       needToRefresh: true
     })
@@ -86,7 +86,8 @@ class WSNomadIncomeTab extends Component {
   
   render() {
     this.refreshSowsList()
-    const { piglets } = this.props
+    const { piglets, eventError } = this.props
+
     return (
       <div className='row workshop-content'>
         <div className='col-3'>
@@ -124,6 +125,7 @@ class WSNomadIncomeTab extends Component {
               :
                 <Message message={'Выберите партию для взвешивания'}/>
           }
+          {eventError && <ErrorMessage error={eventError} />}
         </div>
       </div>
     )

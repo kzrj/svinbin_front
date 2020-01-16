@@ -4,6 +4,7 @@ import { toggleArray, toggleArrayLocations, getObjectbyId, toggleArrayDictById }
 //components
 import { PigletsCells, Sections } from '../Locations'
 import { PigletsWeaningInput } from '../PigletsRepresentations'
+import { ErrorMessage, Message } from '../CommonComponents'
 
 
 class WS3PigletsWeaningTab extends Component {
@@ -15,6 +16,7 @@ class WS3PigletsWeaningTab extends Component {
 
       activePigletsInputList: [],
       totalInPart: null,
+      transfer_part_number: null,
 
       needToRefresh: false
     };
@@ -120,10 +122,11 @@ class WS3PigletsWeaningTab extends Component {
   }
 
   createNomadPart () {
-    const { activePigletsInputList } = this.state
+    const { activePigletsInputList, transfer_part_number } = this.state
     
     this.props.mergeFromListPiglets({
       records: activePigletsInputList,
+      transfer_part_number: transfer_part_number
     })
 
     this.setState({
@@ -146,7 +149,7 @@ class WS3PigletsWeaningTab extends Component {
     if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        this.props.getLocations({sections_by_workshop_number: 3})
+        this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
       }, 100)
     }
   }
@@ -178,8 +181,15 @@ class WS3PigletsWeaningTab extends Component {
               Создать партию
             </button>
             <p>{this.state.totalInPart && <span>Всего в партии {this.state.totalInPart}</span>}</p>
+            {this.state.activePigletsInputList.length > 0 && 
+              <div> 
+                <input type='number' onChange={this.setData} name='transfer_part_number' 
+                  value={this.state.transfer_part_number}/>
+                Номер партии 
+               </div>
+            }
             <p>{eventMessage}</p>
-            {eventError && <p className='error-message'>{eventError.data.message}</p>}
+            {eventError && <ErrorMessage error={eventError}/>}
             {this.state.activePigletsInputList.length > 0 &&
               <PigletsWeaningInput 
                 weaningRecords={this.state.activePigletsInputList} 

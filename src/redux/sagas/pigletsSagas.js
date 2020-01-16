@@ -47,6 +47,15 @@ export function* movePiglets(api, action) {
     }
 }
 
+export function* moveGiltsToWs1(api, action) {
+    try {
+        let response = yield call(api.moveGiltsToWs1, action.payload);
+        yield put(PigletsActions.moveGiltsToWs1Success(response));
+    } catch (err) {
+        yield put(PigletsActions.moveGiltsToWs1Fail(err))
+    }
+}
+
 export function* markAsGilts(api, action) {
     try {
         let response = yield call(api.markAsGilts, action.payload);

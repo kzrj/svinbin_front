@@ -2,12 +2,35 @@
 export const parseErrorData = (error) => {
 
     if (error && typeof error.response !== 'undefined') {
-        return { 
+        return {
             status: error.response.status, 
-            statusText: error.response.statusText, 
-            message: error.response.data.message,
-            errMsg: error.message
-         }
+            statusText: error.response.statusText,
+            message: JSON.stringify(error.response.data),
+            errMsg: error.message,
+            response: error.response,
+        }
+
+        // if (error.response.data.hasOwnProperty('message')) {
+        //     console.log('error.response.data.message !== undefined')
+        //     console.log(error.response.data.message)
+        //     return { 
+        //         status: error.response.status, 
+        //         statusText: error.response.statusText, 
+        //         message: error.response.data.message,
+        //         errMsg: error.message,
+        //         response: error.response,
+        //     }
+        // } else {
+        //     console.log('else error.response.data.message !== undefined')
+        //     return {
+        //         status: error.response.status, 
+        //         statusText: error.response.statusText,
+        //         message: JSON.stringify(error.response.data),
+        //         errMsg: error.message,
+        //         response: error.response,
+        //     }
+        // }
+
     } else {
         return { 
          status: 'Connection Error',

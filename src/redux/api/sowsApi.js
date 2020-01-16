@@ -484,7 +484,14 @@ const create = () => {
         })
         .catch(err => {
             const error = new Error(err);
+            console.log(error)
+            console.log(error.data)
+            console.log(error.response)
+            console.log('OPPA')
             error.data = parseErrorData(err);
+            console.log(error)
+            console.log(error.data)
+            console.log(error.message)
             throw error;
         })
     }

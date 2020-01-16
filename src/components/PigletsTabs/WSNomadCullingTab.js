@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { PigletsCells, Sections } from '../Locations'
 import { PigletsGroup } from '../PigletsRepresentations'
 import { CullingTypeInput, CullingReasonInput } from '../FiltersAndInputs'
+import { Message } from '../CommonComponents'
 
 
 class WSNomadCullingTab extends Component {
@@ -128,7 +129,8 @@ class WSNomadCullingTab extends Component {
                 </div>
               </div>
               :
-              this.props.message ? <p>{this.props.message}</p> : <p>Выберите клетку</p>
+              this.props.message ? <Message message={this.props.message} /> :
+                <Message message={'Выберите клетку'} />
             }
         </div>
       </div>

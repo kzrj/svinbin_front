@@ -72,7 +72,7 @@ import React, { Component } from 'react';
         <p>Количество {piglets.quantity}</p>
         {piglets.gilts_quantity > 0 && <p>Количество ремонтных {piglets.gilts_quantity}</p>}
         {/* <PigletsMetaTour metatours={piglets.metatour_repr} /> */}
-        {/* <td>Дата рождения</td><td>{piglets.created_at}</td> */}
+        {piglets.transfer_part_number && <p>Партия {piglets.transfer_part_number}</p>}
       </div>
     )
   }

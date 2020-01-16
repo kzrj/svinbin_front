@@ -3,21 +3,44 @@ import React, { Component } from 'react';
 //components
 import { PigletsCells, Sections } from '../Locations'
 import { PigletsGroup } from '../PigletsRepresentations'
+import { Message, ErrorMessage } from '../CommonComponents'
+import { SplitPigletsInput } from '../FiltersAndInputs'
 
 
 class WSNomadTransferTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      piglets: props.piglets,
       activePiglets: null,
+
       activeSectionId: null,
       activeCellId: null,
+
+      changeQuantity: false,
+      quantity: 0,
+      gilts_contains: false,
+
       needToRefresh: false
     }
     this.clickSection = this.clickSection.bind(this);
     this.clickCell = this.clickCell.bind(this);
     this.clickTransfer = this.clickTransfer.bind(this);
+    this.setData = this.setData.bind(this);
+    this.checked = this.checked.bind(this);
+  }
+
+  setData (e) {
+    this.setState({
+      ...this.state,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  checked (e) {
+    this.setState({
+      ...this.state,
+      [e.target.name]: !this.state[e.target.name]
+    })
   }
   
   clickSection (e) {
@@ -26,7 +49,7 @@ class WSNomadTransferTab extends Component {
       ...this.state,
       activeSectionId: sectionId
     })
-    this.props.getLocations({by_section: sectionId})
+    this.props.getLocations({by_section: sectionId, cells: true})
   }
 
   clickCell (location) {
@@ -38,12 +61,13 @@ class WSNomadTransferTab extends Component {
     })
   }
 
-  clickTransfer () {
-    const { activePiglets, quantity } = this.state
+  clickTransfer (e) {
+    const { activePiglets, quantity, gilts_contains } = this.state
     let data = {
       id: activePiglets.id,
-      to_location: this.props.toLocation,
-      merge: false
+      to_location: e.target.dataset.tolocation,
+      merge: false,
+      gilts_contains: gilts_contains
     }
 
     if (quantity > 0)
@@ -53,6 +77,11 @@ class WSNomadTransferTab extends Component {
     this.setState({
       ...this.state,
       activePiglets: null,
+
+      changeQuantity: false,
+      quantity: 0,
+      gilts_contains: false,
+
       needToRefresh: true, 
     })
   }
@@ -61,14 +90,14 @@ class WSNomadTransferTab extends Component {
     if (this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        this.props.getLocations({by_section: this.state.activeSectionId})
+        this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
       }, 500)
     }
   }
 
   render() {
     this.refreshSowsList ()
-    const { sections, locations } = this.props
+    const { sections, locations, message, eventError } = this.props
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
@@ -89,13 +118,34 @@ class WSNomadTransferTab extends Component {
             {this.state.activePiglets && 
               <div>
                 <PigletsGroup piglets={this.state.activePiglets}/>
-                <button 
-                  className='btn btn-outline-secondary' type='button'
-                  onClick={this.clickTransfer}>
-                    {this.props.buttonName}
-                </button>
+                <SplitPigletsInput 
+                  checked={this.checked}
+                  changeQuantity={this.state.changeQuantity}
+                  quantity={this.state.quantity}
+                  helpMessage={'Укажите количество'}
+                  setData={this.setData}
+                  gilts_contains={this.state.gilts_contains}
+                />
+
+                {this.props.toLocations ? this.props.toLocations.map((toLocation, key) => 
+                  <button key={key}
+                    className='btn btn-outline-secondary' type='button'
+                    data-toLocation={toLocation}
+                    onClick={this.clickTransfer}>
+                      {this.props.buttonName} {toLocation}
+                  </button>
+                  ) :
+                  <button 
+                    className='btn btn-outline-secondary' type='button'
+                    data-toLocation={this.props.toLocation}
+                    onClick={this.clickTransfer}>
+                      {this.props.buttonName}
+                  </button>
+                }
               </div>
             }
+            {message && <Message message={message} />}
+            {eventError && <ErrorMessage error={eventError} />}
         </div>
       </div>
     )

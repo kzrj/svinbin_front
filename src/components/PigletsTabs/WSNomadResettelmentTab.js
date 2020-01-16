@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 
 // components
 import { PigletsCells, Sections } from '../Locations'
+import { PigletsListElem } from '../PigletsRepresentations'
+import { Message, ErrorMessage } from '../CommonComponents'
+import { SplitPigletsInput } from '../FiltersAndInputs'
 
 
 class WSNomadResettelmentTab extends Component {
@@ -11,8 +14,12 @@ class WSNomadResettelmentTab extends Component {
       activePiglets: null,
       activeSectionId: null,
       activeCellId: null,
-      splitLabel: false,
+
+      changeQuantity: false,
       quantity: 0,
+      gilts_contains: false,
+
+      needToRefresh: false
     }
     this.setData = this.setData.bind(this);
     this.checked = this.checked.bind(this);
@@ -37,10 +44,10 @@ class WSNomadResettelmentTab extends Component {
     })
   }
 
-  checked () {
+  checked (e) {
     this.setState({
       ...this.state,
-      splitLabel: !this.state.splitLabel
+      [e.target.name]: !this.state[e.target.name]
     })
   }
 
@@ -50,7 +57,7 @@ class WSNomadResettelmentTab extends Component {
       ...this.state,
       activeSectionId: sectionId
     })
-    this.props.getLocations({by_section: sectionId})
+    this.props.getLocations({by_section: sectionId, cells: true})
   }
 
   clickCell (location) {
@@ -70,11 +77,12 @@ class WSNomadResettelmentTab extends Component {
   }
 
   clickSetlle () {
-    const { activePiglets, activeCellId, quantity } = this.state
+    const { activePiglets, activeCellId, quantity, gilts_contains } = this.state
     let data = {
       id: activePiglets.id,
       to_location: activeCellId,
-      merge: true
+      merge: true,
+      gilts_contains: gilts_contains
     }
 
     if (quantity > 0)
@@ -83,7 +91,11 @@ class WSNomadResettelmentTab extends Component {
     this.setState({
       ...this.state,
       activePiglets: null,
-      quantity: null,
+
+      changeQuantity: false,
+      quantity: 0,
+      gilts_contains: false,
+      
       needToRefresh: true, 
       activeCellId: null,
     })
@@ -93,7 +105,7 @@ class WSNomadResettelmentTab extends Component {
     if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        this.props.getLocations({by_section: this.state.activeSectionId})
+        this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
         this.props.getPiglets({
           status_title: "Взвешены, готовы к заселению",
           // piglets_with_weighing_record: this.props.weighingPlace,
@@ -105,7 +117,7 @@ class WSNomadResettelmentTab extends Component {
 
   render() {
     this.refreshSowsList()
-    const { piglets, sections, locations } = this.props
+    const { piglets, sections, locations, eventError } = this.props
     return (
         <div className='row workshop-content'>
           <div className='col-3'>
@@ -115,7 +127,7 @@ class WSNomadResettelmentTab extends Component {
                 onClick={() => this.clickPiglets(group)}
                 key={group.id}
                 >
-                №{group.merger_part_number} Партия {group.quantity} голов
+                <PigletsListElem piglets={group} />
               </div>
             )}
           </div>
@@ -134,17 +146,14 @@ class WSNomadResettelmentTab extends Component {
             />
             {this.state.activePiglets ?
               <div>
-                <div className="input-group-append">
-                  <label>Разделить</label>
-                  <input type='checkbox' 
-                      onChange={this.checked}
-                      name='splitLabel'  checked={this.state.splitLabel}/>
-               
-                  {this.state.splitLabel && 
-                    <input type='text' 
-                        onChange={this.setData} 
-                        name='quantity' value={this.state.quantity}/>}
-                </div>
+                <SplitPigletsInput 
+                  checked={this.checked}
+                  changeQuantity={this.state.changeQuantity}
+                  quantity={this.state.quantity}
+                  helpMessage={'Укажите количество'}
+                  setData={this.setData}
+                  gilts_contains={this.state.gilts_contains}
+                />
                   <button className='btn btn-outline-secondary' type='button'
                     onClick={this.clickSetlle}
                     >
@@ -152,8 +161,10 @@ class WSNomadResettelmentTab extends Component {
                   </button>
               </div>
               :
-              this.props.message ? <p>{this.props.message}</p> : <p>Выберите группу поросят</p>
+              this.props.message ? <Message message={this.props.message}/> : 
+                <Message message={'Выберите группу поросят'}/>
             }
+            {eventError && <ErrorMessage error={eventError}/>}
           </div>  
       </div>
     )

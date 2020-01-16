@@ -81,13 +81,13 @@ const create = () => {
         })
         .catch(err => {
             const error = new Error(err);
-            error.data = parseErrorData(err);
+            error.data = parseErrorData(err);            
             throw error;
         })
     }
 
     const movePiglets = payload => {
-        const { id, to_location, new_amount, merge } = payload;
+        const { id, to_location, new_amount, merge, gilts_contains } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.movePiglets(id);
 
@@ -96,7 +96,8 @@ const create = () => {
         if (new_amount)
             formData.append("new_amount", new_amount);
         formData.append("merge", merge);
-        
+        formData.append("gilts_contains", gilts_contains);
+
         return axios({
                     method: 'post',
                     url: url,
@@ -136,13 +137,40 @@ const create = () => {
         })
     }
 
+    const moveGiltsToWs1 = payload => {
+        const { id, to_location, new_amount } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.moveGiltsToWs1(id);
+
+        const formData = new FormData();
+        formData.append("to_location", to_location);
+        if (new_amount)
+            formData.append("new_amount", new_amount);
+
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getPiglets,
         mergeFromListPiglets,
         cullingPiglets,
         weighingPiglets,
         movePiglets,
-        markAsGilts
+        markAsGilts,
+        moveGiltsToWs1
     }
 }
 

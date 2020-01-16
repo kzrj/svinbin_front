@@ -8,6 +8,8 @@ import WSNomadInnerTransferTab from '../components/PigletsTabs/WSNomadInnerTrans
 import WSNomadResettelmentTab from '../components/PigletsTabs/WSNomadResettelmentTab'
 import WSNomadIncomeTab from '../components/PigletsTabs/WSNomadIncomeTab'
 
+import { TabMenu }  from '../components/CommonComponents'
+
 // actions
 import SectionsActions from '../redux/redux-sauce/sections';
 import LocationsActions from '../redux/redux-sauce/locations';
@@ -18,122 +20,102 @@ class WorkshopEightContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabs: {
-        incomeTab: true,
-        resettlementTab: false,
-        innerTransferTab: false,
-        transferTab: false,
-        cullingTab: false,
-        infoTab: false,
-      }
+      tabs: [
+        {name: 'incomeTab',        active: true, title: 'Поступление и взвешивание'},
+        {name: 'resettlementTab',  active: false, title: 'Размещение прибывших'},
+        {name: 'innerTransferTab', active: false, title: 'Внутреннее перемещение'},
+        {name: 'transferTab',      active: false, title: 'Перегон'},
+        {name: 'cullingTab',       active: false, title: 'Выбраковка'},
+        {name: 'infoTab',          active: false, title: 'Инфо'},
+      ]
     };
     this.setTab = this.setTab.bind(this);
+    this.getActiveTab = this.getActiveTab.bind(this);
   }
 
   componentDidMount() {
-    this.props.getSections({workshop: 5})
+    this.props.getSections({workshop: 8})
   }
 
   setTab (tab) {
     let { tabs } = this.state
-    Object.keys(tabs).forEach((key) => {
-      tabs[key] = false
+    tabs.map((tb) => {
+      tb.active = false
+      if (tb.name === tab.name)
+        tb.active= true
     })
+
     this.setState({
-      tabs: {
-        ...tabs,
-        [tab]: true
-      }
+      tabs: tabs
     })
   }
 
+  getActiveTab () {
+    let { tabs } = this.state
+    let activeTab = {}
+    tabs.map(tb => {
+      if (tb.active)
+        activeTab = tb
+    })
+    return activeTab
+  }
+
   render() {
+    const activeTab = this.getActiveTab()
+
     return (
       <div className="workshop container">
-        <div className='workshop-header'>
-          Цех №8
-        </div>
-        <div className='row workshop-menu'>
-          <div className={this.state.tabs.incomeTab ? 'workshop-tab tab-active col-sm' : 
-            'workshop-tab col-sm'}
-            onClick={() => this.setTab('incomeTab')}
-            >
-              Поступление и взвешивание
-            </div>
-          <div className={this.state.tabs.resettlementTab ? 'workshop-tab tab-active col-sm' :
-            'workshop-tab col-sm'}
-            onClick={() => this.setTab('resettlementTab')}
-          >
-            Расселение поступивших
-          </div>
-          <div className={this.state.tabs.innerTransferTab ? 'workshop-tab tab-active col-sm' :
-            'workshop-tab col-sm'}
-            onClick={() => this.setTab('innerTransferTab')}
-          >
-            Перемещение
-          </div>
-          <div className={this.state.tabs.transferTab ? 'workshop-tab tab-active col-sm' :
-            'workshop-tab col-sm'}
-            onClick={() => this.setTab('transferTab')}
-          >
-            Перегон
-          </div>
-          <div className={this.state.tabs.cullingTab ? 'workshop-tab tab-active col-sm' :
-            'workshop-tab col-sm'}
-            onClick={() => this.setTab('cullingTab')}
-          >
-            Выбраковка
-          </div>
-          <div className={this.state.tabs.infoTab ? 'workshop-tab tab-active col-sm' :
-            'workshop-tab col-sm'}
-            onClick={() => this.setTab('infoTab')}
-          >
-            Инфо
-          </div>
-        </div>
-        <div className='workshop-header-3'>
-        </div>
-        { this.state.tabs.incomeTab &&
+        <TabMenu 
+          tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №8'} activeTab={activeTab}
+          user={this.props.state.auth.user}
+        />
+        { activeTab.name === 'incomeTab' &&
           <WSNomadIncomeTab 
+            workshopNumber={8}
+            weighingPlace={'4/8'}
+            returnLocation={4}
+
+            getPiglets={this.props.getPiglets}
+            piglets={this.props.state.piglets.list}
+            listFetching={this.props.state.piglets.listFetching}
+            listError={this.props.state.piglets.errorList}
+
+            weighingPiglets={this.props.weighingPiglets}
+            weighingData={this.props.state.piglets.weighing}
+            eventFetching={this.props.state.piglets.eventFetching}
+            eventError={this.props.state.piglets.eventError}
+            message={this.props.state.piglets.message}
+          />}
+
+        { activeTab.name === 'resettlementTab' &&
+          <WSNomadResettelmentTab 
             workshopNumber={8}
             weighingPlace={'4/8'}
 
             getPiglets={this.props.getPiglets}
-            piglets={this.props.state.nomadPiglets.list}
-            listFetching={this.props.state.nomadPiglets.listFetching}
-
-            weighingPiglets={this.props.weighingPiglets}
-            weighingData={this.props.state.nomadPiglets.weighing}
-            eventFetching={this.props.state.nomadPiglets.eventFetching}
-            message={this.props.state.nomadPiglets.message}
-          />}
-
-        { this.state.tabs.resettlementTab &&
-          <WSNomadResettelmentTab 
-            workshopNumber={8}
-
-            getPiglets={this.props.getPiglets}
-            piglets={this.props.state.nomadPiglets.list}
-            listFetching={this.props.state.nomadPiglets.listFetching}
+            piglets={this.props.state.piglets.list}
+            listFetching={this.props.state.piglets.listFetching}
+            listError={this.props.state.piglets.errorList}
 
             getSections={this.props.getSections}
-            sections={this.props.state.ws8.sections}
+            sections={this.props.state.sections.list}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
 
-            setllePiglets={this.props.moveToCellPiglets}
-            eventFetching={this.props.state.nomadPiglets.eventFetching}
-            message={this.props.state.nomadPiglets.message}
+            movePiglets={this.props.movePiglets}
+            eventFetching={this.props.state.piglets.eventFetching}
+            eventError={this.props.state.piglets.eventError}
+            message={this.props.state.piglets.message}
         />}
 
-        { this.state.tabs.innerTransferTab &&
+        { activeTab.name === 'innerTransferTab' &&
           <WSNomadInnerTransferTab
             workshopNumber={8}
 
             getSections={this.props.getSections}
-            sections={this.props.state.ws8.sections}
+            sections={this.props.state.sections.list}
 
             getLocations1={this.props.getLocations}
             locations1={this.props.state.locations.list}
@@ -143,47 +125,51 @@ class WorkshopEightContainer extends Component {
             locations2={this.props.state.locations.additional_list}
             list2Fetching={this.props.state.locations.fetchingAdditional}
 
-            movePiglets={this.props.moveToCellPiglets}
-            eventFetching={this.props.state.nomadPiglets.eventFetching}
-            message={this.props.state.nomadPiglets.message}
+            movePiglets={this.props.movePiglets}
+            eventFetching={this.props.state.piglets.eventFetching}
+            eventError={this.props.state.piglets.eventError}
+            message={this.props.state.piglets.message}
         />}
 
-        { this.state.tabs.transferTab &&
+        { activeTab.name === 'transferTab' &&
           <WSNomadTransferTab 
             workshopNumber={8}
-            toLocation={6}
+            toLocation={5}
+            toLocations={[5,6,7]}
             buttonName={'Отправить в откорм'}
 
-            getPiglets={this.props.getTransferPiglets}
-            piglets={this.props.state.ws4.transferPiglets}
+            getPiglets={this.props.getPiglets}
+            piglets={this.props.state.piglets.list}
+            listFetching={this.props.state.piglets.listFetching}
 
             getSections={this.props.getSections}
-            sections={this.props.state.ws4.sections}
+            sections={this.props.state.sections.list}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
 
             movePiglets={this.props.movePiglets}
-            eventFetching={this.props.state.nomadPiglets.eventFetching}
-            message={this.props.state.nomadPiglets.message}
+            eventFetching={this.props.state.piglets.eventFetching}
+            eventError={this.props.state.piglets.eventError}
+            message={this.props.state.piglets.message}
         />}
 
-        { this.state.tabs.cullingTab &&
+        { activeTab.name === 'cullingTab' &&
           <WSNomadCullingTab
             workshopNumber={8}
 
             getSections={this.props.getSections}
-            sections={this.props.state.ws5.sections}
+            sections={this.props.state.sections.list}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
 
             cullingPiglets={this.props.cullingPiglets}
-            cullingGilt={this.props.cullingGilt}
-            eventFetching={this.props.state.nomadPiglets.eventFetching}
-            message={this.props.state.nomadPiglets.message}
+            eventFetching={this.props.state.piglets.eventFetching}
+            eventError={this.props.state.piglets.eventError}
+            message={this.props.state.piglets.message}
         />}
       </div>
     );
@@ -203,14 +189,9 @@ const mapDispatchToProps = (dispatch) => ({
 
   //piglets
   getPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
-  setllePiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
-  getTransferPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
-
-  movePiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
-  moveToCellPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
-  weighingPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
-  cullingPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
-  cullingGilt: query => dispatch(PigletsActions.getPigletsRequest(query)),
+  movePiglets: query => dispatch(PigletsActions.movePigletsRequest(query)),
+  weighingPiglets: query => dispatch(PigletsActions.weighingPigletsRequest(query)),
+  cullingPiglets: query => dispatch(PigletsActions.cullingPigletsRequest(query)),
 })
 
 export default connect(
