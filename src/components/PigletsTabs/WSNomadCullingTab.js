@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { PigletsCells, Sections } from '../Locations'
 import { PigletsGroup } from '../PigletsRepresentations'
 import { CullingTypeInput, CullingReasonInput } from '../FiltersAndInputs'
-import { Message } from '../CommonComponents'
+import { ErrorMessage, Message } from '../CommonComponents'
 
 
 class WSNomadCullingTab extends Component {
@@ -25,6 +25,10 @@ class WSNomadCullingTab extends Component {
     this.setData = this.setData.bind(this);
     this.setIsGilt = this.setIsGilt.bind(this);
     this.cullingPiglets = this.cullingPiglets.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.pigletsResetErrorsAndMessages()
   }
   
   clickSection = (e) => {

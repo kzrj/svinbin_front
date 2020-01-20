@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 //components
 import { SowCells, Sections } from '../Locations'
+import { ErrorMessage, Message } from '../CommonComponents'
 
 class WS3SowInnerTransferTab extends Component {
    constructor(props) {
@@ -13,6 +14,10 @@ class WS3SowInnerTransferTab extends Component {
       activeToSectionId: null,
       activeCellToLocationId: null,
     }
+  }
+
+  componentDidMount() {
+    this.props.sowsResetErrorsAndMessages()
   }
   
   clickFromSection = (e) => {
@@ -76,7 +81,7 @@ class WS3SowInnerTransferTab extends Component {
   }
 
   render() {
-    const { sections, locations1, locations2 } = this.props
+    const { sections, locations1, locations2, eventError, message } = this.props
     this.refreshLocations()
     
     return (
@@ -115,8 +120,8 @@ class WS3SowInnerTransferTab extends Component {
                 error={this.props.locationsList2Error}
               />
           </div>
-        <div>
-          <div>
+        <div className='row'>
+          <div className='col'>
             {this.state.activeSow && 
               <ul>
                 <li>{this.state.activeSow.id}</li>
@@ -126,7 +131,7 @@ class WS3SowInnerTransferTab extends Component {
             }
           </div>
           {this.state.activeSow && 
-            <div className='bottom-buttons-block'>
+            <div className='bottom-buttons-block col'>
               <div className="input-group">
                 <button onClick={this.clickTransfer} className='btn btn-outline-secondary'>
                   Переместить
@@ -134,6 +139,10 @@ class WS3SowInnerTransferTab extends Component {
               </div>
             </div>
           } 
+          <div className='col'>
+            {eventError && <ErrorMessage error={eventError} />}
+            {message && <Message message={message} />}
+          </div>
         </div>
       </div>
     )

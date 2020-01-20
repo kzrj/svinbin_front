@@ -50,7 +50,6 @@ class WorkshopOneContainer extends Component {
 
   showStateConsole = () => {
     const { state } = this.props
-    console.log(state)
   }
 
   render() {
@@ -138,8 +137,11 @@ class WorkshopOneContainer extends Component {
             nonameSowsCount={this.props.state.sows.nonameSowsCount}
             createNewNonameSow={this.props.createNewNonameSow}
 
+            eventError={this.props.state.sows.eventError}
+            eventFetching={this.props.state.sows.eventFetching}
             message={this.props.state.sows.message}
-            error={this.props.state.sows.error}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
 
         {/* { this.state.tabs.seminationTab && 
@@ -212,9 +214,11 @@ class WorkshopOneContainer extends Component {
             uploadFile={this.props.uploadFile}
 
             message={this.props.state.wsData.message}
-            error={this.props.state.wsData.error}
+            eventError={this.props.state.wsData.error}
 
             responseData={this.props.state.wsData.import_from_file_data}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
 
         { this.state.tabs.ultrasound30Tab &&
@@ -232,7 +236,11 @@ class WorkshopOneContainer extends Component {
             tours={this.props.state.tours.list}
 
             massUltrasound={this.props.massUltrasound}
+            eventError={this.props.state.sows.eventError}
             eventFetching={this.props.state.sows.eventFetching}
+            message={this.props.state.sows.message}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
 
         { this.state.tabs.ultrasound60Tab &&
@@ -250,7 +258,11 @@ class WorkshopOneContainer extends Component {
             tours={this.props.state.tours.list}
 
             massUltrasound={this.props.massUltrasound}
+            eventError={this.props.state.sows.eventError}
             eventFetching={this.props.state.sows.eventFetching}
+            message={this.props.state.sows.message}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
 
         { this.state.tabs.transferToWS2Tab &&
@@ -263,7 +275,11 @@ class WorkshopOneContainer extends Component {
             tours={this.props.state.tours.list}
 
             massMove={this.props.sowsMoveMany}
+            eventError={this.props.state.sows.eventError}
             eventFetching={this.props.state.sows.eventFetching}
+            message={this.props.state.sows.message}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
 
         { this.state.tabs.cullingTab &&
@@ -281,7 +297,11 @@ class WorkshopOneContainer extends Component {
 
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}
+            eventError={this.props.state.sows.eventError}
             eventFetching={this.props.state.sows.eventFetching}
+            message={this.props.state.sows.message}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
 
       </div>
@@ -309,6 +329,7 @@ const mapDispatchToProps = (dispatch) => ({
   massSemination: data => dispatch(SowsActions.massSeminationRequest(data)),
   massUltrasound: data => dispatch(SowsActions.massUltrasoundRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
+  sowsResetErrorsAndMessages: () => dispatch(SowsActions.sowsResetErrorsAndMessages()),
 
   getSeminators: query => dispatch(WsDataActions.getSeminatorsRequest(query)),
   uploadFile: data => dispatch(WsDataActions.importSeminationsFromFarmRequest(data)),

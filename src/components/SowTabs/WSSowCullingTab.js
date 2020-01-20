@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 // components
 import { SowFindById } from '../FiltersAndInputs'
 import { SowLightDetail, SowToursData } from '../SowRepresentations'
+import { ErrorMessage, Message } from '../CommonComponents';
 
 
 class WSSowCullingTab extends Component {
@@ -35,6 +36,7 @@ class WSSowCullingTab extends Component {
         all_in_workshop_number: this.props.workshopNumber
       }
     })
+    this.props.sowsResetErrorsAndMessages()
   }
 
   getSowsById (e) {
@@ -92,7 +94,7 @@ class WSSowCullingTab extends Component {
 
   render() {
     this.refreshSowsList()
-    const { sows, sow, tours_info } = this.props
+    const { sows, sow, tours_info, eventError, message } = this.props
     return (
       <div className='row workshop-content'>
         <div className='col-3 workshop-left-column'>
@@ -139,8 +141,13 @@ class WSSowCullingTab extends Component {
                       </div>
                     </div>
               :
-              <p className='error-message'>{this.props.sowsSingleError.message}</p>
+              <ErrorMessage error={this.props.sowsSingleError} />
             }
+            <div className='col'>
+              {eventError && <ErrorMessage error={eventError}/>}
+              {message && <Message message={eventError}/>}
+
+            </div>
           </div>
         </div>
       </div>

@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 //components
 import { SowTable }  from '../../components/SowRepresentations'
 import { SowFarmIdFilter, SowTourFilter, SowSectionFilter }  from '../../components/FiltersAndInputs'
+import { ErrorMessage, Message } from '../CommonComponents'
+
 
 class WS3SowFarrowTab extends Component {
    constructor(props) {
@@ -39,13 +41,14 @@ class WS3SowFarrowTab extends Component {
     })
     this.props.getSows({
       by_section_in_cell: this.props.sectionId,
-      status_title: this.props.statusTitleFilter})
+      status_title: this.props.statusTitleFilter
+    })
+    this.props.sowsResetErrorsAndMessages()
   }
 
   setQuery (e) {
     let { query } = this.state
     query[e.target.name] = e.target.value
-    console.log(query)
 
     this.setState({
       ...this.state,
@@ -117,7 +120,7 @@ class WS3SowFarrowTab extends Component {
   }
 
   render() {
-    const { sows, tours, sections, eventError } = this.props
+    const { sows, tours, sections, eventError, message } = this.props
     this.refreshSowsList()
     
     return (
@@ -138,7 +141,8 @@ class WS3SowFarrowTab extends Component {
                   className="btn btn-outline-secondary btn-sm" type="button" >
                   Записать данные
                 </button>
-                {eventError && <p className='error-message'>{eventError.data.message}</p>}
+                {eventError && <ErrorMessage error={eventError}/>}
+                {message && <Message message={eventError}/>}
               </div>
               
               <div className='farrow-button-block col-3'>

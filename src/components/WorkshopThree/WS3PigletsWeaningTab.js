@@ -31,6 +31,7 @@ class WS3PigletsWeaningTab extends Component {
   }
   
   componentDidMount() {
+    this.props.pigletsResetErrorsAndMessages()
   }
 
   clickSection (e) {

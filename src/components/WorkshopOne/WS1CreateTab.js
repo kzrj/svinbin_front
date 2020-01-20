@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ErrorMessage, Message } from '../CommonComponents'
 
 
 class WS1CreateTab extends Component {
@@ -18,6 +19,7 @@ class WS1CreateTab extends Component {
   
   componentDidMount() {
     this.props.getSows(this.state.query)
+    this.props.sowsResetErrorsAndMessages()
   }
 
   setFarmId (e) {
@@ -46,7 +48,7 @@ class WS1CreateTab extends Component {
   }
 
   render() {
-    const { sow, sows, nonameSow, nonameSowsCount } = this.props
+    const { sow, sows, nonameSow, nonameSowsCount, eventError, message } = this.props
     const countSows = sows.length
     return (
       <div className='workshop-content'>
@@ -83,12 +85,8 @@ class WS1CreateTab extends Component {
                   </button>
                 </div>
               </div>
-              {!this.props.error ?
-                this.props.message &&
-                <p className='message'>{this.props.message}</p>
-                :
-                <p className='error-message'>Ошибка {this.props.error.data.message}</p>
-              }
+              {eventError && <ErrorMessage error={eventError}/>}
+              {message && <Message message={eventError}/>}
           </div>
         </div>
       </div>

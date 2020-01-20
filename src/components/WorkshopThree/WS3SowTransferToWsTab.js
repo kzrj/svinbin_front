@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 //components
 import { SowCells, Sections } from '../Locations'
+import { ErrorMessage, Message } from '../CommonComponents';
+
 
 class WS3SowTransferToWsTab extends Component {
    constructor(props) {
@@ -17,6 +19,10 @@ class WS3SowTransferToWsTab extends Component {
     this.clickSection = this.clickSection.bind(this);
     this.clickCell = this.clickCell.bind(this);
     this.clickTransfer = this.clickTransfer.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.sowsResetErrorsAndMessages()
   }
   
   clickSection (e) {
@@ -68,7 +74,7 @@ class WS3SowTransferToWsTab extends Component {
 
   render() {
     const { sections, locations, locationsFetching, locationsListError,
-       sectionsFetching, sectionsListError } = this.props
+       sectionsFetching, sectionsListError, eventError, message  } = this.props
     this.refreshLocations()
     
     return (
@@ -115,7 +121,11 @@ class WS3SowTransferToWsTab extends Component {
                   </button>
                 </div>
               </div>
-            } 
+            }
+            <div>
+              {eventError && <ErrorMessage error={eventError}/>}
+              {message && <Message message={eventError}/>}
+            </div>
           </div>
       </div>
     )

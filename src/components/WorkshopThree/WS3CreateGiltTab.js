@@ -36,6 +36,7 @@ class WS3PigletsWeaningTab extends Component {
       by_section_in_cell: this.props.sectionId,
       status_title: this.props.statusTitleFilter
     })
+    this.props.sowsResetErrorsAndMessages()
   }
 
   setQuery (e) {

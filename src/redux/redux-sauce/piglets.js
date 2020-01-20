@@ -30,6 +30,8 @@ const { Types, Creators } = createActions({
     moveGiltsToWs1Request: ['payload'],
     moveGiltsToWs1Fail: ['payload'],
     moveGiltsToWs1Success: ['payload'],
+
+    pigletsResetErrorsAndMessages: null,
 })
 
 export const PigletsTypes = Types
@@ -155,6 +157,11 @@ export const markAsGiltsFail = (state, { payload }) => {
     return state.merge({ eventFetching: false, eventError: payload, message: ''})
 }
 
+// resetErrorsAndMessages
+export const pigletsResetErrorsAndMessages = (state) => {
+    return state.merge({ fetching: false, eventError: null, errorList: null, message: '' })
+  }
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -185,4 +192,6 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MARK_AS_GILTS_REQUEST]: markAsGiltsRequest,
     [Types.MARK_AS_GILTS_SUCCESS]: markAsGiltsSuccess,
     [Types.MARK_AS_GILTS_FAIL]: markAsGiltsFail,
+
+    [Types.PIGLETS_RESET_ERRORS_AND_MESSAGES]: pigletsResetErrorsAndMessages,
 })

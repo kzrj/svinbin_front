@@ -33,6 +33,10 @@ class WSNomadInnerTransferTab extends Component {
     this.clickTransfer = this.clickTransfer.bind(this);
   }
 
+  componentDidMount() {
+    this.props.pigletsResetErrorsAndMessages()
+  }
+
   setData (e) {
     this.setState({
       ...this.state,

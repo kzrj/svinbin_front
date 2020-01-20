@@ -43,7 +43,6 @@ class LoginForm extends Component {
   }
 }
 
-
 class Main extends Component {
   constructor(props) {
 		super(props);  
@@ -54,11 +53,6 @@ class Main extends Component {
     if (token) {
       this.props.checkToken(token);
     }
-  }
-
-  login = () => {
-    this.props.login({username: 'test_seminator', password: 'qwerty123'})
-    
   }
 
   render() {
@@ -79,7 +73,14 @@ class Main extends Component {
             </div>
           }
           { isLoggedIn &&
-            this.props.children
+            <div>
+              {this.props.children}
+              <div>
+                <button onClick={this.props.logout}>
+                  Выйти
+                </button>
+              </div>
+            </div>
           }
           
         </div>
@@ -95,6 +96,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   login: (payload) => dispatch(AuthActions.loginRequest(payload)),
+  logout: (payload) => dispatch(AuthActions.logoutRequest(payload)),
   checkToken: (token) => dispatch(AuthActions.checkTokenRequest(token))
 })
 

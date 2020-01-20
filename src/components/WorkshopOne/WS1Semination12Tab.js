@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 // components
 import { SowFindById } from '../FiltersAndInputs'
 import { SowLightDetail, SowToursData } from '../SowRepresentations'
+import { ErrorMessage, Message } from '../CommonComponents'
 
 
 class WS1Semination12Tab extends Component {
@@ -29,6 +30,7 @@ class WS1Semination12Tab extends Component {
     this.props.getSows(this.state.query)
     this.props.getBoars()
     this.props.getSeminators({is_seminator: true})
+    this.props.sowsResetErrorsAndMessages()
   }
 
   getSowsById (e) {
@@ -69,7 +71,7 @@ class WS1Semination12Tab extends Component {
   }
 
   render() {
-    const { sows, sow, tours_info, seminationEmployes, boars } = this.props
+    const { sows, sow, tours_info, seminationEmployes, boars, eventError, message } = this.props
     this.refreshSowsList()
     return (
       <div className='row workshop-content'>
@@ -125,6 +127,8 @@ class WS1Semination12Tab extends Component {
                       </button>
                     </div>
                   </div>
+                  {eventError && <ErrorMessage error={eventError}/>}
+                  {message && <Message message={eventError}/>}
                   <SowToursData tours_info={tours_info} />
                 </div>
               }

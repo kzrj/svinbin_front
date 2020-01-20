@@ -4,6 +4,7 @@ import { toggleArray } from '../../components/utils'
 // components
 import { SowTable }  from '../../components/SowRepresentations'
 import { SowFarmIdFilter, SowTourFilter }  from '../../components/FiltersAndInputs'
+import { ErrorMessage, Message } from '../CommonComponents'
 
 
 class WSSowUltrasoundTab extends Component {
@@ -38,6 +39,7 @@ class WSSowUltrasoundTab extends Component {
       by_workshop_number: this.props.workshopNumber,
       status_title: this.props.statusTitleFilter})
     this.props.getTours()
+    this.props.sowsResetErrorsAndMessages()
   }
 
   setQuery (e) {
@@ -92,7 +94,7 @@ class WSSowUltrasoundTab extends Component {
   }
 
   render() {
-    const { sows, tours, days } = this.props
+    const { sows, tours, days, eventError, message } = this.props
     this.refreshSowsList()
     return (
       <div className='workshop-content'>
@@ -118,6 +120,8 @@ class WSSowUltrasoundTab extends Component {
                   </button>
                 </div>
                 </div>
+                {eventError && <ErrorMessage error={eventError}/>}
+                {message && <Message message={eventError}/>}
             </div>
           </div>
         </div>

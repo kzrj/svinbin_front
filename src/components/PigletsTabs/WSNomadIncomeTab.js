@@ -29,6 +29,7 @@ class WSNomadIncomeTab extends Component {
       piglets_without_weighing_record: this.props.weighingPlace,
       by_workshop_number: this.props.workshopNumber
     })
+    this.props.pigletsResetErrorsAndMessages()
   }
 
   clickPiglets (piglets) {

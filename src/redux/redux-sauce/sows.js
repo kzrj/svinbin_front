@@ -77,6 +77,7 @@ const { Types, Creators } = createActions({
 
     setSow: [''],
     resetSow: ['payload'],
+    sowsResetErrorsAndMessages: null,
 })
 
 export const SowsTypes = Types
@@ -102,7 +103,7 @@ export const INITIAL_STATE = Immutable({
     createdNonameSow: null,
     nonameSowsCount: null,
     eventFetching: false,
-    errorEvent: null,
+    eventError: null,
 
     boars: [],
     initData: null,
@@ -176,12 +177,12 @@ export const seminationSowRequest = (state, { payload }) => {
 }
 
 export const seminationSowSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null, 
+    return state.merge({ eventFetching: false, eventError: null, 
         sow: payload.sow, sowEvent: payload.semination })
 }
 
 export const seminationSowFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error })
+    return state.merge({ eventFetching: false, eventError: error })
 }
 
 // Ultrasound
@@ -190,11 +191,11 @@ export const ultrasoundSowRequest = (state, { payload }) => {
 }
 
 export const ultrasoundSowSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null, sow: payload.sow, sowEvent: payload.ultrasound })
+    return state.merge({ eventFetching: false, eventError: null, sow: payload.sow, sowEvent: payload.ultrasound })
 }
 
 export const ultrasoundSowFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error })
+    return state.merge({ eventFetching: false, eventError: error })
 }
 
 // Culling
@@ -203,11 +204,11 @@ export const cullingSowRequest = (state, { payload }) => {
 }
 
 export const cullingSowSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null, sow: payload.sow, sowEvent: payload.culling })
+    return state.merge({ eventFetching: false, eventError: null, sow: payload.sow, sowEvent: payload.culling })
 }
 
 export const cullingSowFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error })
+    return state.merge({ eventFetching: false, eventError: error })
 }
 
 // Move to
@@ -216,12 +217,12 @@ export const sowMoveToRequest = (state, { payload }) => {
 }
 
 export const sowMoveToSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null,
+    return state.merge({ eventFetching: false, eventError: null,
          sow: payload.sow, sowEvent: payload.transaction })
 }
 
 export const sowMoveToFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error })
+    return state.merge({ eventFetching: false, eventError: error })
 }
 
 // Move many
@@ -230,12 +231,12 @@ export const sowsMoveManyRequest = (state, { payload }) => {
 }
 
 export const sowsMoveManySuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null,
+    return state.merge({ eventFetching: false, eventError: null,
          sowEvent: payload.transaction_ids })
 }
 
 export const sowsMoveManyFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error })
+    return state.merge({ eventFetching: false, eventError: error })
 }
 
 // Sow Farrow
@@ -244,26 +245,26 @@ export const sowFarrowRequest = (state, { payload }) => {
 }
 
 export const sowFarrowSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null,
+    return state.merge({ eventFetching: false, eventError: null,
          sow: payload.sow, sowEvent: payload.farrow })
 }
 
 export const sowFarrowFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error })
+    return state.merge({ eventFetching: false, eventError: error })
 }
 
 // Get create new
 export const createNewSowRequest = (state, { payload }) => {
-    return state.merge({ eventFetching: true, createdSow: null, errorEvent: null })
+    return state.merge({ eventFetching: true, createdSow: null, eventError: null })
 }
 
 export const createNewSowSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null, createdSow: payload.sow,
+    return state.merge({ eventFetching: false, eventError: null, createdSow: payload.sow,
         message: payload.message })
 }
 
 export const createNewSowFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error, createdSow: null })
+    return state.merge({ eventFetching: false, eventError: error, createdSow: null })
 }
 
 // Get create new noname
@@ -272,12 +273,12 @@ export const createNewNonameSowRequest = (state, { payload }) => {
 }
 
 export const createNewNonameSowSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null, createdNonameSow: payload.sow, 
+    return state.merge({ eventFetching: false, eventError: null, createdNonameSow: payload.sow, 
         nonameSowsCount: payload.noname_sows_count })
 }
 
 export const createNewNonameSowFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error, createdNonameSow: null, nonameSowsCount: null })
+    return state.merge({ eventFetching: false, eventError: error, createdNonameSow: null, nonameSowsCount: null })
 }
 
 // Get boars list
@@ -299,11 +300,11 @@ export const addNewSeminatedToWs1Request = (state, { payload }) => {
 }
 
 export const addNewSeminatedToWs1Success = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null, initData: payload })
+    return state.merge({ eventFetching: false, eventError: null, initData: payload })
 }
 
 export const addNewSeminatedToWs1Fail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error })
+    return state.merge({ eventFetching: false, eventError: error })
 }
 
 // Mass semination
@@ -312,11 +313,11 @@ export const massSeminationRequest = (state, { payload }) => {
 }
 
 export const massSeminationSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null, })
+    return state.merge({ eventFetching: false, eventError: null, })
 }
 
 export const massSeminationFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error })
+    return state.merge({ eventFetching: false, eventError: error })
 }
 
 // Mass ultrasound
@@ -325,11 +326,11 @@ export const massUltrasoundRequest = (state, { payload }) => {
 }
 
 export const massUltrasoundSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null, })
+    return state.merge({ eventFetching: false, eventError: null, })
 }
 
 export const massUltrasoundFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error })
+    return state.merge({ eventFetching: false, eventError: error })
 }
 
 // AbortionSow
@@ -338,11 +339,11 @@ export const abortionSowRequest = (state, { payload }) => {
 }
 
 export const abortionSowSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null, sow: payload })
+    return state.merge({ eventFetching: false, eventError: null, sow: payload })
 }
 
 export const abortionSowFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error, sow: null })
+    return state.merge({ eventFetching: false, eventError: error, sow: null })
 }
 
 
@@ -352,11 +353,11 @@ export const massInitTransferRequest = (state, { payload }) => {
 }
 
 export const massInitTransferSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null, message: payload.message})
+    return state.merge({ eventFetching: false, eventError: null, message: payload.message})
 }
 
 export const massInitTransferFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error, message: null })
+    return state.merge({ eventFetching: false, eventError: error, message: null })
 }
 
 // Mark as nurse
@@ -365,12 +366,12 @@ export const markAsNurseRequest = (state, { payload }) => {
 }
 
 export const markAsNurseSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null, sow: payload.sow,
+    return state.merge({ eventFetching: false, eventError: null, sow: payload.sow,
         sowEvent: payload.farrow, message: payload.message })
 }
 
 export const markAsNurseFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error })
+    return state.merge({ eventFetching: false, eventError: error })
 }
 
 // Create gilt
@@ -379,12 +380,18 @@ export const createGiltRequest = (state, { payload }) => {
 }
 
 export const createGiltSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, errorEvent: null, message: payload.message })
+    return state.merge({ eventFetching: false, eventError: null, message: payload.message })
 }
 
 export const createGiltFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, errorEvent: error, message: '' })
+    return state.merge({ eventFetching: false, eventError: error, message: '' })
 }
+
+// resetErrorsAndMessages
+export const sowsResetErrorsAndMessages = (state) => {
+    return state.merge({ fetching: false, eventError: null, errorList: null, eventFetching: null, message: '' })
+  }
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -462,4 +469,6 @@ export const reducer = createReducer(INITIAL_STATE, {
 
     [Types.SET_SOW]: setSow,
     [Types.RESET_SOW]: resetSow,
+
+    [Types.SOWS_RESET_ERRORS_AND_MESSAGES]: sowsResetErrorsAndMessages,
 })

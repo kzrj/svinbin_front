@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { toggleArray } from '../../components/utils'
+
 // components
 import { SowTable }  from '../../components/SowRepresentations'
 import { SowFarmIdFilter, SowTourFilter, SowSectionFilter }  from '../../components/FiltersAndInputs'
+import { ErrorMessage, Message } from '../CommonComponents';
 
 
 class WS3NurseSowTab extends Component {
@@ -38,6 +40,7 @@ class WS3NurseSowTab extends Component {
       status_title: this.props.statusTitleFilter
       })
     this.props.getTours()
+    this.props.sowsResetErrorsAndMessages()
   }
 
   setQuery (e) {
@@ -89,7 +92,7 @@ class WS3NurseSowTab extends Component {
 
   render() {
     this.refreshSowsList()
-    const { sows, tours, sections } = this.props
+    const { sows, tours, sections, eventError, message } = this.props
     const { choosedSows } = this.state
     
     return (
@@ -109,6 +112,10 @@ class WS3NurseSowTab extends Component {
                  <p className='error-message'>{this.props.eventError}</p>
               }
             </div>
+            <div className='col'>
+                {eventError && <ErrorMessage error={eventError}/>}
+                {message && <Message message={eventError}/>}
+              </div>
           </div>
         </div>
         <div className='commonfilter-results'>

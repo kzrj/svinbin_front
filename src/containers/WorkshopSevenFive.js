@@ -89,6 +89,8 @@ class WorkshopSevenFiveContainer extends Component {
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
+
+            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
 
         { activeTab.name === 'innerTransferTab' &&
@@ -110,6 +112,8 @@ class WorkshopSevenFiveContainer extends Component {
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
+
+            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
 
         { activeTab.name === 'transferTab' &&
@@ -134,6 +138,8 @@ class WorkshopSevenFiveContainer extends Component {
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
+
+            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
 
         { activeTab.name === 'cullingTab' &&
@@ -151,6 +157,8 @@ class WorkshopSevenFiveContainer extends Component {
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
+
+            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
       </div>
     );
@@ -173,6 +181,7 @@ const mapDispatchToProps = (dispatch) => ({
   movePiglets: query => dispatch(PigletsActions.movePigletsRequest(query)),
   moveGiltsToWs1: query => dispatch(PigletsActions.moveGiltsToWs1Request(query)),
   cullingPiglets: query => dispatch(PigletsActions.cullingPigletsRequest(query)),
+  pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 })
 
 export default connect(

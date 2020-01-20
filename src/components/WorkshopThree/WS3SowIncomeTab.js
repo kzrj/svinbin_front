@@ -5,6 +5,7 @@ import { toggleArray } from '../../components/utils'
 import { SowCells, Sections, SectionsWs3 } from '../Locations'
 import { SowFindById, SowFindByIdMany } from '../FiltersAndInputs'
 import { SowFindByIdWithoutGet } from '../SowRepresentations'
+import { ErrorMessage, Message } from '../CommonComponents';
 
 
 class WS3SowIncomeTab extends Component {
@@ -33,6 +34,7 @@ class WS3SowIncomeTab extends Component {
   
   componentDidMount() {
     this.props.getSows(this.state.query)
+    this.props.sowsResetErrorsAndMessages()
     // this.props.getLocations({by_section: this.props.sections.length > 0 ? this.props.sections[0].id : 1})
   }
 
@@ -64,7 +66,6 @@ class WS3SowIncomeTab extends Component {
   }
 
   clickLocation (location) {
-    console.log('clickLocation', location.id)
     this.setState({
       ...this.state,
       activeCellId: location.id,
@@ -95,7 +96,7 @@ class WS3SowIncomeTab extends Component {
   render() {
     this.refreshData()
     const { sows, sections, sectionsFetching, sectionsListError, locationsFetching,
-       locationsListError } = this.props
+       locationsListError, eventError, message } = this.props
     return (
         <div className='row workshop-content'>
           <div className='col-3 workshop-left-column'>
@@ -129,13 +130,18 @@ class WS3SowIncomeTab extends Component {
     
               clickLocation={this.clickLocation}
             />
-            <div className='bottom-buttons-block'>
-              <div className="input-group">
+            <div className='bottom-buttons-block row'>
+              <div className="input-group col">
                 {this.state.activeCellId && this.state.activeSowId &&
                   <button onClick={this.clickSetlle} className='btn btn-outline-secondary'>
                     Разместить свиноматку
                   </button>
                 }
+              </div>
+              <div className='col'>
+                {eventError && <ErrorMessage error={eventError}/>}
+                {message && <Message message={eventError}/>}
+
               </div>
             </div>
           </div>

@@ -87,6 +87,8 @@ class WorkshopFourContainer extends Component {
             eventError={this.props.state.piglets.eventError}
             eventFetching={this.props.state.piglets.eventFetching}
             message={this.props.state.piglets.message}
+
+            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
           />}
 
         { activeTab.name === 'resettlementTab' &&
@@ -110,6 +112,8 @@ class WorkshopFourContainer extends Component {
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
+
+            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
 
         { activeTab.name === 'innerTransferTab' &&
@@ -131,6 +135,8 @@ class WorkshopFourContainer extends Component {
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
+
+            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
 
         { activeTab.name === 'transferTab' &&
@@ -155,6 +161,8 @@ class WorkshopFourContainer extends Component {
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
+
+            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
 
         { activeTab.name === 'cullingTab' &&
@@ -172,6 +180,8 @@ class WorkshopFourContainer extends Component {
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
+
+            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
         
       </div>
@@ -196,6 +206,7 @@ const mapDispatchToProps = (dispatch) => ({
   movePiglets: query => dispatch(PigletsActions.movePigletsRequest(query)),
   weighingPiglets: query => dispatch(PigletsActions.weighingPigletsRequest(query)),
   cullingPiglets: query => dispatch(PigletsActions.cullingPigletsRequest(query)),
+  pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 
 })
 

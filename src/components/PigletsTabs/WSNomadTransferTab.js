@@ -28,6 +28,10 @@ class WSNomadTransferTab extends Component {
     this.setData = this.setData.bind(this);
     this.checked = this.checked.bind(this);
   }
+  
+  componentDidMount() {
+    this.props.pigletsResetErrorsAndMessages()
+  }
 
   setData (e) {
     this.setState({

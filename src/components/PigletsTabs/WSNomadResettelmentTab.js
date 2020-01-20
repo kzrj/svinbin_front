@@ -35,6 +35,7 @@ class WSNomadResettelmentTab extends Component {
       status_title: "Взвешены, готовы к заселению",
       by_workshop_number: this.props.workshopNumber
     })
+    this.props.pigletsResetErrorsAndMessages()
   }
 
   setData (e) {

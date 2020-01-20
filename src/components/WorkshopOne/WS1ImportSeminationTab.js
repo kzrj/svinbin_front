@@ -22,7 +22,7 @@ class WS1ImportSeminationTab extends Component {
   }
 
   render() {
-    const { eventFetching, message, responseData } = this.props
+    const { eventFetching, responseData, eventError, message } = this.props
     return (
       <div className='workshop-content'>
         <h3>Импорт осеменений из файла</h3>
