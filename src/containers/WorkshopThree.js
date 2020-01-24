@@ -36,13 +36,13 @@ class WorkshopThreeContainer extends Component {
       tabs: [
         // {name: 'balanceTab',           active: false, title: 'ИНФО'},
         {name: 'returnPigletsTab',        active: false, title: 'Возврат поросята'},
-        {name: 'comingSowsTab',           active: false, title: 'Поступление матки'},
+        {name: 'comingSowsTab',           active: true, title: 'Поступление матки'},
         {name: 'sowInnerTransferTab',     active: false, title: 'Перемещение свиноматок из клетки в клетку'},
         {name: 'sowTransferToWsTab',      active: false, title: 'Перемещение свиноматок в цех1, цех3'},
         {name: 'farrowTab',               active: false, title: 'Опорос'},
         {name: 'nurseSowTab',             active: false, title: 'Кормилица'},
         // {name: 'recountTab',           active: false, title: 'Пересчет'},
-        {name: 'weaningPigletsTab',       active: true, title: 'Отъем поросят'},
+        {name: 'weaningPigletsTab',       active: false, title: 'Отъем поросят'},
         {name: 'createGiltTab',           active: false, title: 'Биркование'},
         {name: 'sowCullingTab',           active: false, title: 'Выбраковка свиноматок'},
         {name: 'pigletsCullingTab',       active: false, title: 'Выбраковка поросят'},
@@ -198,7 +198,7 @@ class WorkshopThreeContainer extends Component {
         {activeTab.name === 'nurseSowTab' &&
           <WS3NurseSowTab
             workshopNumber={3}
-            statusTitleFilter={'Опоросилась'}
+            statusTitleFilters={['Опоросилась', 'Отъем']}
             sectionId={6}
 
             getSections={this.props.getSections}

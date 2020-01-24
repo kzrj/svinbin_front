@@ -32,12 +32,12 @@ class WS3NurseSowTab extends Component {
       query: {
         ...this.state.query,
         by_section_in_cell: this.props.sectionId,
-        status_title: this.props.statusTitleFilter
+        status_title_in: this.props.statusTitleFilters
       }
     })
     this.props.getSows({
       by_section_in_cell: this.props.sectionId,
-      status_title: this.props.statusTitleFilter
+      status_title_in: this.props.statusTitleFilters
       })
     this.props.getTours()
     this.props.sowsResetErrorsAndMessages()

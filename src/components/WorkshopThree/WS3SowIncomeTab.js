@@ -29,6 +29,7 @@ class WS3SowIncomeTab extends Component {
     this.getSowsById = this.getSowsById.bind(this);
     this.clickSetlle = this.clickSetlle.bind(this);
     this.clickSow = this.clickSow.bind(this);
+    this.clickSearch = this.clickSearch.bind(this);
     this.refreshData = this.refreshData.bind(this);
   }
   
@@ -72,13 +73,21 @@ class WS3SowIncomeTab extends Component {
     })
   }
 
+  clickSearch () {
+    this.setState({
+      ...this.state,
+      query: {...this.state.query, farm_id_starts: ''}
+    })
+  }
+
   clickSetlle () {
     const { activeCellId, activeSowId } = this.state
     this.props.sowMoveTo({id: activeSowId, location: activeCellId})
     this.setState({
       ...this.state,
       activeCellId: null,
-      activeSectionId: null,
+      // activeSectionId: null,
+      query: {...this.state.query, farm_id_starts: ''},
       activeSowId: null,
       needToRefresh: true
     })
@@ -89,13 +98,14 @@ class WS3SowIncomeTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)
+        this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
       }, 500)
     }
   }
 
   render() {
     this.refreshData()
-    const { sows, sections, sectionsFetching, sectionsListError, locationsFetching,
+    const { sows, sections, sectionsFetching, sectionsListError, locationsFetching, sowsListError, listFetching,
        locationsListError, eventError, message } = this.props
     return (
         <div className='row workshop-content'>
@@ -104,12 +114,13 @@ class WS3SowIncomeTab extends Component {
               sows={sows}
               activeSowId={this.state.activeSowId}
               clickSow={this.clickSow}
+              clickSearch={this.clickSearch}
 
               sowIdValue={this.state.query.farm_id_starts}
               getSowsById={this.getSowsById} 
               
-              fetching={this.props.listFetching}
-              error={this.props.sowsListError}
+              fetching={listFetching}
+              error={sowsListError}
               />
           </div>
           <div className='col-9 workshop-right-column'>

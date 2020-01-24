@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ErrorMessage } from './CommonComponents';
 
 export const SowLightDetail = (props) => (
     <ul>
@@ -154,9 +155,12 @@ export class SowToursData extends Component {
     return (
        <div className='workshop-content-column-1'>
           <div class="input-group mb-3">
-              <input type='number' onChange={this.props.getSowsById} 
-              className="form-control search-input" value={sowIdValue}
-              placeholder="Поиск по ID"/>
+              <input type='number' 
+                onChange={this.props.getSowsById} 
+                onClick={this.props.clickSearch}
+                className="form-control search-input" 
+                value={sowIdValue}
+                placeholder="Поиск по ID"/>
           <label>Количество: {sows.length}</label>
           </div>
           <div className='div-scroll'>
@@ -177,7 +181,7 @@ export class SowToursData extends Component {
                         </li>
                       )
                   :
-                  <p className='error-message'>{error}</p>
+                  <ErrorMessage error={error} />
               }
               </ul>
           </div>

@@ -1,11 +1,17 @@
 
+// standart serializer field error. There are could be several fields
+// {
+//     "birth_id": ["This field is required."]
+// }
+
+
 export const parseErrorData = (error) => {
 
     if (error && typeof error.response !== 'undefined') {
         return {
             status: error.response.status, 
             statusText: error.response.statusText,
-            message: JSON.stringify(error.response.data),
+            message: JSON.stringify(error.response.data.message),
             errMsg: error.message,
             response: error.response,
         }

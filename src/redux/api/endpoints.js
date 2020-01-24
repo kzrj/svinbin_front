@@ -1,5 +1,5 @@
- export const url = 'http://92.53.104.136';
-// export const url = 'http://188.225.72.13';
+//  export const url = 'http://92.53.104.136';
+export const url = 'http://188.225.72.13';
 export const apiUrl = `${url}/api`;
 
 export default {
