@@ -177,7 +177,7 @@ class WorkshopThreeContainer extends Component {
 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
-            sowsFetching={this.props.state.sows.fetching}
+            sowsListFetching={this.props.state.sows.fetching}
             sowsError={this.props.state.sows.error}
 
             tours={this.props.state.tours.list}

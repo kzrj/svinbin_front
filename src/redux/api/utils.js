@@ -8,34 +8,24 @@
 export const parseErrorData = (error) => {
 
     if (error && typeof error.response !== 'undefined') {
-        return {
+        let errorObj = {
             status: error.response.status, 
             statusText: error.response.statusText,
-            message: JSON.stringify(error.response.data.message),
-            errMsg: error.message,
+            message: null,
             response: error.response,
         }
+        if ('message' in error.response.data) {
+            errorObj.message = JSON.stringify(error.response.data.message)
+        }
+        else {
+            let message = ''
+            for (const property in error.response.data) {
+                message = message + `${property}: ${error.response.data[property]}. `
+              }
+            errorObj.message = message
 
-        // if (error.response.data.hasOwnProperty('message')) {
-        //     console.log('error.response.data.message !== undefined')
-        //     console.log(error.response.data.message)
-        //     return { 
-        //         status: error.response.status, 
-        //         statusText: error.response.statusText, 
-        //         message: error.response.data.message,
-        //         errMsg: error.message,
-        //         response: error.response,
-        //     }
-        // } else {
-        //     console.log('else error.response.data.message !== undefined')
-        //     return {
-        //         status: error.response.status, 
-        //         statusText: error.response.statusText,
-        //         message: JSON.stringify(error.response.data),
-        //         errMsg: error.message,
-        //         response: error.response,
-        //     }
-        // }
+        }
+        return errorObj
 
     } else {
         return { 

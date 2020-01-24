@@ -8,6 +8,8 @@ import WSSowUltrasoundTab from '../components/SowTabs/WSSowUltrasoundTab'
 import WS2CreateTransferTab from '../components/WorkshopTwo/WS2CreateTransferTab'
 import { WhoIs }  from '../components/CommonComponents'
 
+import { TabMenu }  from '../components/CommonComponents'
+
 // actions
 import SowsActions from '../redux/redux-sauce/sows';
 import ToursActions from '../redux/redux-sauce/tours';
@@ -17,71 +19,57 @@ class WorkshopTwoContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabs: {
-        transferTab: false,
-        ultrasoundTab: false,
-        cullingTab: false,
-        infoTab: false,
-        initAndTransferTab: true,
-      }
+      tabs: [
+        {name: 'transferTab', active: true, title: 'Перегон'},
+        {name: 'ultrasoundTab',           active: false, title: 'УЗИ 35'},
+        {name: 'cullingTab',          active: false, title: 'Выбраковка'},
+        {name: 'initAndTransferTab',     active: false, title: 'Инициализация для Цеха 3'},
+        // {name: 'infoTab',             active: false, title: 'Инфо'},
+      ]
     }
     this.setTab = this.setTab.bind(this);
-	}
+    this.getActiveTab = this.getActiveTab.bind(this);
+  }
+  
+  componentDidMount() {
+    this.props.getTours()
+  }
 
-  setTab(tab) {
+  setTab (tab) {
     let { tabs } = this.state
-    Object.keys(tabs).forEach((key) => {
-      tabs[key] = false
+    tabs.map((tb) => {
+      tb.active = false
+      if (tb.name === tab.name)
+        tb.active= true
     })
+
     this.setState({
-      tabs: {
-        ...tabs,
-        [tab]: true
-      }
+      tabs: tabs
     })
   }
 
+  getActiveTab () {
+    let { tabs } = this.state
+    let activeTab = {}
+    tabs.map(tb => {
+      if (tb.active)
+        activeTab = tb
+    })
+
+    return activeTab
+  }
+
   render() {
+    const activeTab = this.getActiveTab()
+
     return (
       <div className="workshop container-fluid">
-        <div className='workshop-header'>
-          Цех №2
-          <WhoIs user={this.props.state.auth.user}/>
-        </div>
-        <div className='row workshop-menu'>
-          <div className={this.state.tabs.transferTab ? 'workshop-tab tab-active col-sm' : 'workshop-tab col-sm'}
-            onClick={() => this.setTab('transferTab')}
-          >
-            Перемещение
-          </div>
-          <div className={this.state.tabs.ultrasoundTab ? 'workshop-tab tab-active col-sm' : 'workshop-tab col-sm'}
-              onClick={() => this.setTab('ultrasoundTab')}
-            >
-              УЗИ 35
-            </div>
-          <div className={this.state.tabs.cullingTab ? 'workshop-tab tab-active col-sm' : 'workshop-tab col-sm'}
-            onClick={() => this.setTab('cullingTab')}
-          >
-            Выбраковка/Аборт
-          </div>
-          <div className={this.state.tabs.infoTab ? 'workshop-tab tab-active col-sm' : 'workshop-tab col-sm'}
-            onClick={() => this.setTab('infoTab')}
-          >
-            ИНФО
-          </div>
+        <TabMenu 
+          tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №3'} activeTab={activeTab}
+          user={this.props.state.auth.user}
+        />
 
-          <div className={this.state.tabs.initAndTransferTab ? 'workshop-tab tab-active col-sm' 
-            : 'workshop-tab col-sm'}
-            onClick={() => this.setTab('initAndTransferTab')}
-          >
-            Создание и перевод в ЦЕХ 3
-            (Инициализация)
-          </div>
-        </div>
-        <div className='workshop-header-3'>
-        </div>
-
-        { this.state.tabs.transferTab &&
+        { activeTab.name === 'transferTab' &&
           <WS2TransferTab 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
@@ -92,9 +80,11 @@ class WorkshopTwoContainer extends Component {
 
             massMove={this.props.sowsMoveMany}
             eventFetching={this.props.state.sows.eventFetching}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
 
-        { this.state.tabs.ultrasoundTab &&
+        { activeTab.name === 'ultrasoundTab' &&
           <WSSowUltrasoundTab
             workshopNumber={2}
             days={35}
@@ -110,9 +100,11 @@ class WorkshopTwoContainer extends Component {
 
             massUltrasound={this.props.massUltrasound}
             eventFetching={this.props.state.sows.eventFetching}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
 
-        { this.state.tabs.cullingTab &&
+        { activeTab.name === 'cullingTab' &&
           <WSSowCullingTab
             workshopNumber={2}
 
@@ -128,12 +120,16 @@ class WorkshopTwoContainer extends Component {
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}
             eventFetching={this.props.state.sows.eventFetching}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
 
-        { this.state.tabs.initAndTransferTab &&
+        { activeTab.name === 'initAndTransferTab' &&
           <WS2CreateTransferTab
             massInitTransfer={this.props.massInitTransfer}
             message={this.props.state.sows.message}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
       </div>
     );
@@ -155,6 +151,7 @@ const mapDispatchToProps = (dispatch) => ({
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
   massInitTransfer: data => dispatch(SowsActions.massInitTransferRequest(data)),
   sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),  
+  sowsResetErrorsAndMessages: () => dispatch(SowsActions.sowsResetErrorsAndMessages()),
 })
 
 export default connect(

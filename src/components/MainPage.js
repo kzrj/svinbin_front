@@ -3,9 +3,10 @@ import { Link } from 'react-router';
 
 
 const MainMenuLink = (props) => (
-    <button type="button" class="btn btn-secondary">
-      <Link to={props.url}>{props.title}</Link>
-    </button>
+    <div className="col-3 ws-home">
+      {/* <Link to={props.url}>{props.title}</Link> */}
+      <a href={props.url}>{props.title}</a>
+    </div>
 )
 
 class MainPage extends Component {
@@ -18,7 +19,7 @@ class MainPage extends Component {
     return (
         <div className='main-page container-fluid'>
           <h1>Свинокомплекс Николаевский</h1>
-          <div className="btn-group-vertical">
+          <div className="row">
             <MainMenuLink url={'/workshop1/'} title={'Цех1 Осеменение'}/>
             <MainMenuLink url={'/workshop2/'} title={'Цех2 Ожидание родов'}/>
             <MainMenuLink url={'/workshop3/'} title={'Цех3 Маточник'}/>

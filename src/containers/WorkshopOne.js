@@ -8,7 +8,8 @@ import WS1TransferToWS2Tab from '../components/WorkshopOne/WS1TransferToWS2Tab'
 import WSSowCullingTab from '../components/SowTabs/WSSowCullingTab'
 import WSSowUltrasoundTab from '../components/SowTabs/WSSowUltrasoundTab'
 import WS1ImportSeminationTab from '../components/WorkshopOne/WS1ImportSeminationTab'
-import { WhoIs }  from '../components/CommonComponents'
+
+import { TabMenu }  from '../components/CommonComponents'
 
 // actions
 import SowsActions from '../redux/redux-sauce/sows';
@@ -20,112 +21,73 @@ class WorkshopOneContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabs: {
-        semination12Tab: false,
-        importSeminationTab: false,
-        createTab: false,
-        ultrasound30Tab: true,
-        ultrasound60Tab: false,
-        transferToWS2Tab: false,
-        cullingTab: false,
-        infoTab: false,
-      }
+      tabs: [
+        // {name: 'semination12Tab',     active: false, title: 'Осеменение'},
+        {name: 'importSeminationTab', active: true, title: 'Импорт из Фарма'},
+        {name: 'createTab',           active: false, title: 'Создание свиноматок'},
+        {name: 'ultrasound30Tab',     active: false, title: 'УЗИ 28'},
+        {name: 'ultrasound60Tab',     active: false, title: 'УЗИ 35'},
+        {name: 'transferToWS2Tab',    active: false, title: 'Перегон'},
+        {name: 'cullingTab',          active: false, title: 'Выбраковка'},
+        // {name: 'infoTab',             active: false, title: 'Инфо'},
+      ]
     }
     this.setTab = this.setTab.bind(this);
-	}
+    this.getActiveTab = this.getActiveTab.bind(this);
+  }
 
-  setTab(tab) {
+  componentDidMount() {
+    this.props.getTours()
+  }
+
+  setTab (tab) {
     let { tabs } = this.state
-    Object.keys(tabs).forEach((key) => {
-      tabs[key] = false
+    tabs.map((tb) => {
+      tb.active = false
+      if (tb.name === tab.name)
+        tb.active= true
     })
+
     this.setState({
-      ...this.state,
-      tabs: {
-        ...tabs,
-        [tab]: true
-      }
+      tabs: tabs
     })
   }
 
-  showStateConsole = () => {
-    const { state } = this.props
-  }
+  getActiveTab () {
+    let { tabs } = this.state
+    let activeTab = {}
+    tabs.map(tb => {
+      if (tb.active)
+        activeTab = tb
+    })
+
+    return activeTab
+  }  
 
   render() {
+    const activeTab = this.getActiveTab()
+
     return (
       <div className="workshop container-fluid">
-        <div className='workshop-header'>
-          Цех №1
-          <WhoIs user={this.props.state.auth.user}/>
-        </div>
-        <div className='row workshop-menu'>
-            <div className={this.state.tabs.createTab ? 'workshop-tab tab-active col-sm' 
-              : 'col-sm workshop-tab'}
-              onClick={() => this.setTab('createTab')}
-            >
-              Создание
-            </div>
-            {/* <div className={this.state.tabs.semination12Tab ? 'workshop-tab tab-active col-sm' 
-              : 'col-sm workshop-tab'}
-              onClick={() => this.setTab('semination12Tab')}
-            >
-              Осеменение 12
-            </div>
-            <div className={this.state.tabs.seminationTab ? 'workshop-tab tab-active col-sm' 
-              : 'col-sm workshop-tab'}
-              onClick={() => this.setTab('seminationTab')}
-            >
-              Осеменение
-            </div>
-            <div className={this.state.tabs.semination2Tab ? 'workshop-tab tab-active col-sm' 
-              : 'col-sm workshop-tab'}
-              onClick={() => this.setTab('semination2Tab')}
-            >
-              Осеменение 2
-            </div> */}
-            <div className={this.state.tabs.importSeminationTab ? 'workshop-tab tab-active col-sm' 
-              : 'col-sm workshop-tab'}
-              onClick={() => this.setTab('importSeminationTab')}
-            >
-              Осеменение(импорт из Фарма)
-            </div>
-            <div className={this.state.tabs.ultrasound30Tab ? 'workshop-tab tab-active col-sm' 
-              : 'col-sm workshop-tab'}
-              onClick={() => this.setTab('ultrasound30Tab')}
-            >
-              УЗИ 28
-            </div>
+        <TabMenu 
+          tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №3'} activeTab={activeTab}
+          user={this.props.state.auth.user}
+        />
 
-            <div className={this.state.tabs.ultrasound60Tab ? 'workshop-tab tab-active col-sm' 
-              : 'col-sm workshop-tab'}
-              onClick={() => this.setTab('ultrasound60Tab')}
-            >
-              УЗИ 35
-            </div>
+        {activeTab.name === 'importSeminationTab' &&
+          <WS1ImportSeminationTab 
+            eventFetching={this.props.state.wsData.fetching}
+            uploadFile={this.props.uploadFile}
 
-            <div className={this.state.tabs.transferToWS2Tab ? 'workshop-tab tab-active col-sm' 
-              : 'col-sm workshop-tab'}
-              onClick={() => this.setTab('transferToWS2Tab')}
-            >
-              Перевод в ЦЕХ2
-            </div>
-            <div className={this.state.tabs.cullingTab ? 'workshop-tab tab-active col-sm' 
-              : 'col-sm workshop-tab'}
-              onClick={() => this.setTab('cullingTab')}
-            >
-              Выбраковка/Аборт
-            </div>
-            <div className={this.state.tabs.infoTab ? 'workshop-tab tab-active col-sm' 
-              : 'col-sm workshop-tab'}
-              onClick={() => this.setTab('infoTab')}
-            >
-              ИНФО
-            </div>
-        </div>
-        <div className='workshop-header-3'>
-        </div>
-        { this.state.tabs.createTab && 
+            message={this.props.state.wsData.message}
+            eventError={this.props.state.wsData.error}
+
+            responseData={this.props.state.wsData.import_from_file_data}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}/>
+          }
+
+        {activeTab.name === 'createTab' &&
           <WS1CreateTab 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
@@ -142,49 +104,97 @@ class WorkshopOneContainer extends Component {
             message={this.props.state.sows.message}
 
             sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
-          />}
+          />
+        }
 
-        {/* { this.state.tabs.seminationTab && 
-          <WS1SeminationTab 
-            getSows={this.props.getSeminationSows}
-            sows={this.props.state.ws1.seminationList}
+        {activeTab.name === 'ultrasound30Tab' &&
+          <WSSowUltrasoundTab
+            workshopNumber={1}
+            days={28}
+            daysValue={30}
+            statusTitleFilter={'Осеменена 2'}
+          
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sowsListFetching={this.props.state.sows.fetching}
 
-            getSeminators={this.props.getSeminators}
-            seminationEmployes={this.props.state.ws1.seminators}
-
-            getBoars={this.props.getBoars}
-            boars={this.props.state.sows.boars}
-            
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
 
-            massSemination={this.props.massSemination}
+            massUltrasound={this.props.massUltrasound}
+            eventError={this.props.state.sows.eventError}
+            eventFetching={this.props.state.sows.eventFetching}
+            message={this.props.state.sows.message}
 
-            eventFetching={this.props.state.sows.fetching}
-            sowsListFetching={this.props.state.ws1.fetching}
-          />}
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+          />
+        }
 
-        { this.state.tabs.semination2Tab && 
-          <WS1Semination2Tab 
-            getSows={this.props.getSeminationSows}
-            sows={this.props.state.ws1.seminationList}
+        {activeTab.name === 'ultrasound60Tab' &&
+          <WSSowUltrasoundTab
+            workshopNumber={1}
+            days={35}
+            daysValue={60}
+            statusTitleFilter={'Супорос 28'}
 
-            getSeminators={this.props.getSeminators}
-            seminationEmployes={this.props.state.ws1.seminators}
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sowsListFetching={this.props.state.sows.fetching}
 
-            getBoars={this.props.getBoars}
-            boars={this.props.state.sows.boars}
-            
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
 
-            massSemination={this.props.massSemination}
+            massUltrasound={this.props.massUltrasound}
+            eventError={this.props.state.sows.eventError}
+            eventFetching={this.props.state.sows.eventFetching}
+            message={this.props.state.sows.message}
 
-            eventFetching={this.props.state.sows.fetching}
-            sowsListFetching={this.props.state.ws1.fetching}
-          />}
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+          />
+        }
 
-        { this.state.tabs.semination12Tab && 
+        {activeTab.name === 'transferToWS2Tab' &&
+          <WS1TransferToWS2Tab 
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sowsListFetching={this.props.state.sows.fetching}
+
+            getTours={this.props.getTours}
+            tours={this.props.state.tours.list}
+
+            massMove={this.props.sowsMoveMany}
+            eventError={this.props.state.sows.eventError}
+            eventFetching={this.props.state.sows.eventFetching}
+            message={this.props.state.sows.message}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+          />
+        }
+
+        {activeTab.name === 'cullingTab' &&
+          <WSSowCullingTab 
+            workshopNumber={1}
+
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sowsListFetching={this.props.state.sows.fetching}
+
+            getSow={this.props.getSow}
+            sow={this.props.state.sows.sow}
+            tours_info={this.props.state.sows.tours_info}
+            singleSowFetching={this.props.state.sows.sowSingleFetching}
+
+            cullingSow={this.props.cullingSow}
+            abortionSow={this.props.abortionSow}
+            eventError={this.props.state.sows.eventError}
+            eventFetching={this.props.state.sows.eventFetching}
+            message={this.props.state.sows.message}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+          />
+        }
+
+        {/* { this.state.tabs.semination12Tab && 
           <WS1Semination12Tab 
             getSows={this.props.getSeminationSows}
             sows={this.props.state.ws1.seminationList}
@@ -207,103 +217,6 @@ class WorkshopOneContainer extends Component {
             eventFetching={this.props.state.sows.fetching}
             sowsListFetching={this.props.state.ws1.fetching}
           />} */}
-
-        { this.state.tabs.importSeminationTab && 
-          <WS1ImportSeminationTab 
-            eventFetching={this.props.state.wsData.fetching}
-            uploadFile={this.props.uploadFile}
-
-            message={this.props.state.wsData.message}
-            eventError={this.props.state.wsData.error}
-
-            responseData={this.props.state.wsData.import_from_file_data}
-
-            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
-          />}
-
-        { this.state.tabs.ultrasound30Tab &&
-          <WSSowUltrasoundTab
-            workshopNumber={1}
-            days={28}
-            daysValue={30}
-            statusTitleFilter={'Осеменена 2'}
-          
-            getSows={this.props.getSows}
-            sows={this.props.state.sows.list}
-            sowsListFetching={this.props.state.sows.fetching}
-
-            getTours={this.props.getTours}
-            tours={this.props.state.tours.list}
-
-            massUltrasound={this.props.massUltrasound}
-            eventError={this.props.state.sows.eventError}
-            eventFetching={this.props.state.sows.eventFetching}
-            message={this.props.state.sows.message}
-
-            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
-          />}
-
-        { this.state.tabs.ultrasound60Tab &&
-          <WSSowUltrasoundTab
-            workshopNumber={1}
-            days={35}
-            daysValue={60}
-            statusTitleFilter={'Супорос 28'}
-
-            getSows={this.props.getSows}
-            sows={this.props.state.sows.list}
-            sowsListFetching={this.props.state.sows.fetching}
-
-            getTours={this.props.getTours}
-            tours={this.props.state.tours.list}
-
-            massUltrasound={this.props.massUltrasound}
-            eventError={this.props.state.sows.eventError}
-            eventFetching={this.props.state.sows.eventFetching}
-            message={this.props.state.sows.message}
-
-            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
-          />}
-
-        { this.state.tabs.transferToWS2Tab &&
-          <WS1TransferToWS2Tab 
-            getSows={this.props.getSows}
-            sows={this.props.state.sows.list}
-            sowsListFetching={this.props.state.sows.fetching}
-
-            getTours={this.props.getTours}
-            tours={this.props.state.tours.list}
-
-            massMove={this.props.sowsMoveMany}
-            eventError={this.props.state.sows.eventError}
-            eventFetching={this.props.state.sows.eventFetching}
-            message={this.props.state.sows.message}
-
-            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
-          />}
-
-        { this.state.tabs.cullingTab &&
-          <WSSowCullingTab 
-            workshopNumber={1}
-
-            getSows={this.props.getSows}
-            sows={this.props.state.sows.list}
-            sowsListFetching={this.props.state.sows.fetching}
-
-            getSow={this.props.getSow}
-            sow={this.props.state.sows.sow}
-            tours_info={this.props.state.sows.tours_info}
-            singleSowFetching={this.props.state.sows.sowSingleFetching}
-
-            cullingSow={this.props.cullingSow}
-            abortionSow={this.props.abortionSow}
-            eventError={this.props.state.sows.eventError}
-            eventFetching={this.props.state.sows.eventFetching}
-            message={this.props.state.sows.message}
-
-            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
-          />}
-
       </div>
     );
   }

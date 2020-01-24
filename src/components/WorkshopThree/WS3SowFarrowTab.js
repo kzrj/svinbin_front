@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 //components
 import { SowTable }  from '../../components/SowRepresentations'
 import { SowFarmIdFilter, SowTourFilter, SowSectionFilter }  from '../../components/FiltersAndInputs'
-import { ErrorMessage, Message } from '../CommonComponents'
+import { ErrorMessage, Message, LoadingMessage } from '../CommonComponents'
 
 
 class WS3SowFarrowTab extends Component {
@@ -142,7 +142,7 @@ class WS3SowFarrowTab extends Component {
                   Записать данные
                 </button>
                 {eventError && <ErrorMessage error={eventError}/>}
-                {message && <Message message={eventError}/>}
+                {message && <Message message={message}/>}
               </div>
               
               <div className='farrow-button-block col-3'>
@@ -208,7 +208,7 @@ class WS3SowFarrowTab extends Component {
               </div>
             </div>
           {this.props.sowsListFetching ? 
-            <p className='loading'>Загрузка</p> :
+            <LoadingMessage /> :
             <SowTable sows={sows} sowClick={this.sowClick} 
               choosedSows={this.state.choosedSows}/>}
         </div>
