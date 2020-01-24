@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ErrorMessage } from './CommonComponents';
+import { ErrorMessage, LoadingMessage } from './CommonComponents';
 
 export const SowLightDetail = (props) => (
     <ul>
@@ -165,7 +165,7 @@ export class SowToursData extends Component {
           </div>
           <div className='div-scroll'>
               <ul className='list-unstyled'>
-              {!error ? fetching ? <p className='loading'>Загрузка</p> :
+              {!error ? fetching ? <LoadingMessage /> :
                   (sows.length > 0 ) && 
                       sows.map(sowInList => 
                         <li className={sowInList.id == activeSowId ? 'sow-row sow-row-active' : 'sow-row'} 

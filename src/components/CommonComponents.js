@@ -6,6 +6,9 @@ export const WhoIs = (props) => (
 export const Message = (props) => (
     <p className='message'>{props.message}</p>)
 
+    export const LoadingMessage = (props) => (
+        <p className='loading'>Загрузка</p>)
+
 export const ErrorMessage = (props) => (
     <p className='error-message'>{props.error.data.message}</p>)
 

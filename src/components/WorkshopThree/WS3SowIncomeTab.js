@@ -52,7 +52,8 @@ class WS3SowIncomeTab extends Component {
     query.farm_id_starts = e.target.value
     this.setState({
       ...this.state,
-      query: query
+      query: query,
+      activeSowId: null,
     })
     this.props.getSows(query)
   }
@@ -76,7 +77,8 @@ class WS3SowIncomeTab extends Component {
   clickSearch () {
     this.setState({
       ...this.state,
-      query: {...this.state.query, farm_id_starts: ''}
+      query: {...this.state.query, farm_id_starts: ''},
+      activeSowId: null,
     })
   }
 
