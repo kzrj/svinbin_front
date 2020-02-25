@@ -33,6 +33,24 @@ const create = () => {
         })
     }
 
+    const mergeFromInitListPiglets = payload => {
+        const token = localStorage.getItem('token') || '';
+        return axios({
+                    method: 'post',
+                    url: endpoints.MERGE_FROM_INIT_LIST_PIGLETS,
+                    data: payload,
+                    headers: { 'content-type': 'application/JSON', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     const cullingPiglets = payload => {
         const { id, culling_type, reason, is_it_gilt } = payload;
         const token = localStorage.getItem('token') || '';
@@ -166,6 +184,7 @@ const create = () => {
     return {
         getPiglets,
         mergeFromListPiglets,
+        mergeFromInitListPiglets,
         cullingPiglets,
         weighingPiglets,
         movePiglets,

@@ -3,7 +3,7 @@ import { ErrorMessage, LoadingMessage } from './CommonComponents';
 
 export const SowLightDetail = (props) => (
     <ul>
-        <li>{props.sow.id}</li>
+        {/* <li>{props.sow.id}</li> */}
         <li>{props.sow.location}</li>
         <li>{props.sow.status}</li>
         <li>{props.sow.farm_id}</li>

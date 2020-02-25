@@ -11,6 +11,10 @@ const { Types, Creators } = createActions({
     mergeFromListPigletsFail: ['payload'],
     mergeFromListPigletsSuccess: ['payload'],
 
+    mergeFromInitListPigletsRequest: ['payload'],
+    mergeFromInitListPigletsFail: ['payload'],
+    mergeFromInitListPigletsSuccess: ['payload'],
+
     cullingPigletsRequest: ['payload'],
     cullingPigletsFail: ['payload'],
     cullingPigletsSuccess: ['payload'],
@@ -58,6 +62,7 @@ export const INITIAL_STATE = Immutable({
 export const PigletsSelectors = {
     getPiglets: state => state.piglets.list,
     mergeFromListPiglets: state => state.piglets.message,
+    mergeFromInitListPiglets: state => state.piglets.message,
     cullingPiglets: state => state.piglets.message,
     weighingPiglets: state => state.piglets.weighing,
     movePiglets: state => state.piglets.message,
@@ -89,6 +94,19 @@ export const mergeFromListPigletsSuccess = (state, { payload }) => {
 }
 
 export const mergeFromListPigletsFail = (state, { payload } ) => {
+    return state.merge({ eventFetching: false, eventError: payload, message: ''})
+}
+
+// mergeFromInitListPiglets
+export const mergeFromInitListPigletsRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const mergeFromInitListPigletsSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: null, message: payload.message })
+}
+
+export const mergeFromInitListPigletsFail = (state, { payload } ) => {
     return state.merge({ eventFetching: false, eventError: payload, message: ''})
 }
 
@@ -172,6 +190,10 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MERGE_FROM_LIST_PIGLETS_REQUEST]: mergeFromListPigletsRequest,
     [Types.MERGE_FROM_LIST_PIGLETS_SUCCESS]: mergeFromListPigletsSuccess,
     [Types.MERGE_FROM_LIST_PIGLETS_FAIL]: mergeFromListPigletsFail,
+
+    [Types.MERGE_FROM_INIT_LIST_PIGLETS_REQUEST]: mergeFromInitListPigletsRequest,
+    [Types.MERGE_FROM_INIT_LIST_PIGLETS_SUCCESS]: mergeFromInitListPigletsSuccess,
+    [Types.MERGE_FROM_INIT_LIST_PIGLETS_FAIL]: mergeFromInitListPigletsFail,
 
     [Types.CULLING_PIGLETS_REQUEST]: cullingPigletsRequest,
     [Types.CULLING_PIGLETS_SUCCESS]: cullingPigletsSuccess,

@@ -19,11 +19,13 @@ class WS3SowFarrowTab extends Component {
 
       choosedSows: [],
       query: {
+        farm_id_starts: '',
         tour: null,
       },
       activeSowFarmId: ''
     }
     this.setQuery = this.setQuery.bind(this);
+    this.resetQuery = this.resetQuery.bind(this);
     this.sowClick = this.sowClick.bind(this);
     this.decreasePiglets = this.decreasePiglets.bind(this);
     this.increasePiglets = this.increasePiglets.bind(this);
@@ -49,6 +51,18 @@ class WS3SowFarrowTab extends Component {
   setQuery (e) {
     let { query } = this.state
     query[e.target.name] = e.target.value
+
+    this.setState({
+      ...this.state,
+      query: query,
+      choosedSows: [],
+      needToRefresh: true
+    })
+  }
+
+  resetQuery (e) {
+    let { query } = this.state
+    query[e.target.name] = ''
 
     this.setState({
       ...this.state,
@@ -107,6 +121,10 @@ class WS3SowFarrowTab extends Component {
       dead_piglets: 0,
       alive_piglets: 0,
       date: null,
+      query: {
+        ...this.state.query,
+        farm_id_starts: '',
+      }
     })
   }
 
@@ -128,7 +146,8 @@ class WS3SowFarrowTab extends Component {
         <div>
           <div className='commonfilter row'>
             <label className='sow-event-label'>Фильтр</label>
-            <SowFarmIdFilter setQuery={this.setQuery} />
+            <SowFarmIdFilter setQuery={this.setQuery} resetQuery={this.resetQuery}
+              farm_id_starts={this.state.query.farm_id_starts}/>
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
             <SowSectionFilter sections={sections} setQuery={this.setQuery} />
           </div>

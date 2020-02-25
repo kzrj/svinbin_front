@@ -189,6 +189,8 @@ export class SowFarmIdFilter extends Component {
           <div className="input-group mb-3 col-3">
             <input type="number" className="form-control" placeholder="Farm ID"
               aria-label="Farmid" aria-describedby="basic-addon1" name='farm_id_starts'
+              value={this.props.farm_id_starts}
+              onClick={this.props.resetQuery}
               onChange={this.props.setQuery} />
           </div>
       )

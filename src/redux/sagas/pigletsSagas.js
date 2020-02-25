@@ -20,6 +20,15 @@ export function* mergeFromListPiglets(api, action) {
     }
 }
 
+export function* mergeFromInitListPiglets(api, action) {
+    try {
+        let response = yield call(api.mergeFromInitListPiglets, action.payload);
+        yield put(PigletsActions.mergeFromInitListPigletsSuccess(response));
+    } catch (err) {
+        yield put(PigletsActions.mergeFromInitListPigletsFail(err))
+    }
+}
+
 export function* cullingPiglets(api, action) {
     try {
         let response = yield call(api.cullingPiglets, action.payload);

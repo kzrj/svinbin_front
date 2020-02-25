@@ -73,6 +73,7 @@ export default function* root() {
 
     takeEvery(PigletsTypes.GET_PIGLETS_REQUEST, pigletsSaga.getPiglets, pigletsApi),
     takeEvery(PigletsTypes.MERGE_FROM_LIST_PIGLETS_REQUEST, pigletsSaga.mergeFromListPiglets, pigletsApi),
+    takeEvery(PigletsTypes.MERGE_FROM_INIT_LIST_PIGLETS_REQUEST, pigletsSaga.mergeFromInitListPiglets, pigletsApi),
     takeEvery(PigletsTypes.CULLING_PIGLETS_REQUEST, pigletsSaga.cullingPiglets, pigletsApi),
     takeEvery(PigletsTypes.WEIGHING_PIGLETS_REQUEST, pigletsSaga.weighingPiglets, pigletsApi),
     takeEvery(PigletsTypes.MOVE_PIGLETS_REQUEST, pigletsSaga.movePiglets, pigletsApi),

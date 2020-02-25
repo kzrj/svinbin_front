@@ -12,6 +12,7 @@ import WSSowCullingTab from '../components/SowTabs/WSSowCullingTab'
 import WS3PigletsWeaningTab from '../components/WorkshopThree/WS3PigletsWeaningTab'
 import WS3CreateGiltTab from '../components/WorkshopThree/WS3CreateGiltTab'
 import WS3PigletsCullingTab from '../components/WorkshopThree/WS3PigletsCullingTab'
+import WS3CreateAndMoveTab from '../components/WorkshopThree/WS3CreateAndMoveTab'
 
 import WSNomadInnerTransferTab from '../components/PigletsTabs/WSNomadInnerTransferTab'
 import WSNomadCullingTab from '../components/PigletsTabs/WSNomadCullingTab'
@@ -35,18 +36,19 @@ class WorkshopThreeContainer extends Component {
     this.state = {
       tabs: [
         // {name: 'balanceTab',           active: false, title: 'ИНФО'},
-        {name: 'returnPigletsTab',        active: false, title: 'Возврат поросята'},
-        {name: 'comingSowsTab',           active: true, title: 'Поступление матки'},
-        {name: 'sowInnerTransferTab',     active: false, title: 'Перемещение свиноматок из клетки в клетку'},
-        {name: 'sowTransferToWsTab',      active: false, title: 'Перемещение свиноматок в цех1, цех3'},
-        {name: 'farrowTab',               active: false, title: 'Опорос'},
-        {name: 'nurseSowTab',             active: false, title: 'Кормилица'},
+        // {name: 'returnPigletsTab',        active: false, title: 'Возврат поросята'},
+        // {name: 'comingSowsTab',           active: true, title: 'Поступление матки'},
+        // {name: 'sowInnerTransferTab',     active: false, title: 'Перемещение свиноматок из клетки в клетку'},
+        // {name: 'sowTransferToWsTab',      active: false, title: 'Перемещение свиноматок в цех1, цех3'},
+        // {name: 'farrowTab',               active: false, title: 'Опорос'},
+        // {name: 'nurseSowTab',             active: false, title: 'Кормилица'},
         // {name: 'recountTab',           active: false, title: 'Пересчет'},
-        {name: 'weaningPigletsTab',       active: false, title: 'Отъем поросят'},
-        {name: 'createGiltTab',           active: false, title: 'Биркование'},
-        {name: 'sowCullingTab',           active: false, title: 'Выбраковка свиноматок'},
-        {name: 'pigletsCullingTab',       active: false, title: 'Выбраковка поросят'},
-        {name: 'pigletsInnerTransferTab', active: false, title: 'Перемещение поросят из клетки в клетку'},
+        // {name: 'weaningPigletsTab',       active: false, title: 'Отъем поросят'},
+        // {name: 'createGiltTab',           active: false, title: 'Биркование'},
+        // {name: 'sowCullingTab',           active: false, title: 'Выбраковка свиноматок'},
+        // {name: 'pigletsCullingTab',       active: false, title: 'Выбраковка поросят'},
+        // {name: 'pigletsInnerTransferTab', active: false, title: 'Перемещение поросят из клетки в клетку'},
+        {name: 'pigletsInitPartTab', active: true, title: 'Создание и перевод партии'},
       ]
     }
     this.setTab = this.setTab.bind(this);
@@ -354,6 +356,18 @@ class WorkshopThreeContainer extends Component {
 
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
           />}
+
+        {activeTab.name === 'pigletsInitPartTab' &&
+          <WS3CreateAndMoveTab
+            workshopNumber={3}
+
+            mergeFromInitListPiglets={this.props.mergeFromInitListPiglets}
+            eventFetching={this.props.state.piglets.eventFetching}
+            eventError={this.props.state.piglets.eventError}
+            message={this.props.state.piglets.message}
+
+            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
+          />}
       </div>
     );
   }
@@ -389,6 +403,7 @@ const mapDispatchToProps = (dispatch) => ({
   //piglets
   getPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
   mergeFromListPiglets: data => dispatch(PigletsActions.mergeFromListPigletsRequest(data)),
+  mergeFromInitListPiglets: data => dispatch(PigletsActions.mergeFromInitListPigletsRequest(data)),
   movePiglets: query => dispatch(PigletsActions.movePigletsRequest(query)),
   cullingPiglets: data => dispatch(PigletsActions.cullingPigletsRequest(data)),
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
