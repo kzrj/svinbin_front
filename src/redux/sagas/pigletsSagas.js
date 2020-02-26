@@ -47,6 +47,15 @@ export function* weighingPiglets(api, action) {
     }
 }
 
+export function* recountWeighingPiglets(api, action) {
+    try {
+        let response = yield call(api.recountWeighingPiglets, action.payload);
+        yield put(PigletsActions.recountWeighingPigletsSuccess(response));
+    } catch (err) {
+        yield put(PigletsActions.recountWeighingPigletsFail(err))
+    }
+}
+
 export function* movePiglets(api, action) {
     try {
         let response = yield call(api.movePiglets, action.payload);

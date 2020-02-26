@@ -104,6 +104,32 @@ const create = () => {
         })
     }
 
+    const recountWeighingPiglets = payload => {
+        const { id, total_weight, place, new_quantity } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.recountWeighingPiglets(id);
+
+        const formData = new FormData();
+        formData.append("total_weight", total_weight);
+        formData.append("place", place);
+        formData.append("new_quantity", new_quantity);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);            
+            throw error;
+        })
+    }
+
     const movePiglets = payload => {
         const { id, to_location, new_amount, merge, gilts_contains } = payload;
         const token = localStorage.getItem('token') || '';
@@ -187,6 +213,7 @@ const create = () => {
         mergeFromInitListPiglets,
         cullingPiglets,
         weighingPiglets,
+        recountWeighingPiglets,
         movePiglets,
         markAsGilts,
         moveGiltsToWs1

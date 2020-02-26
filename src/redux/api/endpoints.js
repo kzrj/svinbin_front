@@ -42,6 +42,7 @@ export default {
     MERGE_FROM_INIT_LIST_PIGLETS: `${apiUrl}/piglets/merge_init_list_and_move_merged_to_ws4/`,
     cullingPiglets: (id) => `${apiUrl}/piglets/${id}/culling/`,
     weighingPiglets: (id) => `${apiUrl}/piglets/${id}/weighing_piglets_split_return/`,
+    recountWeighingPiglets: (id) => `${apiUrl}/piglets/${id}/recount_and_weighing_piglets/`,
     movePiglets: (id) => `${apiUrl}/piglets/${id}/move_piglets/`,
     moveGiltsToWs1: (id) => `${apiUrl}/piglets/${id}/move_gilts_to_ws1/`,
     markAsGilts: (id) => `${apiUrl}/piglets/${id}/mark_as_gilts/`,

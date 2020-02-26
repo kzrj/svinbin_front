@@ -23,6 +23,10 @@ const { Types, Creators } = createActions({
     weighingPigletsFail: ['payload'],
     weighingPigletsSuccess: ['payload'],
 
+    recountWeighingPigletsRequest: ['payload'],
+    recountWeighingPigletsFail: ['payload'],
+    recountWeighingPigletsSuccess: ['payload'],
+
     movePigletsRequest: ['payload'],
     movePigletsFail: ['payload'],
     movePigletsSuccess: ['payload'],
@@ -65,6 +69,7 @@ export const PigletsSelectors = {
     mergeFromInitListPiglets: state => state.piglets.message,
     cullingPiglets: state => state.piglets.message,
     weighingPiglets: state => state.piglets.weighing,
+    recountWeighingPiglets: state => state.piglets.weighing,
     movePiglets: state => state.piglets.message,
     moveGiltsToWs1: state => state.piglets.message,
     markAsGilts: state => state.piglets.message,
@@ -136,6 +141,19 @@ export const weighingPigletsFail = (state, { payload }) => {
     return state.merge({ eventFetching: false, eventError: payload, message: ''})
 }
 
+// recount weighing
+export const recountWeighingPigletsRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const recountWeighingPigletsSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, message: payload.message, weighing: payload.weighing_record })
+}
+
+export const recountWeighingPigletsFail = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: payload, message: ''})
+}
+
 // move
 export const movePigletsRequest = (state, { payload }) => {
     return state.merge({ eventFetching: true })
@@ -202,6 +220,10 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.WEIGHING_PIGLETS_REQUEST]: weighingPigletsRequest,
     [Types.WEIGHING_PIGLETS_SUCCESS]: weighingPigletsSuccess,
     [Types.WEIGHING_PIGLETS_FAIL]: weighingPigletsFail,
+
+    [Types.RECOUNT_WEIGHING_PIGLETS_REQUEST]: recountWeighingPigletsRequest,
+    [Types.RECOUNT_WEIGHING_PIGLETS_SUCCESS]: recountWeighingPigletsSuccess,
+    [Types.RECOUNT_WEIGHING_PIGLETS_FAIL]: recountWeighingPigletsFail,
 
     [Types.MOVE_PIGLETS_REQUEST]: movePigletsRequest,
     [Types.MOVE_PIGLETS_SUCCESS]: movePigletsSuccess,

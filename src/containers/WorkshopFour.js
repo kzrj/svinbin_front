@@ -82,7 +82,7 @@ class WorkshopFourContainer extends Component {
             listFetching={this.props.state.piglets.listFetching}
             listError={this.props.state.piglets.errorList}
 
-            weighingPiglets={this.props.weighingPiglets}
+            recountWeighingPiglets={this.props.recountWeighingPiglets}
             weighingData={this.props.state.piglets.weighing}
             eventError={this.props.state.piglets.eventError}
             eventFetching={this.props.state.piglets.eventFetching}
@@ -205,6 +205,7 @@ const mapDispatchToProps = (dispatch) => ({
   getPiglets: query => dispatch(PigletsActions.getPigletsRequest(query)),
   movePiglets: query => dispatch(PigletsActions.movePigletsRequest(query)),
   weighingPiglets: query => dispatch(PigletsActions.weighingPigletsRequest(query)),
+  recountWeighingPiglets: query => dispatch(PigletsActions.recountWeighingPigletsRequest(query)),
   cullingPiglets: query => dispatch(PigletsActions.cullingPigletsRequest(query)),
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 

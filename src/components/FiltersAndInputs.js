@@ -330,7 +330,7 @@ export const WeighingPigletsInput = (props) => (
                     aria-describedby="newAmountHelp"
                     onChange={props.setData}/>
                 <small id="newAmountHelp" className="form-text text-muted">
-                    Укажите меньшее число поросят. Оставшиеся поросята будут переведены обратно.</small>
+                    Укажите другое количество поросят</small>
             </div>
         }
 

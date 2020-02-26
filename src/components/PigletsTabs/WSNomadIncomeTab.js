@@ -14,7 +14,7 @@ class WSNomadIncomeTab extends Component {
       totalWeight: '',
       weighingRecord: null,
       checkNewAmount: false,
-      newAmount: 0,
+      newAmount: null,
       needToRefresh: false
     }
     this.setData = this.setData.bind(this);
@@ -60,10 +60,9 @@ class WSNomadIncomeTab extends Component {
       id: this.state.activePiglets.id,
       place: this.props.weighingPlace,
       total_weight: this.state.totalWeight,
-      new_amount: this.state.newAmount,
-      to_location: this.props.returnLocation
+      new_quantity: this.state.newAmount,
     }
-    this.props.weighingPiglets(data)
+    this.props.recountWeighingPiglets(data)
     this.setState({
       ...this.state,
       weighingRecord: this.props.weighingData,
