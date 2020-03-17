@@ -24,7 +24,7 @@ class WorkshopSixContainer extends Component {
         {name: 'incomeTab',        active: true, title: 'Поступление и взвешивание'},
         {name: 'resettlementTab',  active: false, title: 'Размещение прибывших'},
         {name: 'innerTransferTab', active: false, title: 'Внутреннее перемещение'},
-        {name: 'transferTab',      active: false, title: 'Перегон в убойный цех'},
+        // {name: 'transferTab',      active: false, title: 'Перегон в убойный цех'},
         {name: 'transferTo75Tab',  active: false, title: 'Перегон ремонтных в 7-5'},
         {name: 'cullingTab',       active: false, title: 'Выбраковка'},
         {name: 'infoTab',          active: false, title: 'Инфо'},
@@ -73,6 +73,7 @@ class WorkshopSixContainer extends Component {
         />
         { activeTab.name === 'incomeTab' &&
           <WSNomadIncomeTab 
+            user={this.props.state.auth.user}
             workshopNumber={6}
             weighingPlace={'8/6'}
             returnLocation={8}
@@ -83,6 +84,7 @@ class WorkshopSixContainer extends Component {
             listError={this.props.state.piglets.errorList}
 
             weighingPiglets={this.props.weighingPiglets}
+            initPiglets={this.props.initPiglets}
             weighingData={this.props.state.piglets.weighing}
             eventError={this.props.state.piglets.eventError}
             eventFetching={this.props.state.piglets.eventFetching}
@@ -193,6 +195,7 @@ class WorkshopSixContainer extends Component {
 
         { activeTab.name === 'cullingTab' &&
           <WSNomadCullingTab
+            user={this.props.state.auth.user}
             workshopNumber={6}
 
             getSections={this.props.getSections}
@@ -230,6 +233,7 @@ const mapDispatchToProps = (dispatch) => ({
   movePiglets: query => dispatch(PigletsActions.movePigletsRequest(query)),
   weighingPiglets: query => dispatch(PigletsActions.weighingPigletsRequest(query)),
   cullingPiglets: query => dispatch(PigletsActions.cullingPigletsRequest(query)),
+  initPiglets: data => dispatch(PigletsActions.initPigletsRequest(data)),
 
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 })

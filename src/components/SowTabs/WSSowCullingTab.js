@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 // components
-import { SowFindById } from '../FiltersAndInputs'
+import { SowFindById, SowFindByIdWithoutGet } from '../FiltersAndInputs'
 import { SowLightDetail, SowToursData } from '../SowRepresentations'
 import { ErrorMessage, Message } from '../CommonComponents';
 
@@ -95,14 +95,23 @@ class WSSowCullingTab extends Component {
   render() {
     this.refreshSowsList()
     const { sows, sow, tours_info, eventError, message } = this.props
+    // console.log()
     return (
       <div className='row workshop-content'>
         <div className='col-3 workshop-left-column'>
-          <SowFindById 
+          {/* <SowFindById 
               sows={sows} 
               sow={sow} 
               getSowsById={this.getSowsById} 
               getSow={this.props.getSow}
+              fetching={this.props.listFetching}
+              error={this.props.sowsListError}
+              /> */}
+          <SowFindByIdWithoutGet 
+              sows={sows} 
+              sow={sow} 
+              getSowsById={this.getSowsById} 
+              setSow={this.props.setSow}
               fetching={this.props.listFetching}
               error={this.props.sowsListError}
               />
@@ -115,11 +124,11 @@ class WSSowCullingTab extends Component {
                   sow &&
                     <div>
                       <SowLightDetail sow={sow}/>
-                      <SowToursData tours_info={tours_info} />
+                      {/* <SowToursData tours_info={tours_info} /> */}
                       <div className="input-group">
                           <select className="custom-select" onChange={this.setData}>
                             <option selected value='padej' >Падеж</option>
-                            <option value='spec' >Спец. убой</option>
+                            <option value='vinuzhd' >Вынужденный убой</option>
                             <option value='prirezka' >Прирезка</option>
                           </select>
                           <input type='text' onChange={this.setData} placeholder='Напишите причину'/>
@@ -130,7 +139,7 @@ class WSSowCullingTab extends Component {
                           </button>
                         </div>
                       </div>
-                      <div className="input">
+                      {/* <div className="input">
                         <label className='sow-event-label'>Пометить как аборт</label>
                         <div>
                           <button className="btn btn-outline-secondary" type="button"  
@@ -138,14 +147,14 @@ class WSSowCullingTab extends Component {
                             Аборт
                           </button>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
               :
               <ErrorMessage error={this.props.sowsSingleError} />
             }
             <div className='col'>
               {eventError && <ErrorMessage error={eventError}/>}
-              {message && <Message message={eventError}/>}
+              {message && <Message message={message}/>}
 
             </div>
           </div>

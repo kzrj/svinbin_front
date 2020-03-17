@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
-import WS2TransferTab from '../components/WorkshopTwo/WS2TransferTab'
+import WSSowTransferToWSTab from '../components/SowTabs/WSSowTransferToWSTab'
 import WSSowCullingTab from '../components/SowTabs/WSSowCullingTab'
 import WSSowUltrasoundTab from '../components/SowTabs/WSSowUltrasoundTab'
-import WS2CreateTransferTab from '../components/WorkshopTwo/WS2CreateTransferTab'
+import WS2CreateTransferTab from '../components/SowTabs/WS2CreateTransferTab'
 import { WhoIs }  from '../components/CommonComponents'
 
 import { TabMenu }  from '../components/CommonComponents'
@@ -65,12 +65,15 @@ class WorkshopTwoContainer extends Component {
     return (
       <div className="workshop container-fluid">
         <TabMenu 
-          tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №3'} activeTab={activeTab}
+          tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №2'} activeTab={activeTab}
           user={this.props.state.auth.user}
         />
 
         { activeTab.name === 'transferTab' &&
-          <WS2TransferTab 
+          <WSSowTransferToWSTab
+            workshopNumber={2}
+            to_locations={[{id: 1, number: 1}, {id:3, number: 3}]}
+
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}

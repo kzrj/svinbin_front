@@ -66,7 +66,6 @@ export default function* root() {
     takeEvery(SowsTypes.MASS_INIT_TRANSFER_REQUEST, sowsSaga.massInitTransfer, sowsApi),
     takeEvery(SowsTypes.MARK_AS_NURSE_REQUEST, sowsSaga.markAsNurse, sowsApi),
     takeEvery(SowsTypes.CREATE_GILT_REQUEST, sowsSaga.createGilt, sowsApi),
-    takeEvery(SowsTypes.SET_SOW, sowsSaga.setSow),
 
     // INIT SOWS
     takeEvery(SowsTypes.ADD_NEW_SEMINATED_TO_WS1_REQUEST, sowsSaga.addNewSeminatedToWs1, sowsApi),
@@ -80,6 +79,8 @@ export default function* root() {
     takeEvery(PigletsTypes.MOVE_PIGLETS_REQUEST, pigletsSaga.movePiglets, pigletsApi),
     takeEvery(PigletsTypes.MOVE_GILTS_TO_WS1_REQUEST, pigletsSaga.moveGiltsToWs1, pigletsApi),
     takeEvery(PigletsTypes.MARK_AS_GILTS_REQUEST, pigletsSaga.markAsGilts, pigletsApi),
+    takeEvery(PigletsTypes.INIT_PIGLETS_REQUEST, pigletsSaga.initPiglets, pigletsApi),
+    takeEvery(PigletsTypes.RECOUNT_PIGLETS_REQUEST, pigletsSaga.recountPiglets, pigletsApi),
 
     takeEvery(WsDataTypes.GET_SEMINATORS_REQUEST, wsDataSaga.getSeminators, usersApi),
     takeEvery(WsDataTypes.IMPORT_SEMINATIONS_FROM_FARM_REQUEST, wsDataSaga.importSeminationsFromFarm, sowsApi),

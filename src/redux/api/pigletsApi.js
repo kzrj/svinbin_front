@@ -52,14 +52,17 @@ const create = () => {
     }
 
     const cullingPiglets = payload => {
-        const { id, culling_type, reason, is_it_gilt } = payload;
+        const { id, culling_type, reason, is_it_gilt, date, quantity, total_weight } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.cullingPiglets(id);
 
         const formData = new FormData();
         formData.append("culling_type", culling_type);
         formData.append("reason", reason);
-        formData.append("is_it_gilt", is_it_gilt);
+        is_it_gilt && formData.append("is_it_gilt", is_it_gilt);
+        date && formData.append("date", date);
+        formData.append("quantity", quantity);
+        formData.append("total_weight", total_weight);
         
         return axios({
                     method: 'post',
@@ -85,8 +88,8 @@ const create = () => {
         const formData = new FormData();
         formData.append("total_weight", total_weight);
         formData.append("place", place);
-        formData.append("new_amount", new_amount);
-        formData.append("to_location", to_location);
+        new_amount && new_amount > 0 && formData.append("new_amount", new_amount);
+        new_amount && new_amount > 0 && formData.append("to_location", to_location);
         
         return axios({
                     method: 'post',
@@ -207,6 +210,49 @@ const create = () => {
         })
     }
 
+    const initPiglets = payload => {
+        const token = localStorage.getItem('token') || '';
+        return axios({
+                    method: 'post',
+                    url: endpoints.INIT_PIGLETS,
+                    data: payload,
+                    headers: { 'content-type': 'application/JSON', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const recountPiglets = payload => {
+        const { id, new_quantity, comment } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.recount_piglets(id);
+
+        const formData = new FormData();
+        formData.append("comment", comment);
+        formData.append("new_quantity", new_quantity);
+
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getPiglets,
         mergeFromListPiglets,
@@ -216,7 +262,9 @@ const create = () => {
         recountWeighingPiglets,
         movePiglets,
         markAsGilts,
-        moveGiltsToWs1
+        moveGiltsToWs1,
+        initPiglets,
+        recountPiglets
     }
 }
 

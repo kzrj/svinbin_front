@@ -76,6 +76,7 @@ class WorkshopFourContainer extends Component {
             workshopNumber={4}
             weighingPlace={'3/4'}
             returnLocation={3}
+            user={this.props.state.auth.user}
 
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.piglets.list}
@@ -84,6 +85,7 @@ class WorkshopFourContainer extends Component {
 
             recountWeighingPiglets={this.props.recountWeighingPiglets}
             weighingData={this.props.state.piglets.weighing}
+            initPiglets={this.props.initPiglets}
             eventError={this.props.state.piglets.eventError}
             eventFetching={this.props.state.piglets.eventFetching}
             message={this.props.state.piglets.message}
@@ -167,6 +169,7 @@ class WorkshopFourContainer extends Component {
 
         { activeTab.name === 'cullingTab' &&
           <WSNomadCullingTab
+            user={this.props.state.auth.user}
             workshopNumber={4}
 
             getSections={this.props.getSections}
@@ -177,6 +180,7 @@ class WorkshopFourContainer extends Component {
             locationsFetching={this.props.state.locations.fetching}
 
             cullingPiglets={this.props.cullingPiglets}
+            recountPiglets={this.props.recountPiglets}
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
@@ -208,6 +212,8 @@ const mapDispatchToProps = (dispatch) => ({
   recountWeighingPiglets: query => dispatch(PigletsActions.recountWeighingPigletsRequest(query)),
   cullingPiglets: query => dispatch(PigletsActions.cullingPigletsRequest(query)),
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
+  initPiglets: data => dispatch(PigletsActions.initPigletsRequest(data)),
+  recountPiglets: data => dispatch(PigletsActions.recountPigletsRequest(data)),
 
 })
 

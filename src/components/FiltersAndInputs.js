@@ -40,22 +40,8 @@ export class SowFindById extends Component {
    }
 
 export class SowFindByIdWithoutGet extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            activeSowId: null,
-        }
-        this.clickSow = this.clickSow.bind(this);
-        }
-
-    clickSow (e) {
-        this.setState({
-            ...this.state,
-            activeSowId: e.target.dataset.id
-        })
-        }
     render() {
-        const { sow, sows, fetching, sowIdValue, error } = this.props
+        const { sows, sow, fetching, sowIdValue, error } = this.props
         
         return (
             <div className='workshop-content-column-1'>
@@ -68,14 +54,12 @@ export class SowFindByIdWithoutGet extends Component {
             <div className='div-scroll'>
                 <ul className='list-unstyled'>
                 {!error ? fetching ? <p className='loading'>Загрузка</p> :
-                    sows.length > 0 && sow && sows.asMutable().map(sowInList => 
-                        <li className={sowInList.id == sow.id ? 
-                                'sow-active sow-li text-center' :
-                                'sow-li text-center'} 
-                            key={sowInList.id}
-                            data-id={sowInList.id}
-                            onClick={() => this.props.setSow()}
-                            >
+                    (sows.length > 0 && sow) && 
+                    sows.map(sowInList => 
+                        <li className={sowInList.id == sow.id ? 'sow-active sow-li text-center' :
+                        'sow-li text-center'} 
+                        key={sowInList.id} 
+                        onClick={() => this.props.setSow(sowInList)}>
                         <span className='sow-list-farm-id'>{sowInList.farm_id}</span>
                         <span className='span-block span sow-list-tour'>
                             {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}</span>
@@ -293,9 +277,10 @@ render() {
 export const CullingTypeInput = (props) => (
     <select className="custom-select" name='culling_type' 
       onChange={props.setData} value={props.culling_type}>
-      <option selected>Выберите тип падежа...</option>
+      <option selected>Выберите тип выбытия...</option>
       <option value='padej' >Падеж</option>
-      <option value='spec' >Вынужден. убой</option>
+      <option value='spec' >Спец. убой</option>
+      <option value='vinuzhd' >Вынужден. убой</option>
       <option value='prirezka' >Прирезка</option>
     </select>
     )
@@ -308,7 +293,7 @@ export const CullingReasonInput = (props) => (
 )
 
 export const WeighingPigletsInput = (props) => (
-    <form className="">
+    <div className="">
 
         <div className="form-check">
             <input type="checkbox" className="form-check-input" id="new-amount-check"
@@ -345,10 +330,10 @@ export const WeighingPigletsInput = (props) => (
                 onChange={props.setData}/>
         </div>
 
-        <button type='submit' className='btn btn-outline-secondary' onClick={props.weighing}>
+        <button className='btn btn-outline-secondary' onClick={props.weighing}>
             Взвесить
         </button>
-    </form>
+    </div>
 )
 
 export const SplitPigletsInput = (props) => (
@@ -397,3 +382,8 @@ export const SplitPigletsInput = (props) => (
         }
     </form>
 )
+
+
+// export const SplitPigletsInput = (props) => (
+
+// )

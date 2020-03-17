@@ -21,12 +21,12 @@ class WorkshopFiveContainer extends Component {
     super(props);
     this.state = {
       tabs: [
-        {name: 'incomeTab',        active: true, title: 'Поступление и взвешивание'},
+        {name: 'incomeTab',        active: false, title: 'Поступление и взвешивание'},
         {name: 'resettlementTab',  active: false, title: 'Размещение прибывших'},
         {name: 'innerTransferTab', active: false, title: 'Внутреннее перемещение'},
-        {name: 'transferTab',      active: false, title: 'Перегон в убойный цех'},
+        // {name: 'transferTab',      active: false, title: 'Перегон в убойный цех'},
         {name: 'transferTo75Tab',  active: false, title: 'Перегон ремонтных в 7-5'},
-        {name: 'cullingTab',       active: false, title: 'Выбраковка'},
+        {name: 'cullingTab',       active: true, title: 'Выбраковка/Убой'},
         {name: 'infoTab',          active: false, title: 'Инфо'},
       ],
     };
@@ -72,7 +72,8 @@ class WorkshopFiveContainer extends Component {
           user={this.props.state.auth.user}
         />
         { activeTab.name === 'incomeTab' &&
-          <WSNomadIncomeTab 
+          <WSNomadIncomeTab
+            user={this.props.state.auth.user} 
             workshopNumber={5}
             weighingPlace={'8/5'}
             returnLocation={8}
@@ -84,6 +85,7 @@ class WorkshopFiveContainer extends Component {
 
             weighingPiglets={this.props.weighingPiglets}
             weighingData={this.props.state.piglets.weighing}
+            initPiglets={this.props.initPiglets}
             eventError={this.props.state.piglets.eventError}
             eventFetching={this.props.state.piglets.eventFetching}
             message={this.props.state.piglets.message}
@@ -193,6 +195,7 @@ class WorkshopFiveContainer extends Component {
 
         { activeTab.name === 'cullingTab' &&
           <WSNomadCullingTab
+            user={this.props.state.auth.user}
             workshopNumber={5}
 
             getSections={this.props.getSections}
@@ -230,6 +233,7 @@ const mapDispatchToProps = (dispatch) => ({
   movePiglets: query => dispatch(PigletsActions.movePigletsRequest(query)),
   weighingPiglets: query => dispatch(PigletsActions.weighingPigletsRequest(query)),
   cullingPiglets: query => dispatch(PigletsActions.cullingPigletsRequest(query)),
+  initPiglets: data => dispatch(PigletsActions.initPigletsRequest(data)),
 
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 })

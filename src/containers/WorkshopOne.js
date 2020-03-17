@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 // components
-import WS1Semination12Tab from '../components/WorkshopOne/WS1Semination12Tab'
-import WS1CreateTab from '../components/WorkshopOne/WS1CreateTab'
-import WS1TransferToWS2Tab from '../components/WorkshopOne/WS1TransferToWS2Tab'
+import WS1Semination12Tab from '../components/SowTabs/WS1Semination12Tab'
+import WS1CreateTab from '../components/SowTabs/WS1CreateTab'
+import WSSowTransferToWSTab from '../components/SowTabs/WSSowTransferToWSTab'
 import WSSowCullingTab from '../components/SowTabs/WSSowCullingTab'
 import WSSowUltrasoundTab from '../components/SowTabs/WSSowUltrasoundTab'
-import WS1ImportSeminationTab from '../components/WorkshopOne/WS1ImportSeminationTab'
+import WSSowGlobalSearchTab from '../components/SowTabs/WSSowGlobalSearchTab'
+import WS1ImportSeminationTab from '../components/SowTabs/WS1ImportSeminationTab'
 
 import { TabMenu }  from '../components/CommonComponents'
 
@@ -23,12 +24,13 @@ class WorkshopOneContainer extends Component {
     this.state = {
       tabs: [
         // {name: 'semination12Tab',     active: false, title: 'Осеменение'},
-        {name: 'importSeminationTab', active: true, title: 'Импорт из Фарма'},
+        {name: 'importSeminationTab', active: false, title: 'Импорт из Фарма'},
         {name: 'createTab',           active: false, title: 'Создание свиноматок'},
         {name: 'ultrasound30Tab',     active: false, title: 'УЗИ 28'},
         {name: 'ultrasound60Tab',     active: false, title: 'УЗИ 35'},
-        {name: 'transferToWS2Tab',    active: false, title: 'Перегон'},
+        {name: 'transferToWS2Tab',    active: true, title: 'Перегон'},
         {name: 'cullingTab',          active: false, title: 'Выбраковка'},
+        {name: 'searchSowTab',        active: false, title: 'Поиск по всем цехам'},
         // {name: 'infoTab',             active: false, title: 'Инфо'},
       ]
     }
@@ -70,7 +72,7 @@ class WorkshopOneContainer extends Component {
     return (
       <div className="workshop container-fluid">
         <TabMenu 
-          tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №3'} activeTab={activeTab}
+          tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №1'} activeTab={activeTab}
           user={this.props.state.auth.user}
         />
 
@@ -121,6 +123,7 @@ class WorkshopOneContainer extends Component {
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
 
+            abortionSow={this.props.abortionSow}
             massUltrasound={this.props.massUltrasound}
             eventError={this.props.state.sows.eventError}
             eventFetching={this.props.state.sows.eventFetching}
@@ -144,6 +147,7 @@ class WorkshopOneContainer extends Component {
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
 
+            abortionSow={this.props.abortionSow}
             massUltrasound={this.props.massUltrasound}
             eventError={this.props.state.sows.eventError}
             eventFetching={this.props.state.sows.eventFetching}
@@ -154,7 +158,10 @@ class WorkshopOneContainer extends Component {
         }
 
         {activeTab.name === 'transferToWS2Tab' &&
-          <WS1TransferToWS2Tab 
+          <WSSowTransferToWSTab
+            workshopNumber={1}
+            to_locations={[{id:2, number: 2}]}
+
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
@@ -180,12 +187,35 @@ class WorkshopOneContainer extends Component {
             sowsListFetching={this.props.state.sows.fetching}
 
             getSow={this.props.getSow}
+            setSow={this.props.setSow}
+
             sow={this.props.state.sows.sow}
             tours_info={this.props.state.sows.tours_info}
             singleSowFetching={this.props.state.sows.sowSingleFetching}
 
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}
+            eventError={this.props.state.sows.eventError}
+            eventFetching={this.props.state.sows.eventFetching}
+            message={this.props.state.sows.message}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+          />
+        }
+
+        {activeTab.name === 'searchSowTab' &&
+          <WSSowGlobalSearchTab 
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sowsListFetching={this.props.state.sows.fetching}
+
+            getSow={this.props.getSow}
+            setSow={this.props.setSow}
+
+            sow={this.props.state.sows.sow}
+            tours_info={this.props.state.sows.tours_info}
+            singleSowFetching={this.props.state.sows.sowSingleFetching}
+
             eventError={this.props.state.sows.eventError}
             eventFetching={this.props.state.sows.eventFetching}
             message={this.props.state.sows.message}
@@ -233,6 +263,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getBoars: query => dispatch(SowsActions.getBoarsRequest(query)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
+  setSow: sow => dispatch(SowsActions.setSow(sow)),
 
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),

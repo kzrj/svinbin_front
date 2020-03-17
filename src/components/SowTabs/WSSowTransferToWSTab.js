@@ -7,22 +7,22 @@ import { SowTable }  from '../../components/SowRepresentations'
 import { SowFarmIdFilter, SowTourFilter, SowSemUsoundFilter }  from '../../components/FiltersAndInputs'
 
 
-class WS2TransferTab extends Component {
+class WSSowTransferToWSTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
       query: {
-        by_workshop_number: 2,
         tour: null,
         status_title: "Супорос 35",
         to_seminate: null,
         farm_id_isnull: false
       },
       choosedSows: [],
-      needToRefresh: false,
+      needToRefresh: false
     };
     this.setQuery = this.setQuery.bind(this);
     this.chooseAll = this.chooseAll.bind(this);
+    this.resetAll = this.resetAll.bind(this);
     this.setSeminatedSuporosStatus = this.setSeminatedSuporosStatus.bind(this);
     this.sowClick = this.sowClick.bind(this);
     this.massMove = this.massMove.bind(this);
@@ -30,17 +30,30 @@ class WS2TransferTab extends Component {
   }
 
   componentDidMount() {
-    // query
+    this.setState({
+      ...this.state,
+      query: {
+        ...this.state.query,
+        by_workshop_number: this.props.workshopNumber,
+      }
+    })
     this.props.getSows(this.state.query)
-    this.props.getTours()
   }
 
   chooseAll () {
-    let ids = []
-    this.props.sows.map(sow => ids = toggleArray(ids, sow.id))
+    const { sows } = this.props
+    let choosedSows = []
+    sows.map(sow => choosedSows = toggleArray(choosedSows, sow.id.toString()))
     this.setState({
       ...this.state,
-      choosedSows: ids
+      choosedSows: choosedSows
+    })
+  }
+
+  resetAll () {
+    this.setState({
+      ...this.state,
+      choosedSows: []
     })
   }
 
@@ -50,10 +63,7 @@ class WS2TransferTab extends Component {
 
     this.setState({
       ...this.state,
-      query: {
-        ...this.state.query,
-        query: query
-      },
+      query: query,
       choosedSows: [],
       needToRefresh: true
     })
@@ -90,21 +100,22 @@ class WS2TransferTab extends Component {
     })
   }
   
-  massMove (e) {
+  massMove (to_location) {
     const data = {
       sows: this.state.choosedSows,
-      to_location: e.target.name
+      to_location: to_location
     }
     this.props.massMove(data)
     this.setState({
       ...this.state,
+      query: {...this.state.query, farm_id_starts: ''}, 
       choosedSows: [],
       needToRefresh: true
     })
   }
 
   refreshSowsList () {
-    if (this.props.eventFetching || this.state.needToRefresh) {
+    if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)  
@@ -124,39 +135,35 @@ class WS2TransferTab extends Component {
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
             <SowSemUsoundFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>
           </div>
-          <div className='row'>
-            <div className='col-6'>
-              <label className='sow-event-label'>Перевести в ЦЕХ 1</label>
-              <div className="input-group">
-                <div className="input-group-append">
-                  <button className="btn btn-outline-secondary" type="button" 
-                    onClick={this.massMove} name='1'>
-                    Перевести в ЦЕХ 1
-                  </button>
+          <div>
+            <div className='row'>
+              {this.props.to_locations.length > 0 && this.props.to_locations.map(ws =>
+                <div className='col-4'>
+                  <label className='sow-event-label'>Перевести в ЦЕХ {ws.number}</label>
+                    <div className="input-group">
+                      <div className="input-group-append">
+                        <button className="btn btn-outline-secondary" type="button" 
+                          onClick={() => this.massMove(ws.id)}>
+                          Перевести в ЦЕХ {ws.number}
+                        </button>
+                      </div>
+                    </div>
                 </div>
-                </div>
-            </div>
-            <div className='col-6'>
-              <label className='sow-event-label'>Перевести в ЦЕХ 3</label>
-              <div className="input-group">
-                <div className="input-group-append">
-                  <button className="btn btn-outline-secondary" type="button" 
-                    onClick={this.massMove} name='3'>
-                    Перевести в ЦЕХ 3
-                  </button>
-                </div>
-                </div>
+              )}
             </div>
           </div>
         </div>
         <div className='commonfilter-results'>
           <div className='count row'>
-            <div className='col-6'>
+            <div className='col-4'>
               Выбрано {this.state.choosedSows.length} из {sows.length}
             </div>
-            {/* <div className='col-6'>
-              <button onClick={this.chooseAll}>Выбрать всех</button>
-            </div> */}
+            <div className='col-4'>
+              <button className='btn btn-outline-secondary' onClick={this.chooseAll}>Выбрать всех</button>
+            </div>
+            <div className='col-4'>
+              <button className='btn btn-outline-secondary' onClick={this.resetAll}>Сбросить выбор</button>
+            </div>
           </div>
           {this.props.sowsListFetching  ? <p className='loading'>Загрузка</p> :
             <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>}
@@ -166,4 +173,4 @@ class WS2TransferTab extends Component {
   }
 }
 
-export default WS2TransferTab
+export default WSSowTransferToWSTab

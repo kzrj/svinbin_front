@@ -70,7 +70,8 @@ class WorkshopEightContainer extends Component {
           user={this.props.state.auth.user}
         />
         { activeTab.name === 'incomeTab' &&
-          <WSNomadIncomeTab 
+          <WSNomadIncomeTab
+            user={this.props.state.auth.user}
             workshopNumber={8}
             weighingPlace={'4/8'}
             returnLocation={4}
@@ -81,6 +82,7 @@ class WorkshopEightContainer extends Component {
             listError={this.props.state.piglets.errorList}
 
             weighingPiglets={this.props.weighingPiglets}
+            initPiglets={this.props.initPiglets}
             weighingData={this.props.state.piglets.weighing}
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
@@ -165,6 +167,7 @@ class WorkshopEightContainer extends Component {
 
         { activeTab.name === 'cullingTab' &&
           <WSNomadCullingTab
+            user={this.props.state.auth.user}
             workshopNumber={8}
 
             getSections={this.props.getSections}
@@ -202,6 +205,7 @@ const mapDispatchToProps = (dispatch) => ({
   movePiglets: query => dispatch(PigletsActions.movePigletsRequest(query)),
   weighingPiglets: query => dispatch(PigletsActions.weighingPigletsRequest(query)),
   cullingPiglets: query => dispatch(PigletsActions.cullingPigletsRequest(query)),
+  initPiglets: data => dispatch(PigletsActions.initPigletsRequest(data)),
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 
 })

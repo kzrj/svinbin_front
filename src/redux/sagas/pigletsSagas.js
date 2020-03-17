@@ -82,3 +82,21 @@ export function* markAsGilts(api, action) {
         yield put(PigletsActions.markAsGiltsFail(err))
     }
 }
+
+export function* initPiglets(api, action) {
+    try {
+        let response = yield call(api.initPiglets, action.payload);
+        yield put(PigletsActions.initPigletsSuccess(response));
+    } catch (err) {
+        yield put(PigletsActions.initPigletsFail(err))
+    }
+}
+
+export function* recountPiglets(api, action) {
+    try {
+        let response = yield call(api.recountPiglets, action.payload);
+        yield put(PigletsActions.recountPigletsSuccess(response));
+    } catch (err) {
+        yield put(PigletsActions.recountPigletsFail(err))
+    }
+}

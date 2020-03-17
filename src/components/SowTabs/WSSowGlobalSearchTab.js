@@ -7,7 +7,7 @@ import { SowFarmIdFilter, SowTourFilter }  from '../../components/FiltersAndInpu
 import { ErrorMessage, Message } from '../CommonComponents'
 
 
-class WSSowUltrasoundTab extends Component {
+class WSSowGlobalSearchTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -36,13 +36,9 @@ class WSSowUltrasoundTab extends Component {
       ...this.state,
       query: {
         ...this.state.query,
-        by_workshop_number: this.props.workshopNumber,
-        status_title: this.props.statusTitleFilter
       }
     })
-    this.props.getSows({
-      by_workshop_number: this.props.workshopNumber,
-      status_title: this.props.statusTitleFilter})
+    this.props.getSows()
     this.props.sowsResetErrorsAndMessages()
   }
 
@@ -149,58 +145,10 @@ class WSSowUltrasoundTab extends Component {
           <div className='commonfilter row'>
             <label className='sow-event-label'>Фильтр</label>
             <SowFarmIdFilter farm_id_starts={this.state.query.farm_id_starts} setQuery={this.setQuery} />
-            <SowTourFilter tours={tours} setQuery={this.setQuery}/>
           </div>
-          <div>
-            <div>
-              {/* <div className="input-group">
-                <label className='sow-event-label'>УЗИ {days} дней</label>
-                <select className="custom-select" id="inputGroupSelect04" 
-                  onChange={this.setData} name='result'>
-                  <option selected value={true}>Супорос</option>
-                  <option value={false}>Прохолост</option>
-                </select>
-                <div className="input-group-append">
-                  <button className="btn btn-outline-secondary" type="button" 
-                    onClick={this.massUltrasound}>
-                    Провести УЗИ
-                  </button>
-                </div>
-              </div> */}
-              <div className='row'>
-                <div className='col-4'>
-                  <button className='btn btn-success' data-result={true} onClick={this.clickButton}>
-                    Супорос
-                  </button>
-                </div>
-                <div className='col-4'>
-                  <button className='btn btn-danger'data-result={false} onClick={this.clickButton}>
-                    Прохолост
-                  </button>
-                </div>
-                <div className='col-4'>
-                  <button className='btn btn-dark' onClick={this.clickAbort}>
-                    Аборт
-                  </button>
-                </div>
-              </div>
-              {eventError && <ErrorMessage error={eventError}/>}
-              {message && <Message message={message}/>}
-            </div>
-          </div>
+          
         </div>
         <div className='commonfilter-results'>
-          <div className='count row'>
-              <div className='col-4'>
-                Выбрано {this.state.choosedSows.length} из {sows.length}
-              </div>
-              <div className='col-4'>
-                <button className='btn btn-outline-secondary' onClick={this.chooseAll}>Выбрать всех</button>
-              </div>
-              <div className='col-4'>
-                <button className='btn btn-outline-secondary' onClick={this.resetAll}>Сбросить выбор</button>
-              </div>
-            </div>
           {this.props.sowsListFetching ? 
             <p className='loading'>Загрузка</p> :
             <SowTable sows={sows} sowClick={this.sowClick} 
@@ -211,4 +159,4 @@ class WSSowUltrasoundTab extends Component {
   }
 }
 
-export default WSSowUltrasoundTab
+export default WSSowGlobalSearchTab

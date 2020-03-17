@@ -71,7 +71,7 @@ import React, { Component } from 'react';
       <div className='piglets-list-elem'>
         <p>Количество {piglets.quantity}</p>
         {piglets.gilts_quantity > 0 && <p>Количество ремонтных {piglets.gilts_quantity}</p>}
-        {/* <PigletsMetaTour metatours={piglets.metatour_repr} /> */}
+        <PigletsMetaTour metatours={piglets.metatour_repr} />
         {piglets.transfer_part_number && <p>Партия {piglets.transfer_part_number}</p>}
       </div>
     )

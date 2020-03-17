@@ -15,17 +15,24 @@ class WSNomadIncomeTab extends Component {
       weighingRecord: null,
       checkNewAmount: false,
       newAmount: null,
+
+      farrow_date: '',
+      quantity: null,
+      gilts_quantity: 0,
+      transaction_date: '',
+
       needToRefresh: false
     }
     this.setData = this.setData.bind(this);
     this.weighing = this.weighing.bind(this);
+    this.initPiglets = this.initPiglets.bind(this);
     this.turnOnNewAmount = this.turnOnNewAmount.bind(this);
     this.refreshSowsList = this.refreshSowsList.bind(this);
   }
   
   componentDidMount() {
     this.props.getPiglets({
-      // status_title: "Готовы ко взвешиванию",
+      not_status_title: "Взвешены, готовы к заселению",
       piglets_without_weighing_record: this.props.weighingPlace,
       by_workshop_number: this.props.workshopNumber
     })
@@ -60,15 +67,35 @@ class WSNomadIncomeTab extends Component {
       id: this.state.activePiglets.id,
       place: this.props.weighingPlace,
       total_weight: this.state.totalWeight,
-      new_quantity: this.state.newAmount,
+      new_amount: this.state.newAmount,
+      to_location: this.props.returnLocation
     }
-    this.props.recountWeighingPiglets(data)
+    this.props.weighingPiglets(data)
     this.setState({
       ...this.state,
       weighingRecord: this.props.weighingData,
       activePiglets: null,
       newAmount: 0,
       checkNewAmount: false,
+      needToRefresh: true
+    })
+  }
+
+  initPiglets () {
+    this.props.initPiglets({
+      location: this.props.workshopNumber,
+      from_location: this.props.returnLocation,
+      farrow_date: this.state.farrow_date,
+      quantity: this.state.quantity,
+      gilts_quantity: this.state.gilts_quantity,
+      transaction_date: this.state.transaction_date
+    })
+    this.setState({
+      ...this.state,
+      // farrow_date: '',
+      // quantity: null,
+      // gilts_quantity: null,
+      // transaction_date: '',
       needToRefresh: true
     })
   }
@@ -86,7 +113,7 @@ class WSNomadIncomeTab extends Component {
   
   render() {
     this.refreshSowsList()
-    const { piglets, eventError } = this.props
+    const { piglets, eventError, user } = this.props
 
     return (
       <div className='row workshop-content'>
@@ -126,6 +153,62 @@ class WSNomadIncomeTab extends Component {
                 <Message message={'Выберите партию для взвешивания'}/>
           }
           {eventError && <ErrorMessage error={eventError} />}
+
+          {/* <InitPigletsComponent /> */}
+          {user.is_officer && 
+            <div>
+              Создать поросят.
+              <div className="form-group row">
+                <div className='col-6'>
+                  <label for='farrow_date'>Дата опороса</label>
+                  <input type='date'
+                    id='farrow_date'
+                    className="form-control search-input"
+                    value={this.state.farrow_date}
+                    name='farrow_date'
+                    placeholder="Дата опороса"
+                    onChange={this.setData}/>
+                </div>
+                <div className='col-6'>
+                  <label for='transaction_date'>Дата прихода</label>
+                  <input type='date'
+                    id='transaction_date'
+                    className="form-control search-input"
+                    value={this.state.transaction_date}
+                    name='transaction_date'
+                    placeholder="Дата прихода"
+                    onChange={this.setData}/>
+                </div>
+              </div>
+              <div className="form-group row">
+                <div className='col-6'>
+                  <input type='number'
+                    id='quantity'
+                    className="form-control search-input"
+                    value={this.state.quantity}
+                    name='quantity'
+                    placeholder="Количество свиней"
+                    onChange={this.setData}/>
+                </div>
+                <div className='col-6'>
+                  <label for='gilts_quantity'>количество ремонтных</label>
+                  <input type='number'
+                    id='gilts_quantity'
+                    className="form-control search-input"
+                    value={this.state.gilts_quantity}
+                    name='gilts_quantity'
+                    placeholder="Количество ремонтных свиней"
+                    onChange={this.setData}/>
+                </div>
+              </div>
+              <div className="form-group">
+                <button className='btn btn-secondary' onClick={this.initPiglets}>
+                  Создать
+                </button>
+              </div>
+            </div>
+          }
+
         </div>
       </div>
     )

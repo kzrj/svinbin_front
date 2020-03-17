@@ -75,8 +75,10 @@ const { Types, Creators } = createActions({
     createGiltFail: ['error'],
     createGiltSuccess: ['payload'],
 
-    setSow: [''],
+    setSow: ['sow'],
+
     resetSow: ['payload'],
+
     sowsResetErrorsAndMessages: null,
 })
 
@@ -117,6 +119,7 @@ export const INITIAL_STATE = Immutable({
 export const SowsSelectors = {
     getSows: state => state.Sows.list,
     getSow: state => state.Sows.sow,
+    setSow: state => state.Sows.sow,
     seminationSow: state => state.Sows.sow,
     ultrasoundSow: state => state.Sows.sow,
     cullingSow: state => state.Sows.sow,
@@ -160,11 +163,6 @@ export const getSowSuccess = (state, { payload }) => {
 
 export const getSowFail = (state, { error }) => {
     return state.merge({ sowSingleFetching: false, errorSingle: error, sow: null, tours_info: [] })
-}
-
-export const setSow = (state) => {
-    
-    return state.merge({ sow: 'hui', })
 }
 
 export const resetSow = (state, { payload }) => {
@@ -391,6 +389,12 @@ export const createGiltFail = (state, { error }) => {
 export const sowsResetErrorsAndMessages = (state) => {
     return state.merge({ fetching: false, eventError: null, errorList: null, eventFetching: null, message: '' })
   }
+
+// setSow
+export const setSow = (state, { sow }) => {
+    console.log(sow)
+    return state.merge({ sow: sow })
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 

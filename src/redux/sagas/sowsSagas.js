@@ -20,12 +20,6 @@ export function* getSow(api, action) {
     }
 }
 
-export function* setSow() {
-    // let response = yield call(action.payload);
-    console.log('setSow Saga')
-    yield put(SowsActions.setSow());
-}
-
 export function* seminationSow(api, action) {
     try {
         let response = yield call(api.seminationSow, action.payload);

@@ -39,6 +39,14 @@ const { Types, Creators } = createActions({
     moveGiltsToWs1Fail: ['payload'],
     moveGiltsToWs1Success: ['payload'],
 
+    initPigletsRequest: ['payload'],
+    initPigletsFail: ['payload'],
+    initPigletsSuccess: ['payload'],
+
+    recountPigletsRequest: ['payload'],
+    recountPigletsFail: ['payload'],
+    recountPigletsSuccess: ['payload'],
+
     pigletsResetErrorsAndMessages: null,
 })
 
@@ -73,6 +81,8 @@ export const PigletsSelectors = {
     movePiglets: state => state.piglets.message,
     moveGiltsToWs1: state => state.piglets.message,
     markAsGilts: state => state.piglets.message,
+    initPiglets: state => state.piglets.message,
+    recountPiglets: state => state.piglets.message,
 }
 
 /* ------------- Reducers ------------- */
@@ -193,6 +203,32 @@ export const markAsGiltsFail = (state, { payload }) => {
     return state.merge({ eventFetching: false, eventError: payload, message: ''})
 }
 
+// initPiglets
+export const initPigletsRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const initPigletsSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: null, message: payload.message })
+}
+
+export const initPigletsFail = (state, { payload } ) => {
+    return state.merge({ eventFetching: false, eventError: payload, message: ''})
+}
+
+// recountPiglets
+export const recountPigletsRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const recountPigletsSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: null, message: payload.message })
+}
+
+export const recountPigletsFail = (state, { payload } ) => {
+    return state.merge({ eventFetching: false, eventError: payload, message: ''})
+}
+
 // resetErrorsAndMessages
 export const pigletsResetErrorsAndMessages = (state) => {
     return state.merge({ fetching: false, eventError: null, errorList: null, message: '' })
@@ -236,6 +272,14 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MARK_AS_GILTS_REQUEST]: markAsGiltsRequest,
     [Types.MARK_AS_GILTS_SUCCESS]: markAsGiltsSuccess,
     [Types.MARK_AS_GILTS_FAIL]: markAsGiltsFail,
+
+    [Types.INIT_PIGLETS_REQUEST]: initPigletsRequest,
+    [Types.INIT_PIGLETS_SUCCESS]: initPigletsSuccess,
+    [Types.INIT_PIGLETS_FAIL]: initPigletsFail,
+
+    [Types.RECOUNT_PIGLETS_REQUEST]: recountPigletsRequest,
+    [Types.RECOUNT_PIGLETS_SUCCESS]: recountPigletsSuccess,
+    [Types.RECOUNT_PIGLETS_FAIL]: recountPigletsFail,
 
     [Types.PIGLETS_RESET_ERRORS_AND_MESSAGES]: pigletsResetErrorsAndMessages,
 })
