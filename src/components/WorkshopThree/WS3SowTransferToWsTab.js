@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { toggleArray, toggleArrayDictById } from '../utils';
+
 //components
 import { SowCells, Sections } from '../Locations'
 import { ErrorMessage, Message } from '../CommonComponents';
@@ -9,16 +11,18 @@ class WS3SowTransferToWsTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      activeSow: null,
-      activeFromSectionId: null,
-      activeCellFromLocationId: null,
-      activeToSectionId: null,
-      activeCellToLocationId: null,
+      activeSectionId: 6,
+      activeLocationsId: [],
+
+      activeSows: [],
+
+      needToRefresh: false
     }
 
     this.clickSection = this.clickSection.bind(this);
-    this.clickCell = this.clickCell.bind(this);
+    this.clickLocation = this.clickLocation.bind(this);
     this.clickTransfer = this.clickTransfer.bind(this);
+    this.refresh = this.refresh.bind(this);
   }
 
   componentDidMount() {
@@ -29,44 +33,54 @@ class WS3SowTransferToWsTab extends Component {
     const { sectionId } = e.target.dataset
     this.setState({
       ...this.state,
-      activeFromSectionId: sectionId,
+      activeSectionId: sectionId,
       needToRefresh: false
     })
     this.props.getLocations({by_section: sectionId, cells: true})
   }
 
-  clickCell (location) {
-    this.setState({
-      ...this.state,
-      activeCellFromLocationId: location.id,
-      activeSow: location.sow_set.length > 0 ?
-       location.sow_set[0] : null
-    })
+  clickLocation (location) {
+    let { activeLocationsId, activeSows } = this.state
+
+    if (location.sow_set.length > 0) {
+      activeLocationsId = toggleArray(activeLocationsId, location.id)
+      activeSows = toggleArrayDictById(activeSows, location.sow_set[0])
+      
+      this.setState({
+        ...this.state,
+        activeLocationsId: activeLocationsId,
+        activeSows: activeSows,
+      })
+    }
   }
 
   clickTransfer (e) {
-    const { tows } = e.target.dataset
+    const { activeSows } = this.state
+    const { to_location } =e.target.dataset
+    let sows = []
+    activeSows.map(activeSow => sows = toggleArray(sows, activeSow.id))
 
-    this.props.sowMoveTo({
-      id: this.state.activeSow.id,
-      location: tows
+    console.log(sows, to_location)
+
+    this.props.sowsMoveMany({
+      sows: sows,
+      to_location: to_location
     })
 
     this.setState({
       ...this.state,
-      activeSow: null,
-      activeCellFromLocationId: null,
-      activeCellToLocationId: null,
+      activeSows: [],
+      activeLocationsId: [],
       needToRefresh: true,
     })
   }
 
-  refreshLocations () {
+  refresh () {
     if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        if (this.state.activeFromSectionId) {
-          this.props.getLocations({by_section: this.state.activeFromSectionId, cells: true})
+        if (this.state.activeSectionId) {
+          this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
           }
         }, 500)
     }
@@ -75,7 +89,7 @@ class WS3SowTransferToWsTab extends Component {
   render() {
     const { sections, locations, locationsFetching, locationsListError,
        sectionsFetching, sectionsListError, eventError, message  } = this.props
-    this.refreshLocations()
+    this.refresh()
     
     return (
         <div className='row workshop-content'>
@@ -83,16 +97,16 @@ class WS3SowTransferToWsTab extends Component {
             <Sections 
               sections={sections}
               fetching={sectionsFetching}
-              activeSectionId={this.state.activeFromSectionId}
+              activeSectionId={this.state.activeSectionId}
               clickSection={this.clickSection}
               error={sectionsListError}
             />
             <SowCells 
-              isSection={this.state.activeFromSectionId}
+              isSection={this.state.activeSectionId}
               locations={locations}
               fetching={locationsFetching}
-              activeCellIds={[this.state.activeCellFromLocationId]}
-              clickLocation={this.clickCell}
+              activeCellIds={this.state.activeLocationsId}
+              clickLocation={this.clickLocation}
               error={locationsListError}
             />
           </div>
@@ -106,27 +120,33 @@ class WS3SowTransferToWsTab extends Component {
                 </ul>  
               }
             </div>
-            {this.state.activeSow && 
-              <div className='bottom-buttons-block'>
-                <div className="input-group">
-                  <button onClick={this.clickTransfer} data-tows={3}
-                    className='btn btn-outline-secondary'>
-                    Переместить в цех 3
-                  </button>
+            {this.state.activeSows.length > 0 && 
+              <div>
+                <div>
+                  <p>Выбрано {this.state.activeSows.length}</p>
+                  {this.state.activeSows.map(activeSow => <p>{activeSow.farm_id}</p>)}
                 </div>
-                <br />
-                <div className="input-group">
-                  <button onClick={this.clickTransfer} data-tows={1}
-                    className='btn btn-outline-secondary'>
-                    Переместить в цех 1
-                  </button>
+                <div className='bottom-buttons-block'>
+                  <div className="input-group">
+                    <button onClick={this.clickTransfer} data-to_location={3}
+                      className='btn btn-outline-secondary'>
+                      Переместить в цех 3
+                    </button>
+                  </div>
+                  <br />
+                  <div className="input-group">
+                    <button onClick={this.clickTransfer} data-to_location={1}
+                      className='btn btn-outline-secondary'>
+                      Переместить в цех 1
+                    </button>
+                  </div>
                 </div>
               </div>
             }
-            <div>
-              {eventError && <ErrorMessage error={eventError}/>}
-              {message && <Message message={eventError}/>}
-            </div>
+          <div>
+            {eventError && <ErrorMessage error={eventError}/>}
+            {message && <Message message={message}/>}
+          </div>
           </div>
       </div>
     )

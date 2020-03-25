@@ -39,7 +39,7 @@ class WorkshopThreeContainer extends Component {
         {name: 'returnPigletsTab',        active: false, title: 'Возврат поросята'},
         {name: 'comingSowsTab',           active: false,  title: 'Поступление матки'},
         {name: 'sowInnerTransferTab',     active: false, title: 'Перемещение свиноматок из клетки в клетку'},
-        {name: 'sowTransferToWsTab',      active: false, title: 'Перемещение свиноматок в цех1, цех3'},
+        {name: 'sowTransferToWsTab',      active: true, title: 'Перемещение свиноматок в цех1, цех3'},
         {name: 'farrowTab',               active: false, title: 'Опорос'},
         {name: 'nurseSowTab',             active: false, title: 'Кормилица'},
         {name: 'weaningPigletsTab',       active: false, title: 'Отъем поросят'},
@@ -47,7 +47,7 @@ class WorkshopThreeContainer extends Component {
         {name: 'sowCullingTab',           active: false, title: 'Выбраковка свиноматок'},
         {name: 'pigletsCullingTab',       active: false, title: 'Выбраковка поросят'},
         {name: 'pigletsInnerTransferTab', active: false, title: 'Перемещение поросят из клетки в клетку'},
-        {name: 'pigletsRecountTab',       active: true,  title: 'Пересчет поросят'},
+        {name: 'pigletsRecountTab',       active: false,  title: 'Пересчет поросят'},
         {name: 'pigletsInitPartTab',      active: false, title: 'Создание и перевод партии'},
       ]
     }
@@ -94,6 +94,7 @@ class WorkshopThreeContainer extends Component {
           tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №3'} activeTab={activeTab}
           user={this.props.state.auth.user}
         />
+        
         {activeTab.name === 'balanceTab' &&
           <WS3InfoTab 
             getInfoWs3={this.props.getInfoWs3}
@@ -101,6 +102,7 @@ class WorkshopThreeContainer extends Component {
             fetching={this.props.state.wsData.fetching}
             error={this.props.state.wsData.error}
         />}
+
         {activeTab.name === 'comingSowsTab' &&
           <WS3SowIncomeTab 
             getSows={this.props.getSows}
@@ -139,7 +141,7 @@ class WorkshopThreeContainer extends Component {
             locationsFetching={this.props.state.locations.fetching}
             locationsListError={this.props.state.locations.errorList}
             
-            sowMoveTo={this.props.sowMoveTo}
+            sowsMoveMany={this.props.sowsMoveMany}
             eventFetching={this.props.state.sows.eventFetching}
             eventError={this.props.state.sows.eventError}
             message={this.props.state.sows.message}
