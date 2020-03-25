@@ -173,6 +173,7 @@ class WSNomadInnerTransferTab extends Component {
                   setData={this.setData}
                   gilts_contains={this.state.gilts_contains}
                 />
+                <br />
                 {/* <input type='number' 
                   onChange={this.setQuantity}
                   value={this.state.quantity}

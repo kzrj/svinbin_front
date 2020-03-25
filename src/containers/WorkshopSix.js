@@ -7,6 +7,7 @@ import WSNomadTransferTab from '../components/PigletsTabs/WSNomadTransferTab'
 import WSNomadInnerTransferTab from '../components/PigletsTabs/WSNomadInnerTransferTab'
 import WSNomadResettelmentTab from '../components/PigletsTabs/WSNomadResettelmentTab'
 import WSNomadIncomeTab from '../components/PigletsTabs/WSNomadIncomeTab'
+import WSPigletsRecountTab from '../components/PigletsTabs/WSPigletsRecountTab'
 
 import { TabMenu }  from '../components/CommonComponents'
 
@@ -27,6 +28,7 @@ class WorkshopSixContainer extends Component {
         // {name: 'transferTab',      active: false, title: 'Перегон в убойный цех'},
         {name: 'transferTo75Tab',  active: false, title: 'Перегон ремонтных в 7-5'},
         {name: 'cullingTab',       active: false, title: 'Выбраковка'},
+        {name: 'pigletsRecountTab',active: false,  title: 'Пересчет поросят'},
         {name: 'infoTab',          active: false, title: 'Инфо'},
       ],
     };
@@ -212,6 +214,26 @@ class WorkshopSixContainer extends Component {
 
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
+
+        { this.props.state.auth.user.is_officer && activeTab.name === 'pigletsRecountTab' &&
+          <WSPigletsRecountTab
+            workshopNumber={6}
+            user={this.props.state.auth.user}
+
+            getSections={this.props.getSections}
+            sections={this.props.state.sections.list}
+
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
+
+            recountPiglets={this.props.recountPiglets}
+            eventFetching={this.props.state.piglets.eventFetching}
+            eventError={this.props.state.piglets.eventError}
+            message={this.props.state.piglets.message}
+
+            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
+          />}
       </div>
     );
   }
@@ -234,6 +256,7 @@ const mapDispatchToProps = (dispatch) => ({
   weighingPiglets: query => dispatch(PigletsActions.weighingPigletsRequest(query)),
   cullingPiglets: query => dispatch(PigletsActions.cullingPigletsRequest(query)),
   initPiglets: data => dispatch(PigletsActions.initPigletsRequest(data)),
+  recountPiglets: data => dispatch(PigletsActions.recountPigletsRequest(data)),
 
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 })

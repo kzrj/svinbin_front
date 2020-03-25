@@ -28,13 +28,15 @@ class WS3PigletsWeaningTab extends Component {
       ...this.state,
       query: {
         ...this.state.query,
-        by_section_in_cell: this.props.sectionId,
-        status_title: this.props.statusTitleFilter
+        by_workshop: this.props.workshopNumber,
+        status_title: this.props.statusTitleFilter,
+        all_in_workshop_number: this.props.workshopNumber,
       }
     })
     this.props.getSows({
-      by_section_in_cell: this.props.sectionId,
-      status_title: this.props.statusTitleFilter
+      by_workshop: this.props.workshopNumber,
+      status_title: this.props.statusTitleFilter,
+      all_in_workshop_number: this.props.workshopNumber,
     })
     this.props.sowsResetErrorsAndMessages()
   }
@@ -96,7 +98,7 @@ class WS3PigletsWeaningTab extends Component {
             <label className='sow-event-label'>Фильтр</label>
             <SowFarmIdFilter setQuery={this.setQuery} />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
-            <SowSectionFilter sections={sections} setQuery={this.setQuery} />
+            {/* <SowSectionFilter sections={sections} setQuery={this.setQuery} /> */}
           </div>
           <div>
             <div className="input-group">

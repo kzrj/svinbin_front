@@ -130,6 +130,7 @@ class WSNomadTransferTab extends Component {
                   setData={this.setData}
                   gilts_contains={this.state.gilts_contains}
                 />
+                <br/>
 
                 {this.props.toLocations ? this.props.toLocations.map((toLocation, key) => 
                   <button key={key}

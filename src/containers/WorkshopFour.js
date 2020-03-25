@@ -7,6 +7,7 @@ import WSNomadTransferTab from '../components/PigletsTabs/WSNomadTransferTab'
 import WSNomadInnerTransferTab from '../components/PigletsTabs/WSNomadInnerTransferTab'
 import WSNomadResettelmentTab from '../components/PigletsTabs/WSNomadResettelmentTab'
 import WSNomadIncomeTab from '../components/PigletsTabs/WSNomadIncomeTab'
+import WSPigletsRecountTab from '../components/PigletsTabs/WSPigletsRecountTab'
 
 import { TabMenu }  from '../components/CommonComponents'
 
@@ -25,7 +26,8 @@ class WorkshopFourContainer extends Component {
         {name: 'resettlementTab',  active: false, title: 'Размещение прибывших'},
         {name: 'innerTransferTab', active: false, title: 'Внутреннее перемещение'},
         {name: 'transferTab',      active: false, title: 'Перегон'},
-        {name: 'cullingTab',       active: false, title: 'Выбраковка'},
+        {name: 'cullingTab',       active: false, title: 'Выбраковка/Убой'},
+        {name: 'pigletsRecountTab',active: false,  title: 'Пересчет поросят'},
         {name: 'infoTab',          active: false, title: 'Инфо'},
       ],
     };
@@ -83,7 +85,8 @@ class WorkshopFourContainer extends Component {
             listFetching={this.props.state.piglets.listFetching}
             listError={this.props.state.piglets.errorList}
 
-            recountWeighingPiglets={this.props.recountWeighingPiglets}
+            // recountWeighingPiglets={this.props.recountWeighingPiglets}
+            weighingPiglets={this.props.weighingPiglets}
             weighingData={this.props.state.piglets.weighing}
             initPiglets={this.props.initPiglets}
             eventError={this.props.state.piglets.eventError}
@@ -187,6 +190,26 @@ class WorkshopFourContainer extends Component {
 
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
+
+        { this.props.state.auth.user.is_officer && activeTab.name === 'pigletsRecountTab' &&
+          <WSPigletsRecountTab
+            workshopNumber={3}
+            user={this.props.state.auth.user}
+
+            getSections={this.props.getSections}
+            sections={this.props.state.sections.list}
+
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
+
+            recountPiglets={this.props.recountPiglets}
+            eventFetching={this.props.state.piglets.eventFetching}
+            eventError={this.props.state.piglets.eventError}
+            message={this.props.state.piglets.message}
+
+            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
+          />}
         
       </div>
     );

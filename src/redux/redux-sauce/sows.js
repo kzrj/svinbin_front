@@ -392,7 +392,6 @@ export const sowsResetErrorsAndMessages = (state) => {
 
 // setSow
 export const setSow = (state, { sow }) => {
-    console.log(sow)
     return state.merge({ sow: sow })
 }
 

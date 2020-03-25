@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+  import React, { Component } from 'react';
 import { toggleArray, toggleArrayLocations, getObjectbyId, toggleArrayDictById } from '../utils';
 
 //components

@@ -6,6 +6,7 @@ import WSSowTransferToWSTab from '../components/SowTabs/WSSowTransferToWSTab'
 import WSSowCullingTab from '../components/SowTabs/WSSowCullingTab'
 import WSSowUltrasoundTab from '../components/SowTabs/WSSowUltrasoundTab'
 import WS2CreateTransferTab from '../components/SowTabs/WS2CreateTransferTab'
+import WSSowGlobalSearchTab from '../components/SowTabs/WSSowGlobalSearchTab'
 import { WhoIs }  from '../components/CommonComponents'
 
 import { TabMenu }  from '../components/CommonComponents'
@@ -23,6 +24,7 @@ class WorkshopTwoContainer extends Component {
         {name: 'transferTab', active: true, title: 'Перегон'},
         {name: 'ultrasoundTab',           active: false, title: 'УЗИ 35'},
         {name: 'cullingTab',          active: false, title: 'Выбраковка'},
+        {name: 'searchSowTab',        active: false, title: 'Поиск по всем цехам'},
         {name: 'initAndTransferTab',     active: false, title: 'Инициализация для Цеха 3'},
         // {name: 'infoTab',             active: false, title: 'Инфо'},
       ]
@@ -110,6 +112,7 @@ class WorkshopTwoContainer extends Component {
         { activeTab.name === 'cullingTab' &&
           <WSSowCullingTab
             workshopNumber={2}
+            abort={false}
 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
@@ -126,6 +129,27 @@ class WorkshopTwoContainer extends Component {
 
             sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
+
+        {activeTab.name === 'searchSowTab' &&
+          <WSSowGlobalSearchTab 
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sowsListFetching={this.props.state.sows.fetching}
+
+            getSow={this.props.getSow}
+            setSow={this.props.setSow}
+
+            sow={this.props.state.sows.sow}
+            tours_info={this.props.state.sows.tours_info}
+            singleSowFetching={this.props.state.sows.sowSingleFetching}
+
+            eventError={this.props.state.sows.eventError}
+            eventFetching={this.props.state.sows.eventFetching}
+            message={this.props.state.sows.message}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+          />
+        }
 
         { activeTab.name === 'initAndTransferTab' &&
           <WS2CreateTransferTab

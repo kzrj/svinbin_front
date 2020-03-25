@@ -176,7 +176,7 @@ class WSNomadCullingTab extends Component {
                 eventError ? <ErrorMessage error={eventError} /> :
                 <Message message={'Выберите клетку'} />
             }
-            {user.is_officer && this.state.activePiglets && 
+            {/* {user.is_officer && this.state.activePiglets && 
               <div>
                 <p>Пересчет</p>
                 {this.state.activePiglets ?
@@ -211,7 +211,7 @@ class WSNomadCullingTab extends Component {
                     <Message message={'Выберите клетку'} />
                 }
               </div>
-            }
+            } */}
         </div>
       </div>
     )

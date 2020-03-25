@@ -95,18 +95,9 @@ class WSSowCullingTab extends Component {
   render() {
     this.refreshSowsList()
     const { sows, sow, tours_info, eventError, message } = this.props
-    // console.log()
     return (
       <div className='row workshop-content'>
         <div className='col-3 workshop-left-column'>
-          {/* <SowFindById 
-              sows={sows} 
-              sow={sow} 
-              getSowsById={this.getSowsById} 
-              getSow={this.props.getSow}
-              fetching={this.props.listFetching}
-              error={this.props.sowsListError}
-              /> */}
           <SowFindByIdWithoutGet 
               sows={sows} 
               sow={sow} 
@@ -139,15 +130,17 @@ class WSSowCullingTab extends Component {
                           </button>
                         </div>
                       </div>
-                      {/* <div className="input">
-                        <label className='sow-event-label'>Пометить как аборт</label>
-                        <div>
-                          <button className="btn btn-outline-secondary" type="button"  
-                          onClick={this.abortionSow}>
-                            Аборт
-                          </button>
+                      {this.props.abort &&
+                        <div className="input">
+                          <label className='sow-event-label'>Пометить как аборт</label>
+                          <div>
+                            <button className="btn btn-outline-secondary" type="button"  
+                            onClick={this.abortionSow}>
+                              Аборт
+                            </button>
+                          </div>
                         </div>
-                      </div> */}
+                      }
                     </div>
               :
               <ErrorMessage error={this.props.sowsSingleError} />

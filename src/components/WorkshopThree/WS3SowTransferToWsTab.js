@@ -114,6 +114,7 @@ class WS3SowTransferToWsTab extends Component {
                     Переместить в цех 3
                   </button>
                 </div>
+                <br />
                 <div className="input-group">
                   <button onClick={this.clickTransfer} data-tows={1}
                     className='btn btn-outline-secondary'>

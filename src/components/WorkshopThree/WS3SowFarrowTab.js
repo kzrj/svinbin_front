@@ -37,12 +37,14 @@ class WS3SowFarrowTab extends Component {
       ...this.state,
       query: {
         ...this.state.query,
-        by_section_in_cell: this.props.sectionId,
+        by_section_in_cell: '',
+        all_in_workshop_number: this.props.workshopNumber,
         status_title: this.props.statusTitleFilter
       }
     })
     this.props.getSows({
-      by_section_in_cell: this.props.sectionId,
+      by_section_in_cell: '',
+      all_in_workshop_number: this.props.workshopNumber,
       status_title: this.props.statusTitleFilter
     })
     this.props.sowsResetErrorsAndMessages()

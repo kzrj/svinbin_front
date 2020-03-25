@@ -138,16 +138,16 @@ class WSSowTransferToWSTab extends Component {
           <div>
             <div className='row'>
               {this.props.to_locations.length > 0 && this.props.to_locations.map(ws =>
-                <div className='col-4'>
+                <div className='col'>
                   <label className='sow-event-label'>Перевести в ЦЕХ {ws.number}</label>
-                    <div className="input-group">
-                      <div className="input-group-append">
-                        <button className="btn btn-outline-secondary" type="button" 
-                          onClick={() => this.massMove(ws.id)}>
-                          Перевести в ЦЕХ {ws.number}
-                        </button>
-                      </div>
+                  <div className="input-group">
+                    <div className="input-group-append">
+                      <button className="btn btn-outline-secondary" type="button" 
+                        onClick={() => this.massMove(ws.id)}>
+                        Перевести в ЦЕХ {ws.number}
+                      </button>
                     </div>
+                  </div>
                 </div>
               )}
             </div>
