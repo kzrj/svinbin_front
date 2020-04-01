@@ -18,7 +18,7 @@ const create = () => {
     const getSections = (filters) => {
         const params = createUrlParamsFromFilters(filters);
 
-        return axios.get(endpoints.GET_SECTIONS, { params })
+        return axios.get(endpoints.GET_LOCATIONS, { params })
         .then(response => response.data)
         .catch(err => {
             const error = new Error(err);

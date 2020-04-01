@@ -8,8 +8,8 @@ class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: null,
-      password: null,
+      username: '',
+      password: '',
     }
     this.setData = this.setData.bind(this);
   }

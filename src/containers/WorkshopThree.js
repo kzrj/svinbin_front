@@ -56,7 +56,7 @@ class WorkshopThreeContainer extends Component {
   }
   
   componentDidMount() {
-    this.props.getSections({workshop: 3})
+    this.props.getSections({sections_by_workshop_number:3, sections: true})
     this.props.getTours()
   }
 

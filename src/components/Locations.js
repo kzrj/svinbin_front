@@ -11,12 +11,13 @@ export class Sections extends Component {
         {!error ? 
           fetching ? <p className='loading'>Загрузка</p> :
             sections.map((section, key) => 
-              <div className={ activeSectionId == section.id ? 
+              <div className={ activeSectionId == section.section_id ? 
                 'col-sm-2 section-button section-active': 'col-sm-2 section-button '
                 } onClick={this.props.clickSection}
-                data-section-id={section.id}
+                data-section-id={section.section_id}
                 key={key}>
-                {section.name}
+                {section.section_name} 
+                {/* {section.pigs_count && [<br/>, 'Кол-во ',section.pigs_count]} */}
               </div>)
           :
           <p className='error-message'>{error}</p>
@@ -140,7 +141,14 @@ export class SowCells extends Component {
           <span className='cell-setion-number'>#{location.cell}</span>
           <br/>
           {piglets && 
-            <span className='cell-piglets-count'>П {piglets.quantity}</span>}
+            <div>
+              <div className='cell-piglets-count'>П {piglets.quantity}</div>
+              {piglets.metatour_repr.length > 0 && piglets.metatour_repr.map(metatour => 
+                <div className='cell-piglets-metatour'>
+                  {metatour.days_left_from_farrow_approx} д Тур {metatour.tour}
+                </div>
+                )}
+            </div>}
           {/* <br/>
           {tour && <span className='cell-tour'>{tour}</span>} */}
           <br/>

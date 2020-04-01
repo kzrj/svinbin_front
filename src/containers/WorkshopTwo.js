@@ -94,7 +94,7 @@ class WorkshopTwoContainer extends Component {
             workshopNumber={2}
             days={35}
             daysValue={60}
-            statusTitleFilter={'Супорос 30'}
+            statusTitleFilter={'Супорос 28'}
 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}

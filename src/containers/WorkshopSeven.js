@@ -37,7 +37,7 @@ class WorkshopSevenContainer extends Component {
   }
 
   componentDidMount() {
-    this.props.getSections({workshop: 7})
+    this.props.getSections({sections_by_workshop_number:7, sections: true})
   }
 
   setTab (tab) {
