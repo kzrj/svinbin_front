@@ -32,7 +32,7 @@ class WorkshopSevenFiveContainer extends Component {
   }
 
   componentDidMount() {
-    this.props.getSections({workshop: 11})
+    this.props.getSections({sections_by_workshop_number:11, sections: true})
   }
 
   setTab (tab) {
@@ -72,6 +72,7 @@ class WorkshopSevenFiveContainer extends Component {
           <WSNomadResettelmentTab 
             workshopNumber={11}
             weighingPlace={'8/5'}
+            ignorePigletsStatus={true}
 
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.piglets.list}

@@ -39,16 +39,16 @@ class WorkshopThreeContainer extends Component {
         {name: 'returnPigletsTab',        active: false, title: 'Возврат поросята'},
         {name: 'comingSowsTab',           active: false,  title: 'Поступление матки'},
         {name: 'sowInnerTransferTab',     active: false, title: 'Перемещение свиноматок из клетки в клетку'},
-        {name: 'sowTransferToWsTab',      active: true, title: 'Перемещение свиноматок в цех1, цех3'},
+        {name: 'sowTransferToWsTab',      active: false, title: 'Перемещение свиноматок в цех1, цех3'},
         {name: 'farrowTab',               active: false, title: 'Опорос'},
         {name: 'nurseSowTab',             active: false, title: 'Кормилица'},
         {name: 'weaningPigletsTab',       active: false, title: 'Отъем поросят'},
-        {name: 'createGiltTab',           active: false, title: 'Биркование'},
+        {name: 'createGiltTab',           active: true, title: 'Биркование'},
         {name: 'sowCullingTab',           active: false, title: 'Выбраковка свиноматок'},
         {name: 'pigletsCullingTab',       active: false, title: 'Выбраковка поросят'},
         {name: 'pigletsInnerTransferTab', active: false, title: 'Перемещение поросят из клетки в клетку'},
         {name: 'pigletsRecountTab',       active: false,  title: 'Пересчет поросят'},
-        {name: 'pigletsInitPartTab',      active: false, title: 'Создание и перевод партии'},
+        // {name: 'pigletsInitPartTab',      active: false, title: 'Создание и перевод партии'},
       ]
     }
     this.setTab = this.setTab.bind(this);
@@ -275,28 +275,21 @@ class WorkshopThreeContainer extends Component {
         {activeTab.name === 'createGiltTab' &&
           <WS3CreateGiltTab 
             workshopNumber={3}
-            statusTitleFilter={'Опоросилась'}
-            sectionId={6}
+            user={this.props.state.auth.user}
 
-            getSows={this.props.getSows}
-            sows={this.props.state.sows.list}
-            sowsFetching={this.props.state.sows.fetching}
-            sowsError={this.props.state.sows.error}
-
-            tours={this.props.state.tours.list}
-            toursFetching={this.props.state.tours.fetching}
-            toursError={this.props.state.tours.error}
-
+            getSections={this.props.getSections}
             sections={this.props.state.sections.list}
-            sectionsFetching={this.props.state.sections.fetching}
-            sectionsListError={this.props.state.sections.errorList}
+
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
 
             createGilt={this.props.createGilt}
-            eventFetching={this.props.state.sows.eventFetching}
-            eventError={this.props.state.sows.eventError}
-            message={this.props.state.sows.message}
+            eventFetching={this.props.state.piglets.eventFetching}
+            eventError={this.props.state.piglets.eventError}
+            message={this.props.state.piglets.message}
 
-            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
           />}
         {activeTab.name === 'pigletsCullingTab' &&
           <WSNomadCullingTab
@@ -424,7 +417,6 @@ const mapDispatchToProps = (dispatch) => ({
   sowFarrow: data => dispatch(SowsActions.sowFarrowRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
   markAsNurse: id => dispatch(SowsActions.markAsNurseRequest(id)),
-  createGilt: data => dispatch(SowsActions.createGiltRequest(data)),
   
   sowsResetErrorsAndMessages: () => dispatch(SowsActions.sowsResetErrorsAndMessages()),
 
@@ -435,6 +427,7 @@ const mapDispatchToProps = (dispatch) => ({
   movePiglets: query => dispatch(PigletsActions.movePigletsRequest(query)),
   cullingPiglets: data => dispatch(PigletsActions.cullingPigletsRequest(data)),
   recountPiglets: data => dispatch(PigletsActions.recountPigletsRequest(data)),
+  createGilt: data => dispatch(PigletsActions.createGiltRequest(data)),
 
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 

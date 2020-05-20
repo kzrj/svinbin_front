@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PigletsAge } from '../components/PigletsRepresentations'
 
 
 export class Sections extends Component {
@@ -132,7 +133,7 @@ export class SowCells extends Component {
       'col-sm-1 cell cell-active' : 
         location.is_piglets_empty ? 'col-sm-1 cell' : 'col-sm-1 cell-full cell'
     const piglets = location.piglets && location.piglets.length > 0 ? location.piglets[0] : null
-    // const tour = piglets ? piglets.tour && piglets.tour.replace(' 2019г','') : ''
+    
     return (
       <div 
         className={cellClassName}
@@ -143,17 +144,26 @@ export class SowCells extends Component {
           {piglets && 
             <div>
               <div className='cell-piglets-count'>П {piglets.quantity}</div>
-              {piglets.metatour_repr.length > 0 && piglets.metatour_repr.map(metatour => 
+              <div className='cell-piglets-metatour'>
+                  {/* <PigletsAge age={piglets.age}/> */}
+                  {piglets.age.split(' ')[0]}д
+              </div>
+              <div className='cell-piglets-metatour'>
+                  {/* <PigletsAge age={piglets.age}/> */}
+                  {piglets.week_tour}
+              </div>
+              {/* {piglets.metatour_repr.length > 0 && piglets.metatour_repr.map(metatour => 
                 <div className='cell-piglets-metatour'>
-                  {metatour.days_left_from_farrow_approx} д Тур {metatour.tour}
+                  {metatour.days_left_from_farrow ? metatour.days_left_from_farrow :
+                     metatour.days_left_from_farrow_approx}д Т{metatour.tour}
                 </div>
-                )}
+                )} */}
             </div>}
           {/* <br/>
           {tour && <span className='cell-tour'>{tour}</span>} */}
           <br/>
           {/* {this.props.gilts && piglets && 
-            <span className='gilts-quantity'>рем {piglets.gilts_quantity}</span>} */}          
+            <span className='gilts-quantity'>рем {piglets.gilts_quantity}</span>} */}
       </div>
   )}
  }

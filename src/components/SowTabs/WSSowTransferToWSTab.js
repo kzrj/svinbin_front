@@ -5,6 +5,7 @@ import { toggleArray } from '../../components/utils'
 // components
 import { SowTable }  from '../../components/SowRepresentations'
 import { SowFarmIdFilter, SowTourFilter, SowSemUsoundFilter }  from '../../components/FiltersAndInputs'
+import { ErrorMessage, Message } from '../CommonComponents'
 
 
 class WSSowTransferToWSTab extends Component {
@@ -124,7 +125,7 @@ class WSSowTransferToWSTab extends Component {
   }
 
   render() {
-    const { sows, tours } = this.props
+    const { sows, tours, eventError } = this.props
     this.refreshSowsList()
     return (
       <div className='workshop-content'>
@@ -150,6 +151,7 @@ class WSSowTransferToWSTab extends Component {
                   </div>
                 </div>
               )}
+              {eventError && <ErrorMessage error={eventError}/>}
             </div>
           </div>
         </div>

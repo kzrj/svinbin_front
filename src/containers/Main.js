@@ -57,6 +57,17 @@ class Main extends Component {
 
   render() {
     const { isLoggedIn, user, error } = this.props.state.auth
+    const locationsFetching = this.props.state.locations.fetching
+    const sectionsFetching = this.props.state.sections.fetching
+
+    const pigletsListFetching = this.props.state.piglets.listFetching
+    const pigletsEventFetching = this.props.state.piglets.eventFetching
+
+    const sowsListFetching = this.props.state.sows.fetching
+    const sowsEventFetching = this.props.state.sows.eventFetching
+
+    
+
     return (
       <div className="app container-fluid">
         <div id="pageContent">

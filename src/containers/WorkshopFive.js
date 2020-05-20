@@ -187,7 +187,7 @@ class WorkshopFiveContainer extends Component {
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
 
-            movePiglets={this.props.movePiglets}
+            movePiglets={this.props.moveGiltsToWs75}
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
@@ -257,6 +257,7 @@ const mapDispatchToProps = (dispatch) => ({
   cullingPiglets: query => dispatch(PigletsActions.cullingPigletsRequest(query)),
   initPiglets: data => dispatch(PigletsActions.initPigletsRequest(data)),
   recountPiglets: data => dispatch(PigletsActions.recountPigletsRequest(data)),
+  moveGiltsToWs75: data => dispatch(PigletsActions.moveGiltsToWs75Request(data)),
 
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 })

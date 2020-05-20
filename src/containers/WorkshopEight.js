@@ -66,7 +66,7 @@ class WorkshopEightContainer extends Component {
     const activeTab = this.getActiveTab()
 
     return (
-      <div className="workshop container">
+      <div className="workshop container-fluid">
         <TabMenu 
           tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №8'} activeTab={activeTab}
           user={this.props.state.auth.user}

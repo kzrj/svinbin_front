@@ -5,7 +5,7 @@ import { PigletsWeaningSectionsTable } from '../PigletsRepresentations'
 import { CullingTypeInput, CullingReasonInput } from '../FiltersAndInputs'
 
 
-class WS3PigletsWeaningTab extends Component {
+class WS3PigletsCullingTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
@@ -96,4 +96,4 @@ class WS3PigletsWeaningTab extends Component {
   }
 }
 
-export default WS3PigletsWeaningTab
+export default WS3PigletsCullingTab

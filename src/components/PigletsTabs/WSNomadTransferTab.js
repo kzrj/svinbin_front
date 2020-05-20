@@ -27,6 +27,7 @@ class WSNomadTransferTab extends Component {
     this.clickTransfer = this.clickTransfer.bind(this);
     this.setData = this.setData.bind(this);
     this.checked = this.checked.bind(this);
+    this.moveGilts = this.moveGilts.bind(this);
   }
   
   componentDidMount() {
@@ -76,6 +77,27 @@ class WSNomadTransferTab extends Component {
 
     if (quantity > 0)
       data['new_amount'] = quantity
+
+    this.props.movePiglets(data)
+    this.setState({
+      ...this.state,
+      activePiglets: null,
+
+      changeQuantity: false,
+      quantity: 0,
+      gilts_contains: false,
+
+      needToRefresh: true, 
+    })
+  }
+
+  moveGilts () {
+    const { activePiglets, quantity, gilts_contains } = this.state
+    let data = {
+      id: activePiglets.id,
+    }
+    if (quantity > 0)
+      data['gilts_amount'] = quantity
 
     this.props.movePiglets(data)
     this.setState({
@@ -143,7 +165,7 @@ class WSNomadTransferTab extends Component {
                   <button 
                     className='btn btn-outline-secondary' type='button'
                     data-toLocation={this.props.toLocation}
-                    onClick={this.clickTransfer}>
+                    onClick={this.props.toLocation == 11 ? this.moveGilts : this.clickTransfer}>
                       {this.props.buttonName}
                   </button>
                 }

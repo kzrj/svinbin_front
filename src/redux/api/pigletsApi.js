@@ -253,6 +253,56 @@ const create = () => {
         })
     }
 
+    const moveGiltsToWs75 = payload => {
+        const { id, gilts_amount } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.moveGiltsToWs75(id);
+
+        const formData = new FormData();
+        if (gilts_amount)
+            formData.append("gilts_amount", gilts_amount);
+
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const createGilt = payload => {
+        const { id, mother_sow_farm_id, birth_id } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.createGilt(id);
+
+        const formData = new FormData();
+        formData.append("mother_sow_farm_id", mother_sow_farm_id);
+        formData.append("birth_id", birth_id);
+
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getPiglets,
         mergeFromListPiglets,
@@ -264,7 +314,9 @@ const create = () => {
         markAsGilts,
         moveGiltsToWs1,
         initPiglets,
-        recountPiglets
+        recountPiglets,
+        moveGiltsToWs75,
+        createGilt
     }
 }
 

@@ -47,6 +47,14 @@ const { Types, Creators } = createActions({
     recountPigletsFail: ['payload'],
     recountPigletsSuccess: ['payload'],
 
+    moveGiltsToWs75Request: ['payload'],
+    moveGiltsToWs75Fail: ['payload'],
+    moveGiltsToWs75Success: ['payload'],
+
+    createGiltRequest: ['payload'],
+    createGiltFail: ['payload'],
+    createGiltSuccess: ['payload'],
+
     pigletsResetErrorsAndMessages: null,
 })
 
@@ -229,10 +237,36 @@ export const recountPigletsFail = (state, { payload } ) => {
     return state.merge({ eventFetching: false, eventError: payload, message: ''})
 }
 
+// moveGiltsToWs75
+export const moveGiltsToWs75Request = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const moveGiltsToWs75Success = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: null, message: payload.message })
+}
+
+export const moveGiltsToWs75Fail = (state, { payload } ) => {
+    return state.merge({ eventFetching: false, eventError: payload, message: ''})
+}
+
+// createGilt
+export const createGiltRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const createGiltSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: null, message: payload.message })
+}
+
+export const createGiltFail = (state, { payload } ) => {
+    return state.merge({ eventFetching: false, eventError: payload, message: ''})
+}
+
 // resetErrorsAndMessages
 export const pigletsResetErrorsAndMessages = (state) => {
     return state.merge({ fetching: false, eventError: null, errorList: null, message: '' })
-  }
+}
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -280,6 +314,14 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.RECOUNT_PIGLETS_REQUEST]: recountPigletsRequest,
     [Types.RECOUNT_PIGLETS_SUCCESS]: recountPigletsSuccess,
     [Types.RECOUNT_PIGLETS_FAIL]: recountPigletsFail,
+
+    [Types.MOVE_GILTS_TO_WS75_REQUEST]: moveGiltsToWs75Request,
+    [Types.MOVE_GILTS_TO_WS75_SUCCESS]: moveGiltsToWs75Success,
+    [Types.MOVE_GILTS_TO_WS75_FAIL]: moveGiltsToWs75Fail,
+
+    [Types.CREATE_GILT_REQUEST]: createGiltRequest,
+    [Types.CREATE_GILT_SUCCESS]: createGiltSuccess,
+    [Types.CREATE_GILT_FAIL]: createGiltFail,
 
     [Types.PIGLETS_RESET_ERRORS_AND_MESSAGES]: pigletsResetErrorsAndMessages,
 })

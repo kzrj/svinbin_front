@@ -12,6 +12,7 @@ import WorkshopFive from './containers/WorkshopFive'
 import WorkshopSix from './containers/WorkshopSix'
 import WorkshopSeven from './containers/WorkshopSeven'
 import WorkshopSevenFive from './containers/WorkshopSevenFive'
+import ReportsContainer from './containers/ReportsContainer'
 
 // components
 import MainPage from './components/MainPage'
@@ -36,6 +37,10 @@ export default function routes(store) {
       <Route path="/workshop6/" name="Цех6 Откорм" component={requireAuthentication(WorkshopSix, 6)} />
       <Route path="/workshop7/" name="Цех7 Откорм" component={requireAuthentication(WorkshopSeven, 7)} />
       <Route path="/workshop75/" name="Цех7-5 Секция ремонтных свинок" component={WorkshopSevenFive} />
+      <Route path="/reports/" name="Отчёты" component={requireAuthentication(ReportsContainer, 1)} />
+      <Route path="/reports/tours/" name="Отчёты по турам" component={requireAuthentication(ReportsContainer, 1)} />
+      <Route path="/reports/director/" name="Отчёт директору" component={requireAuthentication(ReportsContainer, 1)} />
+      <Route path="/reports/operations/" name="Операции" component={requireAuthentication(ReportsContainer, 1)} />
       {/* <Route path="/workshop9/" name="Убойный Цех" component={WorkshopOne} />
       <Route path="/workshop10/" name="Крематорий" component={WorkshopOne} /> */}
     </Router>

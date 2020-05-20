@@ -191,3 +191,6 @@ export class PigletsWeaningInput extends Component {
     )
   }
 }
+
+export const PigletsAge = (age) => 
+  age.split(' ')[1]

@@ -29,7 +29,7 @@ class MainPage extends Component {
             <MainMenuLink url={'/workshop6/'} title={'Цех6 Откорм'}/>
             <MainMenuLink url={'/workshop7/'} title={'Цех7 Откорм'}/>
             <MainMenuLink url={'/workshop75/'} title={'Цех7-5 Секция ремонтных свинок'}/>
-            <MainMenuLink url={'/workshop9/'} title={'Убойный Цех'}/>
+            <MainMenuLink url={'/reports/'} title={'Отчеты'}/>
           </div>
         </div>
     )

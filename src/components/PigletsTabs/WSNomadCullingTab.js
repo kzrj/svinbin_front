@@ -142,7 +142,7 @@ class WSNomadCullingTab extends Component {
                       culling_reason={this.state.culling_reason}/>
                     </div>
                     <div className="input-group">
-                      <input type='text' value={this.state.quantity} 
+                      <input type='number' value={this.state.quantity} 
                         onChange={this.setData} 
                         name='quantity' className="form-control search-input"
                         placeholder="Количество" />
@@ -153,16 +153,15 @@ class WSNomadCullingTab extends Component {
                         name='date' className="form-control search-input"
                         placeholder="Дата, формат 02-02-2020" />
                     </div>
-                      {uboi &&
-                        <div className="input-group">
-                          <label>Укажите вес</label>
-                          <input type='text' value={this.state.total_weight} 
-                            onChange={this.setData} 
-                            name='total_weight' className="form-control search-input"
-                            placeholder="Укажите вес" />
-                        </div>
-                      }
-                    
+                      <div className="input-group">
+                        <label>Укажите вес</label>
+                        <input type='number' value={this.state.total_weight} 
+                          onChange={this.setData} 
+                          name='total_weight' className="form-control search-input"
+                          placeholder="Укажите вес" />
+                      </div>
+                    <br />
+                    <br />
                     <button className='btn btn-outline-secondary' type='button'
                       onClick={this.cullingPiglets}
                       >

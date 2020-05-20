@@ -1,63 +1,51 @@
 import React, { Component } from 'react';
 
 //components
-import { SowTable }  from '../../components/SowRepresentations'
-import { SowFarmIdFilter, SowTourFilter, SowSectionFilter }  from '../../components/FiltersAndInputs'
+import { PigletsCells, Sections } from '../Locations'
+import { PigletsGroup } from '../PigletsRepresentations'
+import { CullingTypeInput, CullingReasonInput } from '../FiltersAndInputs'
 import { ErrorMessage, Message } from '../CommonComponents'
 
 
-class WS3PigletsWeaningTab extends Component {
-  constructor(props) {
+class WS3CreateGiltTab extends Component {
+   constructor(props) {
     super(props);
     this.state = {
-      giltBirthId: '',
-      choosedSows: [],
-      query: {
-        tour: null,
-      },
-      activeSowId: ''
+      activePiglets: null,
+      activeSectionId: null,
+      activeCellId: null,
+
+      mother_sow_farm_id: 0,
+      birth_id: '',
+
+      needToRefresh: false,
     }
-    this.setQuery = this.setQuery.bind(this);
+    this.clickSection = this.clickSection.bind(this);
+    this.clickLocation = this.clickLocation.bind(this);
     this.setData = this.setData.bind(this);
-    this.sowClick = this.sowClick.bind(this);
+    this.setIsGilt = this.setIsGilt.bind(this);
     this.createGilt = this.createGilt.bind(this);
   }
 
   componentDidMount() {
+    this.props.pigletsResetErrorsAndMessages()
+  }
+  
+  clickSection = (e) => {
+    const { sectionId } = e.target.dataset
     this.setState({
       ...this.state,
-      query: {
-        ...this.state.query,
-        by_workshop: this.props.workshopNumber,
-        status_title: this.props.statusTitleFilter,
-        all_in_workshop_number: this.props.workshopNumber,
-      }
+      activeSectionId: sectionId
     })
-    this.props.getSows({
-      by_workshop: this.props.workshopNumber,
-      status_title: this.props.statusTitleFilter,
-      all_in_workshop_number: this.props.workshopNumber,
-    })
-    this.props.sowsResetErrorsAndMessages()
+    this.props.getLocations({by_section: sectionId, cells: true})
   }
 
-  setQuery (e) {
-    let { query } = this.state
-    query[e.target.name] = e.target.value
-
+  clickLocation (location) {
     this.setState({
       ...this.state,
-      query: query,
-      choosedSows: [],
-      needToRefresh: true
-    })
-  }
-
-  sowClick (e) {
-    this.setState({
-      ...this.state,
-      choosedSows: [e.target.dataset.id,],
-      activeSowId: e.target.dataset.id,
+      activeCellId: location.id,
+      activePiglets: location.piglets.length > 0 ?
+        location.piglets[0] : null
     })
   }
 
@@ -68,65 +56,95 @@ class WS3PigletsWeaningTab extends Component {
     })
   }
 
+  setIsGilt () {
+    this.setState({
+      ...this.state,
+      is_it_gilt: !this.state.is_it_gilt
+    })
+  }
+
   createGilt () {
+    const { activePiglets, mother_sow_farm_id, birth_id } = this.state
     this.props.createGilt({
-      birthId: this.state.giltBirthId,
-      id: this.state.activeSowId
+      id: activePiglets.id,
+      mother_sow_farm_id: mother_sow_farm_id,
+      birth_id: birth_id,
     })
     this.setState({
-      giltBirthId: ''
+      ...this.state,
+      
+      // mother_sow_farm_id: 0,
+      birth_id: '',
+
+      needToRefresh: true, 
+      activeLocation: null,
+      activePiglets: null,
     })
   }
 
   refreshSowsList () {
-    if (!this.props.eventFetching && this.state.needToRefresh) {
+    if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        this.props.getSows(this.state.query)  
+        this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
       }, 500)
     }
   }
 
   render() {
-    const { sows, tours, sections, eventError, message } = this.props
     this.refreshSowsList()
-    
+    const { sections, locations, user, eventError, message, locationsFetching, eventFetching } = this.props
     return (
-      <div className='workshop-content'>
-        <div>
-          <div className='commonfilter row'>
-            <label className='sow-event-label'>Фильтр</label>
-            <SowFarmIdFilter setQuery={this.setQuery} />
-            <SowTourFilter tours={tours} setQuery={this.setQuery}/>
-            {/* <SowSectionFilter sections={sections} setQuery={this.setQuery} /> */}
+        <div className='row workshop-content'>
+          <div className='col-6'>
+            <Sections 
+              sections={sections}
+              activeSectionId={this.state.activeSectionId}
+              clickSection={this.clickSection}
+            />
+            <PigletsCells
+              isSection={this.state.activeSectionId}
+              fetching={this.props.locationsFetching}
+              locations={locations}
+              activeCellIds={[this.state.activeCellId]}
+              clickLocation={this.clickLocation}
+            />
           </div>
-          <div>
-            <div className="input-group">
-              <input type='text' name='giltBirthId' onChange={this.setData} value={this.state.giltBirthId}/>
-              <button onClick={this.createGilt}
-                  className="btn btn-outline-secondary" type="button" >
-                  Создать ремонтную свинку
-              </button>
-              {eventError && <ErrorMessage error={eventError} />}
-              {message && <Message message={message} />}
-            </div>
-          </div>
-            
-        </div>
-        <div className='commonfilter-results'>
-          <div className='count row'>
-              <div className='col-6'>
-                Выбрано {this.state.choosedSows.length} из {sows.length}
+          <div className='col-6'>
+            {this.state.activePiglets ?
+              <div>
+                <div>
+                  <PigletsGroup piglets={this.state.activePiglets}/>
+                  <div className="input-group">
+                    <label>Укажите ID свиноматки - родителя </label>
+                    <input type='number' value={this.state.mother_sow_farm_id} 
+                      onChange={this.setData} 
+                      name='mother_sow_farm_id' className="form-control search-input"
+                      placeholder="Укажите ID свиноматки  " />
+                  </div>
+                  <div className="input-group">
+                    <label>Укажите номер бирки </label>
+                    <input type='text' value={this.state.birth_id} 
+                      onChange={this.setData} 
+                      name='birth_id' className="form-control search-input"
+                      placeholder="Укажите номер бирки  " />
+                  </div>
+                  <button className='btn btn-outline-secondary' type='button'
+                    onClick={this.createGilt}
+                    >
+                      Создать ремонтную свинку.
+                  </button>
+                </div>
               </div>
-            </div>
-          {this.props.sowsListFetching ? 
-            <p className='loading'>Загрузка</p> :
-            <SowTable sows={sows} sowClick={this.sowClick} 
-              choosedSows={this.state.choosedSows}/>}
+              :
+              this.props.message ? <Message message={this.props.message} /> :
+                eventError ? <ErrorMessage error={eventError} /> :
+                <Message message={'Выберите клетку'} />
+            }
         </div>
       </div>
     )
   }
 }
 
-export default WS3PigletsWeaningTab
+export default WS3CreateGiltTab

@@ -85,6 +85,7 @@ class WorkshopTwoContainer extends Component {
 
             massMove={this.props.sowsMoveMany}
             eventFetching={this.props.state.sows.eventFetching}
+            eventError={this.props.state.sows.eventError}
 
             sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}

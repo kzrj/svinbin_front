@@ -206,8 +206,8 @@ export const SowSectionFilter = (props) => (
             onChange={props.setQuery}>
             <option selected value=''>Все секции</option>
             {props.sections.map((section, key) =>
-            <option value={section.id} key={key}>
-                Секция {' '} {section.number}
+            <option value={section.section_id} key={key}>
+                Секция {' '} {section.section_number}
             </option>
             )}
         </select>
@@ -321,7 +321,7 @@ export const WeighingPigletsInput = (props) => (
 
         <div className="form-group">
             {/* <label for="weighing">Вес</label> */}
-            <input type='text'
+            <input type='number'
                 id='weighing'
                 className="form-control search-input"
                 value={props.totalWeight}

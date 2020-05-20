@@ -71,10 +71,6 @@ const { Types, Creators } = createActions({
     markAsNurseFail: ['error'],
     markAsNurseSuccess: ['payload'],
 
-    createGiltRequest: ['payload'],
-    createGiltFail: ['error'],
-    createGiltSuccess: ['payload'],
-
     setSow: ['sow'],
 
     resetSow: ['payload'],
@@ -372,19 +368,6 @@ export const markAsNurseFail = (state, { error }) => {
     return state.merge({ eventFetching: false, eventError: error })
 }
 
-// Create gilt
-export const createGiltRequest = (state, { payload }) => {
-    return state.merge({ eventFetching: true })
-}
-
-export const createGiltSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, eventError: null, message: payload.message })
-}
-
-export const createGiltFail = (state, { error }) => {
-    return state.merge({ eventFetching: false, eventError: error, message: '' })
-}
-
 // resetErrorsAndMessages
 export const sowsResetErrorsAndMessages = (state) => {
     return state.merge({ fetching: false, eventError: null, errorList: null, eventFetching: null, message: '' })
@@ -465,10 +448,6 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MARK_AS_NURSE_REQUEST]: markAsNurseRequest,
     [Types.MARK_AS_NURSE_SUCCESS]: markAsNurseSuccess,
     [Types.MARK_AS_NURSE_FAIL]: markAsNurseFail,
-
-    [Types.CREATE_GILT_REQUEST]: createGiltRequest,
-    [Types.CREATE_GILT_SUCCESS]: createGiltSuccess,
-    [Types.CREATE_GILT_FAIL]: createGiltFail,
 
     [Types.SET_SOW]: setSow,
     [Types.RESET_SOW]: resetSow,

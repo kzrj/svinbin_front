@@ -4,6 +4,7 @@ import { takeEvery, all, takeLatest } from "redux-saga/effects";
 import AuthApi from "../api/authApi";
 import LocationsApi from '../api/locationsApi';
 import ToursApi from '../api/toursApi';
+import ReportsApi from '../api/reportsApi';
 import SowsApi from '../api/sowsApi';
 import PigletsApi from '../api/pigletsApi';
 import UsersApi from '../api/usersApi';
@@ -13,6 +14,7 @@ import { AuthTypes } from "../redux-sauce/auth";
 import { LocationsTypes } from '../redux-sauce/locations';
 import { SectionsTypes } from '../redux-sauce/sections';
 import { ToursTypes } from '../redux-sauce/tours';
+import { ReportsTypes } from '../redux-sauce/reports';
 import { SowsTypes } from '../redux-sauce/sows';
 import { PigletsTypes } from '../redux-sauce/piglets';
 import { WsDataTypes } from '../redux-sauce/wsData';
@@ -22,6 +24,7 @@ import { logIn, logOut, checkToken, signUp, checkAuth } from "./authSagas";
 import { getLocations, getLocationsAdditional } from './locationsSagas';
 import { getSections, getSectionsAdditional, } from './sectionsSagas';
 import { getTours } from './toursSagas';
+import * as reportsSaga from './reportsSagas';
 import * as sowsSaga from './sowsSagas';
 import * as pigletsSaga from './pigletsSagas';
 import * as wsDataSaga from './wsDataSagas';
@@ -29,6 +32,7 @@ import * as wsDataSaga from './wsDataSagas';
 const authApi = AuthApi.create();
 const locationsApi = LocationsApi.create();
 const toursApi = ToursApi.create();
+const reportsApi = ReportsApi.create();
 const sowsApi = SowsApi.create();
 const pigletsApi = PigletsApi.create();
 const usersApi = UsersApi.create();
@@ -47,7 +51,11 @@ export default function* root() {
     takeEvery(LocationsTypes.GET_LOCATIONS_ADDITIONAL_REQUEST, getLocationsAdditional, locationsApi),
     takeEvery(SectionsTypes.GET_SECTIONS_REQUEST, getSections, locationsApi),
     takeEvery(SectionsTypes.GET_SECTIONS_ADDITIONAL_REQUEST, getSectionsAdditional, locationsApi),
+
     takeEvery(ToursTypes.GET_TOURS_REQUEST, getTours, toursApi),
+    takeEvery(ReportsTypes.GET_TOUR_REPORTS_REQUEST, reportsSaga.getTourReports, reportsApi),
+    takeEvery(ReportsTypes.GET_DIR_REPORT_REQUEST, reportsSaga.getDirReport, reportsApi),
+    takeEvery(ReportsTypes.GET_PIGS_COUNT_REPORT_REQUEST, reportsSaga.getPigsCountReport, reportsApi),
 
     takeEvery(SowsTypes.GET_SOWS_REQUEST, sowsSaga.getSows, sowsApi),
     takeEvery(SowsTypes.GET_SOW_REQUEST, sowsSaga.getSow, sowsApi),
@@ -65,7 +73,6 @@ export default function* root() {
     takeEvery(SowsTypes.ABORTION_SOW_REQUEST, sowsSaga.abortionSow, sowsApi),
     takeEvery(SowsTypes.MASS_INIT_TRANSFER_REQUEST, sowsSaga.massInitTransfer, sowsApi),
     takeEvery(SowsTypes.MARK_AS_NURSE_REQUEST, sowsSaga.markAsNurse, sowsApi),
-    takeEvery(SowsTypes.CREATE_GILT_REQUEST, sowsSaga.createGilt, sowsApi),
 
     // INIT SOWS
     takeEvery(SowsTypes.ADD_NEW_SEMINATED_TO_WS1_REQUEST, sowsSaga.addNewSeminatedToWs1, sowsApi),
@@ -81,6 +88,8 @@ export default function* root() {
     takeEvery(PigletsTypes.MARK_AS_GILTS_REQUEST, pigletsSaga.markAsGilts, pigletsApi),
     takeEvery(PigletsTypes.INIT_PIGLETS_REQUEST, pigletsSaga.initPiglets, pigletsApi),
     takeEvery(PigletsTypes.RECOUNT_PIGLETS_REQUEST, pigletsSaga.recountPiglets, pigletsApi),
+    takeEvery(PigletsTypes.MOVE_GILTS_TO_WS75_REQUEST, pigletsSaga.moveGiltsToWs75, pigletsApi),
+    takeEvery(PigletsTypes.CREATE_GILT_REQUEST, pigletsSaga.createGilt, pigletsApi),
 
     takeEvery(WsDataTypes.GET_SEMINATORS_REQUEST, wsDataSaga.getSeminators, usersApi),
     takeEvery(WsDataTypes.IMPORT_SEMINATIONS_FROM_FARM_REQUEST, wsDataSaga.importSeminationsFromFarm, sowsApi),

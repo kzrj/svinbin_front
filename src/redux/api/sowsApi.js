@@ -465,37 +465,6 @@ const create = () => {
         })
     }
 
-    const createGilt = payload => {
-        const { id, birthId } = payload;
-        const token = localStorage.getItem('token') || '';
-        const url = endpoints.createGilt(id);
-
-        const formData = new FormData();
-        formData.append("birth_id", birthId);
-        
-        return axios({
-                    method: 'post',
-                    url: url,
-                    data: formData,
-                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
-        })
-        .then(response => {
-            return response.data
-        })
-        .catch(err => {
-            const error = new Error(err);
-            console.log(error)
-            console.log(error.data)
-            console.log(error.response)
-            console.log('OPPA')
-            error.data = parseErrorData(err);
-            console.log(error)
-            console.log(error.data)
-            console.log(error.message)
-            throw error;
-        })
-    }
-
     const setSow = sow => {
         return sow
     }
@@ -523,7 +492,6 @@ const create = () => {
         markAsNurse,
         importSeminationsFromFarm,
         setSow,
-        createGilt,
 
         // init endpoints
         addNewSeminatedToWs1

@@ -32,7 +32,8 @@ class WSNomadResettelmentTab extends Component {
   componentDidMount() {
     this.props.getPiglets({
       // piglets_with_weighing_record: this.props.weighingPlace,
-      status_title: "Взвешены, готовы к заселению",
+      status_title: (this.props.ignorePigletsStatus ) 
+        ? '' : "Взвешены, готовы к заселению",
       by_workshop_number: this.props.workshopNumber
     })
     this.props.pigletsResetErrorsAndMessages()

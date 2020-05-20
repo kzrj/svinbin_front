@@ -393,3 +393,89 @@ hr {
 .cell-piglets-metatour{
 	font-size: 0.8rem;
 }
+
+/* REPORTS */
+.report-block table, th, td{
+	border: 1px solid #c9c5de !important;
+}
+
+.report-table table{
+	/* table-layout:fixed; */
+	/* border: 1px solid blue ! important; */
+}
+
+/* .report-cell-td{ */
+	/* text-align: center; */
+	/* vertical-align: middle; */
+/* } */
+.report-cell-title {
+	display: table-cell;
+	font-size: 0.9rem;
+	font-weight: 500 !important;
+	text-align: center !important;
+	/* min-height: 40px !important; */
+	width: 80px !important;
+	vertical-align: middle !important;
+	color: #4b3867 ;
+	background-color: #f5e9ff;
+}
+
+.report-cell-value {
+	display: table-cell;
+	font-size: 1.1rem;
+	text-align: center !important;
+	/* height: 50px !important; */
+	width: 100px !important;
+	vertical-align: middle !important;
+	color: #5d506f;
+}
+
+.report-cell-sup{
+	color: #138a27;
+}
+
+.report-cell-proh{
+	color: #e43e3e;
+}
+
+.report-cell-value-border{
+	text-align: center !important;
+	background-color: #f5e9ff !important;
+	vertical-align: middle !important;
+}
+
+.report-dir-th{
+	/* writing-mode: vertical !important; */
+	/* text-orientation: sideways !important; */
+	text-align: center !important;
+	vertical-align: middle !important;
+	font-size: 0.9rem;
+	word-wrap: break-word;
+}
+
+.report-dir-date{
+	width: 120%;
+	/* font-size:0.9rem; */
+	white-space: nowrap;
+}
+
+.report-dir-total-tr td{
+	font-weight: bold;
+}
+
+
+@supports (zoom:2) {
+	input[type="radio"],  input[type=checkbox]{
+	zoom: 2;
+	}
+}
+@supports not (zoom:2) {
+	input[type="radio"],  input[type=checkbox]{
+		transform: scale(2);
+		margin: 15px;
+	}
+}
+
+.op-label-td{
+	width: 50px;
+}

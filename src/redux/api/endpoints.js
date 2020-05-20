@@ -1,5 +1,5 @@
- export const url = 'http://92.53.104.136';
-// export const url = 'http://46.229.212.205';
+// export const url = 'http://92.53.104.136';
+export const url = 'http://46.229.212.205';
 export const apiUrl = `${url}/api`;
 
 export default {
@@ -31,7 +31,6 @@ export default {
     MASS_INIT_TRANSFER: `${apiUrl}/workshoponetwo/sows/mass_init_and_transfer/`,
     sowFarrow: (id) => `${apiUrl}/workshopthree/sows/${id}/sow_farrow/`,
     markAsNurse: (id) => `${apiUrl}/workshopthree/sows/${id}/mark_as_nurse/`,
-    createGilt: (id) => `${apiUrl}/workshopthree/sows/${id}/create_gilt/`,
 
     // init endpoints
     INIT_ADD_NEW_SEMINATED_TO_WS1: `${apiUrl}/sows/add_new_seminated_to_ws1/`,
@@ -48,6 +47,8 @@ export default {
     markAsGilts: (id) => `${apiUrl}/piglets/${id}/mark_as_gilts/`,
     INIT_PIGLETS: `${apiUrl}/piglets/init_piglets_from_farrow/`,
     recount_piglets: (id) => `${apiUrl}/piglets/${id}/recount_piglets/`,
+    moveGiltsToWs75: (id) => `${apiUrl}/piglets/${id}/move_gilts_to_ws75/`,
+    createGilt: (id) => `${apiUrl}/piglets/${id}/create_gilt/`,
 
     // staff users
     GET_USERS: `${apiUrl}/users/`,
@@ -56,7 +57,12 @@ export default {
     GET_TOURS: `${apiUrl}/tours/`,
 
     // workshop rest
-    GET_INFO_WS3: `${apiUrl}/workshopthree/wsinfo/info/`,
-    GET_BALANCES_BY_TOURS: `${apiUrl}/workshopthree/wsinfo/balances_by_tours/`,
     IMPORT_SEMINATIONS_FROM_FARM: `${apiUrl}/workshoponetwo/sows/import_seminations_from_farm/`,
+
+    // reports
+    GET_TOUR_REPORTS:  `${apiUrl}/reports/tours/`,
+    GET_DIR_REPORT: `${apiUrl}/reports/director/`,
+    GET_PIGS_COUNT_REPORT: `${apiUrl}/reports/pigs_count/`,
+
+
 }

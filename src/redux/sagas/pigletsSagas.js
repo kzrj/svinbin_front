@@ -100,3 +100,21 @@ export function* recountPiglets(api, action) {
         yield put(PigletsActions.recountPigletsFail(err))
     }
 }
+
+export function* moveGiltsToWs75(api, action) {
+    try {
+        let response = yield call(api.moveGiltsToWs75, action.payload);
+        yield put(PigletsActions.moveGiltsToWs75Success(response));
+    } catch (err) {
+        yield put(PigletsActions.moveGiltsToWs75Fail(err))
+    }
+}
+
+export function* createGilt(api, action) {
+    try {
+        let response = yield call(api.createGilt, action.payload);
+        yield put(PigletsActions.createGiltSuccess(response));
+    } catch (err) {
+        yield put(PigletsActions.createGiltFail(err))
+    }
+}

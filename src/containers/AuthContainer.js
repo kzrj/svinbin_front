@@ -23,7 +23,6 @@ export default function requireAuthentication(Component, ws_number) {
 
         render() {
           let access = false
-          console.log(this.props)
           if (this.props.isLoggedIn === true && (this.props.user.workshop_number === ws_number || 
             this.props.user.is_officer)) access = true
 

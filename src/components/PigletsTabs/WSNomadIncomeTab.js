@@ -74,6 +74,7 @@ class WSNomadIncomeTab extends Component {
     this.setState({
       ...this.state,
       weighingRecord: this.props.weighingData,
+      totalWeight: '',
       activePiglets: null,
       newAmount: 0,
       checkNewAmount: false,
@@ -92,6 +93,7 @@ class WSNomadIncomeTab extends Component {
     })
     this.setState({
       ...this.state,
+      totalWeight: '',
       // farrow_date: '',
       // quantity: null,
       // gilts_quantity: null,
@@ -105,8 +107,10 @@ class WSNomadIncomeTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getPiglets({
+          not_status_title: "Взвешены, готовы к заселению",
           piglets_without_weighing_record: this.props.weighingPlace,
-          by_workshop_number: this.props.workshopNumber})
+          by_workshop_number: this.props.workshopNumber
+        })
       }, 500)
     }
   }
