@@ -36,11 +36,30 @@ const create = () => {
             throw error;
         })
     }
+
+    const getOperationsReport = payload => {
+        const token = localStorage.getItem('token') || '';
+        return axios({
+                    method: 'post',
+                    url: endpoints.GET_OPERATIONS_REPORT,
+                    data: payload,
+                    headers: { 'content-type': 'application/JSON', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
     
     return {
         getTourReports,
         getDirReport,
-        getPigsCountReport
+        getPigsCountReport,
+        getOperationsReport
     }
 }
 

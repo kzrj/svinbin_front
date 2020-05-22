@@ -14,6 +14,10 @@ const { Types, Creators } = createActions({
     getPigsCountReportRequest: ['payload'],
     getPigsCountReportFail: ['error'],
     getPigsCountReportSuccess: ['payload'],
+
+    getOperationsReportRequest: ['payload'],
+    getOperationsReportFail: ['error'],
+    getOperationsReportSuccess: ['payload'],
 })
 
 export const ReportsTypes = Types
@@ -29,6 +33,8 @@ export const INITIAL_STATE = Immutable({
     dirReport: {},
     
     pigsCount: {},
+
+    operations: []
 })
 
 /* ------------- Selectors ------------- */
@@ -37,6 +43,7 @@ export const TourReportsSelectors = {
     getTourReports: state => state.tourReportslist,
     getDirReport: state => state.dirReport,
     getPigsCountReport: state => state.pigsCount,
+    getOperationsReport: state => state.operations,
 }
 
 /* ------------- Reducers ------------- */
@@ -79,6 +86,19 @@ export const getPigsCountReportSuccess = (state, { payload }) => {
 export const getPigsCountReportFail = (state, { error }) => {
     return state.merge({ reportsFetching: false, reportsErrorFetching: error, pigsCount: {} })
 }
+
+export const getOperationsReportRequest = (state, { payload }) => {
+    return state.merge({ reportsFetching: true, operations: []})
+}
+
+export const getOperationsReportSuccess = (state, { payload }) => {
+    return state.merge({ reportsFetching: false, reportsErrorFetching: null,
+        operations: payload })
+}
+
+export const getOperationsReportFail = (state, { error }) => {
+    return state.merge({ reportsFetching: false, reportsErrorFetching: error, operations: [] })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -93,4 +113,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_PIGS_COUNT_REPORT_REQUEST]: getPigsCountReportRequest,
     [Types.GET_PIGS_COUNT_REPORT_SUCCESS]: getPigsCountReportSuccess,
     [Types.GET_PIGS_COUNT_REPORT_FAIL]: getPigsCountReportFail,
+
+    [Types.GET_OPERATIONS_REPORT_REQUEST]: getOperationsReportRequest,
+    [Types.GET_OPERATIONS_REPORT_SUCCESS]: getOperationsReportSuccess,
+    [Types.GET_OPERATIONS_REPORT_FAIL]: getOperationsReportFail,
 })

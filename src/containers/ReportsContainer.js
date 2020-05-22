@@ -16,17 +16,12 @@ class ReportsContainer extends Component {
 	}
 
   componentDidMount() {
-    // this.props.getTourReports()
-    // console.log(this.props.route.name)
   }
 
   render() {
-    // console.log(this.props)
-    // console.log(this.props.route.name)
-    // console.log(this.props.route)
     const routeName = this.props.route.name
     return (
-      <div className="container-fluid report-block">
+      <div className="container-fluid">
         {routeName == 'Отчёты' && 
           <div className='row'>
             <div className='col-3 ws-home'>
@@ -49,11 +44,15 @@ class ReportsContainer extends Component {
         }
 
         {routeName == 'Операции' && 
-          <Operations getDirReport={this.props.getDirReport} reports={this.props.state.reports} />
+          <Operations getOperationsReport={this.props.getOperationsReport} 
+            operationsResultList={this.props.state.reports.operations} />
         }
-
+        
         {routeName == 'Отчёты' && 
-          <PigsCount getPigsCountReport={this.props.getPigsCountReport} pigsCount={this.props.state.reports.pigsCount}/>
+          <div className='report-block'>
+            <PigsCount getPigsCountReport={this.props.getPigsCountReport} 
+              pigsCount={this.props.state.reports.pigsCount}/>
+          </div>
         }
       </div>
     );
@@ -68,7 +67,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getTourReports: (token) => dispatch(ReportsActions.getTourReportsRequest(token)),
   getDirReport: (token) => dispatch(ReportsActions.getDirReportRequest(token)),
-  getPigsCountReport: (token) => dispatch(ReportsActions.getPigsCountReportRequest(token))
+  getPigsCountReport: (token) => dispatch(ReportsActions.getPigsCountReportRequest(token)),
+  getOperationsReport: (token) => dispatch(ReportsActions.getOperationsReportRequest(token))
 })
 
 export default connect(

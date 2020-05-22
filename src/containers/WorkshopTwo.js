@@ -113,20 +113,23 @@ class WorkshopTwoContainer extends Component {
         { activeTab.name === 'cullingTab' &&
           <WSSowCullingTab
             workshopNumber={2}
-            abort={false}
+            abort={true}
 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
 
             getSow={this.props.getSow}
+            setSow={this.props.setSow}
             sow={this.props.state.sows.sow}
             tours_info={this.props.state.sows.tours_info}
             singleSowFetching={this.props.state.sows.sowSingleFetching}
 
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}
+            eventError={this.props.state.sows.eventError}
             eventFetching={this.props.state.sows.eventFetching}
+            message={this.props.state.sows.message}
 
             sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
@@ -173,6 +176,7 @@ const mapDispatchToProps = (dispatch) => ({
   getTours: query => dispatch(ToursActions.getToursRequest(query)),
   
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
+  setSow: sow => dispatch(SowsActions.setSow(sow)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),  
   massUltrasound: data => dispatch(SowsActions.massUltrasoundRequest(data)),

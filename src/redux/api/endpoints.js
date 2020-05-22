@@ -1,5 +1,5 @@
-// export const url = 'http://92.53.104.136';
-export const url = 'http://46.229.212.205';
+export const url = 'http://92.53.104.136';
+// export const url = 'http://46.229.212.205';
 export const apiUrl = `${url}/api`;
 
 export default {
@@ -63,6 +63,5 @@ export default {
     GET_TOUR_REPORTS:  `${apiUrl}/reports/tours/`,
     GET_DIR_REPORT: `${apiUrl}/reports/director/`,
     GET_PIGS_COUNT_REPORT: `${apiUrl}/reports/pigs_count/`,
-
-
+    GET_OPERATIONS_REPORT: `${apiUrl}/reports/operations/`,
 }

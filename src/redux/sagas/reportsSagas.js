@@ -28,3 +28,12 @@ export function* getPigsCountReport(api, action) {
         yield put(ReportsActions.getPigsCountReportFail(err.message))
     }
 }
+
+export function* getOperationsReport(api, action) {
+    try {
+        let response = yield call(api.getOperationsReport, action.payload);
+        yield put(ReportsActions.getOperationsReportSuccess(response));
+    } catch (err) {
+        yield put(ReportsActions.getOperationsReportFail(err.message))
+    }
+}

@@ -181,7 +181,7 @@ class WorkshopOneContainer extends Component {
         {activeTab.name === 'cullingTab' &&
           <WSSowCullingTab 
             workshopNumber={1}
-            abort={false}
+            abort={true}
 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
