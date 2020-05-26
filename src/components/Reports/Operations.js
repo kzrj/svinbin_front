@@ -8,7 +8,10 @@ const WsOpInputs3 = (props) =>
     <table className='op-div-table'>
       <thead>
         <th className='op-label-td'>Цех {props.ws_name ? props.ws_name : props.ws_number}</th>
-        <th className='op-label-td'><input type='checkbox' /></th>
+        <th className='op-label-td-checkbox'>
+          <input type='checkbox' onClick={props.clickWs} name={'ws'+props.ws_number}
+           ws_number={props.ws_number}/>
+        </th>
       </thead>
       <tbody>
         {Object.keys(props.operations).map(op_key => 
@@ -18,7 +21,7 @@ const WsOpInputs3 = (props) =>
             <td className='op-label-td'>
               <label>{props.operations[op_key]['label']} {' '}</label>
             </td>
-            <td className='op-label-td'>
+            <td className='op-label-td-checkbox'>
               <input
                 type='checkbox'
                 name={op_key}
@@ -40,7 +43,16 @@ class Operations extends Component {
       startDate: '2020-03-01',
       endDate: null,
       farmId: null,
-      operations: operations, 
+      operations: operations,
+      ws1: false,
+      ws2: false,
+      ws3s: false,
+      ws3p: false,
+      ws4: false,
+      ws6: false,
+      ws5: false,
+      ws6: false,
+      ws7: false,
 
       needToRefresh: false
     }
@@ -48,10 +60,13 @@ class Operations extends Component {
     this.clickOperation = this.clickOperation.bind(this);
     this.getOperationsList = this.getOperationsList.bind(this);
     this.getOpComponent = getOpComponent.bind(this);
+    this.clickWs = this.clickWs.bind(this);
+    this.setToday = this.setToday.bind(this);
 	}
 
   componentDidMount() {
     this.getOperationsList()
+    this.setToday()
   }
 
   setData (e) {
@@ -70,6 +85,45 @@ class Operations extends Component {
     })
   }
 
+  clickWs (e) {
+    let operations = this.state.operations
+    let wsNumber = e.target.name
+
+    if (!this.state[wsNumber])
+      Object.keys(operations).map(op_key =>{
+        if ('ws' + operations[op_key]['ws'] === wsNumber){
+          operations[op_key]['active'] = true
+        }
+      })
+    else 
+      Object.keys(operations).map(op_key =>{
+        if ('ws' + operations[op_key]['ws'] === wsNumber)
+          operations[op_key]['active'] = false
+        
+      })
+    
+    this.setState({
+      ...this.state,
+      [wsNumber]: !this.state[wsNumber], 
+      operations: operations
+    })
+  }
+
+  setToday () {
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
+    let yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+
+    this.setState({
+      ...this.state,
+      startDate: today
+    })
+    return today
+  }
+
   getOperationsList (){
     let operations = {}
     Object.keys(this.state.operations).map(op_key =>
@@ -85,7 +139,6 @@ class Operations extends Component {
       operations: operations
     }
 
-    // console.log(data)
     this.props.getOperationsReport(data)
   }
 
@@ -134,27 +187,27 @@ class Operations extends Component {
           <div className='row'>
             <div className='col-4 row'>
                 <WsOpInputs3 operations={operations} ws_number={1} clickOperation={this.clickOperation} 
-                      type={'sow'} col={12} key={'1s'}/>
+                      type={'sow'} col={12} key={'1s'} clickWs={this.clickWs}/>
                 <WsOpInputs3 operations={operations} ws_number={2} clickOperation={this.clickOperation} 
-                      type={'sow'} col={12} key={'2s'}/>
-                <WsOpInputs3 operations={operations} ws_number={3} clickOperation={this.clickOperation} 
-                    type={'sow'} col={6} key={'3s'} ws_name={'3 матки'}/>
+                      type={'sow'} col={12} key={'2s'} clickWs={this.clickWs}/>
+                <WsOpInputs3 operations={operations} ws_number={'3s'} clickOperation={this.clickOperation} 
+                    type={'sow'} col={6} key={'3s'} ws_name={'3 матки'} clickWs={this.clickWs}/>
             </div>
             <div className='col-4 row'>
-                <WsOpInputs3 operations={operations} ws_number={3} clickOperation={this.clickOperation} 
-                    type={'piglets'} col={6} key={'3p'} ws_name={'3 пор'}/>  
+                <WsOpInputs3 operations={operations} ws_number={'3p'} clickOperation={this.clickOperation} 
+                    type={'piglets'} col={6} key={'3p'} ws_name={'3 пор'} clickWs={this.clickWs}/>  
                 <WsOpInputs3 operations={operations} ws_number={4} clickOperation={this.clickOperation} 
-                      type={'piglets'} col={12} key={'4p'}/>
+                      type={'piglets'} col={12} key={'4p'} clickWs={this.clickWs}/>
                 <WsOpInputs3 operations={operations} ws_number={8} clickOperation={this.clickOperation} 
-                      type={'piglets'} col={12} key={'8p'}/>
+                      type={'piglets'} col={12} key={'8p'} clickWs={this.clickWs}/>
             </div>
             <div className='col-4 row'>
                 <WsOpInputs3 operations={operations} ws_number={5} clickOperation={this.clickOperation} 
-                      type={'piglets'} col={12} key={'5p'}/>
+                      type={'piglets'} col={12} key={'5p'} clickWs={this.clickWs}/>
                 <WsOpInputs3 operations={operations} ws_number={6} clickOperation={this.clickOperation} 
-                      type={'piglets'} col={12} key={'6p'}/>
+                      type={'piglets'} col={12} key={'6p'} clickWs={this.clickWs}/>
                 <WsOpInputs3 operations={operations} ws_number={7} clickOperation={this.clickOperation} 
-                      type={'piglets'} col={12} key={'7p'}/>
+                      type={'piglets'} col={12} key={'7p'} clickWs={this.clickWs}/>
             </div>
           </div>
 
@@ -163,17 +216,19 @@ class Operations extends Component {
         <div className='operations-results'>
           <p>Количество операций {operationsResultList.length}</p>
           {operationsResultList.length > 0 && 
-            <div>
-              <div className='op-list-item'>
-                <td><div className='op-name'>Операция</div></td>
-                <td><div className='op-date'>Дата</div></td>
-                <td><div className='op-initiator'>Сотрудник</div></td>
-                <td><div className='op-tour'>Тур</div></td>
-              </div>
-              {operationsResultList.map(op => 
-                this.getOpComponent(op)
-                )}
-            </div>
+            <table>
+              <thead className='op-list-item'>
+                <th><div className='op-name'>Операция</div></th>
+                <th><div className='op-date'>Дата</div></th>
+                <th><div className='op-initiator'>Сотрудник</div></th>
+                <th><div className='op-tour'>Тур</div></th>
+              </thead>
+              <tbody>
+                {operationsResultList.map(op => 
+                  this.getOpComponent(op)
+                  )}
+              </tbody>
+            </table>
           }
         </div>
       </div>

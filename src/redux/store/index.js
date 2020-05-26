@@ -16,6 +16,7 @@ export const reducers = combineReducers({
   piglets: require('../redux-sauce/piglets').reducer,
   wsData: require('../redux-sauce/wsData').reducer,
   reports: require('../redux-sauce/reports').reducer,
+  inputs: require('../redux-sauce/inputs').reducer,
   form: formReducer,
   // notifications: notifications
 })

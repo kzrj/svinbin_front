@@ -8,13 +8,17 @@ import WSNomadInnerTransferTab from '../components/PigletsTabs/WSNomadInnerTrans
 import WSNomadResettelmentTab from '../components/PigletsTabs/WSNomadResettelmentTab'
 import WSNomadIncomeTab from '../components/PigletsTabs/WSNomadIncomeTab'
 import WSPigletsRecountTab from '../components/PigletsTabs/WSPigletsRecountTab'
+import OperationsWs from '../components/Reports/OperationsWs'
 
 import { TabMenu }  from '../components/CommonComponents'
+import { WsOpInputs4 } from '../components/Reports/OperationsWs'
 
 // actions
 import SectionsActions from '../redux/redux-sauce/sections';
 import LocationsActions from '../redux/redux-sauce/locations';
 import PigletsActions from '../redux/redux-sauce/piglets';
+import ReportsActions from '../redux/redux-sauce/reports';
+import InputsActions from '../redux/redux-sauce/inputs';
 
 
 class WorkshopEightContainer extends Component {
@@ -22,13 +26,13 @@ class WorkshopEightContainer extends Component {
     super(props);
     this.state = {
       tabs: [
-        {name: 'incomeTab',        active: true, title: 'Поступление и взвешивание'},
+        {name: 'incomeTab',        active: false, title: 'Поступление и взвешивание'},
         {name: 'resettlementTab',  active: false, title: 'Размещение прибывших'},
         {name: 'innerTransferTab', active: false, title: 'Внутреннее перемещение'},
         {name: 'transferTab',      active: false, title: 'Перегон'},
         {name: 'cullingTab',       active: false, title: 'Выбраковка'},
         {name: 'pigletsRecountTab',active: false,  title: 'Пересчет поросят'},
-        {name: 'infoTab',          active: false, title: 'Инфо'},
+        {name: 'infoTab',          active: true, title: 'Инфо'},
       ]
     };
     this.setTab = this.setTab.bind(this);
@@ -206,6 +210,24 @@ class WorkshopEightContainer extends Component {
 
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
           />}
+
+        {activeTab.name === 'infoTab' &&
+          <OperationsWs 
+            getOperationsReport={this.props.getOperationsReport} 
+            operationsResultList={this.props.state.reports.operations}
+            operationsInputs={this.props.state.inputs.operationsInputs}
+            farmId={false}
+          >
+            <div>
+              <WsOpInputs4 
+                operationsInputs={this.props.state.inputs.operationsInputs} 
+                ws_number={'8'} 
+                changeOperationsInputs={this.props.changeOperationsInputs} 
+                type={'piglets'}
+                />
+            </div>
+          </OperationsWs>
+        }
       </div>
     );
   }
@@ -230,6 +252,12 @@ const mapDispatchToProps = (dispatch) => ({
   initPiglets: data => dispatch(PigletsActions.initPigletsRequest(data)),
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
   recountPiglets: data => dispatch(PigletsActions.recountPigletsRequest(data)),
+  
+  // info
+  getOperationsReport: (token) => dispatch(ReportsActions.getOperationsReportRequest(token)),
+
+  // inputs
+  changeOperationsInputs: data => dispatch(InputsActions.changeOperationsInputs(data)),
 
 })
 

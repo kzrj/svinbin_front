@@ -1,6 +1,19 @@
 import React, { Component } from 'react';
 
 
+export const getDate = () => {
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, '0');
+  let mm = String(today.getMonth() + 1).padStart(2, '0');
+  let yyyy = today.getFullYear();
+
+  today = yyyy + '-' + mm + '-' + dd;
+  let month_ago = (mm - 1) > 0 ? (mm-1).toString() : (12).toString();
+  month_ago = month_ago < 10 ? '0' + month_ago : month_ago
+  let month_ago_day = yyyy + '-' + month_ago + '-' + dd;
+  return {date_after: month_ago_day, date_before: today}
+}
+
 class DirReportComponent extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +25,7 @@ class DirReportComponent extends Component {
     }
     this.setData = this.setData.bind(this);
     this.genRep = this.genRep.bind(this);
-    this.getDate = this.getDate.bind(this);
+    this.getDate = getDate.bind(this);
 	}
 
   componentDidMount() {
@@ -25,19 +38,6 @@ class DirReportComponent extends Component {
     })
   }
 
-  getDate(){
-    let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    let yyyy = today.getFullYear();
-
-    today = yyyy + '-' + mm + '-' + dd;
-    let month_ago = (mm - 1) > 0 ? (mm-1).toString() : (12).toString();
-    month_ago = month_ago < 10 ? '0' + month_ago : month_ago
-    let month_ago_day = yyyy + '-' + month_ago + '-' + dd;
-    return {date_after: month_ago_day, date_before: today}
-  }
-
   setData (e) {
     this.setState({
       ...this.state,
@@ -46,7 +46,7 @@ class DirReportComponent extends Component {
   }
 
   genRep () {
-    const { startDate, endDate } =this.state
+    const { startDate, endDate } = this.state
     this.props.getDirReport({date_after: startDate, date_before: endDate})
   }
 

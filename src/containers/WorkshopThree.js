@@ -17,9 +17,10 @@ import WSNomadInnerTransferTab from '../components/PigletsTabs/WSNomadInnerTrans
 import WSNomadCullingTab from '../components/PigletsTabs/WSNomadCullingTab'
 import WSPigletsRecountTab from '../components/PigletsTabs/WSPigletsRecountTab'
 import WSNomadResettelmentTab from '../components/PigletsTabs/WSNomadResettelmentTab'
-import WS3InfoTab from '../components/WorkshopThree/WS3InfoTab'
+import OperationsWs from '../components/Reports/OperationsWs'
 
 import { TabMenu }  from '../components/CommonComponents'
+import { WsOpInputs4 } from '../components/Reports/OperationsWs'
 
 // # actions
 import SowsActions from '../redux/redux-sauce/sows'
@@ -27,7 +28,8 @@ import SectionsActions from '../redux/redux-sauce/sections'
 import LocationsActions from '../redux/redux-sauce/locations'
 import PigletsActions from '../redux/redux-sauce/piglets'
 import ToursActions from '../redux/redux-sauce/tours'
-import WsDataActions from '../redux/redux-sauce/wsData'
+import ReportsActions from '../redux/redux-sauce/reports';
+import InputsActions from '../redux/redux-sauce/inputs';
 
 
 class WorkshopThreeContainer extends Component {
@@ -35,7 +37,7 @@ class WorkshopThreeContainer extends Component {
     super(props);
     this.state = {
       tabs: [
-        // {name: 'balanceTab',           active: false, title: 'ИНФО'},
+        {name: 'infoTab',                 active: true, title: 'ИНФО'},
         {name: 'returnPigletsTab',        active: false, title: 'Возврат поросята'},
         {name: 'comingSowsTab',           active: false,  title: 'Поступление матки'},
         {name: 'sowInnerTransferTab',     active: false, title: 'Перемещение свиноматок из клетки в клетку'},
@@ -43,7 +45,7 @@ class WorkshopThreeContainer extends Component {
         {name: 'farrowTab',               active: false, title: 'Опорос'},
         {name: 'nurseSowTab',             active: false, title: 'Кормилица'},
         {name: 'weaningPigletsTab',       active: false, title: 'Отъем поросят'},
-        {name: 'createGiltTab',           active: true, title: 'Биркование'},
+        {name: 'createGiltTab',           active: false, title: 'Биркование'},
         {name: 'sowCullingTab',           active: false, title: 'Выбраковка свиноматок'},
         {name: 'pigletsCullingTab',       active: false, title: 'Выбраковка поросят'},
         {name: 'pigletsInnerTransferTab', active: false, title: 'Перемещение поросят из клетки в клетку'},
@@ -79,7 +81,6 @@ class WorkshopThreeContainer extends Component {
     tabs.map(tb => {
       if (tb.active)
         activeTab = tb
-        // this.props.sowsResetErrorsAndMessages()
     })
 
     return activeTab
@@ -95,13 +96,32 @@ class WorkshopThreeContainer extends Component {
           user={this.props.state.auth.user}
         />
         
-        {activeTab.name === 'balanceTab' &&
-          <WS3InfoTab 
-            getInfoWs3={this.props.getInfoWs3}
-            infoData={this.props.state.wsData.info_ws3}
-            fetching={this.props.state.wsData.fetching}
-            error={this.props.state.wsData.error}
-        />}
+        {activeTab.name === 'infoTab' &&
+          <OperationsWs 
+            getOperationsReport={this.props.getOperationsReport} 
+            operationsResultList={this.props.state.reports.operations}
+            operationsInputs={this.props.state.inputs.operationsInputs}
+            farmId={true}
+          >
+            <div>
+              <label>Свиноматки</label>
+              <WsOpInputs4 
+                operationsInputs={this.props.state.inputs.operationsInputs} 
+                ws_number={'3s'} 
+                changeOperationsInputs={this.props.changeOperationsInputs} 
+                type={'sow'}
+                />
+            </div>
+            <div>
+              <label>Поросята</label>
+              <WsOpInputs4 
+                operationsInputs={this.props.state.inputs.operationsInputs} 
+                ws_number={'3p'} 
+                changeOperationsInputs={this.props.changeOperationsInputs} 
+                type={'piglets'}/>
+            </div>
+          </OperationsWs>
+        }
 
         {activeTab.name === 'comingSowsTab' &&
           <WS3SowIncomeTab 
@@ -432,8 +452,11 @@ const mapDispatchToProps = (dispatch) => ({
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 
   // info
-  getInfoWs3: () => dispatch(WsDataActions.getInfoWs3Request()),
-  getBalancesbyToursWs3: () => dispatch(WsDataActions.getBalancesByToursWs3Request())
+  getOperationsReport: (token) => dispatch(ReportsActions.getOperationsReportRequest(token)),
+
+  // inputs
+  changeOperationsInputs: data => dispatch(InputsActions.changeOperationsInputs(data)),
+  
 })
 
 export default connect(
