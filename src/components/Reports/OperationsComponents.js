@@ -70,14 +70,14 @@ class SowRowOperation extends Component {
   render() {
     const operation = this.props.operation
     return (
-      <tr className={'op-list-item'} 
+      <tr className='op-list-item' 
         key={operation.oper_name + operation.sow}>
         <td><div className={'op-name op-' + operation.oper_name}>
           {operations[operation.oper_name]['label']} </div></td>
-        <td><span className='op-date'>{operation.date.split(' ')[0]} </span></td>
-        <td><span className='op-initiator'>{operation.initiator} </span></td>
-        <td><span className='op-tour'>{operation.tour} </span></td>
-        <td><span className='op-sow-id'>{operation.sow} </span></td>
+        <td><div className='op-date'>{operation.date.split(' ')[0]} </div></td>
+        <td><div className='op-initiator'>{operation.initiator} </div></td>
+        <td><div className='op-tour'>{operation.tour} </div></td>
+        <td><div className='op-sow-id'>{operation.sow} </div></td>
         {this.props.children}
       </tr>
     )
@@ -89,14 +89,14 @@ class PigletsRowOperation extends Component {
   render() {
     const operation = this.props.operation
     return (
-      <tr className={'op-list-item '} 
+      <tr className='op-list-item'
         key={operation.oper_name + operation.week_tour}>
         <td><div className={'op-name op-' + operation.oper_name}>
           {operations[operation.oper_name]['label']} </div></td>
-        <td><span className='op-date'>{operation.date.split(' ')[0]} </span></td>
-        <td><span className='op-initiator'>{operation.initiator} </span></td>
-        <td><span className='op-tour'>{operation.week_tour} </span></td>
-        <td><span className='op-sow-id'>{operation.age_at} дн </span></td>
+        <td><div className='op-date'>{operation.date.split(' ')[0]} </div></td>
+        <td><div className='op-initiator'>{operation.initiator} </div></td>
+        <td><div className='op-tour'>{operation.week_tour} </div></td>
+        <td><div className='op-sow-id'>{operation.age_at} дн </div></td>
         {this.props.children}
       </tr>
     )
@@ -109,8 +109,8 @@ export const getOpComponent = (op) => {
     case 'ws1_semination':
       component = 
         <SowRowOperation operation={op}>
-          <td><span className='op-sem-emp'>{op.semination_employee} </span></td>
-          <td><span className='op-sem-boar'>Хряк № {op.boar} </span></td>
+          <td><div className='op-sem-emp'>{op.semination_employee} </div></td>
+          <td><div className='op-sem-boar'>Хряк № {op.boar} </div></td>
         </SowRowOperation>
       break;
 
@@ -118,10 +118,10 @@ export const getOpComponent = (op) => {
     case 'ws2_usound':
       component = 
         <SowRowOperation operation={op}>
-          <td><span className='op-location'>{op.location} </span></td>
-          <td><span className='op-sow-id'>{op.u_type == '30' ? '28' : '35'} д</span></td>
-          <td><span className={'op-uzi-result-'+ (op.result ? 'true' : 'false')}>
-            {op.result ? 'Супорос' : 'Прохолост'} </span></td>
+          <td><div className='op-location'>{op.location} </div></td>
+          <td><div className='op-sow-id'>{op.u_type == '30' ? '28' : '35'} д</div></td>
+          <td><div className={'op-uzi-result-'+ (op.result ? 'true' : 'false')}>
+            {op.result ? 'Супорос' : 'Прохолост'} </div></td>
         </SowRowOperation>
       break;
 
@@ -130,7 +130,7 @@ export const getOpComponent = (op) => {
     case 'ws3_abort':
       component = 
         <SowRowOperation operation={op}>
-          <td><span className='op-location'>{op.location} </span></td>
+          <td><div className='op-location'>{op.location} </div></td>
         </SowRowOperation>
       break;
 
@@ -139,18 +139,18 @@ export const getOpComponent = (op) => {
     case 'ws3_sow_culling':
       component = 
         <SowRowOperation operation={op}>
-          <td><span className='op-location'>{op.location} </span></td>
-          <td><span className='op-location'>{op.reason} </span></td>
+          <td><div className='op-location'>{op.location} </div></td>
+          <td><div className='op-location'>{op.reason} </div></td>
         </SowRowOperation>
       break;
 
     case 'ws3_farrow':
       component = 
         <SowRowOperation operation={op}>
-          <td><span className='op-location'>{op.location ? op.location : '-'} </span></td>
-          <td><span className='op-farrow-quantity'>живых {op.alive_quantity} </span></td>
-          <td><span className='op-farrow-quantity'>мертвых {op.dead_quantity} </span></td>
-          <td><span className='op-farrow-quantity'>муммий {op.mummy_quantity} </span></td>
+          <td><div className='op-location'>{op.location ? op.location : '-'} </div></td>
+          <td><div className='op-farrow-quantity'>живых {op.alive_quantity} </div></td>
+          <td><div className='op-farrow-quantity'>мертвых {op.dead_quantity} </div></td>
+          <td><div className='op-farrow-quantity'>муммий {op.mummy_quantity} </div></td>
         </SowRowOperation>
       break;
 
@@ -161,8 +161,8 @@ export const getOpComponent = (op) => {
     case 'ws3_sow_inner':
       component = 
         <SowRowOperation operation={op}>
-          <td><span className='op-location'>Из {op.from_location} </span></td>
-          <td><span className='op-location'>В {op.to_location} </span></td>
+          <td><div className='op-location'>Из {op.from_location} </div></td>
+          <td><div className='op-location'>В {op.to_location} </div></td>
         </SowRowOperation>
       break;
 
@@ -174,7 +174,7 @@ export const getOpComponent = (op) => {
     case 'ws3_mark_as_gilt':
       component = 
         <SowRowOperation operation={op} >
-          <td><span className='op-gilt'>№бирки {op.gilt} </span></td>
+          <td><div className='op-gilt'>№бирки {op.gilt} </div></td>
         </SowRowOperation>
       break;
     
@@ -192,10 +192,10 @@ export const getOpComponent = (op) => {
     case 'ws7_piglets_vinuzhd':
       component = 
         <PigletsRowOperation operation={op}>
-          <td><span className='op-sow-id'>{op.quantity} гол </span></td>
-          <td><span className='op-location'>{op.location} </span></td>
-          <td><span className='op-reason'>{op.total_weight} кг </span></td>
-          <td><span className='op-location'>{op.reason} </span></td>
+          <td><div className='op-sow-id'>{op.quantity} гол </div></td>
+          <td><div className='op-location'>{op.location} </div></td>
+          <td><div className='op-reason'>{op.total_weight} кг </div></td>
+          <td><div className='op-location'>{op.reason} </div></td>
         </PigletsRowOperation>
       break;
 
@@ -218,9 +218,9 @@ export const getOpComponent = (op) => {
     case 'ws7_piglets_to_75':
       component = 
         <PigletsRowOperation operation={op}>
-          <td><span className='op-sow-id'>{op.quantity} гол </span></td>
-          <td><span className='op-location'>Из {op.from_location} </span></td>
-          <td><span className='op-location'>В {op.to_location == 'Цех 11' ? '7/5' : op.to_location} </span></td>
+          <td><div className='op-sow-id'>{op.quantity} гол </div></td>
+          <td><div className='op-location'>Из {op.from_location} </div></td>
+          <td><div className='op-location'>В {op.to_location == 'Цех 11' ? '7/5' : op.to_location} </div></td>
         </PigletsRowOperation>
       break;
 
@@ -231,11 +231,11 @@ export const getOpComponent = (op) => {
     case 'ws7_weighing':
       component = 
         <PigletsRowOperation operation={op}>
-          <td><span className='op-sow-id'>{op.piglets_quantity} гол </span></td>
-          <td><span className='op-location'>{ 'Цех '+ op.place.split('/')[1]}
-              </span></td>
-          <td><span className='op-location'>~ {op.average_weight} кг </span></td>
-          <td><span className='op-location'>{op.total_weight} кг </span></td>
+          <td><div className='op-sow-id'>{op.piglets_quantity} гол </div></td>
+          <td><div className='op-location'>{ 'Цех '+ op.place.split('/')[1]}
+              </div></td>
+          <td><div className='op-location'>~ {op.average_weight} кг </div></td>
+          <td><div className='op-location'>{op.total_weight} кг </div></td>
         </PigletsRowOperation>
       break;
 
@@ -244,10 +244,10 @@ export const getOpComponent = (op) => {
     case 'ws7_piglets_spec':
       component = 
         <PigletsRowOperation operation={op}>
-          <td><span className='op-sow-id'>{op.quantity} гол </span></td>
-          <td><span className='op-location'>{op.location} </span></td>
-          <td><span className='op-location'>~ {op.average_weight} кг </span></td>
-          <td><span className='op-reason'>{op.total_weight} кг </span></td>
+          <td><div className='op-sow-id'>{op.quantity} гол </div></td>
+          <td><div className='op-location'>{op.location} </div></td>
+          <td><div className='op-location'>~ {op.average_weight} кг </div></td>
+          <td><div className='op-reason'>{op.total_weight} кг </div></td>
         </PigletsRowOperation>
       break;
   }

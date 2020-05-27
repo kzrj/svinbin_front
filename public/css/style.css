@@ -484,12 +484,25 @@ hr {
 	vertical-align: middle !important;
 	font-size: 1.1rem ! important;
 	color: #171619;
+	height: 40px !important;
 }
 
 .op-list-item > td > span {
-	display: inline-block;
+	
 	margin-right: 5px !important;
 	margin-left: 5px !important;
+	height: inherit !important;
+}
+
+.op-list-item > td > div {
+	display: flex;
+	height: inherit !important;
+	justify-content: center;
+    align-items: center;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .op-div-table{
@@ -512,71 +525,6 @@ hr {
 	border: none !important;
 	padding-left: 5px !important;
 	padding-right: 5px !important;
-}
-
-.op-name{
-	width: 150px !important;
-	margin-right: 0px !important;
-	min-height: 50px;
-	/* vertical-align: middle; */
-}
-
-.op-date{
-	width: 100px !important;
-	margin-right: 0px !important;
-}
-
-.op-initiator{
-	width: 100px !important;
-	margin-right: 0px !important;
-}
-
-.op-tour{
-	width: 120px !important;
-	margin-right: 0px !important;
-}
-
-.op-sow-id{
-	width: 60px !important;
-	margin-right: 0px !important;
-	margin: 0px !important;
-}
-
-.op-sem-emp{
-	width: 100px !important;
-	margin-right: 0px !important;
-}
-
-.op-location{
-	width: 90px !important;
-	margin-right: 0px !important;
-}
-
-.op-farrow-quantity{
-	width: 90px !important;
-	margin-right: 0px !important;
-}
-
-.op-uzi-result-true {
-	width: 75px !important;
-	margin-right: 0px !important;
-	color: green !important;
-}
-
-.op-uzi-result-false {
-	width: 75px !important;
-	margin-right: 0px !important;
-	color: #d85555 !important;
-}
-
-.op-gilt{
-	width: 150px !important;
-	margin-right: 0px !important;
-}
-
-.op-reason{
-	width: 150px !important;
-	margin-right: 0px !important;
 }
 
 .op-ws3_farrow{
@@ -657,9 +605,12 @@ hr {
 	margin-bottom: 10px;
 }
 
-.op-table-ws *{
+.op-table-ws * {
 	font-size: .9rem !important;
-	width: 100% !important;
-	height: 100% !important;
-	line-height: 1 !important;
+	line-height: 0.95 !important;
 }
+
+/* .op-list-item-ws { */
+	/* /* width: 60px !important; */ */
+	/* width: 100% !important; */
+/* } */

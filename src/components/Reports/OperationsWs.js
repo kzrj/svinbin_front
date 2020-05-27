@@ -160,12 +160,12 @@ class OperationsWs extends Component {
           {operationsResultList.length > 0 && 
             <table className='op-table-ws'>
               <thead>
-                <th className='op-list-item'><div className='op-name'>Операция</div></th>
-                <th className='op-list-item'><div className='op-date'>Дата</div></th>
-                <th className='op-list-item'><div className='op-initiator'>Сотрудник</div></th>
-                <th className='op-list-item'><div className='op-tour'>Тур</div></th>
+                <th className='op-list-item-ws'><div className='op-name'>Операция</div></th>
+                <th className='op-list-item-ws'><div className='op-date'>Дата</div></th>
+                <th className='op-list-item-ws'><div className='op-initiator'>Сотрудник</div></th>
+                <th className='op-list-item-ws'><div className='op-tour'>Тур</div></th>
               </thead>
-              <tbody>
+              <tbody className='op-table-tbody-ws'>
                 {operationsResultList.map(op => 
                   this.getOpComponent(op)
                   )}
