@@ -45,7 +45,9 @@ class WS3CreateGiltTab extends Component {
       ...this.state,
       activeCellId: location.id,
       activePiglets: location.piglets.length > 0 ?
-        location.piglets[0] : null
+        location.piglets[0] : null,
+      mother_sow_farm_id: location.sow_set.length > 0 ? 
+      location.sow_set[0].farm_id : 0,
     })
   }
 

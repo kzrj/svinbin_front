@@ -22,6 +22,7 @@ export let operations = {
   ws3_mark_as_nurse:     {active: false, ws: '3s', type: 'sow', label: 'Кормилица'},
   ws3_mark_as_gilt:      {active: false, ws: '3p', type: 'piglets', label: 'Отметка Ремонт'},
   ws3_piglets_padej:     {active: false, ws: '3p', type: 'piglets', label: 'Падеж поросят'},
+  ws3_piglets_vinuzhd:   {active: false, ws: '3p', type: 'piglets', label: 'Вынужд. убой'},
   ws3_piglets_prirezka:  {active: false, ws: '3p', type: 'piglets', label: 'Прирезка поросят'},
   ws3_piglets_inner_trs: {active: false, ws: '3p', type: 'piglets', label: 'Внут. перемещ. поросят'},
   ws3_piglets_outer_trs: {active: false, ws: '3p', type: 'piglets', label: 'Перегон поросят'},
@@ -29,6 +30,7 @@ export let operations = {
   ws4_weighing:          {active: false, ws: '4', type: 'piglets', label: 'Взвешивание'},
   ws4_piglets_padej:     {active: false, ws: '4', type: 'piglets', label: 'Падеж'},
   ws4_piglets_prirezka:  {active: false, ws: '4', type: 'piglets', label: 'Прирезка'},
+  ws4_piglets_vinuzhd:   {active: false, ws: '4', type: 'piglets', label: 'Вынужд. убой'},
   ws4_piglets_rassadka:  {active: false, ws: '4', type: 'piglets', label: 'Рассадка'},
   ws4_piglets_inner_trs: {active: false, ws: '4', type: 'piglets', label: 'Внутр. перемещения'},
   ws4_piglets_outer_trs: {active: false, ws: '4', type: 'piglets', label: 'Перегон'},
@@ -36,6 +38,7 @@ export let operations = {
   ws8_weighing:          {active: false, ws: '8', type: 'piglets', label: 'Взвешивание'},
   ws8_piglets_padej:     {active: false, ws: '8', type: 'piglets', label: 'Падеж'},
   ws8_piglets_vinuzhd:   {active: false, ws: '8', type: 'piglets', label: 'Вынужд. убой'},
+  ws8_piglets_prirezka:  {active: false, ws: '8', type: 'piglets', label: 'Прирезка'},
   ws8_piglets_rassadka:  {active: false, ws: '8', type: 'piglets', label: 'Рассадка'},
   ws8_piglets_inner_trs: {active: false, ws: '8', type: 'piglets', label: 'Внутр. перемещения'},
   ws8_piglets_outer_trs: {active: false, ws: '8', type: 'piglets', label: 'Перегон'},
@@ -186,10 +189,13 @@ export const getOpComponent = (op) => {
     case 'ws7_piglets_padej':
     case 'ws3_piglets_prirezka':
     case 'ws4_piglets_prirezka':
-    case 'ws8_piglets_vinuzhd':
+    case 'ws8_piglets_prirezka':
+    case 'ws3_piglets_vinuzhd':
+    case 'ws4_piglets_vinuzhd':
     case 'ws5_piglets_vinuzhd':
     case 'ws6_piglets_vinuzhd':
     case 'ws7_piglets_vinuzhd':
+    case 'ws8_piglets_vinuzhd':
       component = 
         <PigletsRowOperation operation={op}>
           <td><div className='op-sow-id'>{op.quantity} гол </div></td>

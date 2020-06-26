@@ -105,7 +105,10 @@ class WorkshopTwoContainer extends Component {
             tours={this.props.state.tours.list}
 
             massUltrasound={this.props.massUltrasound}
+            abortionSow={this.props.abortionSow}
             eventFetching={this.props.state.sows.eventFetching}
+            eventError={this.props.state.sows.eventError}
+            message={this.props.state.sows.message}
 
             sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}

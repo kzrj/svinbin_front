@@ -54,12 +54,48 @@ const create = () => {
             throw error;
         })
     }
+
+    const getWs3Report = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+        return axios.get(endpoints.GET_WS3_REPORT, { params })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const getWs3ReportAsExcel = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+        return axios.get(endpoints.GET_WS3_REPORT_AS_EXCEL, { params })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const getWsReportPigsCount = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+        return axios.get(endpoints.GET_WS_REPORT_PIGS_COUNT, { params })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
     
     return {
         getTourReports,
         getDirReport,
         getPigsCountReport,
-        getOperationsReport
+        getOperationsReport,
+        getWs3Report,
+        getWs3ReportAsExcel,
+        getWsReportPigsCount
     }
 }
 

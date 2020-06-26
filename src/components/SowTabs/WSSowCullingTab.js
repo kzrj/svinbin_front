@@ -14,8 +14,9 @@ class WSSowCullingTab extends Component {
         all_in_workshop_number: null,
         farm_id_isnull: false
       },
-      cullingReason: 'padej',
+      cullingReason: 'без причины',
       cullingType: 'padej',
+      weight: 0,
       needToRefresh: false,
     }
     this.getSowsById = this.getSowsById.bind(this);
@@ -61,6 +62,7 @@ class WSSowCullingTab extends Component {
       id: this.props.sow.id,
       culling_type: this.state.cullingType,
       reason: this.state.cullingReason,
+      weight: this.state.weight,
     }
     this.props.cullingSow(data)
     this.setState({
@@ -117,12 +119,14 @@ class WSSowCullingTab extends Component {
                       <SowLightDetail sow={sow}/>
                       {/* <SowToursData tours_info={tours_info} /> */}
                       <div className="input-group">
-                          <select className="custom-select" onChange={this.setData}>
+                          <select className="custom-select" name='cullingType' onChange={this.setData}>
                             <option selected value='padej' >Падеж</option>
                             <option value='vinuzhd' >Вынужденный убой</option>
-                            <option value='prirezka' >Прирезка</option>
                           </select>
-                          <input type='text' onChange={this.setData} placeholder='Напишите причину'/>
+                          <input type='text' onChange={this.setData} name='cullingReason'
+                             placeholder='Напишите причину' value={this.state.cullingReason}/>
+                          <input type='number' onChange={this.setData} name='weight' value={this.state.weight}
+                            placeholder='Укажите вес'/>
                         <div className="input-group-append">
                           <button className="btn btn-outline-secondary" type="button"  
                           onClick={this.cullingSow}>

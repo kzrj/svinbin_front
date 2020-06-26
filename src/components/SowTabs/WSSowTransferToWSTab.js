@@ -39,6 +39,7 @@ class WSSowTransferToWSTab extends Component {
       }
     })
     this.props.getSows(this.state.query)
+    this.props.sowsResetErrorsAndMessages()
   }
 
   chooseAll () {

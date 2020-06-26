@@ -220,6 +220,8 @@ class WorkshopFourContainer extends Component {
             getOperationsReport={this.props.getOperationsReport} 
             operationsResultList={this.props.state.reports.operations}
             operationsInputs={this.props.state.inputs.operationsInputs}
+            getWsReportPigsCount={this.props.getWsReportPigsCount}
+            pigsCount={this.props.state.reports.ws3ReportPigsCount}
             farmId={false}
           >
             <div>
@@ -262,6 +264,7 @@ const mapDispatchToProps = (dispatch) => ({
 
   // info
   getOperationsReport: (token) => dispatch(ReportsActions.getOperationsReportRequest(token)),
+  getWsReportPigsCount: () => dispatch(ReportsActions.getWsReportPigsCountRequest()),
 
   // inputs
   changeOperationsInputs: data => dispatch(InputsActions.changeOperationsInputs(data)),

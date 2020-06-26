@@ -153,20 +153,6 @@ class WSSowUltrasoundTab extends Component {
           </div>
           <div>
             <div>
-              {/* <div className="input-group">
-                <label className='sow-event-label'>УЗИ {days} дней</label>
-                <select className="custom-select" id="inputGroupSelect04" 
-                  onChange={this.setData} name='result'>
-                  <option selected value={true}>Супорос</option>
-                  <option value={false}>Прохолост</option>
-                </select>
-                <div className="input-group-append">
-                  <button className="btn btn-outline-secondary" type="button" 
-                    onClick={this.massUltrasound}>
-                    Провести УЗИ
-                  </button>
-                </div>
-              </div> */}
               <div className='row'>
                 <div className='col-4'>
                   <button className='btn btn-success' data-result={true} onClick={this.clickButton}>
@@ -179,7 +165,7 @@ class WSSowUltrasoundTab extends Component {
                   </button>
                 </div>
                 <div className='col-4'>
-                  <button className='btn btn-dark' onClick={this.clickAbort}>
+                  <button className='btn btn-info' onClick={this.clickAbort}>
                     Аборт
                   </button>
                 </div>

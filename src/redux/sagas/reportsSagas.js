@@ -37,3 +37,21 @@ export function* getOperationsReport(api, action) {
         yield put(ReportsActions.getOperationsReportFail(err.message))
     }
 }
+
+export function* getWs3Report(api, action) {
+    try {
+        let response = yield call(api.getWs3Report, action.payload);
+        yield put(ReportsActions.getWs3ReportSuccess(response));
+    } catch (err) {
+        yield put(ReportsActions.getWs3ReportFail(err.message))
+    }
+}
+
+export function* getWsReportPigsCount(api, action) {
+    try {
+        let response = yield call(api.getWsReportPigsCount, action.payload);
+        yield put(ReportsActions.getWsReportPigsCountSuccess(response));
+    } catch (err) {
+        yield put(ReportsActions.getWsReportPigsCountFail(err.message))
+    }
+}

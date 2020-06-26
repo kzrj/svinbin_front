@@ -10,7 +10,7 @@ export const Message = (props) => (
         <p className='loading'>Загрузка</p>)
 
 export const ErrorMessage = (props) => (
-    <p className='error-message'>ОШИБКА: {props.error.data.message}</p>)
+    <p className='error-message'>ОШИБКА: {props.error.data ? props.error.data.message : 'Неизвестная ошибка.'}</p>)
 
 export const TabMenu = (props) => (
     <div className="pos-f-t">

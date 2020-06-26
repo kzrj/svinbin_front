@@ -109,13 +109,14 @@ const create = () => {
     }
 
     const cullingSow = payload => {
-        const { id, culling_type, reason } = payload;
+        const { id, culling_type, reason, weight } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.cullingSow(id);
 
         const formData = new FormData();
         formData.append("culling_type", culling_type);
         formData.append("reason", reason);
+        formData.append("weight", weight);
         
         return axios({
                     method: 'post',

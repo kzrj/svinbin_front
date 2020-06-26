@@ -13,6 +13,45 @@ const OpButton = (props) =>
   </button>
 
 
+const PigsCountWs3 = (props) =>
+  <div>
+    <div className='row'>
+      <div className='col-6'>
+        Свиноматки
+        <table>
+          <thead>
+            <th><span className='report-ws-count-th'>Подсосных(из них кормилиц)</span></th>
+            <th><span className='report-ws-count-th'>Супоросных</span></th>
+            <th><span className='report-ws-count-th'>Всего</span></th>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="report-cell-td report-cell-value">{props.pigsCount.ws3_sows_pods_count}({props.pigsCount.ws3_sows_nurse_count})</td>
+              <td className="report-cell-td report-cell-value">{props.pigsCount.ws3_sows_sup_count}</td>
+              <td className="report-cell-td report-cell-value">{props.pigsCount.ws3_sows_pods_count + props.pigsCount.ws3_sows_sup_count}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className='col-6'>
+        Поросята
+        <table>
+          <thead>
+            <th><span className='report-ws-count-th'>Ремонт</span></th>
+            <th><span className='report-ws-count-th'>Всего</span></th>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="report-cell-td report-cell-value">{props.pigsCount.ws3_gilts_count}</td>
+              <td className="report-cell-td report-cell-value">{props.pigsCount.ws_piglets_count}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
 export class WsOpInputs4 extends Component {
   constructor(props) {
     super(props);
@@ -61,7 +100,7 @@ class OperationsWs extends Component {
 	}
 
   componentDidMount() {
-    this.getOperationsList()
+    this.props.getWsReportPigsCount()
     this.setToday()
   }
 
@@ -106,9 +145,14 @@ class OperationsWs extends Component {
   }
 
   render() {
-    const operationsResultList = this.props.operationsResultList
+    const { operationsResultList, operationsAddData, pigsCount}  = this.props
+    
     return (
       <div className="container-fluid">
+
+        {pigsCount && pigsCount.ws_number == 3 &&
+          <PigsCountWs3 pigsCount={pigsCount}/>
+        }
         <h3>Операции</h3>
         <div>
           <div className='row'>
@@ -156,7 +200,66 @@ class OperationsWs extends Component {
           </div>
         </div>
         <div className='operations-results'>
-          <p>Количество операций {operationsResultList.length}</p>
+          <div className='operation-add-data'>
+            <p>Количество операций {operationsResultList.length}</p>
+            {operationsAddData && operationsAddData.farrow_data 
+              && operationsAddData.farrow_data.total_count > 0 &&
+              <div className='operation-farrow-data'>
+                <p>Итого по опоросам за указанный период:</p>
+                <div className='row'>
+                  <div className='col-3'>
+                    Опоросилось {operationsAddData.farrow_data.total_count}
+                  </div>
+                  <div className='col-8'>
+                    Оприходовано:
+                    <span className='operation-farrow-data-count'> {' '}
+                        живых {operationsAddData.farrow_data.total_alive_quantity}</span>
+                    <span className='operation-farrow-data-count'>
+                        мертвых {operationsAddData.farrow_data.total_dead_quantity}</span>
+                    <span className='operation-farrow-data-count'>
+                        муммий {operationsAddData.farrow_data.total_mummy_quantity}</span>
+                  </div>
+                </div>
+              </div>
+            }
+            {operationsAddData && operationsAddData.sow_padej_data && operationsAddData.piglets_padej_data 
+              && operationsAddData.piglets_prirezka_data &&
+              (operationsAddData.sow_padej_data.total_qnty || operationsAddData.piglets_padej_data.total_qnty
+                || operationsAddData.piglets_prirezka_data.total_qnty) &&
+              <div className='operation-farrow-data'>
+                <p>Итого по выбраковкам за указанный период:</p>
+                <div className='row'>
+                  {operationsAddData.sow_padej_data.total_qnty > 0 &&
+                    <div className='col-4'>
+                      Падеж свиноматок {operationsAddData.sow_padej_data.total_qnty}
+                    </div>
+                  }
+                  {operationsAddData.piglets_padej_data.total_qnty > 0 && 
+                    <div className='col-4'> 
+                      Падеж поросят {operationsAddData.piglets_padej_data.total_qnty}
+                    </div>
+                    }
+                  {operationsAddData.piglets_prirezka_data.total_qnty > 0 &&
+                    <div className='col-4'> 
+                      Прирезка поросят {operationsAddData.piglets_prirezka_data.total_qnty}
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+            {operationsAddData && operationsAddData.sow_nurse 
+              && operationsAddData.sow_nurse.total_qnty > 0 &&
+              <div className='operation-farrow-data'>
+                <p>Отмечено кормилицами за указанный период: {operationsAddData.sow_nurse.total_qnty}</p>
+              </div>
+            }
+            {operationsAddData && operationsAddData.mark_as_gilt 
+              && operationsAddData.mark_as_gilt.total_qnty > 0 &&
+              <div className='operation-farrow-data'>
+                <p>Отмечено ремонтками за указанный период: {operationsAddData.mark_as_gilt.total_qnty}</p>
+              </div>
+            }
+          </div>
           {operationsResultList.length > 0 && 
             <table className='op-table-ws'>
               <thead>

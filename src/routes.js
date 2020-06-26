@@ -41,6 +41,7 @@ export default function routes(store) {
       <Route path="/reports/tours/" name="Отчёты по турам" component={requireAuthentication(ReportsContainer, 1)} />
       <Route path="/reports/director/" name="Отчёт директору" component={requireAuthentication(ReportsContainer, 1)} />
       <Route path="/reports/operations/" name="Операции" component={requireAuthentication(ReportsContainer, 1)} />
+      <Route path="/reports/ws3report/" name="Отчёт Цех3" component={requireAuthentication(ReportsContainer, 1)} />
       {/* <Route path="/workshop9/" name="Убойный Цех" component={WorkshopOne} />
       <Route path="/workshop10/" name="Крематорий" component={WorkshopOne} /> */}
     </Router>

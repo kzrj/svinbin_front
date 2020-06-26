@@ -18,6 +18,14 @@ const { Types, Creators } = createActions({
     getOperationsReportRequest: ['payload'],
     getOperationsReportFail: ['error'],
     getOperationsReportSuccess: ['payload'],
+
+    getWs3ReportRequest: ['payload'],
+    getWs3ReportFail: ['error'],
+    getWs3ReportSuccess: ['payload'],
+
+    getWsReportPigsCountRequest: ['payload'],
+    getWsReportPigsCountFail: ['error'],
+    getWsReportPigsCountSuccess: ['payload'],
 })
 
 export const ReportsTypes = Types
@@ -34,7 +42,12 @@ export const INITIAL_STATE = Immutable({
     
     pigsCount: {},
 
-    operations: []
+    ws3Report: {},
+
+    wsReportPigsCount: {},
+
+    operations: [],
+    operations_add_data: {},
 })
 
 /* ------------- Selectors ------------- */
@@ -44,6 +57,8 @@ export const TourReportsSelectors = {
     getDirReport: state => state.dirReport,
     getPigsCountReport: state => state.pigsCount,
     getOperationsReport: state => state.operations,
+    getWs3Report: state => state.ws3Report,
+    getWsReportPigsCount: state => state.wsReportPigsCount,
 }
 
 /* ------------- Reducers ------------- */
@@ -88,17 +103,45 @@ export const getPigsCountReportFail = (state, { error }) => {
 }
 
 export const getOperationsReportRequest = (state, { payload }) => {
-    return state.merge({ reportsFetching: true, operations: []})
+    return state.merge({ reportsFetching: true, operations: [], operations_add_data: {}})
 }
 
 export const getOperationsReportSuccess = (state, { payload }) => {
     return state.merge({ reportsFetching: false, reportsErrorFetching: null,
-        operations: payload })
+        operations: payload.results, operations_add_data: payload.additional_data })
 }
 
 export const getOperationsReportFail = (state, { error }) => {
-    return state.merge({ reportsFetching: false, reportsErrorFetching: error, operations: [] })
+    return state.merge({ reportsFetching: false, reportsErrorFetching: error, operations: [],
+        operations_add_data: {} })
 }
+
+export const getWs3ReportRequest = (state, { payload }) => {
+    return state.merge({ reportsFetching: true, ws3Report: {} })
+}
+
+export const getWs3ReportSuccess = (state, { payload }) => {
+    return state.merge({ reportsFetching: false, reportsErrorFetching: null,
+        ws3Report: payload })
+}
+
+export const getWs3ReportFail = (state, { error }) => {
+    return state.merge({ reportsFetching: false, reportsErrorFetching: error, ws3Report: {} })
+}
+
+export const getWsReportPigsCountRequest = (state, { payload }) => {
+    return state.merge({ reportsFetching: true, wsReportPigsCount: {} })
+}
+
+export const getWsReportPigsCountSuccess = (state, { payload }) => {
+    return state.merge({ reportsFetching: false, reportsErrorFetching: null,
+        wsReportPigsCount: payload })
+}
+
+export const getWsReportPigsCountFail = (state, { error }) => {
+    return state.merge({ reportsFetching: false, reportsErrorFetching: error, wsReportPigsCount: {} })
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -117,4 +160,12 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_OPERATIONS_REPORT_REQUEST]: getOperationsReportRequest,
     [Types.GET_OPERATIONS_REPORT_SUCCESS]: getOperationsReportSuccess,
     [Types.GET_OPERATIONS_REPORT_FAIL]: getOperationsReportFail,
+
+    [Types.GET_WS3_REPORT_REQUEST]: getWs3ReportRequest,
+    [Types.GET_WS3_REPORT_SUCCESS]: getWs3ReportSuccess,
+    [Types.GET_WS3_REPORT_FAIL]: getWs3ReportFail,
+
+    [Types.GET_WS_REPORT_PIGS_COUNT_REQUEST]: getWsReportPigsCountRequest,
+    [Types.GET_WS_REPORT_PIGS_COUNT_SUCCESS]: getWsReportPigsCountSuccess,
+    [Types.GET_WS_REPORT_PIGS_COUNT_FAIL]: getWsReportPigsCountFail,
 })

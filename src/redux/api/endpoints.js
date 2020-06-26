@@ -64,4 +64,7 @@ export default {
     GET_DIR_REPORT: `${apiUrl}/reports/director/`,
     GET_PIGS_COUNT_REPORT: `${apiUrl}/reports/pigs_count/`,
     GET_OPERATIONS_REPORT: `${apiUrl}/reports/operations/`,
+    GET_WS3_REPORT: `${apiUrl}/reports/director/ws3_report/`,
+    GET_WS3_REPORT_AS_EXCEL: `${apiUrl}/reports/director/get_ws3_report_excel/`,
+    GET_WS_REPORT_PIGS_COUNT: `${apiUrl}/reports/director/ws_report_count/`,
 }

@@ -100,7 +100,7 @@ class ToursReportsComponent extends Component {
 
                     {rowLabel == 'УЗИ 28 супорос/прохолост' && 
                       <div className='report-cell-value'>
-                        {tourReport['count_usound28_proholost'] && tourReport['count_usound28_suporos'] &&
+                        {tourReport['count_usound28_proholost'] | tourReport['count_usound28_suporos'] &&
                           <div>
                             <span className='report-cell-sup'>
                               {tourReport['count_usound28_suporos'] ? tourReport['count_usound28_suporos'] : 0}
@@ -114,7 +114,7 @@ class ToursReportsComponent extends Component {
 
                     {rowLabel == 'УЗИ 35 супорос/прохолост' && 
                       <div className='report-cell-value'>
-                        {tourReport['count_usound35_proholost'] && tourReport['count_usound35_suporos'] &&
+                        {tourReport['count_usound35_proholost'] | tourReport['count_usound35_suporos'] &&
                           <div>
                             <span className='report-cell-sup'>
                               {tourReport['count_usound35_suporos'] ? tourReport['count_usound35_suporos'] : 0}

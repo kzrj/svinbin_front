@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import { ErrorMessage, Message } from '../CommonComponents';
+
+
 class WS1ImportSeminationTab extends Component {
    constructor(props) {
     super(props);
@@ -23,6 +26,7 @@ class WS1ImportSeminationTab extends Component {
 
   render() {
     const { eventFetching, responseData, eventError, message } = this.props
+    this.props.sowsResetErrorsAndMessages()
     return (
       <div className='workshop-content'>
         <h3>Импорт осеменений из файла</h3>
@@ -31,6 +35,11 @@ class WS1ImportSeminationTab extends Component {
           <div className="input-group-append">
             <button type="button" class="btn btn-success btn-block" onClick={this.uploadFile}>Загрузить</button>
           </div>
+        </div>
+        <div className='col'>
+          {eventError && <ErrorMessage error={eventError}/>}
+          {message && <Message message={message}/>}
+
         </div>
         <div>
           {responseData && 

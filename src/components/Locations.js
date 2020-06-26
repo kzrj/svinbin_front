@@ -133,6 +133,8 @@ export class SowCells extends Component {
       'col-sm-1 cell cell-active' : 
         location.is_piglets_empty ? 'col-sm-1 cell' : 'col-sm-1 cell-full cell'
     const piglets = location.piglets && location.piglets.length > 0 ? location.piglets[0] : null
+    // const tour = piglets && location.piglets.length > 0 ? location.piglets[0].week_tour : null
+    // tour = tou
     
     return (
       <div 
@@ -143,24 +145,17 @@ export class SowCells extends Component {
           <br/>
           {piglets && 
             <div>
+              {piglets.gilts_quantity > 0 && 
+                <span className="badge badge-warning">Рм {piglets.gilts_quantity}</span>}
               <div className='cell-piglets-count'>П {piglets.quantity}</div>
               <div className='cell-piglets-metatour'>
-                  {/* <PigletsAge age={piglets.age}/> */}
                   {piglets.age.split(' ')[0]}д
               </div>
               <div className='cell-piglets-metatour'>
-                  {/* <PigletsAge age={piglets.age}/> */}
-                  {piglets.week_tour}
+                  {/* {piglets.week_tour} */}
+                  {piglets.week_tour && 'Т '+ piglets.week_tour.split(' ')[1]}
               </div>
-              {/* {piglets.metatour_repr.length > 0 && piglets.metatour_repr.map(metatour => 
-                <div className='cell-piglets-metatour'>
-                  {metatour.days_left_from_farrow ? metatour.days_left_from_farrow :
-                     metatour.days_left_from_farrow_approx}д Т{metatour.tour}
-                </div>
-                )} */}
             </div>}
-          {/* <br/>
-          {tour && <span className='cell-tour'>{tour}</span>} */}
           <br/>
           {/* {this.props.gilts && piglets && 
             <span className='gilts-quantity'>рем {piglets.gilts_quantity}</span>} */}
