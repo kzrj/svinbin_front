@@ -9,6 +9,7 @@ import WSSowCullingTab from '../components/SowTabs/WSSowCullingTab'
 import WSSowUltrasoundTab from '../components/SowTabs/WSSowUltrasoundTab'
 import WSSowGlobalSearchTab from '../components/SowTabs/WSSowGlobalSearchTab'
 import WS1ImportSeminationTab from '../components/SowTabs/WS1ImportSeminationTab'
+import WSBoarTab from '../components/SowTabs/WSBoarTab'
 
 import { TabMenu }  from '../components/CommonComponents'
 
@@ -25,11 +26,12 @@ class WorkshopOneContainer extends Component {
       tabs: [
         // {name: 'semination12Tab',     active: false, title: 'Осеменение'},
         {name: 'importSeminationTab', active: false, title: 'Импорт из Фарма'},
-        {name: 'createTab',           active: false, title: 'Создание свиноматок'},
+        // {name: 'createTab',           active: false, title: 'Создание свиноматок'},
         {name: 'ultrasound30Tab',     active: false, title: 'УЗИ 28'},
         {name: 'ultrasound60Tab',     active: false, title: 'УЗИ 35'},
-        {name: 'transferToWS2Tab',    active: true, title: 'Перегон'},
+        {name: 'transferToWS2Tab',    active: false,  title: 'Перегон'},
         {name: 'cullingTab',          active: false, title: 'Выбраковка'},
+        // {name: 'boarTab',             active: true, title: 'Хряки'},
         {name: 'searchSowTab',        active: false, title: 'Поиск по всем цехам'},
         // {name: 'infoTab',             active: false, title: 'Инфо'},
       ]
@@ -39,7 +41,7 @@ class WorkshopOneContainer extends Component {
   }
 
   componentDidMount() {
-    this.props.getTours()
+    this.props.getTours({by_workshop_number: 1})
   }
 
   setTab (tab) {
@@ -225,29 +227,25 @@ class WorkshopOneContainer extends Component {
           />
         }
 
-        {/* { this.state.tabs.semination12Tab && 
-          <WS1Semination12Tab 
-            getSows={this.props.getSeminationSows}
-            sows={this.props.state.ws1.seminationList}
-
-            getSow={this.props.getSeminationSow}
-            sow={this.props.state.ws1.seminationSow}
-            tours_info={this.props.state.ws1.tours_info}
-
-            getSeminators={this.props.getSeminators}
-            seminationEmployes={this.props.state.ws1.seminators}
-
+        {activeTab.name === 'boarTab' &&
+          <WSBoarTab 
             getBoars={this.props.getBoars}
             boars={this.props.state.sows.boars}
-            
-            getTours={this.props.getTours}
-            tours={this.props.state.tours.list}
+            listFetching={this.props.state.sows.fetching}
 
-            massSemination={this.props.massSemination}
+            boar={this.props.state.sows.boar}
 
-            eventFetching={this.props.state.sows.fetching}
-            sowsListFetching={this.props.state.ws1.fetching}
-          />} */}
+            cullingBoar={this.props.cullingBoar}
+            createBoar={this.props.createBoar}
+            eventError={this.props.state.sows.eventError}
+            eventFetching={this.props.state.sows.eventFetching}
+            message={this.props.state.sows.message}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+          />
+        }
+
+
       </div>
     );
   }
@@ -275,6 +273,9 @@ const mapDispatchToProps = (dispatch) => ({
   massUltrasound: data => dispatch(SowsActions.massUltrasoundRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
   sowsResetErrorsAndMessages: () => dispatch(SowsActions.sowsResetErrorsAndMessages()),
+
+  cullingBoar: data => dispatch(SowsActions.cullingBoarRequest(data)),
+  createBoar: data => dispatch(SowsActions.createBoarRequest(data)),
 
   getSeminators: query => dispatch(WsDataActions.getSeminatorsRequest(query)),
   uploadFile: data => dispatch(WsDataActions.importSeminationsFromFarmRequest(data)),

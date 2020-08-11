@@ -115,3 +115,16 @@ export const toggleArrayDictById= (arr: Array<Object>, obj: Object) => {
     return [...arr, obj]
   }
 }
+
+export const getDate = () => {
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, '0');
+  let mm = String(today.getMonth() + 1).padStart(2, '0');
+  let yyyy = today.getFullYear();
+
+  today = yyyy + '-' + mm + '-' + dd;
+  let month_ago = (mm - 1) > 0 ? (mm-1).toString() : (12).toString();
+  month_ago = month_ago < 10 ? '0' + month_ago : month_ago
+  let month_ago_day = yyyy + '-' + month_ago + '-' + dd;
+  return {date_after: month_ago_day, date_before: today}
+}

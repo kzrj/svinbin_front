@@ -55,3 +55,12 @@ export function* getWsReportPigsCount(api, action) {
         yield put(ReportsActions.getWsReportPigsCountFail(err.message))
     }
 }
+
+export function* getWsReport(api, action) {
+    try {
+        let response = yield call(api.getWsReport, action.payload);
+        yield put(ReportsActions.getWsReportSuccess(response));
+    } catch (err) {
+        yield put(ReportsActions.getWsReportFail(err.message))
+    }
+}

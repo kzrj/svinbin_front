@@ -56,10 +56,16 @@ class WS3SowInnerTransferTab extends Component {
   }
 
   clickTransfer = () => {
-    this.props.sowMoveTo({
-      id: this.state.activeSow.id,
-      location: this.state.activeCellToLocationId
-    })
+    this.props.sowAndPiglets ?
+      this.props.ws3TransferSowAndPiglets({
+        from_location: this.state.activeCellFromLocationId,
+        to_location: this.state.activeCellToLocationId,
+      })
+      :
+      this.props.sowMoveTo({
+        id: this.state.activeSow.id,
+        location: this.state.activeCellToLocationId
+      })
     this.setState({
       ...this.state,
       activeSow: null,
@@ -124,9 +130,8 @@ class WS3SowInnerTransferTab extends Component {
           <div className='col'>
             {this.state.activeSow && 
               <ul>
-                <li>{this.state.activeSow.id}</li>
-                <li>{this.state.activeSow.farm_id}</li>
-                <li>{this.state.activeSow.status}</li>
+                <li>Farm ID: {this.state.activeSow.farm_id}</li>
+                <li>Статус: {this.state.activeSow.status}</li>
               </ul>  
             }
           </div>

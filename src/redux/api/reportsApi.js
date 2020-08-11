@@ -87,6 +87,17 @@ const create = () => {
             throw error;
         })
     }
+
+    const getWsReport = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+        return axios.get(endpoints.GET_WS_REPORT, { params })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
     
     return {
         getTourReports,
@@ -95,7 +106,8 @@ const create = () => {
         getOperationsReport,
         getWs3Report,
         getWs3ReportAsExcel,
-        getWsReportPigsCount
+        getWsReportPigsCount,
+        getWsReport
     }
 }
 

@@ -146,7 +146,7 @@ class Operations extends Component {
     const operations = this.state.operations
     const operationsResultList = this.props.operationsResultList
     const operationsAdditionalData = this.props.operationsAdditionalData
-    console.log(operationsAdditionalData)
+    
     return (
       <div className="container-fluid">
         <h3>Операции</h3>
@@ -217,13 +217,6 @@ class Operations extends Component {
         </div>
         <div className='operations-add-data'>
           <p>Количество операций {operationsResultList.length}</p>
-          {/* {operationsAdditionalData['padej_data'] && operationsAdditionalData['padej_data']['total_qnty'] &&
-            <div>
-              Падеж поросят:
-              Количество {operationsAdditionalData['padej_data']['total_qnty']} {' '}голов.
-              Общий вес {operationsAdditionalData['padej_data']['total_weight']} кг.
-            </div>
-          } */}
         </div>
         <div className='operations-results'>
           

@@ -24,9 +24,35 @@ const create = () => {
         })
     }
 
+    const ws3TransferSowAndPiglets = payload => {
+        const { from_location, to_location } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.WS3_TRANSFER_SOW_AND_PIGLETS;
+
+        const formData = new FormData();
+        formData.append("from_location", from_location);
+        formData.append("to_location", to_location);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getInfoWs3,
-        getBalancesByToursWs3
+        getBalancesByToursWs3,
+        ws3TransferSowAndPiglets
     }
 }
 

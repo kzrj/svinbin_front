@@ -67,18 +67,17 @@ class WSNomadTransferTab extends Component {
   }
 
   clickTransfer (e) {
-    const { activePiglets, quantity, gilts_contains } = this.state
+    const { activePiglets, quantity } = this.state
     let data = {
       id: activePiglets.id,
       to_location: e.target.dataset.tolocation,
       merge: false,
-      gilts_contains: gilts_contains
     }
 
     if (quantity > 0)
       data['new_amount'] = quantity
 
-    this.props.movePiglets(data)
+    this.props.moveGiltsToWs12(data)
     this.setState({
       ...this.state,
       activePiglets: null,

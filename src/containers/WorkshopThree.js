@@ -18,6 +18,7 @@ import WSNomadCullingTab from '../components/PigletsTabs/WSNomadCullingTab'
 import WSPigletsRecountTab from '../components/PigletsTabs/WSPigletsRecountTab'
 import WSNomadResettelmentTab from '../components/PigletsTabs/WSNomadResettelmentTab'
 import OperationsWs from '../components/Reports/OperationsWs'
+import InfoTab from '../containers/InfoTab'
 
 import { TabMenu }  from '../components/CommonComponents'
 import { WsOpInputs4 } from '../components/Reports/OperationsWs'
@@ -30,6 +31,7 @@ import PigletsActions from '../redux/redux-sauce/piglets'
 import ToursActions from '../redux/redux-sauce/tours'
 import ReportsActions from '../redux/redux-sauce/reports';
 import InputsActions from '../redux/redux-sauce/inputs';
+import WSDataActions from '../redux/redux-sauce/wsData';
 
 
 class WorkshopThreeContainer extends Component {
@@ -42,6 +44,7 @@ class WorkshopThreeContainer extends Component {
         {name: 'comingSowsTab',           active: false,  title: 'Поступление матки'},
         {name: 'sowInnerTransferTab',     active: false, title: 'Перемещение свиноматок из клетки в клетку'},
         {name: 'sowTransferToWsTab',      active: false, title: 'Перемещение свиноматок в цех1, цех3'},
+        {name: 'sowAndPigletsTransferTab',active: false, title: 'Перемещение свиноматок вместе с поросятами из клетки в клетку'},
         {name: 'farrowTab',               active: false, title: 'Опорос'},
         {name: 'nurseSowTab',             active: false, title: 'Кормилица'},
         {name: 'weaningPigletsTab',       active: false, title: 'Отъем поросят'},
@@ -59,7 +62,7 @@ class WorkshopThreeContainer extends Component {
   
   componentDidMount() {
     this.props.getSections({sections_by_workshop_number:3, sections: true})
-    this.props.getTours()
+    this.props.getTours({by_workshop_number: 3})
   }
 
   setTab (tab) {
@@ -97,34 +100,7 @@ class WorkshopThreeContainer extends Component {
         />
         
         {activeTab.name === 'infoTab' &&
-          <OperationsWs 
-            getOperationsReport={this.props.getOperationsReport} 
-            operationsResultList={this.props.state.reports.operations}
-            operationsAddData={this.props.state.reports.operations_add_data}
-            operationsInputs={this.props.state.inputs.operationsInputs}
-            getWsReportPigsCount={this.props.getWsReportPigsCount}
-            pigsCount={this.props.state.reports.wsReportPigsCount}
-            farmId={true}
-            workshopNumber={3}
-          >
-            <div>
-              <label>Свиноматки</label>
-              <WsOpInputs4 
-                operationsInputs={this.props.state.inputs.operationsInputs} 
-                ws_number={'3s'} 
-                changeOperationsInputs={this.props.changeOperationsInputs} 
-                type={'sow'}
-                />
-            </div>
-            <div>
-              <label>Поросята</label>
-              <WsOpInputs4 
-                operationsInputs={this.props.state.inputs.operationsInputs} 
-                ws_number={'3p'} 
-                changeOperationsInputs={this.props.changeOperationsInputs} 
-                type={'piglets'}/>
-            </div>
-          </OperationsWs>
+          <InfoTab ws_number={'3'}/>
         }
 
         {activeTab.name === 'comingSowsTab' &&
@@ -189,6 +165,7 @@ class WorkshopThreeContainer extends Component {
             locationsAddFetching={this.props.state.locations.fetchingAdditional}
             locationsList2Error={this.props.state.locations.errorAdditional}
 
+            sowAndPiglets={false}
             sowMoveTo={this.props.sowMoveTo}
             eventFetching={this.props.state.sows.eventFetching}
             eventError={this.props.state.sows.eventError}
@@ -411,6 +388,33 @@ class WorkshopThreeContainer extends Component {
 
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
           />}
+
+        {activeTab.name === 'sowAndPigletsTransferTab' &&
+          <WS3SowInnerTransferTab 
+            getSections={this.props.getSections}
+            sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
+
+            getLocations1={this.props.getLocations}
+            locations1={this.props.state.locations.list}
+            locationsFetching={this.props.state.locations.fetching}
+            locationsListError={this.props.state.locations.errorList}
+            
+            getLocations2={this.props.getLocationsAdditional}
+            locations2={this.props.state.locations.additional_list}
+            locationsAddFetching={this.props.state.locations.fetchingAdditional}
+            locationsList2Error={this.props.state.locations.errorAdditional}
+
+            sowAndPiglets={true}
+            ws3TransferSowAndPiglets={this.props.ws3TransferSowAndPiglets}
+            eventFetching={this.props.state.wsData.fetching}
+            eventError={this.props.state.wsData.error}
+            message={this.props.state.wsData.message}
+
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+          />}
+          
       </div>
     );
   }
@@ -461,6 +465,9 @@ const mapDispatchToProps = (dispatch) => ({
 
   // inputs
   changeOperationsInputs: data => dispatch(InputsActions.changeOperationsInputs(data)),
+
+  // rest
+  ws3TransferSowAndPiglets: data => dispatch(WSDataActions.ws3TransferSowAndPigletsRequest(data)),
   
 })
 

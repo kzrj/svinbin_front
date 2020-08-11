@@ -43,10 +43,6 @@ const { Types, Creators } = createActions({
     createNewNonameSowFail: ['error'],
     createNewNonameSowSuccess: ['payload'],
 
-    getBoarsRequest: ['payload'],
-    getBoarsFail: ['error'],
-    getBoarsSuccess: ['payload'],
-
     addNewSeminatedToWs1Request: ['payload'],
     addNewSeminatedToWs1Fail: ['error'],
     addNewSeminatedToWs1Success: ['payload'],
@@ -76,6 +72,32 @@ const { Types, Creators } = createActions({
     resetSow: ['payload'],
 
     sowsResetErrorsAndMessages: null,
+
+    // boars
+    getBoarsRequest: ['payload'],
+    getBoarsFail: ['error'],
+    getBoarsSuccess: ['payload'],
+
+    createBoarRequest: ['payload'],
+    createBoarFail: ['error'],
+    createBoarSuccess: ['payload'],
+
+    cullingBoarRequest: ['payload'],
+    cullingBoarFail: ['error'],
+    cullingBoarSuccess: ['payload'],
+
+    getBoarBreedRequest: ['payload'],
+    getBoarBreedFail: ['error'],
+    getBoarBreedSuccess: ['payload'],
+
+    semenBoarRequest: ['payload'],
+    semenBoarFail: ['error'],
+    semenBoarSuccess: ['payload'],
+
+    getSemenBoarListRequest: ['payload'],
+    getSemenBoarListFail: ['error'],
+    getSemenBoarListSuccess: ['payload'],
+
 })
 
 export const SowsTypes = Types
@@ -104,8 +126,11 @@ export const INITIAL_STATE = Immutable({
     eventError: null,
 
     boars: [],
+    boar: null,
+    breeds: [],
+    semenBoarList: [],
+
     initData: null,
-    errorBoar: null,
 
     message: '',
 })
@@ -125,10 +150,16 @@ export const SowsSelectors = {
     createNewSow: state => state.sows.createdSow,
     createNewNonameSow: state => state.sows.createdSowNoname,
     createNewNonameSow: state => state.sows.nonameSowsCount,
-    getBoars: state => state.sows.boars,
     addNewSeminatedToWs1: state => state.sows.initData,
     abortionsSow: state => state.sows.sow,
-    createGilt: state => state.sows.message
+    createGilt: state => state.sows.message,
+
+    //boar
+    getBoars: state => state.sows.boars,
+    createBoar: state => state.sows.boar,
+    cullingBoar: state => state.sows.boar,
+    semenBoar: state => state.sows.boar,
+    getSemenBoarList: state => state.sows.semenBoarList,
 }
 
 /* ------------- Reducers ------------- */
@@ -275,19 +306,6 @@ export const createNewNonameSowFail = (state, { error }) => {
     return state.merge({ eventFetching: false, eventError: error, createdNonameSow: null, nonameSowsCount: null })
 }
 
-// Get boars list
-export const getBoarsRequest = (state, { payload }) => {
-    return state.merge({ fetching: true, boars: [] })
-}
-
-export const getBoarsSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, errorBoar: null, boars: payload, })
-}
-
-export const getBoarsFail = (state, { error }) => {
-    return state.merge({ fetching: false, errorBoar: error, boars: [] })
-}
-
 // Sow addNewSeminatedToWs1
 export const addNewSeminatedToWs1Request = (state, { payload }) => {
     return state.merge({ eventFetching: true })
@@ -378,6 +396,87 @@ export const setSow = (state, { sow }) => {
     return state.merge({ sow: sow })
 }
 
+// Get boars list
+export const getBoarsRequest = (state, { payload }) => {
+    return state.merge({ fetching: true, boars: [] })
+}
+
+export const getBoarsSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, errorList: null, boars: payload, })
+}
+
+export const getBoarsFail = (state, { error }) => {
+    return state.merge({ fetching: false, errorList: error, boars: [] })
+}
+
+// Get create new
+export const createBoarRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true, boar: null, eventError: null })
+}
+
+export const createBoarSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: null, boar: payload.boar,
+        message: payload.message })
+}
+
+export const createBoarFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, eventError: error, boar: null })
+}
+
+// Culling boar
+export const cullingBoarRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const cullingBoarSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: null, boar: payload.boar, message: payload.message })
+}
+
+export const cullingBoarFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, eventError: error })
+}
+
+// Get boars breed list
+export const getBoarBreedRequest = (state, { payload }) => {
+    return state.merge({ fetching: true, breeds: [] })
+}
+
+export const getBoarBreedSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, errorList: null, breeds: payload, })
+}
+
+export const getBoarBreedFail = (state, { error }) => {
+    return state.merge({ fetching: false, errorList: error, breeds: [] })
+}
+
+// semen boar
+export const semenBoarRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const semenBoarSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: null, boar: payload.boar, message: payload.message })
+}
+
+export const semenBoarFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, eventError: error })
+}
+
+// semen boar list
+export const getSemenBoarListRequest = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const getSemenBoarListSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, errorList: null, semenBoarList: payload })
+}
+
+export const getSemenBoarListFail = (state, { error }) => {
+    // console.log(error)
+    return state.merge({ fetching: false, errorList: error })
+}
+
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -421,10 +520,6 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.CREATE_NEW_NONAME_SOW_SUCCESS]: createNewNonameSowSuccess,
     [Types.CREATE_NEW_NONAME_SOW_FAIL]: createNewNonameSowFail,
 
-    [Types.GET_BOARS_REQUEST]: getBoarsRequest,
-    [Types.GET_BOARS_SUCCESS]: getBoarsSuccess,
-    [Types.GET_BOARS_FAIL]: getBoarsFail,
-
     [Types.ADD_NEW_SEMINATED_TO_WS1_REQUEST]: addNewSeminatedToWs1Request,
     [Types.ADD_NEW_SEMINATED_TO_WS1_SUCCESS]: addNewSeminatedToWs1Success,
     [Types.ADD_NEW_SEMINATED_TO_WS1_FAIL]: addNewSeminatedToWs1Fail,
@@ -453,4 +548,29 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.RESET_SOW]: resetSow,
 
     [Types.SOWS_RESET_ERRORS_AND_MESSAGES]: sowsResetErrorsAndMessages,
+
+    // boar
+    [Types.GET_BOARS_REQUEST]: getBoarsRequest,
+    [Types.GET_BOARS_SUCCESS]: getBoarsSuccess,
+    [Types.GET_BOARS_FAIL]: getBoarsFail,
+
+    [Types.CREATE_BOAR_REQUEST]: createBoarRequest,
+    [Types.CREATE_BOAR_SUCCESS]: createBoarSuccess,
+    [Types.CREATE_BOAR_FAIL]: createBoarFail,
+
+    [Types.CULLING_BOAR_REQUEST]: cullingBoarRequest,
+    [Types.CULLING_BOAR_SUCCESS]: cullingBoarSuccess,
+    [Types.CULLING_BOAR_FAIL]: cullingBoarFail,
+
+    [Types.GET_BOAR_BREED_REQUEST]: getBoarBreedRequest,
+    [Types.GET_BOAR_BREED_SUCCESS]: getBoarBreedSuccess,
+    [Types.GET_BOAR_BREED_FAIL]: getBoarBreedFail,
+
+    [Types.SEMEN_BOAR_REQUEST]: semenBoarRequest,
+    [Types.SEMEN_BOAR_SUCCESS]: semenBoarSuccess,
+    [Types.SEMEN_BOAR_FAIL]: semenBoarFail,
+
+    [Types.GET_SEMEN_BOAR_LIST_REQUEST]: getSemenBoarListRequest,
+    [Types.GET_SEMEN_BOAR_LIST_SUCCESS]: getSemenBoarListSuccess,
+    [Types.GET_SEMEN_BOAR_LIST_FAIL]: getSemenBoarListFail,
 })

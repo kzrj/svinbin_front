@@ -253,14 +253,14 @@ const create = () => {
         })
     }
 
-    const moveGiltsToWs75 = payload => {
-        const { id, gilts_amount } = payload;
+    const moveGiltsToWs12 = payload => {
+        const { id, new_amount } = payload;
         const token = localStorage.getItem('token') || '';
-        const url = endpoints.moveGiltsToWs75(id);
+        const url = endpoints.moveGiltsToWs12(id);
 
         const formData = new FormData();
-        if (gilts_amount)
-            formData.append("gilts_amount", gilts_amount);
+        if (new_amount)
+            formData.append("new_amount", new_amount);
 
         return axios({
                     method: 'post',
@@ -315,7 +315,7 @@ const create = () => {
         moveGiltsToWs1,
         initPiglets,
         recountPiglets,
-        moveGiltsToWs75,
+        moveGiltsToWs12,
         createGilt
     }
 }

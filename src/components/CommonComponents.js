@@ -6,8 +6,8 @@ export const WhoIs = (props) => (
 export const Message = (props) => (
     <p className='message'>{props.message}</p>)
 
-    export const LoadingMessage = (props) => (
-        <p className='loading'>Загрузка</p>)
+export const LoadingMessage = (props) => (
+    <p className='loading'>Загрузка</p>)
 
 export const ErrorMessage = (props) => (
     <p className='error-message'>ОШИБКА: {props.error.data ? props.error.data.message : 'Неизвестная ошибка.'}</p>)

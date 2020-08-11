@@ -8,10 +8,9 @@ import WSNomadInnerTransferTab from '../components/PigletsTabs/WSNomadInnerTrans
 import WSNomadResettelmentTab from '../components/PigletsTabs/WSNomadResettelmentTab'
 import WSNomadIncomeTab from '../components/PigletsTabs/WSNomadIncomeTab'
 import WSPigletsRecountTab from '../components/PigletsTabs/WSPigletsRecountTab'
-import OperationsWs from '../components/Reports/OperationsWs'
+import InfoTab from '../containers/InfoTab'
 
 import { TabMenu }  from '../components/CommonComponents'
-import { WsOpInputs4 } from '../components/Reports/OperationsWs'
 
 // actions
 import SectionsActions from '../redux/redux-sauce/sections';
@@ -216,23 +215,7 @@ class WorkshopFourContainer extends Component {
           />}
 
         {activeTab.name === 'infoTab' &&
-          <OperationsWs 
-            getOperationsReport={this.props.getOperationsReport} 
-            operationsResultList={this.props.state.reports.operations}
-            operationsInputs={this.props.state.inputs.operationsInputs}
-            getWsReportPigsCount={this.props.getWsReportPigsCount}
-            pigsCount={this.props.state.reports.ws3ReportPigsCount}
-            farmId={false}
-          >
-            <div>
-              <WsOpInputs4 
-                operationsInputs={this.props.state.inputs.operationsInputs} 
-                ws_number={'4'} 
-                changeOperationsInputs={this.props.changeOperationsInputs} 
-                type={'piglets'}
-                />
-            </div>
-          </OperationsWs>
+          <InfoTab ws_number={'4'}/>
         }
         
       </div>

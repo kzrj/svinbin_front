@@ -101,12 +101,12 @@ export function* recountPiglets(api, action) {
     }
 }
 
-export function* moveGiltsToWs75(api, action) {
+export function* moveGiltsToWs12(api, action) {
     try {
-        let response = yield call(api.moveGiltsToWs75, action.payload);
-        yield put(PigletsActions.moveGiltsToWs75Success(response));
+        let response = yield call(api.moveGiltsToWs12, action.payload);
+        yield put(PigletsActions.moveGiltsToWs12Success(response));
     } catch (err) {
-        yield put(PigletsActions.moveGiltsToWs75Fail(err))
+        yield put(PigletsActions.moveGiltsToWs12Fail(err))
     }
 }
 

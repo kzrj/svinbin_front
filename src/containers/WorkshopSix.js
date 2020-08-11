@@ -8,10 +8,9 @@ import WSNomadInnerTransferTab from '../components/PigletsTabs/WSNomadInnerTrans
 import WSNomadResettelmentTab from '../components/PigletsTabs/WSNomadResettelmentTab'
 import WSNomadIncomeTab from '../components/PigletsTabs/WSNomadIncomeTab'
 import WSPigletsRecountTab from '../components/PigletsTabs/WSPigletsRecountTab'
-import OperationsWs from '../components/Reports/OperationsWs'
+import InfoTab from '../containers/InfoTab'
 
 import { TabMenu }  from '../components/CommonComponents'
-import { WsOpInputs4 } from '../components/Reports/OperationsWs'
 
 // actions
 import SectionsActions from '../redux/redux-sauce/sections';
@@ -29,7 +28,7 @@ class WorkshopSixContainer extends Component {
         {name: 'incomeTab',        active: false, title: 'Поступление и взвешивание'},
         {name: 'resettlementTab',  active: false, title: 'Размещение прибывших'},
         {name: 'innerTransferTab', active: false, title: 'Внутреннее перемещение'},
-        {name: 'transferTo75Tab',  active: false, title: 'Перегон ремонтных в 7-5'},
+        {name: 'transferTab',      active: false, title: 'Перегон ремонт'},
         {name: 'cullingTab',       active: false, title: 'Выбраковка'},
         {name: 'pigletsRecountTab',active: false,  title: 'Пересчет поросят'},
         {name: 'infoTab',          active: true, title: 'Инфо'},
@@ -149,9 +148,9 @@ class WorkshopSixContainer extends Component {
         { activeTab.name === 'transferTab' &&
           <WSNomadTransferTab 
             workshopNumber={6}
-            toLocation={9}
+            toLocation={2}
             toLocations={null}
-            buttonName={'Отправить в Убойный цех'}
+            buttonName={'Отправить в ремонтных в цех 1-2'}
 
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.piglets.list}
@@ -164,7 +163,7 @@ class WorkshopSixContainer extends Component {
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
 
-            movePiglets={this.props.movePiglets}
+            moveGiltsToWs12={this.props.moveGiltsToWs12}
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
@@ -239,23 +238,7 @@ class WorkshopSixContainer extends Component {
           />}
 
         {activeTab.name === 'infoTab' &&
-          <OperationsWs 
-            getOperationsReport={this.props.getOperationsReport} 
-            operationsResultList={this.props.state.reports.operations}
-            operationsInputs={this.props.state.inputs.operationsInputs}
-            farmId={false}
-            getWsReportPigsCount={this.props.getWsReportPigsCount}
-            pigsCount={this.props.state.reports.ws3ReportPigsCount}
-          >
-            <div>
-              <WsOpInputs4 
-                operationsInputs={this.props.state.inputs.operationsInputs} 
-                ws_number={'6'} 
-                changeOperationsInputs={this.props.changeOperationsInputs} 
-                type={'piglets'}
-                />
-            </div>
-          </OperationsWs>
+          <InfoTab ws_number={'6'}/>
         }
       </div>
     );
@@ -280,7 +263,7 @@ const mapDispatchToProps = (dispatch) => ({
   cullingPiglets: query => dispatch(PigletsActions.cullingPigletsRequest(query)),
   initPiglets: data => dispatch(PigletsActions.initPigletsRequest(data)),
   recountPiglets: data => dispatch(PigletsActions.recountPigletsRequest(data)),
-  moveGiltsToWs75: data => dispatch(PigletsActions.moveGiltsToWs75Request(data)),
+  moveGiltsToWs12: data => dispatch(PigletsActions.moveGiltsToWs12Request(data)),
 
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 

@@ -25,7 +25,7 @@ class WorkshopTwoContainer extends Component {
         {name: 'ultrasoundTab',           active: false, title: 'УЗИ 35'},
         {name: 'cullingTab',          active: false, title: 'Выбраковка'},
         {name: 'searchSowTab',        active: false, title: 'Поиск по всем цехам'},
-        {name: 'initAndTransferTab',     active: false, title: 'Инициализация для Цеха 3'},
+        // {name: 'initAndTransferTab',     active: false, title: 'Инициализация для Цеха 3'},
         // {name: 'infoTab',             active: false, title: 'Инфо'},
       ]
     }
@@ -34,7 +34,7 @@ class WorkshopTwoContainer extends Component {
   }
   
   componentDidMount() {
-    this.props.getTours()
+    this.props.getTours({by_workshop_number: 2})
   }
 
   setTab (tab) {

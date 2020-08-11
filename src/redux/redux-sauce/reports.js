@@ -26,6 +26,10 @@ const { Types, Creators } = createActions({
     getWsReportPigsCountRequest: ['payload'],
     getWsReportPigsCountFail: ['error'],
     getWsReportPigsCountSuccess: ['payload'],
+
+    getWsReportRequest: ['payload'],
+    getWsReportFail: ['error'],
+    getWsReportSuccess: ['payload'],
 })
 
 export const ReportsTypes = Types
@@ -44,6 +48,8 @@ export const INITIAL_STATE = Immutable({
 
     ws3Report: {},
 
+    wsReport: {},
+
     wsReportPigsCount: {},
 
     operations: [],
@@ -59,6 +65,7 @@ export const TourReportsSelectors = {
     getOperationsReport: state => state.operations,
     getWs3Report: state => state.ws3Report,
     getWsReportPigsCount: state => state.wsReportPigsCount,
+    getWsReport: state => state.wsReport,
 }
 
 /* ------------- Reducers ------------- */
@@ -142,6 +149,18 @@ export const getWsReportPigsCountFail = (state, { error }) => {
     return state.merge({ reportsFetching: false, reportsErrorFetching: error, wsReportPigsCount: {} })
 }
 
+export const getWsReportRequest = (state, { payload }) => {
+    return state.merge({ reportsFetching: true, wsReport: {} })
+}
+
+export const getWsReportSuccess = (state, { payload }) => {
+    return state.merge({ reportsFetching: false, reportsErrorFetching: null,
+        wsReport: payload })
+}
+
+export const getWsReportFail = (state, { error }) => {
+    return state.merge({ reportsFetching: false, reportsErrorFetching: error, wsReport: {} })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -168,4 +187,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_WS_REPORT_PIGS_COUNT_REQUEST]: getWsReportPigsCountRequest,
     [Types.GET_WS_REPORT_PIGS_COUNT_SUCCESS]: getWsReportPigsCountSuccess,
     [Types.GET_WS_REPORT_PIGS_COUNT_FAIL]: getWsReportPigsCountFail,
+
+    [Types.GET_WS_REPORT_REQUEST]: getWsReportRequest,
+    [Types.GET_WS_REPORT_SUCCESS]: getWsReportSuccess,
+    [Types.GET_WS_REPORT_FAIL]: getWsReportFail,
 })

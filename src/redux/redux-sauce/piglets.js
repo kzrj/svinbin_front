@@ -47,9 +47,9 @@ const { Types, Creators } = createActions({
     recountPigletsFail: ['payload'],
     recountPigletsSuccess: ['payload'],
 
-    moveGiltsToWs75Request: ['payload'],
-    moveGiltsToWs75Fail: ['payload'],
-    moveGiltsToWs75Success: ['payload'],
+    moveGiltsToWs12Request: ['payload'],
+    moveGiltsToWs12Fail: ['payload'],
+    moveGiltsToWs12Success: ['payload'],
 
     createGiltRequest: ['payload'],
     createGiltFail: ['payload'],
@@ -237,16 +237,16 @@ export const recountPigletsFail = (state, { payload } ) => {
     return state.merge({ eventFetching: false, eventError: payload, message: ''})
 }
 
-// moveGiltsToWs75
-export const moveGiltsToWs75Request = (state, { payload }) => {
+// moveGiltsToWs12
+export const moveGiltsToWs12Request = (state, { payload }) => {
     return state.merge({ eventFetching: true })
 }
 
-export const moveGiltsToWs75Success = (state, { payload }) => {
+export const moveGiltsToWs12Success = (state, { payload }) => {
     return state.merge({ eventFetching: false, eventError: null, message: payload.message })
 }
 
-export const moveGiltsToWs75Fail = (state, { payload } ) => {
+export const moveGiltsToWs12Fail = (state, { payload } ) => {
     return state.merge({ eventFetching: false, eventError: payload, message: ''})
 }
 
@@ -315,9 +315,9 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.RECOUNT_PIGLETS_SUCCESS]: recountPigletsSuccess,
     [Types.RECOUNT_PIGLETS_FAIL]: recountPigletsFail,
 
-    [Types.MOVE_GILTS_TO_WS75_REQUEST]: moveGiltsToWs75Request,
-    [Types.MOVE_GILTS_TO_WS75_SUCCESS]: moveGiltsToWs75Success,
-    [Types.MOVE_GILTS_TO_WS75_FAIL]: moveGiltsToWs75Fail,
+    [Types.MOVE_GILTS_TO_WS12_REQUEST]: moveGiltsToWs12Request,
+    [Types.MOVE_GILTS_TO_WS12_SUCCESS]: moveGiltsToWs12Success,
+    [Types.MOVE_GILTS_TO_WS12_FAIL]: moveGiltsToWs12Fail,
 
     [Types.CREATE_GILT_REQUEST]: createGiltRequest,
     [Types.CREATE_GILT_SUCCESS]: createGiltSuccess,

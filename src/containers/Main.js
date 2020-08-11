@@ -66,8 +66,6 @@ class Main extends Component {
     const sowsListFetching = this.props.state.sows.fetching
     const sowsEventFetching = this.props.state.sows.eventFetching
 
-    
-
     return (
       <div className="app container-fluid">
         <div id="pageContent">

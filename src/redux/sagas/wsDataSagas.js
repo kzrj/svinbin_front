@@ -37,3 +37,12 @@ export function* getBalancesByToursWs3(api, action) {
         yield put(WSDataActions.getBalancesByToursWs3Fail(err))
     }
 }
+
+export function* ws3TransferSowAndPiglets(api, action) {
+    try {
+        let response = yield call(api.ws3TransferSowAndPiglets, action.payload);
+        yield put(WSDataActions.ws3TransferSowAndPigletsSuccess(response));
+    } catch (err) {
+        yield put(WSDataActions.ws3TransferSowAndPigletsFail(err))
+    }
+}

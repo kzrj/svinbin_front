@@ -28,7 +28,7 @@ class MainPage extends Component {
             <MainMenuLink url={'/workshop5/'} title={'Цех5 Откорм'}/>
             <MainMenuLink url={'/workshop6/'} title={'Цех6 Откорм'}/>
             <MainMenuLink url={'/workshop7/'} title={'Цех7 Откорм'}/>
-            <MainMenuLink url={'/workshop75/'} title={'Цех7-5 Секция ремонтных свинок'}/>
+            <MainMenuLink url={'/workshop_boar/'} title={'Хрячник'}/>
             <MainMenuLink url={'/reports/'} title={'Отчеты'}/>
           </div>
         </div>

@@ -68,7 +68,7 @@ export class SowCells extends Component {
       'col-sm-1 cell cell-active' : 
         location.is_sow_empty ? 'col-sm-1 cell' : 'col-sm-1 cell-full cell'
     
-    const tour = sow ? sow.tour && sow.tour.replace(' 2019г','') : null
+    const tour = sow ? sow.tour && sow.tour.replace(' 2019г','').replace(' 2020г','') : null
     // const pigletsTour = piglets ? piglets.tour && piglets.tour.replace(' 2019г','') : null
     const pigletsTour = null
     return (

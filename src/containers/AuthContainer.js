@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import AuthActions from '../redux/redux-sauce/auth'
 
-export default function requireAuthentication(Component, ws_number) {
+export default function requireAuthentication(Component, ws_numbers) {
 
     class AuthenticatedComponent extends React.Component {
 
@@ -23,7 +23,7 @@ export default function requireAuthentication(Component, ws_number) {
 
         render() {
           let access = false
-          if (this.props.isLoggedIn === true && (this.props.user.workshop_number === ws_number || 
+          if (this.props.isLoggedIn === true && (ws_numbers.includes(this.props.user.workshop_number) || 
             this.props.user.is_officer)) access = true
 
           return (

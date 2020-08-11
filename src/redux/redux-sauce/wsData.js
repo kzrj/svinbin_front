@@ -18,6 +18,10 @@ const { Types, Creators } = createActions({
     getBalancesByToursWs3Request: ['payload'],
     getBalancesByToursWs3Fail: ['error'],
     getBalancesByToursWs3Success: ['payload'],
+
+    ws3TransferSowAndPigletsRequest: ['payload'],
+    ws3TransferSowAndPigletsFail: ['error'],
+    ws3TransferSowAndPigletsSuccess: ['payload'],
 })
 
 export const WsDataTypes = Types
@@ -99,6 +103,19 @@ export const getBalancesByToursWs3Fail = (state, { error }) => {
     return state.merge({ fetching: false, error, balances_by_tours: null })
 }
 
+// ws3TransferSowAndPiglets
+export const ws3TransferSowAndPigletsRequest = (state, { payload }) => {
+    return state.merge({ fetching: true })
+}
+
+export const ws3TransferSowAndPigletsSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, message: payload.message })
+}
+
+export const ws3TransferSowAndPigletsFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, message: null })
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -117,4 +134,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_BALANCES_BY_TOURS_WS3_REQUEST]: getBalancesByToursWs3Request,
     [Types.GET_BALANCES_BY_TOURS_WS3_SUCCESS]: getBalancesByToursWs3Success,
     [Types.GET_BALANCES_BY_TOURS_WS3_FAIL]: getBalancesByToursWs3Fail,
+
+    [Types.WS3_TRANSFER_SOW_AND_PIGLETS_REQUEST]: ws3TransferSowAndPigletsRequest,
+    [Types.WS3_TRANSFER_SOW_AND_PIGLETS_SUCCESS]: ws3TransferSowAndPigletsSuccess,
+    [Types.WS3_TRANSFER_SOW_AND_PIGLETS_FAIL]: ws3TransferSowAndPigletsFail,
 })

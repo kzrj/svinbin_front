@@ -143,6 +143,7 @@ class WSSowUltrasoundTab extends Component {
   render() {
     const { sows, tours, days, eventError, message } = this.props
     this.refreshSowsList()
+    
     return (
       <div className='workshop-content'>
         <div>

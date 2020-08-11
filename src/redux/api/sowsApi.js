@@ -466,10 +466,111 @@ const create = () => {
         })
     }
 
+    const createBoar = payload => {
+        const { birth_id, breed } = payload;
+        const token = localStorage.getItem('token') || '';
+
+        const formData = new FormData();
+        formData.append("birth_id", birth_id);
+        formData.append("breed", breed);
+
+        return axios({
+                    method: 'post',
+                    url: endpoints.CREATE_NEW_BOAR,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const cullingBoar = payload => {
+        const { id, culling_type, reason, weight } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.cullingBoar(id);
+
+        const formData = new FormData();
+        formData.append("culling_type", culling_type);
+        formData.append("reason", reason);
+        formData.append("weight", weight);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const getBoarBreed = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+        return axios.get(endpoints.GET_BOAR_BREED, { params })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const semenBoar = payload => {
+        const { id, a, b, d, morphology_score, final_motility_score, date } = payload;
+        const token = localStorage.getItem('token') || '';
+        console.log('semenBoar')
+        const url = endpoints.semenBoar(id);
+
+        const formData = new FormData();
+        formData.append("a", a);
+        formData.append("b", b);
+        formData.append("d", d);
+        formData.append("morphology_score", morphology_score);
+        formData.append("final_motility_score", final_motility_score);
+        formData.append("date", date);
+
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const getSemenBoarList = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+        return axios.get(endpoints.GET_SEMEN_BOAR_LIST, { params })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     const setSow = sow => {
         return sow
     }
-
 
     return {
         getSows,
@@ -485,7 +586,6 @@ const create = () => {
         getSowsByToursWs2,
         createNewSow,
         createNewNonameSow,
-        getBoars,
         massSemination,
         massUltrasound,
         abortionSow,
@@ -493,6 +593,14 @@ const create = () => {
         markAsNurse,
         importSeminationsFromFarm,
         setSow,
+
+        // boars
+        createBoar,
+        getBoars,
+        cullingBoar,
+        getBoarBreed,
+        semenBoar,
+        getSemenBoarList,
 
         // init endpoints
         addNewSeminatedToWs1

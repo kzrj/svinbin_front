@@ -13,7 +13,6 @@ export default {
     
     // sows
     GET_SOWS: `${apiUrl}/sows/`,
-    GET_BOARS: `${apiUrl}/boars/`,
     getSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/`,
     seminationSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/semination/`,
     ultrasoundSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/ultrasound/`,
@@ -32,6 +31,14 @@ export default {
     sowFarrow: (id) => `${apiUrl}/workshopthree/sows/${id}/sow_farrow/`,
     markAsNurse: (id) => `${apiUrl}/workshopthree/sows/${id}/mark_as_nurse/`,
 
+    // boars
+    GET_BOARS: `${apiUrl}/boars/`,
+    CREATE_NEW_BOAR: `${apiUrl}/boars/`,
+    cullingBoar: (id) => `${apiUrl}/boars/${id}/culling/`,
+    GET_BOAR_BREED: `${apiUrl}/boar_breed/`,
+    semenBoar: (id) => `${apiUrl}/boars/${id}/semen_boar/`,
+    GET_SEMEN_BOAR_LIST: `${apiUrl}/boar_events/semen/`,
+
     // init endpoints
     INIT_ADD_NEW_SEMINATED_TO_WS1: `${apiUrl}/sows/add_new_seminated_to_ws1/`,
 
@@ -47,7 +54,7 @@ export default {
     markAsGilts: (id) => `${apiUrl}/piglets/${id}/mark_as_gilts/`,
     INIT_PIGLETS: `${apiUrl}/piglets/init_piglets_from_farrow/`,
     recount_piglets: (id) => `${apiUrl}/piglets/${id}/recount_piglets/`,
-    moveGiltsToWs75: (id) => `${apiUrl}/piglets/${id}/move_gilts_to_ws75/`,
+    moveGiltsToWs12: (id) => `${apiUrl}/piglets/${id}/move_gilts_to_12/`,
     createGilt: (id) => `${apiUrl}/piglets/${id}/create_gilt/`,
 
     // staff users
@@ -58,6 +65,7 @@ export default {
 
     // workshop rest
     IMPORT_SEMINATIONS_FROM_FARM: `${apiUrl}/workshoponetwo/sows/import_seminations_from_farm/`,
+    WS3_TRANSFER_SOW_AND_PIGLETS: `${apiUrl}/workshopthree/sows/transfer_sow_and_piglets/`,
 
     // reports
     GET_TOUR_REPORTS:  `${apiUrl}/reports/tours/`,
@@ -67,4 +75,6 @@ export default {
     GET_WS3_REPORT: `${apiUrl}/reports/director/ws3_report/`,
     GET_WS3_REPORT_AS_EXCEL: `${apiUrl}/reports/director/get_ws3_report_excel/`,
     GET_WS_REPORT_PIGS_COUNT: `${apiUrl}/reports/director/ws_report_count/`,
+    GET_WS_REPORT: `${apiUrl}/reports/director/ws_report/`,
+    get_ws_report_as_excel: (ws_number) => `${apiUrl}/reports/director/get_ws_report_excel/?ws_number=${ws_number}`,
 }

@@ -92,15 +92,6 @@ export function* createNewNonameSow(api, action) {
     }
 }
 
-export function* getBoars(api, action) {
-    try {
-        let response = yield call(api.getBoars, action.payload);
-        yield put(SowsActions.getBoarsSuccess(response.results));
-    } catch (err) {
-        yield put(SowsActions.getBoarsFail(err))
-    }
-}
-
 export function* addNewSeminatedToWs1(api, action) {
     try {
         let response = yield call(api.addNewSeminatedToWs1, action.payload);
@@ -152,5 +143,60 @@ export function* markAsNurse(api, action) {
         yield put(SowsActions.markAsNurseSuccess(response));
     } catch (err) {
         yield put(SowsActions.markAsNurseFail(err.message))
+    }
+}
+
+// boars
+export function* getBoars(api, action) {
+    try {
+        let response = yield call(api.getBoars, action.payload);
+        yield put(SowsActions.getBoarsSuccess(response.results));
+    } catch (err) {
+        yield put(SowsActions.getBoarsFail(err))
+    }
+}
+
+export function* createBoar(api, action) {
+    try {
+        let response = yield call(api.createBoar, action.payload);
+        yield put(SowsActions.createBoarSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.createBoarFail(err))
+    }
+}
+
+export function* cullingBoar(api, action) {
+    try {
+        let response = yield call(api.cullingBoar, action.payload);
+        yield put(SowsActions.cullingBoarSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.cullingBoarFail(err))
+    }
+}
+
+export function* getBoarBreed(api, action) {
+    try {
+        let response = yield call(api.getBoarBreed, action.payload);
+        yield put(SowsActions.getBoarBreedSuccess(response.results));
+    } catch (err) {
+        yield put(SowsActions.getBoarBreedFail(err))
+    }
+}
+
+export function* semenBoar(api, action) {
+    try {
+        let response = yield call(api.semenBoar, action.payload);
+        yield put(SowsActions.semenBoarSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.semenBoarFail(err))
+    }
+}
+
+export function* getSemenBoarList(api, action) {
+    try {
+        let response = yield call(api.getSemenBoarList, action.payload);
+        yield put(SowsActions.getSemenBoarListSuccess(response.results));
+    } catch (err) {
+        yield put(SowsActions.getSemenBoarListFail(err))
     }
 }
