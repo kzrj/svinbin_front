@@ -4,7 +4,31 @@ import { toggleArray } from '../../components/utils'
 // components
 import { SowTable }  from '../../components/SowRepresentations'
 import { SowFarmIdFilter, SowTourFilter }  from '../../components/FiltersAndInputs'
-import { ErrorMessage, Message } from '../CommonComponents'
+import { FetchingErrorComponentMessage } from '../CommonComponents'
+
+function UsoundButtons (props) {
+  return (
+    <div>
+      <div className='row'>
+        <div className='col-4'>
+          <button className='btn btn-success' data-result={true} onClick={props.clickButton}>
+            Супорос
+          </button>
+        </div>
+        <div className='col-4'>
+          <button className='btn btn-danger'data-result={false} onClick={props.clickButton}>
+            Прохолост
+          </button>
+        </div>
+        <div className='col-4'>
+          <button className='btn btn-info' onClick={props.clickAbort}>
+            Аборт
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 
 class WSSowUltrasoundTab extends Component {
@@ -13,6 +37,7 @@ class WSSowUltrasoundTab extends Component {
     this.state = {
       query: {
         tour: null,
+        alive:true,
         farm_id_starts: ''
       },
       choosedSows: [],
@@ -36,14 +61,15 @@ class WSSowUltrasoundTab extends Component {
       ...this.state,
       query: {
         ...this.state.query,
+        alive:true,
         by_workshop_number: this.props.workshopNumber,
         status_title: this.props.statusTitleFilter
       }
     })
     this.props.getSows({
+      alive:true,
       by_workshop_number: this.props.workshopNumber,
       status_title: this.props.statusTitleFilter})
-    this.props.sowsResetErrorsAndMessages()
   }
 
   setQuery (e) {
@@ -141,7 +167,7 @@ class WSSowUltrasoundTab extends Component {
   }
 
   render() {
-    const { sows, tours, days, eventError, message } = this.props
+    const { sows, tours, days, eventError, message, errorList } = this.props
     this.refreshSowsList()
     
     return (
@@ -153,27 +179,14 @@ class WSSowUltrasoundTab extends Component {
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
           </div>
           <div>
-            <div>
-              <div className='row'>
-                <div className='col-4'>
-                  <button className='btn btn-success' data-result={true} onClick={this.clickButton}>
-                    Супорос
-                  </button>
-                </div>
-                <div className='col-4'>
-                  <button className='btn btn-danger'data-result={false} onClick={this.clickButton}>
-                    Прохолост
-                  </button>
-                </div>
-                <div className='col-4'>
-                  <button className='btn btn-info' onClick={this.clickAbort}>
-                    Аборт
-                  </button>
-                </div>
-              </div>
-              {eventError && <ErrorMessage error={eventError}/>}
-              {message && <Message message={message}/>}
-            </div>
+          <FetchingErrorComponentMessage 
+            fetching={this.props.eventFetching}
+            error={eventError}
+            message={message}
+            component={
+              <UsoundButtons clickButton={this.clickButton} clickAbort={this.clickAbort}/>
+            }
+          />
           </div>
         </div>
         <div className='commonfilter-results'>
@@ -188,10 +201,13 @@ class WSSowUltrasoundTab extends Component {
                 <button className='btn btn-outline-secondary' onClick={this.resetAll}>Сбросить выбор</button>
               </div>
             </div>
-          {this.props.sowsListFetching ? 
-            <p className='loading'>Загрузка</p> :
-            <SowTable sows={sows} sowClick={this.sowClick} 
-              choosedSows={this.state.choosedSows}/>}
+          <FetchingErrorComponentMessage 
+            fetching={this.props.sowsListFetching}
+            error={errorList}
+            component={
+              <SowTable sows={sows} sowClick={this.sowClick}  choosedSows={this.state.choosedSows}/>
+            }
+          />
         </div>
       </div>
     )

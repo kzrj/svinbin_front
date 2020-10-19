@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { toggleArray } from '../../components/utils'
 // components
 import { SowTable }  from '../../components/SowRepresentations'
-import { SowFarmIdFilter, SowTourFilter }  from '../../components/FiltersAndInputs'
-import { ErrorMessage, Message } from '../CommonComponents'
+import { SowFarmIdFilter }  from '../../components/FiltersAndInputs'
+import { ErrorMessage, LoadingMessage } from '../CommonComponents'
 
 
 class WSSowGlobalSearchTab extends Component {
@@ -13,7 +13,8 @@ class WSSowGlobalSearchTab extends Component {
     this.state = {
       query: {
         tour: null,
-        farm_id_starts: ''
+        farm_id_starts: '',
+        
       },
       choosedSows: [],
       farmId: '',
@@ -22,12 +23,7 @@ class WSSowGlobalSearchTab extends Component {
     };
     this.setQuery = this.setQuery.bind(this);
     this.sowClick = this.sowClick.bind(this);
-    this.chooseAll = this.chooseAll.bind(this);
-    this.resetAll = this.resetAll.bind(this);
     this.setData = this.setData.bind(this);
-    this.clickButton = this.clickButton.bind(this);
-    this.clickAbort = this.clickAbort.bind(this);
-    this.massUltrasound = this.massUltrasound.bind(this);
     this.refreshSowsList = this.refreshSowsList.bind(this);
   }
 
@@ -39,7 +35,7 @@ class WSSowGlobalSearchTab extends Component {
       }
     })
     this.props.getSows()
-    this.props.sowsResetErrorsAndMessages()
+    // this.props.sowsResetErrorsAndMessages()
   }
 
   setQuery (e) {
@@ -70,69 +66,12 @@ class WSSowGlobalSearchTab extends Component {
     })
   }
 
-  chooseAll () {
-    const { sows } = this.props
-    let choosedSows = []
-    sows.map(sow => choosedSows = toggleArray(choosedSows, sow.id.toString()))
-    this.setState({
-      ...this.state,
-      choosedSows: choosedSows
-    })
-  }
-
-  resetAll () {
-    this.setState({
-      ...this.state,
-      choosedSows: []
-    })
-  }
-
-  massUltrasound () {
-    const data = {
-      sows: this.state.choosedSows,
-      days: this.props.daysValue,
-      result: this.state.result
-    }
-    this.props.massUltrasound(data)
-    this.setState({
-      ...this.state,
-      query: {...this.state.query, farm_id_starts: ''}, 
-      choosedSows: [],
-      needToRefresh: true
-    })
-  }
-
-  clickButton (e) {
-    const data = {
-      sows: this.state.choosedSows,
-      days: this.props.daysValue,
-      result: e.target.dataset.result
-    }
-    this.props.massUltrasound(data)
-    this.setState({
-      ...this.state,
-      query: {...this.state.query, farm_id_starts: ''}, 
-      choosedSows: [],
-      needToRefresh: true
-    })
-  }
-
-  clickAbort () {
-    this.props.abortionSow({id: this.state.choosedSows[0]})
-    this.setState({
-      ...this.state,
-      query: {...this.state.query, farm_id_starts: ''}, 
-      choosedSows: [],
-      needToRefresh: true
-    })
-  }
-
   refreshSowsList () {
     if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)  
-      }, 500)
+      }, 1)
     }
   }
 
@@ -149,10 +88,10 @@ class WSSowGlobalSearchTab extends Component {
           
         </div>
         <div className='commonfilter-results'>
-          {this.props.sowsListFetching ? 
-            <p className='loading'>Загрузка</p> :
-            <SowTable sows={sows} sowClick={this.sowClick} 
-              choosedSows={this.state.choosedSows}/>}
+          {this.props.sowsListFetching 
+            ? <LoadingMessage /> 
+            : <SowTable sows={sows} sowClick={this.sowClick} 
+                 choosedSows={this.state.choosedSows}/>}
         </div>
       </div>
     )

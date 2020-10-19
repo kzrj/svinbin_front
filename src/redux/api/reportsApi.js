@@ -98,6 +98,38 @@ const create = () => {
             throw error;
         })
     }
+
+    const getRecountBalance = (data) => {
+        const params = createUrlParamsFromFilters(data);
+        return axios.get(endpoints.GET_RECOUNT_BALANCE, { params })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const getToursV2Report = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+        return axios.get(endpoints.GET_TOURS_WITH_WEIGHTS, { params })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const getTourV2Report = (id) => {
+        return axios.get(endpoints.get_tour_with_weight(id))
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
     
     return {
         getTourReports,
@@ -107,7 +139,10 @@ const create = () => {
         getWs3Report,
         getWs3ReportAsExcel,
         getWsReportPigsCount,
-        getWsReport
+        getWsReport,
+        getRecountBalance,
+        getToursV2Report,
+        getTourV2Report
     }
 }
 

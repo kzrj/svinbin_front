@@ -5,7 +5,7 @@ import SowsActions from '../redux-sauce/sows'
 export function* getSows(api, action) {
     try {
         let response = yield call(api.getSows, action.payload);
-        yield put(SowsActions.getSowsSuccess(response.results));
+        yield put(SowsActions.getSowsSuccess(response));
     } catch (err) {
         yield put(SowsActions.getSowsFail(err))
     }
@@ -47,6 +47,15 @@ export function* cullingSow(api, action) {
     }
 }
 
+export function* cullingSowWs3(api, action) {
+    try {
+        let response = yield call(api.cullingSowWs3, action.payload);
+        yield put(SowsActions.cullingSowWs3Success(response));
+    } catch (err) {
+        yield put(SowsActions.cullingSowWs3Fail(err))
+    }
+}
+
 export function* sowMoveTo(api, action) {
     try {
         let response = yield call(api.sowMoveTo, action.payload);
@@ -62,6 +71,15 @@ export function* sowsMoveMany(api, action) {
         yield put(SowsActions.sowsMoveManySuccess(response));
     } catch (err) {
         yield put(SowsActions.sowsMoveManyFail(err))
+    }
+}
+
+export function* sowsMoveManyWs3(api, action) {
+    try {
+        let response = yield call(api.sowsMoveManyWs3, action.payload);
+        yield put(SowsActions.sowsMoveManyWs3Success(response));
+    } catch (err) {
+        yield put(SowsActions.sowsMoveManyWs3Fail(err))
     }
 }
 
@@ -106,7 +124,7 @@ export function* massSemination(api, action) {
         let response = yield call(api.massSemination, action.payload);
         yield put(SowsActions.massSeminationSuccess(response));
     } catch (err) {
-        yield put(SowsActions.massSeminationFail(err.message))
+        yield put(SowsActions.massSeminationFail(err))
     }
 }
 
@@ -115,7 +133,16 @@ export function* massUltrasound(api, action) {
         let response = yield call(api.massUltrasound, action.payload);
         yield put(SowsActions.massUltrasoundSuccess(response));
     } catch (err) {
-        yield put(SowsActions.massUltrasoundFail(err.message))
+        yield put(SowsActions.massUltrasoundFail(err))
+    }
+}
+
+export function* massCulling(api, action) {
+    try {
+        let response = yield call(api.massCulling, action.payload);
+        yield put(SowsActions.massCullingSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.massCullingFail(err))
     }
 }
 
@@ -124,7 +151,16 @@ export function* abortionSow(api, action) {
         let response = yield call(api.abortionSow, action.payload);
         yield put(SowsActions.abortionSowSuccess(response));
     } catch (err) {
-        yield put(SowsActions.abortionSowFail(err.message))
+        yield put(SowsActions.abortionSowFail(err))
+    }
+}
+
+export function* abortionSowWs3(api, action) {
+    try {
+        let response = yield call(api.abortionSowWs3, action.payload);
+        yield put(SowsActions.abortionSowWs3Success(response));
+    } catch (err) {
+        yield put(SowsActions.abortionSowWs3Fail(err))
     }
 }
 
@@ -133,7 +169,7 @@ export function* massInitTransfer(api, action) {
         let response = yield call(api.massInitTransfer, action.payload);
         yield put(SowsActions.massInitTransferSuccess(response));
     } catch (err) {
-        yield put(SowsActions.massInitTransferFail(err.message))
+        yield put(SowsActions.massInitTransferFail(err))
     }
 }
 
@@ -142,7 +178,7 @@ export function* markAsNurse(api, action) {
         let response = yield call(api.markAsNurse, action.payload);
         yield put(SowsActions.markAsNurseSuccess(response));
     } catch (err) {
-        yield put(SowsActions.markAsNurseFail(err.message))
+        yield put(SowsActions.markAsNurseFail(err))
     }
 }
 

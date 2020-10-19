@@ -4,7 +4,7 @@ import { toggleArray } from '../../components/utils'
 // components
 import { SowTable }  from '../../components/SowRepresentations'
 import { SowFarmIdFilter, SowTourFilter, SowSectionFilter }  from '../../components/FiltersAndInputs'
-import { ErrorMessage, Message } from '../CommonComponents';
+import { ErrorMessage, Message, FetchingErrorComponentMessage } from '../CommonComponents';
 
 
 class WS3NurseSowTab extends Component {
@@ -13,6 +13,7 @@ class WS3NurseSowTab extends Component {
     this.state = {
       query: {
         tour: null,
+        alive:true,
       },
       needToRefresh: false,
       choosedSows: [],
@@ -31,11 +32,13 @@ class WS3NurseSowTab extends Component {
       ...this.state,
       query: {
         ...this.state.query,
+        alive:true,
         by_section_in_cell: this.props.sectionId,
         status_title_in: this.props.statusTitleFilters
       }
     })
     this.props.getSows({
+      alive:true,
       by_section_in_cell: this.props.sectionId,
       status_title_in: this.props.statusTitleFilters
       })
@@ -65,6 +68,7 @@ class WS3NurseSowTab extends Component {
     let { choosedSows } = this.state
     const { id } = e.target.dataset
     choosedSows = toggleArray(choosedSows, id)
+    this.props.sowsResetErrorsAndMessages()
     this.setState({
       ...this.state,
       choosedSows: choosedSows
@@ -104,30 +108,37 @@ class WS3NurseSowTab extends Component {
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
             <SowSectionFilter setQuery={this.setQuery} sections={sections}/>
           </div>
-          <div className='row'>
-            <div className='col-6'>
-              <button className='btn btn-dark' disabled={choosedSows.length !=1}
-                onClick={this.markAsNurse}>Отметить как кормилицу</button>
-              {this.props.eventError && !this.props.eventFetching &&
-                 <p className='error-message'>{this.props.eventError}</p>
-              }
-            </div>
-            <div className='col'>
-                {eventError && <ErrorMessage error={eventError}/>}
-                {message && <Message message={eventError}/>}
+          <FetchingErrorComponentMessage
+            fetching={this.props.eventFetching}
+            error={this.props.eventError}
+            message={this.props.message}
+            component={
+              <div className='row'>
+                <div className='col-6'>
+                  <button className='btn btn-dark' disabled={choosedSows.length !=1}
+                    onClick={this.markAsNurse}>Отметить как кормилицу</button>
+                  {this.props.eventError && !this.props.eventFetching &&
+                    <p className='error-message'>{this.props.eventError}</p>
+                  }
+                </div>
               </div>
-          </div>
+            }
+          />
         </div>
         <div className='commonfilter-results'>
           <div className='count row'>
-              <div className='col-6'>
-                Выбрано {choosedSows.length} из {sows.length}
-              </div>
+            <div className='col-6'>
+              Выбрано {choosedSows.length} из {sows.length}
             </div>
-          {this.props.sowsListFetching ? 
-            <p className='loading'>Загрузка</p> :
-            <SowTable sows={sows} sowClick={this.sowClick} 
-              choosedSows={choosedSows}/>}
+          </div>
+          <FetchingErrorComponentMessage
+            fetching={this.props.listFetching}
+            error={this.props.sowsListError}
+            message={null}
+            component={
+              <SowTable sows={sows} sowClick={this.sowClick} 
+                choosedSows={choosedSows}/>}
+          />
         </div>
       </div>
     )

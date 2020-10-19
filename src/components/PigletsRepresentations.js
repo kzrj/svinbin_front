@@ -15,6 +15,10 @@ import React, { Component } from 'react';
 
   render() {
     const { piglets } = this.props
+    let age = ''
+    piglets && piglets.age.split(' ').length > 1 
+      ? age = piglets.age.split(' ')[0]
+      : age = 0
     return (
       <table className='table table-sm'>
         <thead>
@@ -29,9 +33,9 @@ import React, { Component } from 'react';
           <tr>
             <td>Тур</td><td><PigletsMetaTour metatours={piglets.metatour_repr} /></td>
           </tr>
-          {/* <tr>
-            <td>Дата рождения</td><td>{piglets.created_at}</td>
-          </tr> */}
+          <tr>
+            <td>Возраст</td><td> {age && age + ' д'}</td>
+          </tr>
         </tbody>
       </table>
     )

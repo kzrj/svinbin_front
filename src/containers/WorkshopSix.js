@@ -29,7 +29,7 @@ class WorkshopSixContainer extends Component {
         {name: 'resettlementTab',  active: false, title: 'Размещение прибывших'},
         {name: 'innerTransferTab', active: false, title: 'Внутреннее перемещение'},
         {name: 'transferTab',      active: false, title: 'Перегон ремонт'},
-        {name: 'cullingTab',       active: false, title: 'Выбраковка'},
+        {name: 'cullingTab',       active: false, title: 'Выбытие'},
         {name: 'pigletsRecountTab',active: false,  title: 'Пересчет поросят'},
         {name: 'infoTab',          active: true, title: 'Инфо'},
       ],
@@ -101,6 +101,7 @@ class WorkshopSixContainer extends Component {
           <WSNomadResettelmentTab 
             workshopNumber={6}
             weighingPlace={'8/6'}
+            user={this.props.state.auth.user}
 
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.piglets.list}
@@ -109,10 +110,13 @@ class WorkshopSixContainer extends Component {
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsListError={this.props.state.locations.errorList}
 
             movePiglets={this.props.movePiglets}
             eventFetching={this.props.state.piglets.eventFetching}
@@ -125,17 +129,22 @@ class WorkshopSixContainer extends Component {
         { activeTab.name === 'innerTransferTab' &&
           <WSNomadInnerTransferTab
             workshopNumber={6}
+            user={this.props.state.auth.user}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations1={this.props.getLocations}
             locations1={this.props.state.locations.list}
             listFetching={this.props.state.locations.fetching}
+            locationsErrorList={this.props.state.locations.errorList}
 
             getLocations2={this.props.getLocationsAdditional}
             locations2={this.props.state.locations.additional_list}
             list2Fetching={this.props.state.locations.fetchingAdditional}
+            locations2ErrorList={this.props.state.locations.errorAdditional}
 
             movePiglets={this.props.movePiglets}
             eventFetching={this.props.state.piglets.eventFetching}
@@ -151,19 +160,24 @@ class WorkshopSixContainer extends Component {
             toLocation={2}
             toLocations={null}
             buttonName={'Отправить в ремонтных в цех 1-2'}
+            user={this.props.state.auth.user}
 
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.piglets.list}
             listFetching={this.props.state.piglets.listFetching}
+            listError={this.props.state.piglets.errorList}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsErrorList={this.props.state.locations.errorList}
 
-            moveGiltsToWs12={this.props.moveGiltsToWs12}
+            movePiglets={this.props.moveGiltsToWs12}
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
@@ -171,7 +185,7 @@ class WorkshopSixContainer extends Component {
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
 
-        { activeTab.name === 'transferTo75Tab' &&
+        {/* { activeTab.name === 'transferTo75Tab' &&
           <WSNomadTransferTab 
             workshopNumber={6}
             toLocation={11}
@@ -195,7 +209,7 @@ class WorkshopSixContainer extends Component {
             message={this.props.state.piglets.message}
 
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
-          />}
+          />} */}
 
         { activeTab.name === 'cullingTab' &&
           <WSNomadCullingTab
@@ -204,12 +218,17 @@ class WorkshopSixContainer extends Component {
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsErrorList={this.props.state.locations.errorList}
 
             cullingPiglets={this.props.cullingPiglets}
+            cullingTypes={[{value:'padej', label: 'Падеж'}, {value:'spec', label: 'Спец. убой'},
+             {value: 'vinuzhd', label: 'Вынужденный убой'}]}
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}

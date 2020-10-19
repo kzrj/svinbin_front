@@ -5,32 +5,29 @@ import AuthActions from '../redux/redux-sauce/auth'
 export default function requireAuthentication(Component, ws_numbers) {
 
     class AuthenticatedComponent extends React.Component {
-
-        componentWillMount() {
-            // this.checkAuth(this.props.isLoggedIn);
-        }
-
-        componentWillReceiveProps(nextProps) {
-            // this.props.checkAuth(groups)
-        }
-
         componentDidMount() {
           const token = localStorage.getItem('token');
           if (token) {
             this.props.checkToken(token);
           }
+        //   this.props.router.push(`/login?redirect=${redirect}`);
         }
 
         render() {
+          let { fetching } = this.props.state.auth
           let access = false
-          if (this.props.isLoggedIn === true && (ws_numbers.includes(this.props.user.workshop_number) || 
-            this.props.user.is_officer)) access = true
+        //   if (this.props.isLoggedIn === true && (ws_numbers.includes(this.props.user.workshop_number) || 
+        //     this.props.user.is_officer)) access = true
+        
+          if (this.props.isLoggedIn === true) access = true
 
           return (
               <div>
-                  {access
+                  {fetching 
+                    ? <p>Loading</p>
+                    : this.props.isLoggedIn
                       ? <Component {...this.props} />
-                      : <div className="container"><h4>403 У вас нету доступа к этой странице</h4></div>
+                      : null
                   }
               </div>
           )
@@ -39,7 +36,8 @@ export default function requireAuthentication(Component, ws_numbers) {
 
     const mapStateToProps = (state) => ({
         isLoggedIn: state.auth.isLoggedIn,
-        user: state.auth.user
+        user: state.auth.user,
+        state: state
     });
 
 

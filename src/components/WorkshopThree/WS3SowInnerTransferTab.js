@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 //components
 import { SowCells, Sections } from '../Locations'
-import { ErrorMessage, Message } from '../CommonComponents'
+import { FetchingErrorComponentMessage } from '../CommonComponents';
 
 class WS3SowInnerTransferTab extends Component {
    constructor(props) {
@@ -17,7 +17,6 @@ class WS3SowInnerTransferTab extends Component {
   }
 
   componentDidMount() {
-    this.props.sowsResetErrorsAndMessages()
   }
   
   clickFromSection = (e) => {
@@ -46,6 +45,7 @@ class WS3SowInnerTransferTab extends Component {
       activeSow: location.sow_set.length > 0 ?
        location.sow_set[0] : null
     })
+    this.props.wsDataResetErrorsAndMessages()
   }
 
   clickCellToLocation = (location) => {
@@ -93,37 +93,62 @@ class WS3SowInnerTransferTab extends Component {
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
-            <Sections 
-              sections={sections}
+          <FetchingErrorComponentMessage 
               fetching={this.props.sectionsFetching}
-              activeSectionId={this.state.activeFromSectionId}
-              clickSection={this.clickFromSection}
               error={this.props.sectionsListError}
+              message={null}
+              component={
+                <Sections 
+                  sections={sections}
+                  activeSectionId={this.state.activeSectionId}
+                  fetching={this.props.sectionsFetching}
+                  error={this.props.sectionsListError}
+  
+                  clickSection={this.clickFromSection}
+                />}
             />
-            <SowCells 
-              isSection={this.state.activeFromSectionId}
-              locations={locations1}
+            <FetchingErrorComponentMessage 
               fetching={this.props.locationsFetching}
-              activeCellIds={[this.state.activeCellFromLocationId]}
-              clickLocation={this.clickCellFromLocation}
               error={this.props.locationsListError}
+              message={null}
+              component={
+                <SowCells 
+                  isSection={this.state.activeFromSectionId}
+                  locations={locations1}
+                  fetching={this.props.locationsFetching}
+                  activeCellIds={[this.state.activeCellFromLocationId]}
+                  clickLocation={this.clickCellFromLocation}
+                  error={this.props.locationsListError}
+                />}
             />
           </div>
           <div className='col-6'>
-              <Sections
-                sections={sections}
+            <FetchingErrorComponentMessage 
                 fetching={this.props.sectionsFetching}
-                activeSectionId={this.state.activeToSectionId}
-                clickSection={this.clickToSection}
                 error={this.props.sectionsListError}
+                message={null}
+                component={
+                    <Sections
+                  sections={sections}
+                  fetching={this.props.sectionsFetching}
+                  activeSectionId={this.state.activeToSectionId}
+                  clickSection={this.clickToSection}
+                  error={this.props.sectionsListError}
+                />}
               />
-              <SowCells
-                isSection={this.state.activeToSectionId}
-                locations={locations2}
+              <FetchingErrorComponentMessage 
                 fetching={this.props.locationsAddFetching}
-                activeCellIds={[this.state.activeCellToLocationId]}
-                clickLocation={this.clickCellToLocation}
                 error={this.props.locationsList2Error}
+                message={null}
+                component={
+                  <SowCells
+                    isSection={this.state.activeToSectionId}
+                    locations={locations2}
+                    fetching={this.props.locationsAddFetching}
+                    activeCellIds={[this.state.activeCellToLocationId]}
+                    clickLocation={this.clickCellToLocation}
+                    error={this.props.locationsList2Error}
+                  />}
               />
           </div>
         <div className='row'>
@@ -135,19 +160,20 @@ class WS3SowInnerTransferTab extends Component {
               </ul>  
             }
           </div>
-          {this.state.activeSow && 
-            <div className='bottom-buttons-block col'>
-              <div className="input-group">
-                <button onClick={this.clickTransfer} className='btn btn-outline-secondary'>
-                  Переместить
-                </button>
-              </div>
-            </div>
-          } 
-          <div className='col'>
-            {eventError && <ErrorMessage error={eventError} />}
-            {message && <Message message={message} />}
-          </div>
+            <FetchingErrorComponentMessage 
+                fetching={this.props.eventFetching}
+                error={this.props.eventError}
+                message={this.props.message}
+                component={
+                      <div className='bottom-buttons-block col'>
+                        <div className="input-group">
+                          <button onClick={this.clickTransfer} className='btn btn-outline-secondary'>
+                            Переместить
+                          </button>
+                        </div>
+                      </div>
+                  }
+              />
         </div>
       </div>
     )

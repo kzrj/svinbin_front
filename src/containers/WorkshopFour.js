@@ -29,7 +29,7 @@ class WorkshopFourContainer extends Component {
         {name: 'resettlementTab',  active: false, title: 'Размещение прибывших'},
         {name: 'innerTransferTab', active: false, title: 'Внутреннее перемещение'},
         {name: 'transferTab',      active: false, title: 'Перегон'},
-        {name: 'cullingTab',       active: false, title: 'Выбраковка/Убой'},
+        {name: 'cullingTab',       active: false, title: 'Выбытие/Убой'},
         {name: 'pigletsRecountTab',active: false,  title: 'Пересчет поросят'},
         {name: 'infoTab',          active: true, title: 'Инфо'},
       ],
@@ -103,6 +103,7 @@ class WorkshopFourContainer extends Component {
           <WSNomadResettelmentTab 
             workshopNumber={4}
             weighingPlace={'3/4'}
+            user={this.props.state.auth.user}
 
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.piglets.list}
@@ -111,10 +112,13 @@ class WorkshopFourContainer extends Component {
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsListError={this.props.state.locations.errorList}
 
             movePiglets={this.props.movePiglets}
             eventFetching={this.props.state.piglets.eventFetching}
@@ -127,17 +131,22 @@ class WorkshopFourContainer extends Component {
         { activeTab.name === 'innerTransferTab' &&
           <WSNomadInnerTransferTab
             workshopNumber={4}
+            user={this.props.state.auth.user}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations1={this.props.getLocations}
             locations1={this.props.state.locations.list}
             listFetching={this.props.state.locations.fetching}
+            locationsErrorList={this.props.state.locations.errorList}
 
             getLocations2={this.props.getLocationsAdditional}
             locations2={this.props.state.locations.additional_list}
             list2Fetching={this.props.state.locations.fetchingAdditional}
+            locations2ErrorList={this.props.state.locations.errorAdditional}
 
             movePiglets={this.props.movePiglets}
             eventFetching={this.props.state.piglets.eventFetching}
@@ -153,17 +162,22 @@ class WorkshopFourContainer extends Component {
             toLocation={8}
             toLocations={null}
             buttonName={'Отправить в Цех8'}
+            user={this.props.state.auth.user}
 
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.piglets.list}
             listFetching={this.props.state.piglets.listFetching}
+            listError={this.props.state.piglets.errorList}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsErrorList={this.props.state.locations.errorList}
 
             movePiglets={this.props.movePiglets}
             eventFetching={this.props.state.piglets.eventFetching}
@@ -180,12 +194,17 @@ class WorkshopFourContainer extends Component {
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
+            sectionsFetching={this.props.state.sections.fetching}
+            sectionsListError={this.props.state.sections.errorList}
 
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            locationsErrorList={this.props.state.locations.errorList}
 
             cullingPiglets={this.props.cullingPiglets}
+            cullingTypes={[{value:'padej', label: 'Падеж'}, {value:'prirezka', label: 'Прирезка'},
+              {value: 'vinuzhd', label: 'Вынужденный убой'}]}
             recountPiglets={this.props.recountPiglets}
             eventFetching={this.props.state.piglets.eventFetching}
             eventError={this.props.state.piglets.eventError}

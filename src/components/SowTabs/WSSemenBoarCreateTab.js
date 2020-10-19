@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // components
 import { ErrorMessage, Message } from '../CommonComponents';
+import { FetchingErrorComponentMessage } from '../CommonComponents';
 
 
 class WSSemenBoarCreateTab extends Component {
@@ -12,8 +13,10 @@ class WSSemenBoarCreateTab extends Component {
       weight: 0,
 
       birth_id: '',
+      farm_id: '',
       boar_id: '',
       semen_date: '',
+      f_denom: 2.0,
       a: null,
       b: null,
       d: null,
@@ -43,7 +46,7 @@ class WSSemenBoarCreateTab extends Component {
       a: this.state.a,
       b: this.state.b,
       d: this.state.d,
-      morphology_score: this.state.morphology_score,
+      f_denom: this.state.f_denom,
       final_motility_score: this.state.final_motility_score,
     }
     this.props.semenBoar(data)
@@ -65,6 +68,7 @@ class WSSemenBoarCreateTab extends Component {
   render() {
     this.refreshSowsList()
     const { boars, eventError, listFetching, message } = this.props
+    console.log(message)
     return (
       <div className='workshop-content'>
         <div>
@@ -87,7 +91,7 @@ class WSSemenBoarCreateTab extends Component {
                   onChange={this.setData}>
                   <option selected value={null} >Выберите хряка</option>
                   {boars.length > 0 && boars.map(boar => 
-                    <option value={boar.id} >{boar.birth_id} {boar.breed ? boar.breed : 'нет породы'}</option>
+                    <option value={boar.id} >{boar.farm_id} {boar.breed ? boar.breed : 'нет породы'}</option>
                     )}
                 </select>
               </div>
@@ -107,10 +111,12 @@ class WSSemenBoarCreateTab extends Component {
                   className="form-control"  placeholder='0'/>
               </div>
               <div className="form-group">
-                <label>morphology_score</label>
-                <input type='number' onChange={this.setData} name='morphology_score'
-                  value={this.state.morphology_score}
-                  className="form-control"  placeholder='0'/>
+                <label >F = E/знаменатель(2.0 или 2.5)</label>
+                <select className="custom-select" name='f_denom' className="form-control" 
+                  onChange={this.setData}>
+                  <option defaultValue={2.0} >F = E /2.0</option>
+                  <option value={2.5} >F = E /2.5</option>
+                </select>
               </div>
               <div className="form-group">
                 <label>Оценка подвижности (%). final_motility_score</label>
@@ -122,7 +128,7 @@ class WSSemenBoarCreateTab extends Component {
             </div>
             {/* eventError, message */}
             {eventError && <ErrorMessage error={eventError} />}
-            {message && <Message error={message} />}
+            {message && <Message message={message} />}
         </div>
       </div>
     )

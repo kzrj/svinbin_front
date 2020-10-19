@@ -5,6 +5,7 @@ import OperationsWs from '../components/Reports/OperationsWs'
 import { WsOpInputs4 } from '../components/Reports/OperationsWs'
 import WSReportComponent from '../components/Reports/WSReport'
 import WS3ReportComponent from '../components/Reports/WS3Report'
+import WSPopulationAndCellOpsComponent from '../components/Reports/WSPopulationAndCellOps'
 
 import ReportsActions from '../redux/redux-sauce/reports';
 import InputsActions from '../redux/redux-sauce/inputs';
@@ -15,8 +16,9 @@ class InfoTab extends Component {
     super(props);
     this.state = {
       tabs: [
+        {name: 'populationTab',  active: true, title: 'Текущее количество и операции по клеткам'},
         {name: 'operationsTab',  active: false, title: 'Операции'},
-        {name: 'reportsTab',    active: true, title: 'Отчет'},
+        {name: 'reportsTab',     active: false,  title: 'Отчет'},
       ],
     };
     this.setTab = this.setTab.bind(this);
@@ -51,16 +53,19 @@ class InfoTab extends Component {
     const activeTab = this.getActiveTab()
 
     return (
-      <div className="container-fluid">
-        <div className='row'>
-          <div className='col-6'>
-            <button className='btn'  onClick={() => this.setTab({name: 'operationsTab'})}>Операции</button>
-          </div>
-          <div className='col-6'>
-            <button className='btn'  onClick={() => this.setTab({name: 'reportsTab'})}>Отчет</button>
-          </div>
+      <div className="mx-2">
+        <div className='my-2'>
+          <button className='btn btn-xs bg-mainDark-light mr-2' onClick={() => this.setTab({name: 'populationTab'})}>Текущее количество и операции по клеткам</button>
+          <button className='btn btn-xs bg-mainDark-light mr-2' onClick={() => this.setTab({name: 'operationsTab'})}>Операции</button>
+          <button className='btn btn-xs bg-mainDark-light mr-2' onClick={() => this.setTab({name: 'reportsTab'})}>Отчет</button>
         </div>
         <div>
+          {activeTab.name === 'populationTab' && this.props.ws_number && this.props.ws_number == '3' &&
+            <WSPopulationAndCellOpsComponent 
+              getWsPopulation={this.props.getWsPopulation}
+              populationData={this.props.state.reports.wsAndSectionsPopulation}
+            />
+          }
           {activeTab.name === 'operationsTab' && this.props.ws_number && this.props.ws_number == '3' &&
             <OperationsWs 
               getOperationsReport={this.props.getOperationsReport} 
@@ -139,6 +144,7 @@ const mapDispatchToProps = (dispatch) => ({
   getWsReport: (filters) => dispatch(ReportsActions.getWsReportRequest(filters)),
   getWsReportPigsCount: (filters) => dispatch(ReportsActions.getWsReportPigsCountRequest(filters)),
   getWs3Report: (token) => dispatch(ReportsActions.getWs3ReportRequest(token)),
+  getWsPopulation: (token) => dispatch(ReportsActions.getWsPopulationRequest(token)),
 
   // inputs
   changeOperationsInputs: data => dispatch(InputsActions.changeOperationsInputs(data)),

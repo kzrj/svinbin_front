@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 //components
 import { PigletsCells, Sections } from '../Locations'
 import { PigletsGroup } from '../PigletsRepresentations'
-import { CullingTypeInput, CullingReasonInput } from '../FiltersAndInputs'
-import { ErrorMessage, Message } from '../CommonComponents'
-
+import { Message } from '../CommonComponents'
 
 class WSPigletsRecountTab extends Component {
    constructor(props) {
@@ -29,6 +27,7 @@ class WSPigletsRecountTab extends Component {
 
   componentDidMount() {
     this.props.pigletsResetErrorsAndMessages()
+    this.props.getRecountBalance()
   }
   
   clickSection = (e) => {
@@ -86,14 +85,14 @@ class WSPigletsRecountTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
+        this.props.getRecountBalance()
       }, 500)
     }
   }
 
   render() {
     this.refreshSowsList()
-    const { sections, locations, user, eventError, message } = this.props
-    const uboi = this.state.culling_type === 'spec' || this.state.culling_type === 'vinuzhd'
+    const { sections, locations, recountData} = this.props
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
@@ -111,6 +110,33 @@ class WSPigletsRecountTab extends Component {
             />
           </div>
           <div className='col-6'>
+            {recountData && 
+              <div className=''>
+                <p className=''>Общий баланс по цеху: 
+                  <span className='pl-3 font-weight-bold'>
+                    {recountData.ws_balance >= 0 
+                      ? (recountData.ws_balance === 0 || recountData.ws_balance === null)
+                        ? '0'
+                        : <span className='text-primary'>{'+' + recountData.ws_balance}</span> 
+                      : <span className='text-danger'>{recountData.ws_balance}</span>
+                    }
+                  </span>
+                </p>
+                {recountData.sections && recountData.sections.map(section =>
+                  <p className='mb-0'>по секции {section.number}: 
+                    <span className='pl-3 font-weight-bold'>
+                      {section.balance 
+                        ? section.balance && section.balance > 0 
+                              ? <span className='text-primary'>{'+' + section.balance}</span>
+                              : <span className='text-danger'>{section.balance}</span>
+                        : '0'
+                        }
+                      </span>
+                  </p>
+                  )}
+              </div>
+            }
+            <hr />
             {this.state.activePiglets && 
               <div>
                 <p>Пересчет</p>

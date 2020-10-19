@@ -4,7 +4,7 @@ import { toggleArray, toggleArrayLocations, getObjectbyId, toggleArrayDictById }
 //components
 import { PigletsCells, Sections } from '../Locations'
 import { PigletsWeaningInput } from '../PigletsRepresentations'
-import { ErrorMessage, Message } from '../CommonComponents'
+import { FetchingErrorComponentMessage } from '../CommonComponents'
 
 
 class WS3PigletsWeaningTab extends Component {
@@ -157,40 +157,60 @@ class WS3PigletsWeaningTab extends Component {
 
   render() {
     this.refreshSowsList()
-    const { locations, sections, eventMessage, eventError } = this.props
+    const { locations, sections } = this.props
+    console.log(this.props)
     return (
         <div className='workshop-content'>
           <div className='col-12'>
-            <Sections 
-                sections={sections}
-                activeSectionId={this.state.activeSectionId}
-                clickSection={this.clickSection}
-                error={this.props.sectionsListError}
-              />
-            <PigletsCells
-              isSection={this.state.activeSectionId}
-              locations={locations}
-              activeCellIds={this.state.activeLocationsId}
-              clickLocation={this.clickLocation}
-              error={this.props.locationsListError}
+            <FetchingErrorComponentMessage 
+                  fetching={this.props.sectionsFetching}
+                  error={this.props.sectionsListError}
+                  message={null}
+                  component={
+                    <Sections 
+                      sections={sections}
+                      activeSectionId={this.state.activeSectionId}
+                      clickSection={this.clickSection}
+                    />}
+                />
+            <FetchingErrorComponentMessage 
+                fetching={this.props.locationsFetching}
+                error={this.props.locationsErrorList}
+                message={null}
+                component={
+                  <PigletsCells
+                    isSection={this.state.activeSectionId}
+                    fetching={this.props.locationsFetching}
+                    locations={locations}
+                    activeCellIds={this.state.activeLocationsId}
+                    clickLocation={this.clickLocation}
+                    user={this.props.user}
+                  />}
             />
           </div>
           <div className=''>
-            <button className='btn btn-outline-dark' 
-              disabled={this.state.activePigletsInputList.length < 1}
-              onClick={this.createNomadPart}>
-              Создать партию
-            </button>
-            <p>{this.state.totalInPart && <span>Всего в партии {this.state.totalInPart}</span>}</p>
-            {this.state.activePigletsInputList.length > 0 && 
-              <div> 
-                <input type='number' onChange={this.setData} name='transfer_part_number' 
-                  value={this.state.transfer_part_number}/>
-                Номер партии 
-               </div>
-            }
-            <p>{eventMessage}</p>
-            {eventError && <ErrorMessage error={eventError}/>}
+            <FetchingErrorComponentMessage 
+              fetching={this.props.eventFetching}
+              error={this.props.eventError}
+              message={this.props.eventMessage}
+              component={
+                <div>
+                  <button className='btn btn-outline-dark' 
+                    disabled={this.state.activePigletsInputList.length < 1}
+                    onClick={this.createNomadPart}>
+                    Создать партию
+                  </button>
+                  <p>{this.state.totalInPart && <span>Всего в партии {this.state.totalInPart}</span>}</p>
+                  {this.state.activePigletsInputList.length > 0 && 
+                    <div> 
+                      <input type='number' onChange={this.setData} name='transfer_part_number' 
+                        value={this.state.transfer_part_number}/>
+                      Номер партии 
+                    </div>
+                  }
+                </div>
+              }
+            />
             {this.state.activePigletsInputList.length > 0 &&
               <PigletsWeaningInput 
                 weaningRecords={this.state.activePigletsInputList} 

@@ -35,14 +35,18 @@ const create = () => {
     }
 
     const seminationSow = payload => {
-        const { id, week, seminationEmployeeId, boar } = payload;
+        const { farm_id, week, date, seminator1, boar1, seminator2, boar2, } = payload;
         const token = localStorage.getItem('token') || '';
-        const url = endpoints.seminationSow(id);
+        const url = endpoints.DOUBLE_SEMINATION;
 
         const formData = new FormData();
+        formData.append("farm_id", farm_id);
         formData.append("week", week);
-        formData.append("seminationEmployeeId", seminationEmployeeId);
-        formData.append("boar", boar);
+        formData.append("date", date+'T12:00');
+        formData.append("seminator1", seminator1);
+        formData.append("boar1", boar1);
+        formData.append("seminator2", seminator2);
+        formData.append("boar2", boar2);
         
         return axios({
                     method: 'post',
@@ -134,6 +138,32 @@ const create = () => {
         })
     }
 
+    const cullingSowWs3 = payload => {
+        const { id, culling_type, reason, weight } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.cullingSowWs3(id);
+
+        const formData = new FormData();
+        formData.append("culling_type", culling_type);
+        formData.append("reason", reason);
+        formData.append("weight", weight);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     const sowMoveTo = payload => {
         const { id, location } = payload;
         const token = localStorage.getItem('token') || '';
@@ -182,8 +212,32 @@ const create = () => {
         })
     }
 
+    const sowsMoveManyWs3 = payload => {
+        const { sows, to_location } = payload;
+        const token = localStorage.getItem('token') || '';
+
+        const formData = new FormData();
+        sows.map(sow => formData.append("sows", sow))
+        formData.append("to_location", to_location);
+        
+        return axios({
+                    method: 'post',
+                    url: endpoints.SOWS_MOVE_MANY_WS3,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     const sowFarrow = payload => {
-        const { id, alive_quantity, dead_quantity, mummy_quantity } = payload;
+        const { id, alive_quantity, dead_quantity, mummy_quantity, date } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.sowFarrow(id);
 
@@ -191,6 +245,11 @@ const create = () => {
         formData.append("alive_quantity", alive_quantity);
         formData.append("dead_quantity", dead_quantity);
         formData.append("mummy_quantity", mummy_quantity);
+
+        let today = new Date();
+        let hour = today.getHours();
+        let min = today.getMinutes();
+        formData.append("date", date + 'T' + hour + ':' + min );
         
         return axios({
                     method: 'post',
@@ -388,6 +447,29 @@ const create = () => {
         })
     }
 
+    const abortionSowWs3 = payload => {
+        const { id } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.abortionSowWs3(id);
+
+        const formData = new FormData();
+
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     const massInitTransfer = payload => {
         const { sows, week } = payload;
         const token = localStorage.getItem('token') || '';
@@ -467,11 +549,12 @@ const create = () => {
     }
 
     const createBoar = payload => {
-        const { birth_id, breed } = payload;
+        const { farm_id, birth_id, breed } = payload;
         const token = localStorage.getItem('token') || '';
 
         const formData = new FormData();
         formData.append("birth_id", birth_id);
+        formData.append("farm_id", farm_id);
         formData.append("breed", breed);
 
         return axios({
@@ -528,16 +611,15 @@ const create = () => {
     }
 
     const semenBoar = payload => {
-        const { id, a, b, d, morphology_score, final_motility_score, date } = payload;
+        const { id, a, b, d, final_motility_score, date, f_denom } = payload;
         const token = localStorage.getItem('token') || '';
-        console.log('semenBoar')
         const url = endpoints.semenBoar(id);
 
         const formData = new FormData();
         formData.append("a", a);
         formData.append("b", b);
         formData.append("d", d);
-        formData.append("morphology_score", morphology_score);
+        formData.append("f_denom", f_denom);
         formData.append("final_motility_score", final_motility_score);
         formData.append("date", date);
 
@@ -572,6 +654,33 @@ const create = () => {
         return sow
     }
 
+    const massCulling = payload => {
+        const { sows, culling_type, reason, weight } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.MASS_CULLING;
+
+        const formData = new FormData();
+        sows.map(sow => formData.append("sows", sow))
+        formData.append("culling_type", culling_type);
+        formData.append("reason", reason);
+        formData.append("weight", weight);
+        
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getSows,
         getSow,
@@ -579,8 +688,10 @@ const create = () => {
         ultrasoundSow,
         ultrasoundV2Sow,
         cullingSow,
+        cullingSowWs3,
         sowMoveTo,
         sowsMoveMany,
+        sowsMoveManyWs3,
         sowFarrow,
         getSowsByTours,
         getSowsByToursWs2,
@@ -589,10 +700,12 @@ const create = () => {
         massSemination,
         massUltrasound,
         abortionSow,
+        abortionSowWs3,
         massInitTransfer,
         markAsNurse,
         importSeminationsFromFarm,
         setSow,
+        massCulling,
 
         // boars
         createBoar,

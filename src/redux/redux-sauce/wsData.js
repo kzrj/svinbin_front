@@ -22,6 +22,8 @@ const { Types, Creators } = createActions({
     ws3TransferSowAndPigletsRequest: ['payload'],
     ws3TransferSowAndPigletsFail: ['error'],
     ws3TransferSowAndPigletsSuccess: ['payload'],
+
+    wsDataResetErrorsAndMessages: null,
 })
 
 export const WsDataTypes = Types
@@ -116,6 +118,11 @@ export const ws3TransferSowAndPigletsFail = (state, { error }) => {
     return state.merge({ fetching: false, error, message: null })
 }
 
+// resetErrorsAndMessages
+export const wsDataResetErrorsAndMessages = (state) => {
+    return state.merge({ fetching: false, error: null, message: '' })
+  }
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -138,4 +145,6 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.WS3_TRANSFER_SOW_AND_PIGLETS_REQUEST]: ws3TransferSowAndPigletsRequest,
     [Types.WS3_TRANSFER_SOW_AND_PIGLETS_SUCCESS]: ws3TransferSowAndPigletsSuccess,
     [Types.WS3_TRANSFER_SOW_AND_PIGLETS_FAIL]: ws3TransferSowAndPigletsFail,
+
+    [Types.WS_DATA_RESET_ERRORS_AND_MESSAGES]: wsDataResetErrorsAndMessages,
 })

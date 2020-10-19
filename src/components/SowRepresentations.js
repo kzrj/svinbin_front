@@ -23,8 +23,8 @@ export class SowToursData extends Component {
      return (
        <div>
          {tours_info.length > 0 ?
-           tours_info.map(tourInfo => 
-           <div>
+           tours_info.map((tourInfo, key) => 
+           <div key={key}>
              <table>
                <thead>
                  <tr>
@@ -103,7 +103,7 @@ export class SowToursData extends Component {
        </thead>
        <tbody>
          {sows.length > 0 && sows.map(sow => 
-           <SowRow sow={sow} sowClick={sowClick} choosedSows={choosedSows}/>
+           <SowRow sow={sow} sowClick={sowClick} choosedSows={choosedSows} key={sow.id}/>
            )}
        </tbody>
      </table>
@@ -124,7 +124,8 @@ export class SowToursData extends Component {
        <td onClick={sowClick} data-id={sow.id} data-farm_id={sow.farm_id} className="sow-row-date">
          {sow.seminations_current_tour.length > 0 ? 
            <ul className='sow-seminations' onClick={sowClick}>
-             {sow.seminations_current_tour.map(seminationDate => <li onClick={sowClick}>
+             {sow.seminations_current_tour.map((seminationDate,key) => 
+              <li onClick={sowClick} key={key}>
               {seminationDate}</li> )}
            </ul>
            : '-'
@@ -160,7 +161,7 @@ export class SowToursData extends Component {
                 onClick={this.props.clickSearch}
                 className="form-control search-input" 
                 value={sowIdValue}
-                placeholder="Поиск по ID"/>
+                placeholder="Номер свиноматки"/>
           <label>Количество: {sows.length}</label>
           </div>
           <div className='div-scroll'>

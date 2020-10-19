@@ -4,75 +4,57 @@ import _ from 'lodash';
 import { ErrorMessage } from './CommonComponents'
 
 
-export class SowFindById extends Component {
-    render() {
-      const { sows, sow, fetching, sowIdValue, error } = this.props
-       
-      return (
-         <div className='workshop-content-column-1'>
-            <div class="input-group mb-3">
-                <input type='number' onChange={this.props.getSowsById} 
-                className="form-control search-input" value={sowIdValue}
-                placeholder="Поиск по ID"/>
-            <label>Количество: {sows.length}</label>
-            </div>
-            <div className='div-scroll'>
-                <ul className='list-unstyled'>
-                {!error ? fetching ? <p className='loading'>Загрузка</p> :
-                    (sows.length > 0 && sow) && 
-                    sows.map(sowInList => 
-                        <li className={sowInList.id == sow.id ? 'sow-active sow-li text-center' :
-                        'sow-li text-center'} 
-                        key={sowInList.id} 
-                        onClick={() => this.props.getSow(sowInList.id)}>
-                        <span className='sow-list-farm-id'>{sowInList.farm_id}</span>
-                        <span className='span-block span sow-list-tour'>
-                            {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}</span>
-                        </li>)
-                    :
-                    <ErrorMessage error={error} />
-                }
-                </ul>
-            </div>
-         </div>
-      )
-    }
-   }
+export function SowFindByIdWithoutGet (props) {
 
-export class SowFindByIdWithoutGet extends Component {
-    render() {
-        const { sows, sow, fetching, sowIdValue, error } = this.props
-        
-        return (
-            <div className='workshop-content-column-1'>
-            <div class="input-group mb-3">
-                <input type='number' onChange={this.props.getSowsById} 
-                className="form-control search-input" value={sowIdValue}
-                placeholder="Поиск по ID"/>
-            <label>Количество: {sows.length}</label>
-            </div>
-            <div className='div-scroll'>
-                <ul className='list-unstyled'>
-                {!error ? fetching ? <p className='loading'>Загрузка</p> :
-                    (sows.length > 0 && sow) && 
+const { sows, sow, fetching, sowIdValue, error, queryCount } = props
+
+return (
+    <div className='workshop-content-column-1'>
+    <div className="input-group mb-3">
+        <input type='number' onChange={props.getSowsById} 
+        className="form-control search-input" value={sowIdValue}
+        placeholder="Номер свиноматки"/>
+    </div>
+    <div className="input-group mb-3">
+        <button className='btn btn-secondary mx-2'
+            onClick={() => props.getGilts()}>
+            Показать только ремонтных
+        </button>
+    </div>
+    <p>Количество: {queryCount}</p>
+    <div className='div-scroll'>
+        <ul className='list-unstyled'>
+        {!error 
+            ? fetching 
+                ? <p className='loading'>Загрузка</p> 
+                : (sows.length > 0 && sow) && 
                     sows.map(sowInList => 
-                        <li className={sowInList.id == sow.id ? 'sow-active sow-li text-center' :
-                        'sow-li text-center'} 
+                        <li className={sowInList.id == sow.id 
+                            ? 'sow-active sow-li my-0 py-0 pl-3 text-justify' 
+                            : 'sow-li my-0 py-0 pl-3 text-justify'} 
                         key={sowInList.id} 
-                        onClick={() => this.props.setSow(sowInList)}>
-                        <span className='sow-list-farm-id'>{sowInList.farm_id}</span>
-                        <span className='span-block span sow-list-tour'>
-                            {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}</span>
-                        </li>)
-                    :
-                    <ErrorMessage error={error} />
-                }
-                </ul>
-            </div>
-            </div>
-        )
-    }
+                        onClick={() => props.setSow(sowInList)}>
+                            <p className='sow-list-farm-id my-0 '>{sowInList.farm_id}</p>
+                            <p className='my-0 '>
+                                {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}
+                            </p>
+                            <p className='mr-3 my-0 '>{sowInList.status}</p>
+                            {sowInList.birth_id &&
+                                <span className='float-right'>
+                                    №бирки {sowInList.birth_id}
+                                </span>
+                            }
+                            
+                        </li>
+                    )
+            : <ErrorMessage error={error} />
+        }
+        </ul>
+    </div>
+    </div>
+  )
 }
+
 
 export class SowFindByIdMany extends Component {
     render() {
@@ -82,7 +64,7 @@ export class SowFindByIdMany extends Component {
             <div class="input-group mb-3">
                 <input type='number' onChange={this.props.getSowsById} 
                 className="form-control search-input" value={sowIdValue}
-                placeholder="Поиск по ID"/>
+                placeholder="Номер свиноматки"/>
             <label>Количество: {sows.length}</label>
             </div>
             <div className='div-scroll'>
@@ -167,19 +149,21 @@ export class SowFilter extends Component {
   }
 }
 
-export class SowFarmIdFilter extends Component {
-    render() {
-      return (
-          <div className="input-group mb-3 col-3">
-            <input type="number" className="form-control" placeholder="Farm ID"
-              aria-label="Farmid" aria-describedby="basic-addon1" name='farm_id_starts'
-              value={this.props.farm_id_starts}
-              onClick={this.props.resetQuery}
-              onChange={this.props.setQuery} />
-          </div>
-      )
-    }
-   }
+{/* <div className="input-group mb-3">
+        <input type='number' onChange={props.getSowsById} 
+        className="form-control search-input" value={sowIdValue}
+        placeholder="Номер свиноматки"/>
+    </div> */}
+export function SowFarmIdFilter (props) {
+    return (
+        <input type="number" className="form-control search-input" placeholder="Номер свиноматки"
+            aria-label="Farmid"  name='farm_id_starts'
+            className={props.className ? props.className : ''}
+            value={props.farm_id_starts}
+            onClick={props.resetQuery}
+            onChange={props.setQuery} />
+        )
+}
   
 export class SowTourFilter extends Component {
 render() {
@@ -278,10 +262,13 @@ export const CullingTypeInput = (props) => (
     <select className="custom-select" name='culling_type' 
       onChange={props.setData} value={props.culling_type}>
       <option selected>Выберите тип выбытия...</option>
-      <option value='padej' >Падеж</option>
+      {props.cullingTypes.map(cType =>
+        <option value={cType.value}>{cType.label}</option>
+        )}
+      {/* <option value='padej' >Падеж</option>
       <option value='spec' >Спец. убой</option>
       <option value='vinuzhd' >Вынужден. убой</option>
-      <option value='prirezka' >Прирезка</option>
+      <option value='prirezka' >Прирезка</option> */}
     </select>
     )
   

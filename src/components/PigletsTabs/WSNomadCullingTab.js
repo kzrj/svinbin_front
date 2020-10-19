@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { PigletsCells, Sections } from '../Locations'
 import { PigletsGroup } from '../PigletsRepresentations'
 import { CullingTypeInput, CullingReasonInput } from '../FiltersAndInputs'
-import { ErrorMessage, Message } from '../CommonComponents'
+import { Message, FetchingErrorComponentMessage } from '../CommonComponents'
 
 
 class WSNomadCullingTab extends Component {
@@ -51,6 +51,7 @@ class WSNomadCullingTab extends Component {
       activePiglets: location.piglets.length > 0 ?
         location.piglets[0] : null
     })
+    this.props.pigletsResetErrorsAndMessages()
   }
 
   setData (e) {
@@ -104,115 +105,99 @@ class WSNomadCullingTab extends Component {
 
   render() {
     this.refreshSowsList()
-    const { sections, locations, user, eventError, message } = this.props
+    const { sections, locations } = this.props
     const uboi = this.state.culling_type === 'spec' || this.state.culling_type === 'vinuzhd'
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
-            <Sections 
-              sections={sections}
-              activeSectionId={this.state.activeSectionId}
-              clickSection={this.clickSection}
-            />
-            <PigletsCells
-              isSection={this.state.activeSectionId}
-              fetching={this.props.locationsFetching}
-              locations={locations}
-              activeCellIds={[this.state.activeCellId]}
-              clickLocation={this.clickLocation}
+            <FetchingErrorComponentMessage 
+                  fetching={this.props.sectionsFetching}
+                  error={this.props.sectionsListError}
+                  message={null}
+                  component={
+                    <Sections 
+                      sections={sections}
+                      activeSectionId={this.state.activeSectionId}
+                      clickSection={this.clickSection}
+                    />}
+              />
+            <FetchingErrorComponentMessage 
+                fetching={this.props.locationsFetching}
+                error={this.props.locationsErrorList}
+                message={null}
+                component={
+                  <PigletsCells
+                    isSection={this.state.activeSectionId}
+                    fetching={this.props.locationsFetching}
+                    locations={locations}
+                    activeCellIds={[this.state.activeCellId]}
+                    clickLocation={this.clickLocation}
+                    user={this.props.user}
+                  />}
             />
           </div>
           <div className='col-6'>
-            {this.state.activePiglets ?
-              <div>
-                <div>
-                  <PigletsGroup piglets={this.state.activePiglets}/>
-                  {/* <p> Выбраковка <> */}
-                  {this.state.activePiglets.gilts_quantity > 0 && 
-                    <div>
-                      <label>Ремонтная свинка?</label>
-                      <input type='checkbox' onChange={this.setIsGilt} value={this.state.is_it_gilt} />
-                    </div>
-                  }
-                  
-                  <div className="input-group">
-                    <CullingTypeInput setData={this.setData}/>
-                    <div className="input-group">
-                      <CullingReasonInput setData={this.setData} 
-                      culling_reason={this.state.culling_reason}/>
-                    </div>
-                    <div className="input-group">
-                      <input type='number' value={this.state.quantity} 
-                        onChange={this.setData} 
-                        name='quantity' className="form-control search-input"
-                        placeholder="Количество" />
-                    </div>
-                    <div className="input-group">
-                      <input type='date' value={this.state.date} 
-                        onChange={this.setData} 
-                        name='date' className="form-control search-input"
-                        placeholder="Дата, формат 02-02-2020" />
-                    </div>
-                      <div className="input-group">
-                        <label>Укажите вес</label>
-                        <input type='number' value={this.state.total_weight} 
-                          onChange={this.setData} 
-                          name='total_weight' className="form-control search-input"
-                          placeholder="Укажите вес" />
-                      </div>
-                    <br />
-                    <br />
-                    <button className='btn btn-outline-secondary' type='button'
-                      onClick={this.cullingPiglets}
-                      >
-                        Выбраковка/Убой
-                    </button>
-                  </div>
-                </div>
-              </div>
-              :
-              this.props.message ? <Message message={this.props.message} /> :
-                eventError ? <ErrorMessage error={eventError} /> :
-                <Message message={'Выберите клетку'} />
-            }
-            {/* {user.is_officer && this.state.activePiglets && 
-              <div>
-                <p>Пересчет</p>
-                {this.state.activePiglets ?
+            <div>
+              <FetchingErrorComponentMessage
+                fetching={this.props.eventFetching}
+                error={this.props.eventError}
+                message={this.props.message}
+                component={
+                  this.state.activePiglets &&
                   <div>
+                    <PigletsGroup piglets={this.state.activePiglets}/>
+                    {this.state.activePiglets.gilts_quantity > 0 && 
+                      <div>
+                        <label>Ремонтная свинка?</label>
+                        <input type='checkbox' onChange={this.setIsGilt} value={this.state.is_it_gilt} />
+                      </div>
+                    }
                     
-                      
-                      
-                      <div className="input-group-append">
-                        <CullingTypeInput setData={this.setData}/>
-                        <CullingReasonInput setData={this.setData} 
-                          culling_reason={this.state.culling_reason}/>
-                        <input type='text' value={this.state.quantity} 
+                    <div className="input-group">
+                      <CullingTypeInput setData={this.setData} cullingTypes={this.props.cullingTypes}/>
+                      {this.state.culling_type !== 'spec' &&
+                        <div className="input-group">
+                          <CullingReasonInput 
+                            setData={this.setData} 
+                            culling_reason={this.state.culling_reason}
+                          />
+                        </div>
+                      }
+                      <div className="input-group">
+                        <input type='number' value={this.state.quantity} 
                           onChange={this.setData} 
                           name='quantity' className="form-control search-input"
                           placeholder="Количество" />
-                        {uboi &&
-                          <input type='text' value={this.state.total_weight} 
+                      </div>
+                      <div className="input-group">
+                        <input type='date' value={this.state.date} 
+                          onChange={this.setData} 
+                          name='date' className="form-control search-input"
+                          placeholder="Дата, формат 02-02-2020" />
+                      </div>
+                        <div className="input-group">
+                          <label>Укажите вес</label>
+                          <input type='number' value={this.state.total_weight} 
                             onChange={this.setData} 
                             name='total_weight' className="form-control search-input"
                             placeholder="Укажите вес" />
-                        }
-                        <button className='btn btn-outline-secondary' type='button'
-                          onClick={this.cullingPiglets}
-                          >
-                            Пересчитать
-                        </button>
-                      </div>
-                    
+                        </div>
+                      <br />
+                      <br />
+                      <button className='btn btn-outline-secondary' type='button'
+                        onClick={this.cullingPiglets}
+                        >
+                          Выбраковка/Убой
+                      </button>
+                    </div>
                   </div>
-                  :
-                  this.props.message ? <Message message={this.props.message} /> :
-                    <Message message={'Выберите клетку'} />
                 }
-              </div>
-            } */}
+                />
+            {!this.props.message &&
+              <Message message={'Выберите клетку'} />}
         </div>
       </div>
+    </div>
     )
   }
 }

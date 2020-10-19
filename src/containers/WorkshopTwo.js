@@ -21,13 +21,14 @@ class WorkshopTwoContainer extends Component {
     super(props);
     this.state = {
       tabs: [
-        {name: 'transferTab', active: true, title: 'Перегон'},
-        {name: 'ultrasoundTab',           active: false, title: 'УЗИ 35'},
-        {name: 'cullingTab',          active: false, title: 'Выбраковка'},
+        {name: 'transferTab',         active: false, title: 'Перегон'},
+        {name: 'ultrasoundTab',       active: false, title: 'УЗИ 35'},
+        {name: 'cullingTab',          active: true,  title: 'Выбытие'},
         {name: 'searchSowTab',        active: false, title: 'Поиск по всем цехам'},
         // {name: 'initAndTransferTab',     active: false, title: 'Инициализация для Цеха 3'},
         // {name: 'infoTab',             active: false, title: 'Инфо'},
-      ]
+      ],
+      online: true,
     }
     this.setTab = this.setTab.bind(this);
     this.getActiveTab = this.getActiveTab.bind(this);
@@ -35,6 +36,17 @@ class WorkshopTwoContainer extends Component {
   
   componentDidMount() {
     this.props.getTours({by_workshop_number: 2})
+    window.addEventListener('offline', this.handleNetworkChange);
+    window.addEventListener('online', this.handleNetworkChange);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('offline', this.handleNetworkChange);
+    window.removeEventListener('online', this.handleNetworkChange);
+  }
+
+  handleNetworkChange = () => {
+    this.setState({ online: window.navigator.onLine });
   }
 
   setTab (tab) {
@@ -60,6 +72,9 @@ class WorkshopTwoContainer extends Component {
 
     return activeTab
   }
+  // {this.state.online 
+  //   ? <span style={{"color": "green", "float": "left"}}>Online</span> 
+  //   : <span style={{"color": "red", "float": "left"}}>Offline</span>}
 
   render() {
     const activeTab = this.getActiveTab()
@@ -68,7 +83,7 @@ class WorkshopTwoContainer extends Component {
       <div className="workshop container-fluid">
         <TabMenu 
           tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №2'} activeTab={activeTab}
-          user={this.props.state.auth.user}
+          user={this.props.state.auth.user} online={this.state.online}
         />
 
         { activeTab.name === 'transferTab' &&
@@ -79,6 +94,8 @@ class WorkshopTwoContainer extends Component {
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
+            errorList={this.props.state.sows.errorList}
+            queryCount={this.props.state.sows.queryCount}
 
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
@@ -86,6 +103,7 @@ class WorkshopTwoContainer extends Component {
             massMove={this.props.sowsMoveMany}
             eventFetching={this.props.state.sows.eventFetching}
             eventError={this.props.state.sows.eventError}
+            message={this.props.state.sows.message}
 
             sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
@@ -121,6 +139,7 @@ class WorkshopTwoContainer extends Component {
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
+            queryCount={this.props.state.sows.queryCount}
 
             getSow={this.props.getSow}
             setSow={this.props.setSow}

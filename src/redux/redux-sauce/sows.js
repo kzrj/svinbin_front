@@ -23,6 +23,10 @@ const { Types, Creators } = createActions({
     cullingSowFail: ['error'],
     cullingSowSuccess: ['payload'],
 
+    cullingSowWs3Request: ['payload'],
+    cullingSowWs3Fail: ['error'],
+    cullingSowWs3Success: ['payload'],
+
     sowMoveToRequest: ['payload'],
     sowMoveToFail: ['error'],
     sowMoveToSuccess: ['payload'],
@@ -30,6 +34,10 @@ const { Types, Creators } = createActions({
     sowsMoveManyRequest: ['payload'],
     sowsMoveManyFail: ['error'],
     sowsMoveManySuccess: ['payload'],
+
+    sowsMoveManyWs3Request: ['payload'],
+    sowsMoveManyWs3Fail: ['error'],
+    sowsMoveManyWs3Success: ['payload'],
 
     sowFarrowRequest: ['payload'],
     sowFarrowFail: ['error'],
@@ -55,9 +63,17 @@ const { Types, Creators } = createActions({
     massUltrasoundFail: ['error'],
     massUltrasoundSuccess: ['payload'],
 
+    massCullingRequest: ['payload'],
+    massCullingFail: ['error'],
+    massCullingSuccess: ['payload'],
+
     abortionSowRequest: ['payload'],
     abortionSowFail: ['error'],
     abortionSowSuccess: ['payload'],
+
+    abortionSowWs3Request: ['payload'],
+    abortionSowWs3Fail: ['error'],
+    abortionSowWs3Success: ['payload'],
 
     massInitTransferRequest: ['payload'],
     massInitTransferFail: ['error'],
@@ -108,6 +124,7 @@ export default Creators
 export const INITIAL_STATE = Immutable({
     fetching: false,
     list: [],
+    queryCount: null,
     errorList: null,
 
     sow: null,
@@ -144,6 +161,7 @@ export const SowsSelectors = {
     seminationSow: state => state.Sows.sow,
     ultrasoundSow: state => state.Sows.sow,
     cullingSow: state => state.Sows.sow,
+    cullingSowWs3: state => state.Sows.sow,
     sowMoveTo: state => state.Sows.sow,
     sowsMoveMany: state => state.Sows.sow,
     sowFarrow: state => state.Sows.sow,
@@ -165,17 +183,18 @@ export const SowsSelectors = {
 /* ------------- Reducers ------------- */
 // Get list
 export const getSowsRequest = (state, { payload }) => {
-    return state.merge({ fetching: true, list: [] })
+    return state.merge({ fetching: true, list: [], queryCount: 0 })
 }
 
 export const getSowsSuccess = (state, { payload }) => {
     let sow = null
-    if (payload.length > 0) sow = payload[0]
-    return state.merge({ fetching: false, errorList: null, list: payload, sow: sow })
+    if (payload.results.length > 0) sow = payload.results[0]
+    return state.merge({ fetching: false, errorList: null, list: payload.results, sow: sow,
+        queryCount: payload.count })
 }
 
 export const getSowsFail = (state, { error }) => {
-    return state.merge({ fetching: false, errorList: error, list: [] })
+    return state.merge({ fetching: false, errorList: error, list: [], queryCount: null })
 }
 
 // Get one
@@ -229,10 +248,24 @@ export const cullingSowRequest = (state, { payload }) => {
 }
 
 export const cullingSowSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, eventError: null, sow: payload.sow, sowEvent: payload.culling, message: payload.message })
+    return state.merge({ eventFetching: false, eventError: null, sow: payload.sow, sowEvent: payload.culling,
+         message: payload.message })
 }
 
 export const cullingSowFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, eventError: error })
+}
+
+// Culling ws3
+export const cullingSowWs3Request = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const cullingSowWs3Success = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: null, sow: payload.sow, sowEvent: payload.culling, message: payload.message })
+}
+
+export const cullingSowWs3Fail = (state, { error }) => {
     return state.merge({ eventFetching: false, eventError: error })
 }
 
@@ -261,6 +294,20 @@ export const sowsMoveManySuccess = (state, { payload }) => {
 }
 
 export const sowsMoveManyFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, eventError: error })
+}
+
+// Move many ws3
+export const sowsMoveManyWs3Request = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const sowsMoveManyWs3Success = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: null,
+         sowEvent: payload.transaction_ids, message: payload.message })
+}
+
+export const sowsMoveManyWs3Fail = (state, { error }) => {
     return state.merge({ eventFetching: false, eventError: error })
 }
 
@@ -345,16 +392,42 @@ export const massUltrasoundFail = (state, { error }) => {
     return state.merge({ eventFetching: false, eventError: error })
 }
 
+// Mass culling
+export const massCullingRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const massCullingSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: null, message: payload.message })
+}
+
+export const massCullingFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, eventError: error })
+}
+
 // AbortionSow
 export const abortionSowRequest = (state, { payload }) => {
     return state.merge({ eventFetching: true, })
 }
 
 export const abortionSowSuccess = (state, { payload }) => {
-    return state.merge({ eventFetching: false, eventError: null, sow: payload, message: payload.message })
+    return state.merge({ eventFetching: false, eventError: null, sow: payload.sow, message: payload.message })
 }
 
 export const abortionSowFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, eventError: error })
+}
+
+// AbortionSowWs3
+export const abortionSowWs3Request = (state, { payload }) => {
+    return state.merge({ eventFetching: true, })
+}
+
+export const abortionSowWs3Success = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: null, sow: payload, message: payload.message })
+}
+
+export const abortionSowWs3Fail = (state, { error }) => {
     return state.merge({ eventFetching: false, eventError: error, sow: null })
 }
 
@@ -500,6 +573,10 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.CULLING_SOW_SUCCESS]: cullingSowSuccess,
     [Types.CULLING_SOW_FAIL]: cullingSowFail,
 
+    [Types.CULLING_SOW_WS3_REQUEST]: cullingSowWs3Request,
+    [Types.CULLING_SOW_WS3_SUCCESS]: cullingSowWs3Success,
+    [Types.CULLING_SOW_WS3_FAIL]: cullingSowWs3Fail,
+
     [Types.SOW_MOVE_TO_REQUEST]: sowMoveToRequest,
     [Types.SOW_MOVE_TO_SUCCESS]: sowMoveToSuccess,
     [Types.SOW_MOVE_TO_FAIL]: sowMoveToFail,
@@ -507,6 +584,10 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.SOWS_MOVE_MANY_REQUEST]: sowsMoveManyRequest,
     [Types.SOWS_MOVE_MANY_SUCCESS]: sowsMoveManySuccess,
     [Types.SOWS_MOVE_MANY_FAIL]: sowsMoveManyFail,
+
+    [Types.SOWS_MOVE_MANY_WS3_REQUEST]: sowsMoveManyWs3Request,
+    [Types.SOWS_MOVE_MANY_WS3_SUCCESS]: sowsMoveManyWs3Success,
+    [Types.SOWS_MOVE_MANY_WS3_FAIL]: sowsMoveManyWs3Fail,
 
     [Types.SOW_FARROW_REQUEST]: sowFarrowRequest,
     [Types.SOW_FARROW_SUCCESS]: sowFarrowSuccess,
@@ -532,9 +613,17 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.MASS_ULTRASOUND_SUCCESS]: massUltrasoundSuccess,
     [Types.MASS_ULTRASOUND_FAIL]: massUltrasoundFail,
 
+    [Types.MASS_CULLING_REQUEST]: massCullingRequest,
+    [Types.MASS_CULLING_SUCCESS]: massCullingSuccess,
+    [Types.MASS_CULLING_FAIL]: massCullingFail,
+
     [Types.ABORTION_SOW_REQUEST]: abortionSowRequest,
     [Types.ABORTION_SOW_SUCCESS]: abortionSowSuccess,
     [Types.ABORTION_SOW_FAIL]: abortionSowFail,
+
+    [Types.ABORTION_SOW_WS3_REQUEST]: abortionSowWs3Request,
+    [Types.ABORTION_SOW_WS3_SUCCESS]: abortionSowWs3Success,
+    [Types.ABORTION_SOW_WS3_FAIL]: abortionSowWs3Fail,
 
     [Types.MASS_INIT_TRANSFER_REQUEST]: massInitTransferRequest,
     [Types.MASS_INIT_TRANSFER_SUCCESS]: massInitTransferSuccess,

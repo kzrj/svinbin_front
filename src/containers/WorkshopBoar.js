@@ -18,7 +18,7 @@ class WorkshopBoarContainer extends Component {
     this.state = {
       tabs: [
         {name: 'boarTab',        active: false, title: 'Создание, выбытие, наличие'},
-        {name: 'createSemenTab', active: false, title: 'Создание семени'},
+        {name: 'createSemenTab', active: false, title: 'Регистрация семени'},
         {name: 'listSemenTab',   active: true,  title: 'Лист семени'},
       ]
     }

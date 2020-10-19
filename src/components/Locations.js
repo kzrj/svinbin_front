@@ -75,16 +75,16 @@ export class SowCells extends Component {
       <div 
         className={cellClassName}
         onClick={() => this.props.clickLocation(location)}
-        key={location.id}>
+       >
           <span className='cell-setion-number'>#{location.cell}</span>
           <br/>
           {sow && [
-              <span className='cell-sow-farmId'>{sow.farm_id}</span>,
+              <span key={sow.farm_id} className='cell-sow-farmId'>{sow.farm_id}</span>,
               <br/>,
               <span className='cell-sow-status'>{sow.status}</span>,
               tour &&
               [<br/>,
-              <span className='cell-tour'>{tour}</span>]
+              <span key={sow.farm_id + tour} className='cell-tour'>{tour}</span>]
             ]}
           {more_than_one_sow && 'Ошибка! Больше одной свиньи в клетке!'}
           <br/>
@@ -111,6 +111,7 @@ export class SowCells extends Component {
                       location={location}
                       activeCellIds={activeCellIds}
                       clickLocation={this.props.clickLocation}
+                      user={this.props.user}
                       // gilts={this.props.gilts}
                       />
                     )
@@ -133,23 +134,26 @@ export class SowCells extends Component {
       'col-sm-1 cell cell-active' : 
         location.is_piglets_empty ? 'col-sm-1 cell' : 'col-sm-1 cell-full cell'
     const piglets = location.piglets && location.piglets.length > 0 ? location.piglets[0] : null
-    // const tour = piglets && location.piglets.length > 0 ? location.piglets[0].week_tour : null
-    // tour = tou
-    
+    let age = ''
+    piglets && piglets.age.split(' ').length > 1 
+      ? age = piglets.age.split(' ')[0]
+      : age = 0
     return (
       <div 
         className={cellClassName}
         onClick={() => this.props.clickLocation(location)}
-        key={location.id}>
+        >
           <span className='cell-setion-number'>#{location.cell}</span>
           <br/>
           {piglets && 
             <div>
               {piglets.gilts_quantity > 0 && 
                 <span className="badge badge-warning">Рм {piglets.gilts_quantity}</span>}
+              {this.props.user && this.props.user.is_officer && <span>id {piglets.id}</span>}
               <div className='cell-piglets-count'>П {piglets.quantity}</div>
               <div className='cell-piglets-metatour'>
-                  {piglets.age.split(' ')[0]}д
+                  {/* {piglets.age.split(' ')[0]}д */}
+                  {age}д
               </div>
               <div className='cell-piglets-metatour'>
                   {/* {piglets.week_tour} */}

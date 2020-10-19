@@ -1,5 +1,5 @@
-export const url = 'http://92.53.104.136';
-// export const url = 'http://46.229.212.205';
+// export const url = 'http://92.53.104.136';
+export const url = 'http://46.229.212.205';
 export const apiUrl = `${url}/api`;
 
 export default {
@@ -9,16 +9,18 @@ export default {
 
     // locations
     GET_LOCATIONS: `${apiUrl}/locations/`,
+    GET_WS_POPULATION: `${apiUrl}/locations/ws3_and_sections/`,
     GET_SECTIONS: `${apiUrl}/sections/`,
     
     // sows
     GET_SOWS: `${apiUrl}/sows/`,
+    sowMoveTo: (id) => `${apiUrl}/sows/${id}/move_to/`,
+    
     getSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/`,
-    seminationSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/semination/`,
+    DOUBLE_SEMINATION: `${apiUrl}/workshoponetwo/sows/double_semination/`,
     ultrasoundSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/ultrasound/`,
     ultrasoundV2Sow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/ultrasoundv2/`,
     cullingSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/culling/`,
-    sowMoveTo: (id) => `${apiUrl}/workshoponetwo/sows/${id}/move_to/`,
     SOWS_MOVE_MANY: `${apiUrl}/workshoponetwo/sows/move_many/`,
     CREATE_NEW_SOW: `${apiUrl}/workshoponetwo/sows/create_new/`,
     CREATE_NEW_NONAME_SOW: `${apiUrl}/workshoponetwo/sows/create_new_without_farm_id/`,
@@ -26,10 +28,15 @@ export default {
     GET_SOWS_BY_TOURS_WS2: `${apiUrl}/workshoponetwo/sows/sows_by_tours_ws2/`,
     MASS_SEMINATION: `${apiUrl}/workshoponetwo/sows/mass_semination/`,
     MASS_ULTRASOUND: `${apiUrl}/workshoponetwo/sows/mass_ultrasound/`,
+    MASS_CULLING: `${apiUrl}/workshoponetwo/sows/mass_culling/`,
     abortionSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/abortion/`,
     MASS_INIT_TRANSFER: `${apiUrl}/workshoponetwo/sows/mass_init_and_transfer/`,
+
     sowFarrow: (id) => `${apiUrl}/workshopthree/sows/${id}/sow_farrow/`,
     markAsNurse: (id) => `${apiUrl}/workshopthree/sows/${id}/mark_as_nurse/`,
+    cullingSowWs3: (id) => `${apiUrl}/workshopthree/sows/${id}/culling/`,
+    abortionSowWs3: (id) => `${apiUrl}/workshopthree/sows/${id}/abortion/`,
+    SOWS_MOVE_MANY_WS3: `${apiUrl}/workshopthree/sows/move_many/`,
 
     // boars
     GET_BOARS: `${apiUrl}/boars/`,
@@ -77,4 +84,8 @@ export default {
     GET_WS_REPORT_PIGS_COUNT: `${apiUrl}/reports/director/ws_report_count/`,
     GET_WS_REPORT: `${apiUrl}/reports/director/ws_report/`,
     get_ws_report_as_excel: (ws_number) => `${apiUrl}/reports/director/get_ws_report_excel/?ws_number=${ws_number}`,
+
+    GET_RECOUNT_BALANCE: `${apiUrl}/reports/recounts/ws_balance/`,
+    GET_TOURS_WITH_WEIGHTS: `${apiUrl}/reports/tours_v2/`,
+    get_tour_with_weight: (id) => `${apiUrl}/reports/tours_v2/${id}/weights_data/`,
 }

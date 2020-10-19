@@ -64,3 +64,39 @@ export function* getWsReport(api, action) {
         yield put(ReportsActions.getWsReportFail(err.message))
     }
 }
+
+export function* getRecountBalance(api, action) {
+    try {
+        let response = yield call(api.getRecountBalance, action.payload);
+        yield put(ReportsActions.getRecountBalanceSuccess(response));
+    } catch (err) {
+        yield put(ReportsActions.getRecountBalanceFail(err))
+    }
+}
+
+export function* getWsPopulation(api, action) {
+    try {
+        let response = yield call(api.getWsPopulation, action.payload);
+        yield put(ReportsActions.getWsPopulationSuccess(response));
+    } catch (err) {
+        yield put(ReportsActions.getWsPopulationFail(err))
+    }
+}
+
+export function* getToursV2Report(api, action) {
+    try {
+        let response = yield call(api.getToursV2Report, action.payload);
+        yield put(ReportsActions.getToursV2ReportSuccess(response.results));
+    } catch (err) {
+        yield put(ReportsActions.getToursV2ReportFail(err.message))
+    }
+}
+
+export function* getTourV2Report(api, action) {
+    try {
+        let response = yield call(api.getTourV2Report, action.payload);
+        yield put(ReportsActions.getTourV2ReportSuccess(response));
+    } catch (err) {
+        yield put(ReportsActions.getTourV2ReportFail(err.message))
+    }
+}

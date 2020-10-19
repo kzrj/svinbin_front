@@ -49,10 +49,10 @@ class WSSemenBoarListTab extends Component {
           <div className='col-6'>
             <label for='start-date'>Дата с</label>
             <input type='date'
-              id='startDate'
+              id='date_after'
               className="form-control search-input"
               value={this.state.date_after}
-              name='startDate'
+              name='date_after'
               onChange={this.setData}
               />
           </div>
@@ -91,10 +91,8 @@ class WSSemenBoarListTab extends Component {
                 <th>Sperm Concentration (million / ml)</th>
                 <th>Total Sperms in Ejaculate (billion)</th>
                 <th>Motility Score (0-100%)</th>
-                <th>Morphology Score (1 - 3)</th>
                 <th>Total Viable Sperms in Ejaculate (billion)</th>
                 <th>Doses from this Collection</th>
-                <th>Doses from this Collection v2</th>
                 <th>Actual Volume of Diluted Semen Required (ml)</th>
                 <th>Actual Volume of Diluent Required (ml)</th>
                 <th>Final Motility Score (0 - 100%)</th>
@@ -103,15 +101,13 @@ class WSSemenBoarListTab extends Component {
                 <th rowSpan='3'>№</th>
                 <th rowSpan='3'>Дата</th>
                 <th rowSpan='3'>Порода</th>
-                <th rowSpan='3'>Номер бирки</th>
+                <th rowSpan='3'>Номер</th>
                 <th>Количество спермы (мл) <hr/>A</th>
                 <th>Оценка концентрации (млн)<hr/> B</th>
                 <th>Количество спермиев в эякуляте (млрд)<hr/>С<hr/>(A * B / 1000)</th>
                 <th>Оценка подвижности (%)<hr/>D</th>
-                <th>Качество      (1 - 3)</th>
                 <th>Живых спермиев в эякуляте (млрд)<hr/>E<hr/>(C * D / 100)</th>
-                <th>Количество спермодоз<hr/>F<hr/>(E / 2,0)</th>
-                <th>Количество спермодоз<hr/>F<hr/>(E / 2.1) / (E / 1.8 )</th>
+                <th>Количество спермодоз<hr/>F<hr/>(E / 2,0) или (E / 2,5)</th>
                 <th>Общии обьем спермы и разбавителя (мл) <hr/>G<hr/>(F * 90)</th>
                 <th>Обьем разбавителя (мл)<hr/> H<hr/>(G - A)</th>
                 <th>Оценка подвижности (%)</th>
@@ -130,7 +126,7 @@ class WSSemenBoarListTab extends Component {
                     {record.boar.breed ? record.boar.breed : 'нет породы'}
                   </td>
                   <td>
-                    {record.boar.birth_id}
+                    {record.boar.farm_id}
                   </td>
                   <td>
                     {record.a}
@@ -145,16 +141,10 @@ class WSSemenBoarListTab extends Component {
                     {record.d}
                   </td>
                   <td>
-                    {record.morphology_score}
-                  </td>
-                  <td>
                     {record.e}
                   </td>
                   <td>
                     {record.f}
-                  </td>
-                  <td>
-                    {record.f2.toFixed(2)}
                   </td>
                   <td>
                     {record.g}

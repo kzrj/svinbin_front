@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 //components
 import { PigletsGroup, WeighingDetail, PigletsListElem } from '../PigletsRepresentations'
 import { WeighingPigletsInput } from '../FiltersAndInputs'
-import { Message, ErrorMessage } from '../CommonComponents'
+import { Message, FetchingErrorComponentMessage } from '../CommonComponents'
 
 class WSNomadIncomeTab extends Component {
    constructor(props) {
@@ -46,6 +46,7 @@ class WSNomadIncomeTab extends Component {
       activePiglets: piglets,
       weighingRecord: null
     })
+    this.props.pigletsResetErrorsAndMessages()
   }
 
   setData (e) {
@@ -94,10 +95,6 @@ class WSNomadIncomeTab extends Component {
     this.setState({
       ...this.state,
       totalWeight: '',
-      // farrow_date: '',
-      // quantity: null,
-      // gilts_quantity: null,
-      // transaction_date: '',
       needToRefresh: true
     })
   }
@@ -117,48 +114,56 @@ class WSNomadIncomeTab extends Component {
   
   render() {
     this.refreshSowsList()
-    const { piglets, eventError, user } = this.props
+    const { piglets, user } = this.props
 
     return (
       <div className='row workshop-content'>
         <div className='col-3'>
-          {piglets.map(group =>
-            <div className={this.state.activePigletsId == group.id ? 
-              'nomad-piglets-row piglets-active': 'nomad-piglets-row'}
-              onClick={() => this.clickPiglets(group)}
-              key={group.id}
-              >
-              <PigletsListElem piglets={group} />
-            </div>
-          )}
+          <FetchingErrorComponentMessage 
+            fetching={this.props.listFetching}
+            error={this.props.listError}
+            message={null}
+            component={
+              <div>
+                {piglets.map(group =>
+                  <div className={this.state.activePigletsId == group.id ? 
+                    'nomad-piglets-row piglets-active': 'nomad-piglets-row'}
+                    onClick={() => this.clickPiglets(group)}
+                    key={group.id}
+                    >
+                    <PigletsListElem piglets={group} />
+                  </div>
+                )}
+              </div>
+            }
+          />
         </div>
         <div className='col-9'>
-          {this.state.activePiglets ?
-            <div>
-              <PigletsGroup piglets={this.state.activePiglets}/>
-              <WeighingPigletsInput 
-                totalWeight={this.state.totalWeight}
-                setData={this.setData}
-                weighing={this.weighing}
-                turnOnNewAmount={this.turnOnNewAmount}
-                checkNewAmount={this.state.checkNewAmount}
-                newAmount={this.state.newAmount}
-              />
-            </div>
-            :
-            this.props.message ? 
+          <FetchingErrorComponentMessage
+            fetching={this.props.eventFetching}
+            error={this.props.eventError}
+            message={this.props.message}
+            component={
+              this.state.activePiglets &&
               <div>
-                <Message message={this.props.message}/>
-                {this.props.weighingData && 
-                  <WeighingDetail weighingData={this.props.weighingData} />
-                }
+                <PigletsGroup piglets={this.state.activePiglets}/>
+                <WeighingPigletsInput 
+                  totalWeight={this.state.totalWeight}
+                  setData={this.setData}
+                  weighing={this.weighing}
+                  turnOnNewAmount={this.turnOnNewAmount}
+                  checkNewAmount={this.state.checkNewAmount}
+                  newAmount={this.state.newAmount}
+                />
               </div>
-              :
-                <Message message={'Выберите партию для взвешивания'}/>
-          }
-          {eventError && <ErrorMessage error={eventError} />}
+            }
+            />
+            {this.props.message 
+              ? this.props.weighingData && 
+                  <WeighingDetail weighingData={this.props.weighingData} />
+              : <Message message={'Выберите партию для взвешивания'}/>
+            }
 
-          {/* <InitPigletsComponent /> */}
           {user.is_officer && 
             <div>
               Создать поросят.

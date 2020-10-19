@@ -1,9 +1,107 @@
 import React, { Component } from 'react';
+import { Field, reduxForm } from 'redux-form'
 
 //components
 import { SowTable }  from '../../components/SowRepresentations'
-import { SowFarmIdFilter, SowTourFilter, SowSectionFilter }  from '../../components/FiltersAndInputs'
-import { ErrorMessage, Message, LoadingMessage } from '../CommonComponents'
+import { ErrorMessage, FetchingErrorComponentMessage } from '../CommonComponents'
+
+
+function getDateTimeNow() {
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, '0');
+  let mm = String(today.getMonth() + 1).padStart(2, '0');
+  let yyyy = today.getFullYear();
+
+  today = yyyy + '-' + mm + '-' + dd;
+  return today
+}
+
+const renderTextField = ({
+  input,
+  label,
+  type,
+  divClass,
+  meta: { touched, error, warning }
+}) => (
+  <div className={divClass}>
+    <input {...input} placeholder={label} type={type} />
+    {touched &&
+      ((error && <span className='color-red2-dark my-1 font-700 pl-1'>*{error}</span>) ||
+        (warning && <span>{warning}</span>))}
+  </div>
+)
+
+function FarrowForm (props) {
+  const { parentSubmit, pristine, reset, submitting, handleSubmit, initialValues, tours, boars,
+     seminators } = props
+  return (
+    <form onSubmit={handleSubmit(parentSubmit)} className=''
+      initialValues={initialValues}
+    >
+      <Field 
+        name="date" 
+        component={renderTextField}
+        type='date'
+        divClass='float-left mr-2 pr-5'
+        label='Дата'
+      />
+
+      <button 
+        className='btn btn-m mb-1 rounded-s text-uppercase font-900 shadow-s
+        bg-blue2-dark text-wrap'
+        type="submit"
+        disabled={pristine || submitting}>
+        записать данные
+      </button>
+    </form>
+  )
+}
+
+const validateFarrowForm = values => {
+  const errors = {}
+  const requiredFields = [
+    // 'id',
+    // 'dead_quantity',
+    // 'mummy_quantity',
+    // 'alive_quantity',
+    'date',
+  ]
+  requiredFields.forEach(field => {
+    if (!values[field]) {
+      errors[field] = 'Обязательное поле'
+    }
+  })
+  return errors
+}
+
+FarrowForm = reduxForm({
+  form: 'farrowForm',
+  validate: validateFarrowForm,
+})(FarrowForm)
+
+
+function CountPigletsButtons (props) {
+  const { label, count, increase, decrease, dataLabel } = props
+  return (
+    <div className='farrow-button-block col-3'>
+      <label className='color-mainDark-dark font-17 font-700'>{label} {count}</label>
+      <div>
+        <div className='col-5 btn btn-dark btn-inc-dec'
+          onClick={increase}
+          data-label={dataLabel}
+        >
+          +
+        </div>
+        <div className='col-5 btn btn-dark btn-inc-dec'
+          onClick={decrease}
+          data-label={dataLabel}
+        >
+          -
+        </div>
+      </div>
+    </div>
+  )
+}
 
 
 class WS3SowFarrowTab extends Component {
@@ -19,12 +117,14 @@ class WS3SowFarrowTab extends Component {
 
       choosedSows: [],
       query: {
+        alive:true,
         farm_id_starts: '',
         tour: null,
       },
       activeSowFarmId: ''
     }
     this.setQuery = this.setQuery.bind(this);
+    this.setData = this.setData.bind(this);
     this.resetQuery = this.resetQuery.bind(this);
     this.sowClick = this.sowClick.bind(this);
     this.decreasePiglets = this.decreasePiglets.bind(this);
@@ -38,16 +138,18 @@ class WS3SowFarrowTab extends Component {
       query: {
         ...this.state.query,
         by_section_in_cell: '',
+        alive:true,
         all_in_workshop_number: this.props.workshopNumber,
         status_title: this.props.statusTitleFilter
-      }
+      },
+      date: getDateTimeNow()
     })
     this.props.getSows({
       by_section_in_cell: '',
+      alive:true,
       all_in_workshop_number: this.props.workshopNumber,
       status_title: this.props.statusTitleFilter
     })
-    this.props.sowsResetErrorsAndMessages()
   }
 
   setQuery (e) {
@@ -80,6 +182,7 @@ class WS3SowFarrowTab extends Component {
       choosedSows: [e.target.dataset.id,],
       activeSowFarmId: e.target.dataset.farm_id,
     })
+    this.props.sowsResetErrorsAndMessages()
   }
 
   setData (e) {
@@ -113,6 +216,7 @@ class WS3SowFarrowTab extends Component {
       dead_quantity: this.state.dead_piglets,
       mummy_quantity: this.state.mummy_piglets,
       alive_quantity: this.state.alive_piglets,
+      date: this.state.date,
     })
     this.setState({
       activeSow: null,
@@ -122,7 +226,6 @@ class WS3SowFarrowTab extends Component {
       mummy_piglets: 0,
       dead_piglets: 0,
       alive_piglets: 0,
-      date: null,
       query: {
         ...this.state.query,
         farm_id_starts: '',
@@ -140,98 +243,82 @@ class WS3SowFarrowTab extends Component {
   }
 
   render() {
-    const { sows, tours, sections, eventError, message } = this.props
+    const { sows } = this.props
     this.refreshSowsList()
+    let today = getDateTimeNow()
     
     return (
       <div className='workshop-content'>
-        <div>
-          <div className='commonfilter row'>
-            <label className='sow-event-label'>Фильтр</label>
-            <SowFarmIdFilter setQuery={this.setQuery} resetQuery={this.resetQuery}
-              farm_id_starts={this.state.query.farm_id_starts}/>
-            <SowTourFilter tours={tours} setQuery={this.setQuery}/>
-            <SowSectionFilter sections={sections} setQuery={this.setQuery} />
+          {this.state.activeSowFarmId 
+            ? <h4>Свиноматка {this.state.activeSowFarmId}</h4> 
+            : <h4>Выберите свиноматку</h4>}
+          <div className='my-1'>
+            <input type="number" 
+              className="font-20 mx-2 rounded-s input-custom-placeholder" 
+              placeholder="Номер свиноматки"
+              aria-label="Farmid" aria-describedby="basic-addon1" name='farm_id_starts'
+              value={this.state.query.farm_id_starts}
+              onClick={this.resetQuery}
+              onChange={this.setQuery} />
+          
+            <input type='date'
+              className='font-20 mx-2 rounded-s bg-color-white'
+              value={this.state.date}
+              defaultValue={today}
+              name='date'
+              onChange={this.setData}
+              />
+            
+            {this.state.date > today 
+              ? <ErrorMessage error={{message:'Нельзя выбрать дату в будущем'}}/>
+              : <FetchingErrorComponentMessage 
+                  fetching={this.props.eventFetching}
+                  error={this.props.eventError}
+                  message={this.props.message}
+                  divClassName={'font-20 mx-2 d-inline'}
+                  component={
+                    <button onClick={this.clickFarrow}
+                      className="btn btn-primary btn-l font-20 font-900" type="button" >
+                      Записать данные
+                    </button>
+                  }
+                  />
+            }
           </div>
-          <div>
-            <div className="input-group row">
-              <div className='col-3'>
-                <h4>Свиноматка {this.state.activeSowFarmId}</h4>
-                <p>Поросят  {this.state.total_piglets}</p>
-                <button onClick={this.clickFarrow}
-                  className="btn btn-outline-secondary btn-sm" type="button" >
-                  Записать данные
-                </button>
-                {eventError && <ErrorMessage error={eventError}/>}
-                {message && <Message message={message}/>}
-              </div>
-              
-              <div className='farrow-button-block col-3'>
-                <label>Живые {this.state.alive_piglets}</label>
-                <div>
-                  <div className='col-5 btn btn-dark btn-inc-dec'
-                    onClick={this.increasePiglets}
-                    data-label='alive_piglets'
-                  >
-                    +
-                  </div>
-                  <div className='col-5 btn btn-dark btn-inc-dec'
-                    onClick={this.decreasePiglets}
-                    data-label='alive_piglets'
-                  >
-                    -
-                  </div>
-                </div>
-              </div>
-
-              <div className='farrow-button-block col-3'>
-                <label>Мертвые {this.state.dead_piglets}</label>
-                <div >
-                  <div className='col-5 btn btn-dark btn-inc-dec'
-                    onClick={this.increasePiglets}
-                    data-label='dead_piglets'
-                  >
-                    +
-                  </div>
-                  <div className='col-5 btn btn-dark btn-inc-dec'
-                    onClick={this.decreasePiglets}
-                    data-label='dead_piglets'
-                  >
-                    -
-                  </div>
-                </div>
-              </div>
-              
-              <div className='farrow-button-block col-3'>
-                <label>Муммии {this.state.mummy_piglets}</label>
-                <div>
-                  <div className='col-5 btn btn-dark btn-inc-dec'
-                    onClick={this.increasePiglets}
-                    data-label='mummy_piglets'
-                  >
-                    +
-                  </div>
-                  <div className='col-5 btn btn-dark btn-inc-dec'
-                    onClick={this.decreasePiglets}
-                    data-label='mummy_piglets'
-                  >
-                    -
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* <p>Поросят  {this.state.total_piglets}</p> */}
+          <div className="row my-1">
+            <CountPigletsButtons 
+              label={"Живые"}
+              dataLabel={'alive_piglets'}
+              count={this.state.alive_piglets}
+              increase={this.increasePiglets}
+              decrease={this.decreasePiglets}
+            />
+            <CountPigletsButtons 
+              label={"Мертвые"}
+              dataLabel={'dead_piglets'}
+              count={this.state.dead_piglets}
+              increase={this.increasePiglets}
+              decrease={this.decreasePiglets}
+            />
+            <CountPigletsButtons 
+              label={"Муммий"}
+              dataLabel={'mummy_piglets'}
+              count={this.state.mummy_piglets}
+              increase={this.increasePiglets}
+              decrease={this.decreasePiglets}
+            />
           </div>
-        </div>
         <div className='commonfilter-results'>
-          <div className='count row'>
-              <div className='col-6'>
-                Выбрано {this.state.choosedSows.length} из {sows.length}
-              </div>
-            </div>
-          {this.props.sowsListFetching ? 
-            <LoadingMessage /> :
-            <SowTable sows={sows} sowClick={this.sowClick} 
-              choosedSows={this.state.choosedSows}/>}
+          <FetchingErrorComponentMessage 
+              fetching={this.props.sowsListFetching}
+              error={this.props.sowsErrorList}
+              message={null}
+              component={
+                <SowTable sows={sows} sowClick={this.sowClick} 
+                  choosedSows={this.state.choosedSows}/>
+              }
+            />
         </div>
       </div>
     )

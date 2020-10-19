@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 //components
 import { PigletsCells, Sections } from '../Locations'
 import { PigletsGroup } from '../PigletsRepresentations'
-import { CullingTypeInput, CullingReasonInput } from '../FiltersAndInputs'
-import { ErrorMessage, Message } from '../CommonComponents'
+import { Message, FetchingErrorComponentMessage } from '../CommonComponents'
 
 
 class WS3CreateGiltTab extends Component {
@@ -49,6 +48,7 @@ class WS3CreateGiltTab extends Component {
       mother_sow_farm_id: location.sow_set.length > 0 ? 
       location.sow_set[0].farm_id : 0,
     })
+    this.props.pigletsResetErrorsAndMessages()
   }
 
   setData (e) {
@@ -75,7 +75,6 @@ class WS3CreateGiltTab extends Component {
     this.setState({
       ...this.state,
       
-      // mother_sow_farm_id: 0,
       birth_id: '',
 
       needToRefresh: true, 
@@ -95,54 +94,71 @@ class WS3CreateGiltTab extends Component {
 
   render() {
     this.refreshSowsList()
-    const { sections, locations, user, eventError, message, locationsFetching, eventFetching } = this.props
+    const { sections, locations } = this.props
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
-            <Sections 
-              sections={sections}
-              activeSectionId={this.state.activeSectionId}
-              clickSection={this.clickSection}
+            <FetchingErrorComponentMessage 
+                fetching={this.props.sectionsFetching}
+                error={this.props.sectionsListError}
+                message={null}
+                component={
+                  <Sections 
+                    sections={sections}
+                    activeSectionId={this.state.activeSectionId}
+                    fetching={this.props.sectionsFetching}
+                    error={this.props.sectionsListError}
+                    clickSection={this.clickSection}
+                  />}
             />
-            <PigletsCells
-              isSection={this.state.activeSectionId}
+            <FetchingErrorComponentMessage 
               fetching={this.props.locationsFetching}
-              locations={locations}
-              activeCellIds={[this.state.activeCellId]}
-              clickLocation={this.clickLocation}
+              error={this.props.locationsListError}
+              message={null}
+              component={
+                <PigletsCells
+                  isSection={this.state.activeSectionId}
+                  fetching={this.props.locationsFetching}
+                  locations={locations}
+                  activeCellIds={[this.state.activeCellId]}
+                  clickLocation={this.clickLocation}
+                />}
             />
           </div>
           <div className='col-6'>
-            {this.state.activePiglets ?
-              <div>
+            <FetchingErrorComponentMessage
+              fetching={this.props.eventFetching} 
+              error={this.props.eventError}
+              message={this.props.message}
+              component={
                 <div>
-                  <PigletsGroup piglets={this.state.activePiglets}/>
-                  <div className="input-group">
-                    <label>Укажите ID свиноматки - родителя </label>
-                    <input type='number' value={this.state.mother_sow_farm_id} 
-                      onChange={this.setData} 
-                      name='mother_sow_farm_id' className="form-control search-input"
-                      placeholder="Укажите ID свиноматки  " />
-                  </div>
-                  <div className="input-group">
-                    <label>Укажите номер бирки </label>
-                    <input type='text' value={this.state.birth_id} 
-                      onChange={this.setData} 
-                      name='birth_id' className="form-control search-input"
-                      placeholder="Укажите номер бирки  " />
-                  </div>
-                  <button className='btn btn-outline-secondary' type='button'
-                    onClick={this.createGilt}
-                    >
-                      Создать ремонтную свинку.
-                  </button>
+                  {this.state.activePiglets && 
+                    <div>
+                    <PigletsGroup piglets={this.state.activePiglets}/>
+                    <div className="input-group">
+                      <label>Укажите ID свиноматки - родителя </label>
+                      <input type='number' value={this.state.mother_sow_farm_id} 
+                        onChange={this.setData} 
+                        name='mother_sow_farm_id' className="form-control search-input"
+                        placeholder="Укажите ID свиноматки  " />
+                    </div>
+                    <div className="input-group">
+                      <label>Укажите номер бирки </label>
+                      <input type='text' value={this.state.birth_id} 
+                        onChange={this.setData} 
+                        name='birth_id' className="form-control search-input"
+                        placeholder="Укажите номер бирки  " />
+                    </div>
+                    <button className='btn btn-outline-secondary' type='button'
+                      onClick={this.createGilt}
+                      >
+                        Создать ремонтную свинку.
+                    </button>
+                  </div>}
                 </div>
-              </div>
-              :
-              this.props.message ? <Message message={this.props.message} /> :
-                eventError ? <ErrorMessage error={eventError} /> :
-                <Message message={'Выберите клетку'} />
-            }
+              }
+            />
+            {!this.state.activePiglets && !this.props.message && <Message message={'Выберите клетку'} />}
         </div>
       </div>
     )

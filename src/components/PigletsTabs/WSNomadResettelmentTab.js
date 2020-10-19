@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 // components
 import { PigletsCells, Sections } from '../Locations'
 import { PigletsListElem } from '../PigletsRepresentations'
-import { Message, ErrorMessage } from '../CommonComponents'
+import { Message, FetchingErrorComponentMessage } from '../CommonComponents'
 import { SplitPigletsInput } from '../FiltersAndInputs'
 
 
@@ -123,51 +123,79 @@ class WSNomadResettelmentTab extends Component {
     return (
         <div className='row workshop-content'>
           <div className='col-3'>
-            {piglets.map(group =>
-              <div className={this.state.activePigletsId == group.id ? 
-                'nomad-piglets-row piglets-active': 'nomad-piglets-row'}
-                onClick={() => this.clickPiglets(group)}
-                key={group.id}
-                >
-                <PigletsListElem piglets={group} />
-              </div>
-            )}
+            <FetchingErrorComponentMessage
+              fetching={this.props.listFetching}
+              error={this.props.errorList}
+              message={null}
+              component={
+                <div >
+                  {piglets.map(group =>
+                    <div className={this.state.activePigletsId == group.id ? 
+                      'nomad-piglets-row piglets-active': 'nomad-piglets-row'}
+                      onClick={() => this.clickPiglets(group)}
+                      key={group.id}
+                      >
+                      <PigletsListElem piglets={group} />
+                    </div>
+                  )}
+                </div>}
+            />
           </div>
           <div className='col-9'>
-            <Sections 
-                sections={sections}
-                activeSectionId={this.state.activeSectionId}
-                clickSection={this.clickSection}
+            <FetchingErrorComponentMessage 
+                fetching={this.props.sectionsFetching}
+                error={this.props.sectionsListError}
+                message={null}
+                component={
+                  <Sections 
+                    sections={sections}
+                    activeSectionId={this.state.activeSectionId}
+                    clickSection={this.clickSection}
+                  />}
               />
-            <PigletsCells
-              isSection={this.state.activeSectionId}
-              fetching={this.props.locationsFetching}
-              locations={locations}
-              activeCellIds={[this.state.activeCellId]}
-              clickLocation={this.clickCell}
+            <FetchingErrorComponentMessage 
+                fetching={this.props.locationsFetching}
+                error={this.props.locationsErrorList}
+                message={null}
+                component={
+                  <PigletsCells
+                    isSection={this.state.activeSectionId}
+                    fetching={this.props.locationsFetching}
+                    locations={locations}
+                    activeCellIds={[this.state.activeCellId]}
+                    clickLocation={this.clickCell}
+                    user={this.props.user}
+                  />}
             />
-            {this.state.activePiglets ?
-              <div>
-                <SplitPigletsInput 
-                  checked={this.checked}
-                  changeQuantity={this.state.changeQuantity}
-                  quantity={this.state.quantity}
-                  helpMessage={'Укажите количество'}
-                  setData={this.setData}
-                  gilts_contains={this.state.gilts_contains}
-                />
-                  <button className='btn btn-outline-secondary' type='button'
-                    onClick={this.clickSetlle}
-                    >
-                      Разместить группу
-                  </button>
-              </div>
-              :
-              this.props.message ? <Message message={this.props.message}/> : 
-                <Message message={'Выберите группу поросят'}/>
-            }
-            {eventError && <ErrorMessage error={eventError}/>}
-          </div>  
+            <FetchingErrorComponentMessage 
+              fetching={this.props.eventFetching}
+              error={this.props.eventError}
+              message={this.props.message}
+              component={
+                <div>
+                  {this.state.activePiglets ?
+                    <div>
+                      <SplitPigletsInput 
+                        checked={this.checked}
+                        changeQuantity={this.state.changeQuantity}
+                        quantity={this.state.quantity}
+                        helpMessage={'Укажите количество'}
+                        setData={this.setData}
+                        gilts_contains={this.state.gilts_contains}
+                      />
+                        <button className='btn btn-outline-secondary' type='button'
+                          onClick={this.clickSetlle}
+                          >
+                            Разместить группу
+                        </button>
+                    </div>
+                    :
+                    !this.props.message && <Message message={'Выберите группу поросят'}/>
+                  }
+                </div>
+              }
+              />
+          </div>
       </div>
     )
   }

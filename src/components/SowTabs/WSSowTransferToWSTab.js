@@ -5,7 +5,27 @@ import { toggleArray } from '../../components/utils'
 // components
 import { SowTable }  from '../../components/SowRepresentations'
 import { SowFarmIdFilter, SowTourFilter, SowSemUsoundFilter }  from '../../components/FiltersAndInputs'
-import { ErrorMessage, Message } from '../CommonComponents'
+import { FetchingErrorComponentMessage } from '../CommonComponents'
+
+function TransferButtons(props){
+  return (
+    <div className='row'>
+      {props.to_locations.length > 0 && props.to_locations.map(ws =>
+        <div className='col'>
+          <label className='sow-event-label'>Перевести в ЦЕХ {ws.number}</label>
+          <div className="input-group">
+            <div className="input-group-append">
+              <button className="btn btn-outline-secondary" type="button" 
+                onClick={() => props.massMove(ws.id)}>
+                Перевести в ЦЕХ {ws.number}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
 
 
 class WSSowTransferToWSTab extends Component {
@@ -15,6 +35,7 @@ class WSSowTransferToWSTab extends Component {
       query: {
         tour: null,
         status_title: "Супорос 35",
+        alive: true,
         to_seminate: null,
         farm_id_isnull: false
       },
@@ -39,7 +60,7 @@ class WSSowTransferToWSTab extends Component {
       }
     })
     this.props.getSows(this.state.query)
-    this.props.sowsResetErrorsAndMessages()
+    // this.props.sowsResetErrorsAndMessages()
   }
 
   chooseAll () {
@@ -126,7 +147,7 @@ class WSSowTransferToWSTab extends Component {
   }
 
   render() {
-    const { sows, tours, eventError } = this.props
+    const { sows, tours, eventError, message, errorList, eventFetching, queryCount } = this.props
     this.refreshSowsList()
     return (
       <div className='workshop-content'>
@@ -138,28 +159,20 @@ class WSSowTransferToWSTab extends Component {
             <SowSemUsoundFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>
           </div>
           <div>
-            <div className='row'>
-              {this.props.to_locations.length > 0 && this.props.to_locations.map(ws =>
-                <div className='col'>
-                  <label className='sow-event-label'>Перевести в ЦЕХ {ws.number}</label>
-                  <div className="input-group">
-                    <div className="input-group-append">
-                      <button className="btn btn-outline-secondary" type="button" 
-                        onClick={() => this.massMove(ws.id)}>
-                        Перевести в ЦЕХ {ws.number}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {eventError && <ErrorMessage error={eventError}/>}
-            </div>
+            <FetchingErrorComponentMessage 
+              fetching={eventFetching}
+              error={eventError}
+              message={message}
+              component={
+                <TransferButtons to_locations={this.props.to_locations} massMove={this.massMove}/>
+              }
+            />
           </div>
         </div>
         <div className='commonfilter-results'>
           <div className='count row'>
             <div className='col-4'>
-              Выбрано {this.state.choosedSows.length} из {sows.length}
+              Выбрано {this.state.choosedSows.length} из {queryCount}
             </div>
             <div className='col-4'>
               <button className='btn btn-outline-secondary' onClick={this.chooseAll}>Выбрать всех</button>
@@ -168,8 +181,13 @@ class WSSowTransferToWSTab extends Component {
               <button className='btn btn-outline-secondary' onClick={this.resetAll}>Сбросить выбор</button>
             </div>
           </div>
-          {this.props.sowsListFetching  ? <p className='loading'>Загрузка</p> :
-            <SowTable sows={sows} sowClick={this.sowClick} choosedSows={this.state.choosedSows}/>}
+          <FetchingErrorComponentMessage 
+            fetching={this.props.sowsListFetching}
+            error={errorList}
+            component={
+              <SowTable sows={sows} sowClick={this.sowClick}  choosedSows={this.state.choosedSows}/>
+            }
+          />
         </div>
       </div>
     )

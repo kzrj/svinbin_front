@@ -4,8 +4,9 @@ import { parseErrorData, createUrlParamsFromFilters } from './utils';
 
 const create = () => {
 
-    const getUsers = (filters) => {
-        const params = createUrlParamsFromFilters(filters);
+    const getSemenators = (filters) => {
+        // const params = createUrlParamsFromFilters(filters);
+        const params = { is_seminator: true }
         return axios.get(endpoints.GET_USERS, { params })
         .then(response => response.data)
         .catch(err => {
@@ -15,7 +16,7 @@ const create = () => {
         })
     }
     return {
-        getUsers,
+        getSemenators,
     }
 }
 

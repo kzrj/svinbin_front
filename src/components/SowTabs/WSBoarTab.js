@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 // components
-import { ErrorMessage, Message } from '../CommonComponents';
+import { ErrorMessage, Message, FetchingErrorComponentMessage } from '../CommonComponents';
 
 
 function BoarList (props) {
@@ -15,7 +15,7 @@ function BoarList (props) {
           <li className={props.boar && 
             props.boar.id == elem.id ? 'sow-active sow-li text-center' : 'sow-li text-center'} 
             onClick={() => props.clickBoar(elem)}>
-            ID {elem.birth_id} {elem.breed ? elem.breed : 'нет породы'}
+            ID {elem.farm_id} {elem.breed ? elem.breed : 'нет породы'}
           </li>
         )}
       </ul>
@@ -38,6 +38,7 @@ class WSBoarTab extends Component {
       weight: 0,
 
       birth_id: '',
+      farm_id: '',
 
       needToRefresh: false,
     }
@@ -57,6 +58,7 @@ class WSBoarTab extends Component {
       ...this.state,
       boar: boar
     })
+    this.props.sowsResetErrorsAndMessages()
   }
 
   setData(e) {
@@ -68,7 +70,7 @@ class WSBoarTab extends Component {
 
   cullingBoar() {
     let data = {
-      id: this.props.boar.id,
+      id: this.state.boar.id,
       culling_type: this.state.cullingType,
       reason: this.state.cullingReason,
       weight: this.state.weight,
@@ -81,7 +83,7 @@ class WSBoarTab extends Component {
   }
 
   createBoar() {
-    this.props.createBoar({birth_id: this.state.birth_id, breed: this.state.breed})
+    this.props.createBoar({birth_id: this.state.birth_id, farm_id: this.state.farm_id, breed: this.state.breed})
     this.setState({
       ...this.state,
       needToRefresh: true
@@ -104,8 +106,12 @@ class WSBoarTab extends Component {
       <div className='workshop-content'>
         <div className='row'>
           <div className='col-4'>
-            <BoarList list={boars} 
-              boar={this.state.boar} clickBoar={this.clickBoar} listFetching={listFetching}/>
+            <FetchingErrorComponentMessage
+              fetching={this.props.listFetching}
+              component={
+                <BoarList list={boars} 
+                  boar={this.state.boar} clickBoar={this.clickBoar} listFetching={listFetching}/>}
+            />
           </div>
           <div className='col-4'>
               <h4>Выбраковка</h4>
@@ -133,14 +139,20 @@ class WSBoarTab extends Component {
                 <input type='number' onChange={this.setData} name='weight' value={this.state.weight}
                   className="form-control"  placeholder='Укажите вес'/>
               </div>
-              {this.state.boar &&
-                <div className="input-group">
-                  <button className="btn btn-outline-secondary" type="button"  
-                  onClick={this.cullingBoar}>
-                    Забраковать
-                  </button>
-                </div>
-              }
+              <FetchingErrorComponentMessage
+                fetching={this.props.eventFetching}
+                error={this.props.eventError}
+                message={this.props.message}
+                component={
+                  this.state.boar &&
+                    <div className="input-group">
+                      <button className="btn btn-outline-secondary" type="button"  
+                        onClick={this.cullingBoar}>
+                        Забраковать
+                      </button>
+                    </div>
+                  }
+              />
             </div>
             <div className='col-4'>
               <h4>Создать хряка</h4>
@@ -148,8 +160,15 @@ class WSBoarTab extends Component {
                 <div className="input-group-prepend">
                   <span className="input-group-text">ID нового хряка</span>
                 </div>
+                <input type='text' onChange={this.setData} name='farm_id' className="form-control" 
+                    placeholder='ID' value={this.state.farm_id}/>
+              </div>
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <span className="input-group-text">номер бирки</span>
+                </div>
                 <input type='text' onChange={this.setData} name='birth_id' className="form-control" 
-                    placeholder='ID' value={this.state.birth_id}/>
+                    placeholder='BIRHT ID' value={this.state.birth_id}/>
               </div>
               <div className="input-group">
                 <div className="input-group-prepend">
@@ -163,21 +182,22 @@ class WSBoarTab extends Component {
                     )}
                 </select>
               </div>
-              {this.state.birth_id &&
-                <div className="input-group">
-                  <button className="btn btn-outline-secondary" type="button"  
-                    onClick={this.createBoar}>
-                    Создать хряка
-                  </button>
-                </div>
-              }
+              <FetchingErrorComponentMessage
+                fetching={this.props.eventFetching}
+                error={this.props.eventError}
+                message={this.props.message}
+                component={
+                  this.state.birth_id &&
+                    <div className="input-group">
+                      <button className="btn btn-outline-secondary" type="button"  
+                        onClick={this.createBoar}>
+                        Создать хряка
+                      </button>
+                    </div>
+                }
+              />
             </div>
           </div>
-        <div className='col'>
-          {eventError && <ErrorMessage error={eventError}/>}
-          {message && <Message message={message}/>}
-        </div>
-
       </div>
     )
   }

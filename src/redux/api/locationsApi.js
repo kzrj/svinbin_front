@@ -27,9 +27,21 @@ const create = () => {
         })
     }
 
+    const getWsPopulation = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+        return axios.get(endpoints.GET_WS_POPULATION, { params })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getLocations,
-        getSections
+        getSections,
+        getWsPopulation
     }
 
 }

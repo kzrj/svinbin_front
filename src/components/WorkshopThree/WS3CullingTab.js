@@ -10,6 +10,7 @@ class WS2CullingTab extends Component {
       cullingReason: '',
       cullingType: null,
       query: {
+        alive:true,
         all_in_workshop_number: 3
       },
     }

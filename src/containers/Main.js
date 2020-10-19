@@ -45,18 +45,32 @@ class LoginForm extends Component {
 
 class Main extends Component {
   constructor(props) {
-		super(props);  
-	}
+    super(props); 
+    this.state = {
+      online: true,
+    }
+  }
 
   componentDidMount() {
     const token = localStorage.getItem('token');
     if (token) {
       this.props.checkToken(token);
     }
+    window.addEventListener('offline', this.handleNetworkChange);
+    window.addEventListener('online', this.handleNetworkChange);
+  }
+  
+  componentWillUnmount() {
+    window.removeEventListener('offline', this.handleNetworkChange);
+    window.removeEventListener('online', this.handleNetworkChange);
+  }
+
+  handleNetworkChange = () => {
+    this.setState({ online: window.navigator.onLine });
   }
 
   render() {
-    const { isLoggedIn, user, error } = this.props.state.auth
+    const { isLoggedIn, user, error, fetching } = this.props.state.auth
     const locationsFetching = this.props.state.locations.fetching
     const sectionsFetching = this.props.state.sections.fetching
 
@@ -69,7 +83,7 @@ class Main extends Component {
     return (
       <div className="app container-fluid">
         <div id="pageContent">
-          {!isLoggedIn && 
+          {!isLoggedIn && !fetching &&
             <div>
               {/* <button onClick={this.login}>
                 Button login

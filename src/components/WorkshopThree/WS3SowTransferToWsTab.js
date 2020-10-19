@@ -5,6 +5,7 @@ import { toggleArray, toggleArrayDictById } from '../utils';
 //components
 import { SowCells, Sections } from '../Locations'
 import { ErrorMessage, Message } from '../CommonComponents';
+import { FetchingErrorComponentMessage } from '../CommonComponents';
 
 
 class WS3SowTransferToWsTab extends Component {
@@ -60,8 +61,6 @@ class WS3SowTransferToWsTab extends Component {
     let sows = []
     activeSows.map(activeSow => sows = toggleArray(sows, activeSow.id))
 
-    console.log(sows, to_location)
-
     this.props.sowsMoveMany({
       sows: sows,
       to_location: to_location
@@ -94,21 +93,34 @@ class WS3SowTransferToWsTab extends Component {
     return (
         <div className='row workshop-content'>
           <div className='col-9'>
-            <Sections 
-              sections={sections}
-              fetching={sectionsFetching}
-              activeSectionId={this.state.activeSectionId}
-              clickSection={this.clickSection}
-              error={sectionsListError}
-            />
-            <SowCells 
-              isSection={this.state.activeSectionId}
-              locations={locations}
-              fetching={locationsFetching}
-              activeCellIds={this.state.activeLocationsId}
-              clickLocation={this.clickLocation}
-              error={locationsListError}
-            />
+            <FetchingErrorComponentMessage 
+                fetching={this.props.sectionsFetching}
+                error={this.props.sectionsListError}
+                message={null}
+                component={
+                  <Sections 
+                    sections={sections}
+                    activeSectionId={this.state.activeSectionId}
+                    fetching={this.props.sectionsFetching}
+                    error={this.props.sectionsListError}
+    
+                    clickSection={this.clickSection}
+                  />}
+              />
+              <FetchingErrorComponentMessage 
+                fetching={this.props.locationsFetching}
+                error={this.props.locationsListError}
+                message={null}
+                component={
+                  <SowCells 
+                    isSection={this.state.activeSectionId}
+                    locations={locations}
+                    fetching={locationsFetching}
+                    activeCellIds={this.state.activeLocationsId}
+                    clickLocation={this.clickLocation}
+                    error={locationsListError}
+                  />}
+              />
           </div>
           <div className='col-3'>
             <div>
@@ -120,33 +132,35 @@ class WS3SowTransferToWsTab extends Component {
                 </ul>  
               }
             </div>
-            {this.state.activeSows.length > 0 && 
-              <div>
+            <FetchingErrorComponentMessage 
+              fetching={this.props.eventFetching}
+              error={this.props.eventError}
+              message={this.props.message}
+              component={
+                this.state.activeSows.length > 0 &&
                 <div>
-                  <p>Выбрано {this.state.activeSows.length}</p>
-                  {this.state.activeSows.map(activeSow => <p>{activeSow.farm_id}</p>)}
-                </div>
-                <div className='bottom-buttons-block'>
-                  <div className="input-group">
-                    <button onClick={this.clickTransfer} data-to_location={3}
-                      className='btn btn-outline-secondary'>
-                      Переместить в цех 3
-                    </button>
+                  <div>
+                    <p>Выбрано {this.state.activeSows.length}</p>
+                    {this.state.activeSows.map(activeSow => <p>{activeSow.farm_id}</p>)}
                   </div>
-                  <br />
-                  <div className="input-group">
-                    <button onClick={this.clickTransfer} data-to_location={1}
-                      className='btn btn-outline-secondary'>
-                      Переместить в цех 1
-                    </button>
+                  <div className='bottom-buttons-block'>
+                    <div className="input-group">
+                      <button onClick={this.clickTransfer} data-to_location={3}
+                        className='btn btn-outline-secondary'>
+                        Переместить в цех 3
+                      </button>
+                    </div>
+                    <br />
+                    <div className="input-group">
+                      <button onClick={this.clickTransfer} data-to_location={1}
+                        className='btn btn-outline-secondary'>
+                        Переместить в цех 1
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            }
-          <div>
-            {eventError && <ErrorMessage error={eventError}/>}
-            {message && <Message message={message}/>}
-          </div>
+                }
+            />
           </div>
       </div>
     )

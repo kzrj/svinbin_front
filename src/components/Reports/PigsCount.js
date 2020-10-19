@@ -16,6 +16,7 @@ class PigsCount extends Component {
        this.props.pigsCount.sections : null
     let workshops = this.props.pigsCount.workshops ?
        this.props.pigsCount.workshops : null
+    let total = this.props.pigsCount.ws_total
     // console.log(sections)
 
     return (
@@ -39,7 +40,7 @@ class PigsCount extends Component {
               <th ><span className='report-dir-th'>Цех 5</span></th>
               <th ><span className='report-dir-th'>Цех 6</span></th>
               <th ><span className='report-dir-th'>Цех 7</span></th>
-              <th ><span className='report-dir-th'>Цех 7-5</span></th>
+              <th ><span className='report-dir-th'>Всего</span></th>
             </tr>
           </thead>
           <tbody>
@@ -67,7 +68,7 @@ class PigsCount extends Component {
                 <td className="report-cell-td report-cell-value report-dir-date">
                   {workshops['ws7']['pigs_count']}</td>
                 <td className="report-cell-td report-cell-value report-dir-date">
-                  {workshops['ws11']['pigs_count']}</td>
+                  {total}</td>
               </tr>
             }
             {sections && Object.keys(sections).map(s_number => 
@@ -95,7 +96,7 @@ class PigsCount extends Component {
                 <td className="report-cell-td report-cell-value report-dir-date">
                   {sections[s_number]['ws7_pigs_count']}</td>
                 <td className="report-cell-td report-cell-value report-dir-date">
-                  {sections[s_number]['ws11_pigs_count']}</td>
+                  </td>
               </tr>
               )}
             

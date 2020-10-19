@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { PigletsCells, Sections } from '../Locations'
 import { PigletsGroup } from '../PigletsRepresentations'
 import { SplitPigletsInput } from '../FiltersAndInputs'
-import { Message, ErrorMessage } from '../CommonComponents'
+import { FetchingErrorComponentMessage } from '../CommonComponents'
 
 
 class WSNomadInnerTransferTab extends Component {
@@ -57,7 +57,6 @@ class WSNomadInnerTransferTab extends Component {
       ...this.state,
       activeFromSectionId: sectionId
     })
-
     this.props.getLocations1({by_section: sectionId, cells: true})
   }
 
@@ -71,6 +70,7 @@ class WSNomadInnerTransferTab extends Component {
   }
 
   clickCellFromLocation (location) {
+    this.props.pigletsResetErrorsAndMessages()
     this.setState({
       ...this.state,
       activeCellFromLocationId: location.id,
@@ -129,32 +129,57 @@ class WSNomadInnerTransferTab extends Component {
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
-            <Sections 
-              sections={sections}
-              activeSectionId={this.state.activeFromSectionId}
-              clickSection={this.clickFromSection}
-            />
-            <PigletsCells
-              locations={locations1}
-              isSection={this.state.activeFromSectionId}
-              fetching={this.props.listFetching}
-              activeCellIds={[this.state.activeCellFromLocationId]}
-              clickLocation={this.clickCellFromLocation}
+            <FetchingErrorComponentMessage 
+                fetching={this.props.sectionsFetching}
+                error={this.props.sectionsListError}
+                message={null}
+                component={
+                  <Sections 
+                    sections={sections}
+                    activeSectionId={this.state.activeFromSectionId}
+                    clickSection={this.clickFromSection}
+                  />}
+              />
+            <FetchingErrorComponentMessage 
+                fetching={this.props.listFetching}
+                error={this.props.locationsErrorList}
+                message={null}
+                component={
+                  <PigletsCells
+                    isSection={this.state.activeFromSectionId}
+                    fetching={this.props.listFetching}
+                    locations={locations1}
+                    activeCellIds={[this.state.activeCellFromLocationId]}
+                    clickLocation={this.clickCellFromLocation}
+                    user={this.props.user}
+                  />}
             />
           </div>
           <div className='col-6'>
-            <Sections 
-              sections={sections}
-              activeSectionId={this.state.activeToSectionId}
-              clickSection={this.clickToSection}
-            />
-            <PigletsCells
-              isSection={this.state.activeToSectionId}
-              locations={locations2}
-              fetching={this.props.list2Fetching}
-              activeCellIds={[this.state.activeCellToLocationId]}
-              clickLocation={this.clickCellToLocation}
-            />
+            <FetchingErrorComponentMessage 
+                  fetching={this.props.sectionsFetching}
+                  error={this.props.sectionsListError}
+                  message={null}
+                  component={
+                    <Sections 
+                      sections={sections}
+                      activeSectionId={this.state.activeToSectionId}
+                      clickSection={this.clickToSection}
+                    />}
+                />
+              <FetchingErrorComponentMessage 
+                  fetching={this.props.list2Fetching}
+                  error={this.props.locations2ErrorList}
+                  message={null}
+                  component={
+                    <PigletsCells
+                      isSection={this.state.activeToSectionId}
+                      fetching={this.props.list2Fetching}
+                      locations={locations2}
+                      activeCellIds={[this.state.activeCellToLocationId]}
+                      clickLocation={this.clickCellToLocation}
+                    />}
+              />
           </div>
         <div className='row'>
           <div className='col-6'>
@@ -163,31 +188,30 @@ class WSNomadInnerTransferTab extends Component {
             }
           </div>
           <div className='col-6'>
-            {this.state.activePiglets && 
-              <div>
-                <SplitPigletsInput 
-                  checked={this.checked}
-                  changeQuantity={this.state.changeQuantity}
-                  quantity={this.state.quantity}
-                  helpMessage={'Укажите количество'}
-                  setData={this.setData}
-                  gilts_contains={this.state.gilts_contains}
-                />
-                <br />
-                {/* <input type='number' 
-                  onChange={this.setQuantity}
-                  value={this.state.quantity}
-                  defaultValue={this.state.activePiglets.quantity}
-                  /> */}
-                <button 
-                  className='btn btn-outline-secondary' type='button'
-                  onClick={this.clickTransfer}>
-                    Переместить
-                </button>
-              </div>
-            }
-            {this.props.message && <Message message={this.props.message}/>}
-            {eventError && <ErrorMessage error={eventError}/>}
+            <FetchingErrorComponentMessage
+              fetching={this.props.eventFetching}
+              error={this.props.eventError}
+              message={this.props.message}
+              component={
+                  this.state.activePiglets && 
+                    <div>
+                      <SplitPigletsInput 
+                        checked={this.checked}
+                        changeQuantity={this.state.changeQuantity}
+                        quantity={this.state.quantity}
+                        helpMessage={'Укажите количество'}
+                        setData={this.setData}
+                        gilts_contains={this.state.gilts_contains}
+                      />
+                      <br />
+                      <button 
+                        className='btn btn-outline-secondary' type='button'
+                        onClick={this.clickTransfer}>
+                          Переместить
+                      </button>
+                    </div>
+                  }
+              />
           </div>
         </div>
       </div>

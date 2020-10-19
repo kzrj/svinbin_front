@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 
 // components
 import WS1Semination12Tab from '../components/SowTabs/WS1Semination12Tab'
-import WS1CreateTab from '../components/SowTabs/WS1CreateTab'
 import WSSowTransferToWSTab from '../components/SowTabs/WSSowTransferToWSTab'
 import WSSowCullingTab from '../components/SowTabs/WSSowCullingTab'
+import WS12SowCullingTab from '../components/SowTabs/WS12SowCullingTab'
 import WSSowUltrasoundTab from '../components/SowTabs/WSSowUltrasoundTab'
 import WSSowGlobalSearchTab from '../components/SowTabs/WSSowGlobalSearchTab'
 import WS1ImportSeminationTab from '../components/SowTabs/WS1ImportSeminationTab'
@@ -24,14 +24,12 @@ class WorkshopOneContainer extends Component {
     super(props);
     this.state = {
       tabs: [
-        // {name: 'semination12Tab',     active: false, title: 'Осеменение'},
+        {name: 'semination12Tab',     active: false, title: 'Осеменение'},
         {name: 'importSeminationTab', active: false, title: 'Импорт из Фарма'},
-        // {name: 'createTab',           active: false, title: 'Создание свиноматок'},
         {name: 'ultrasound30Tab',     active: false, title: 'УЗИ 28'},
         {name: 'ultrasound60Tab',     active: false, title: 'УЗИ 35'},
         {name: 'transferToWS2Tab',    active: false,  title: 'Перегон'},
-        {name: 'cullingTab',          active: false, title: 'Выбраковка'},
-        // {name: 'boarTab',             active: true, title: 'Хряки'},
+        {name: 'cullingTab',          active: true, title: 'Выбытие'},
         {name: 'searchSowTab',        active: false, title: 'Поиск по всем цехам'},
         // {name: 'infoTab',             active: false, title: 'Инфо'},
       ]
@@ -70,7 +68,6 @@ class WorkshopOneContainer extends Component {
 
   render() {
     const activeTab = this.getActiveTab()
-
     return (
       <div className="workshop container-fluid">
         <TabMenu 
@@ -91,23 +88,27 @@ class WorkshopOneContainer extends Component {
             sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}/>
           }
 
-        {activeTab.name === 'createTab' &&
-          <WS1CreateTab 
+        {activeTab.name === 'semination12Tab' &&
+          <WS1Semination12Tab 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
 
-            createNewSow={this.props.createNewSow}
-            sow={this.props.state.sows.createdSow}
+            getBoars={this.props.getBoars}
+            boars={this.props.state.sows.boars}
 
-            nonameSow={this.props.state.sows.createdNonameSow}
-            nonameSowsCount={this.props.state.sows.nonameSowsCount}
-            createNewNonameSow={this.props.createNewNonameSow}
+            getSeminators={this.props.getSeminators}
+            seminators={this.props.state.wsData.seminators}
 
+            tours={this.props.state.tours.list}
+
+            seminationForm={this.props.state.form.seminationForm}
+
+            seminationSow={this.props.seminationSow}
             eventError={this.props.state.sows.eventError}
             eventFetching={this.props.state.sows.eventFetching}
             message={this.props.state.sows.message}
 
-            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+            // sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />
         }
 
@@ -121,6 +122,7 @@ class WorkshopOneContainer extends Component {
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
+            errorList={this.props.state.sows.errorList}
 
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
@@ -145,6 +147,7 @@ class WorkshopOneContainer extends Component {
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
+            errorList={this.props.state.sows.errorList}
 
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
@@ -167,6 +170,8 @@ class WorkshopOneContainer extends Component {
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
+            errorList={this.props.state.sows.errorList}
+            queryCount={this.props.state.sows.queryCount}
 
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
@@ -181,13 +186,15 @@ class WorkshopOneContainer extends Component {
         }
 
         {activeTab.name === 'cullingTab' &&
-          <WSSowCullingTab 
+          <WS12SowCullingTab 
             workshopNumber={1}
             abort={true}
 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
+            errorList={this.props.state.sows.errorList}
+            queryCount={this.props.state.sows.queryCount}
 
             getSow={this.props.getSow}
             setSow={this.props.setSow}
@@ -197,6 +204,7 @@ class WorkshopOneContainer extends Component {
             singleSowFetching={this.props.state.sows.sowSingleFetching}
 
             cullingSow={this.props.cullingSow}
+            massCulling={this.props.massCulling}
             abortionSow={this.props.abortionSow}
             eventError={this.props.state.sows.eventError}
             eventFetching={this.props.state.sows.eventFetching}
@@ -267,10 +275,10 @@ const mapDispatchToProps = (dispatch) => ({
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),
   sowMoveTo: data => dispatch(SowsActions.sowMoveToRequest(data)),
   sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyRequest(data)),
-  createNewSow: data => dispatch(SowsActions.createNewSowRequest(data)),
-  createNewNonameSow: data => dispatch(SowsActions.createNewNonameSowRequest(data)),
+  seminationSow: data => dispatch(SowsActions.seminationSowRequest(data)),
   massSemination: data => dispatch(SowsActions.massSeminationRequest(data)),
   massUltrasound: data => dispatch(SowsActions.massUltrasoundRequest(data)),
+  massCulling: data => dispatch(SowsActions.massCullingRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowRequest(id)),
   sowsResetErrorsAndMessages: () => dispatch(SowsActions.sowsResetErrorsAndMessages()),
 

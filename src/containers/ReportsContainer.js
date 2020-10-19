@@ -5,6 +5,7 @@ import ReportsActions from '../redux/redux-sauce/reports';
 
 // components
 import ToursReportsComponent from '../components/Reports/TourReports'
+import ToursV2ReportComponent from '../components/Reports/TourV2Report'
 import DirReportComponent from '../components/Reports/DirReport'
 import WS3ReportComponent from '../components/Reports/WS3Report'
 import PigsCount from '../components/Reports/PigsCount'
@@ -37,10 +38,23 @@ class ReportsContainer extends Component {
             <div className='col-3 ws-home'>
               <a href='/reports/ws3report/'>Отчет движение поголовья цех3</a>
             </div>
+            <div className='col-3'>
+              <a href='/reports/tours_v2/'>Отчет по турам V2(взвешивания)</a>
+            </div>
           </div>}
 
         {routeName == 'Отчёты по турам' && 
           <ToursReportsComponent getTourReports={this.props.getTourReports} reports={this.props.state.reports}/>
+        }
+
+        {routeName == 'Отчет по турам V2' && 
+          <ToursV2ReportComponent 
+            getToursV2Report={this.props.getToursV2Report}
+            getTourV2Report={this.props.getTourV2Report}
+            reportsFetching={this.props.state.reports.reportsFetching}
+            tours={this.props.state.reports.toursV2Reportlist}
+            tourData={this.props.state.reports.tourV2Detail}
+          />
         }
 
         {routeName == 'Отчёт директору' && 
@@ -78,6 +92,9 @@ const mapDispatchToProps = (dispatch) => ({
   getDirReport: (token) => dispatch(ReportsActions.getDirReportRequest(token)),
   getPigsCountReport: (token) => dispatch(ReportsActions.getPigsCountReportRequest(token)),
   getOperationsReport: (token) => dispatch(ReportsActions.getOperationsReportRequest(token)),
+
+  getToursV2Report: (token) => dispatch(ReportsActions.getToursV2ReportRequest(token)),
+  getTourV2Report: (token) => dispatch(ReportsActions.getTourV2ReportRequest(token)),
 
   getWs3Report: (token) => dispatch(ReportsActions.getWs3ReportRequest(token)),
 })

@@ -4,7 +4,7 @@ import WSDataActions from '../redux-sauce/wsData'
 
 export function* getSeminators(api, action) {
     try {
-        let response = yield call(api.getUsers, action.payload);
+        let response = yield call(api.getSemenators, action.payload);
         yield put(WSDataActions.getSeminatorsSuccess(response.results));
     } catch (err) {
         yield put(WSDataActions.getSeminatorsFail(err))
