@@ -41,10 +41,10 @@ class WorkshopThreeContainer extends Component {
         {name: 'infoTab',                 active: false, title: 'ИНФО'},
         {name: 'returnPigletsTab',        active: false, title: 'Возврат поросята'},
         {name: 'comingSowsTab',           active: false, title: 'Поступление матки'},
-        {name: 'farrowTab',               active: true,  title: 'Опорос'},
+        {name: 'farrowTab',               active: false,  title: 'Опорос'},
         {name: 'nurseSowTab',             active: false, title: 'Кормилица'},
         {name: 'weaningPigletsTab',       active: false, title: 'Отъем поросят'},
-        {name: 'createGiltTab',           active: false, title: 'Биркование'},
+        {name: 'createGiltTab',           active: true, title: 'Биркование'},
         {name: 'sowCullingTab',           active: false, title: 'Выбытие свиноматок'},
         {name: 'pigletsCullingTab',       active: false, title: 'Выбытие поросят'},
         {name: 'pigletsInnerTransferTab', active: false, title: 'Перемещение поросят из клетки в клетку'},
@@ -280,24 +280,23 @@ class WorkshopThreeContainer extends Component {
         {activeTab.name === 'createGiltTab' &&
           <WS3CreateGiltTab 
             workshopNumber={3}
-            user={this.props.state.auth.user}
 
-            getSections={this.props.getSections}
-            sections={this.props.state.sections.list}
-            sectionsFetching={this.props.state.sections.fetching}
-            sectionsListError={this.props.state.sections.errorList}
-
-            getLocations={this.props.getLocations}
-            locations={this.props.state.locations.list}
-            locationsFetching={this.props.state.locations.fetching}
-            locationsListError={this.props.state.locations.errorList}
+            getSows={this.props.getSows}
+            sows={this.props.state.sows.list}
+            sow={this.props.state.sows.sow}
+            sowsListFetching={this.props.state.sows.fetching}
+            sowsErrorList={this.props.state.sows.errorList}
 
             createGilt={this.props.createGilt}
-            eventFetching={this.props.state.piglets.eventFetching}
-            eventError={this.props.state.piglets.eventError}
-            message={this.props.state.piglets.message}
+            eventFetching={this.props.state.sows.eventFetching}
+            eventError={this.props.state.sows.eventError}
+            message={this.props.state.sows.message}
+
+            giltJournal={this.props.state.wsData.gilt_journal}
+            getGiltJournal={this.props.getGiltJournal}
 
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
         {activeTab.name === 'pigletsCullingTab' &&
           <WSNomadCullingTab
@@ -490,6 +489,7 @@ const mapDispatchToProps = (dispatch) => ({
   sowFarrow: data => dispatch(SowsActions.sowFarrowRequest(data)),
   abortionSow: id => dispatch(SowsActions.abortionSowWs3Request(id)),
   markAsNurse: id => dispatch(SowsActions.markAsNurseRequest(id)),
+  createGilt: id => dispatch(SowsActions.createGiltRequest(id)),
   
   sowsResetErrorsAndMessages: () => dispatch(SowsActions.sowsResetErrorsAndMessages()),
 
@@ -500,7 +500,6 @@ const mapDispatchToProps = (dispatch) => ({
   movePiglets: query => dispatch(PigletsActions.movePigletsRequest(query)),
   cullingPiglets: data => dispatch(PigletsActions.cullingPigletsRequest(data)),
   recountPiglets: data => dispatch(PigletsActions.recountPigletsRequest(data)),
-  createGilt: data => dispatch(PigletsActions.createGiltRequest(data)),
 
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 
@@ -515,6 +514,7 @@ const mapDispatchToProps = (dispatch) => ({
   // rest
   ws3TransferSowAndPiglets: data => dispatch(WSDataActions.ws3TransferSowAndPigletsRequest(data)),
   wsDataResetErrorsAndMessages: () => dispatch(WSDataActions.wsDataResetErrorsAndMessages()),
+  getGiltJournal: () => dispatch(WSDataActions.getWs3GiltJournalRequest()),
 
 })
 

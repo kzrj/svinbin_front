@@ -1,56 +1,71 @@
 import React, { Component } from 'react';
 
 //components
-import { PigletsCells, Sections } from '../Locations'
-import { PigletsGroup } from '../PigletsRepresentations'
-import { Message, FetchingErrorComponentMessage } from '../CommonComponents'
+import { SowSingle }  from '../../components/SowRepresentations'
+import { ErrorMessage, FetchingErrorComponentMessage } from '../CommonComponents'
+import { getDateTimeNow } from './WS3SowFarrowTab'
 
 
 class WS3CreateGiltTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      activePiglets: null,
-      activeSectionId: null,
-      activeCellId: null,
-
-      mother_sow_farm_id: 0,
+      mother_sow_farm_id: null,
+      mother_sow_id: null,
       birth_id: '',
+      date: null,
 
-      needToRefresh: false,
+      query: {
+        farm_id_starts: '',
+        tour: null,
+      },
+
+      choosedSows: [],
+
     }
-    this.clickSection = this.clickSection.bind(this);
-    this.clickLocation = this.clickLocation.bind(this);
+    
     this.setData = this.setData.bind(this);
-    this.setIsGilt = this.setIsGilt.bind(this);
     this.createGilt = this.createGilt.bind(this);
+    this.setQuery = this.setQuery.bind(this);
+    this.resetBirthId = this.resetBirthId.bind(this);
+    this.sowClick = this.sowClick.bind(this);
   }
 
   componentDidMount() {
-    this.props.pigletsResetErrorsAndMessages()
+    this.setState({
+      ...this.state,
+      query: {
+        ...this.state.query,
+      },
+      date: getDateTimeNow()
+    })
+    this.props.getGiltJournal()
+  }
+
+  setQuery (e) {
+    let { query } = this.state
+    query[e.target.name] = e.target.value
+
+    this.setState({
+      ...this.state,
+      query: query,
+      choosedSows: [],
+      needToRefresh: true
+    })
+    
+    this.props.getSows({
+      ...query
+    })
+  }
+
+  resetBirthId () {
+    this.setState({
+      ...this.state,
+      birth_id: ''
+    })
+    this.props.sowsResetErrorsAndMessages()
   }
   
-  clickSection = (e) => {
-    const { sectionId } = e.target.dataset
-    this.setState({
-      ...this.state,
-      activeSectionId: sectionId
-    })
-    this.props.getLocations({by_section: sectionId, cells: true})
-  }
-
-  clickLocation (location) {
-    this.setState({
-      ...this.state,
-      activeCellId: location.id,
-      activePiglets: location.piglets.length > 0 ?
-        location.piglets[0] : null,
-      mother_sow_farm_id: location.sow_set.length > 0 ? 
-      location.sow_set[0].farm_id : 0,
-    })
-    this.props.pigletsResetErrorsAndMessages()
-  }
-
   setData (e) {
     this.setState({
       ...this.state,
@@ -58,108 +73,113 @@ class WS3CreateGiltTab extends Component {
     })
   }
 
-  setIsGilt () {
+  sowClick (e) {
     this.setState({
       ...this.state,
-      is_it_gilt: !this.state.is_it_gilt
+      choosedSows: [e.target.dataset.id,],
+      mother_sow_farm_id: e.target.dataset.farm_id,
+      mother_sow_id: e.target.dataset.id,
     })
   }
 
   createGilt () {
-    const { activePiglets, mother_sow_farm_id, birth_id } = this.state
+    const { date, birth_id } = this.state
+    const { sow } = this.props
+
     this.props.createGilt({
-      id: activePiglets.id,
-      mother_sow_farm_id: mother_sow_farm_id,
+      id: sow.id,
       birth_id: birth_id,
+      date: date,
     })
     this.setState({
       ...this.state,
-      
       birth_id: '',
-
-      needToRefresh: true, 
-      activeLocation: null,
-      activePiglets: null,
     })
-  }
-
-  refreshSowsList () {
-    if (!this.props.eventFetching && this.state.needToRefresh){
-      setTimeout(() => {
-        this.setState({...this.state, needToRefresh: false})
-        this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
-      }, 500)
-    }
+    this.props.getGiltJournal()
   }
 
   render() {
-    this.refreshSowsList()
-    const { sections, locations } = this.props
+    const { sow, giltJournal } = this.props
+    let today = getDateTimeNow()
+
     return (
-        <div className='row workshop-content'>
-          <div className='col-6'>
-            <FetchingErrorComponentMessage 
-                fetching={this.props.sectionsFetching}
-                error={this.props.sectionsListError}
-                message={null}
-                component={
-                  <Sections 
-                    sections={sections}
-                    activeSectionId={this.state.activeSectionId}
-                    fetching={this.props.sectionsFetching}
-                    error={this.props.sectionsListError}
-                    clickSection={this.clickSection}
-                  />}
+      <div className='workshop-content'>
+        <div className='my-1'>
+          <input type="number" 
+            className="font-20 mx-2 rounded-s input-custom-placeholder" 
+            placeholder="Номер свиноматки"
+            aria-label="Farmid" aria-describedby="basic-addon1" name='farm_id_starts'
+            value={this.state.query.farm_id_starts}
+            onChange={this.setQuery} />
+        
+          <input type='date'
+            className='font-20 mx-2 rounded-s bg-color-white'
+            value={this.state.date}
+            defaultValue={today}
+            name='date'
+            onChange={this.setData}
             />
-            <FetchingErrorComponentMessage 
-              fetching={this.props.locationsFetching}
-              error={this.props.locationsListError}
-              message={null}
-              component={
-                <PigletsCells
-                  isSection={this.state.activeSectionId}
-                  fetching={this.props.locationsFetching}
-                  locations={locations}
-                  activeCellIds={[this.state.activeCellId]}
-                  clickLocation={this.clickLocation}
-                />}
-            />
-          </div>
-          <div className='col-6'>
-            <FetchingErrorComponentMessage
-              fetching={this.props.eventFetching} 
-              error={this.props.eventError}
-              message={this.props.message}
-              component={
-                <div>
-                  {this.state.activePiglets && 
-                    <div>
-                    <PigletsGroup piglets={this.state.activePiglets}/>
-                    <div className="input-group">
-                      <label>Укажите ID свиноматки - родителя </label>
-                      <input type='number' value={this.state.mother_sow_farm_id} 
-                        onChange={this.setData} 
-                        name='mother_sow_farm_id' className="form-control search-input"
-                        placeholder="Укажите ID свиноматки  " />
-                    </div>
-                    <div className="input-group">
-                      <label>Укажите номер бирки </label>
-                      <input type='text' value={this.state.birth_id} 
-                        onChange={this.setData} 
-                        name='birth_id' className="form-control search-input"
-                        placeholder="Укажите номер бирки  " />
-                    </div>
-                    <button className='btn btn-outline-secondary' type='button'
-                      onClick={this.createGilt}
-                      >
-                        Создать ремонтную свинку.
+
+          <input type="text" 
+            className="font-20 mx-2 rounded-s input-custom-placeholder" 
+            placeholder="Номер бирки"
+            name='birth_id'
+            value={this.state.birth_id}
+            onClick={this.resetBirthId}
+            onChange={this.setData} />
+            
+            {this.state.date > today 
+              ? <ErrorMessage error={{message:'Нельзя выбрать дату в будущем'}}/>
+              : <FetchingErrorComponentMessage 
+                  fetching={this.props.eventFetching}
+                  error={this.props.eventError}
+                  message={this.props.message}
+                  divClassName={'font-20 mx-2 my-2 float-right'}
+                  component={
+                    <button onClick={this.createGilt}
+                      className="btn btn-primary btn-l font-20 font-900" type="button" >
+                      Отметить ремонтку
                     </button>
-                  </div>}
-                </div>
-              }
-            />
-            {!this.state.activePiglets && !this.props.message && <Message message={'Выберите клетку'} />}
-        </div>
+                  }
+                  />
+            }
+            {sow
+              ? <SowSingle sow={sow} />
+              : <h4 className='my-2 mx-2'>Введите номер свиноматки</h4>}
+          </div>
+          <div className='clearfix'></div>
+          {giltJournal.length > 0 &&
+            <div className='card card-style my-5 mx-1'>
+              <div className='content'>
+                <table className='table table-sm'>
+                  <thead className='font-10'> 
+                    <th className='font-15'>Дата</th>
+                    <th className='font-15'>Номер свиноматки</th>
+                    <th className='font-15'>Тур/неделя</th>
+                    <th className='font-15'>Номер бирки</th>
+                  </thead>
+                  <tbody>
+                    {giltJournal.map(record => 
+                      <tr>
+                        <td>{record.last_date_mark}</td>
+                        <td>{record.farm_id}</td>
+                        <td>{record.last_week_mark}</td>
+                        <td style={{'line-height': '13px'}}>
+                          <p className='my-0 font-700'>({record.gilt_list.length})</p>
+                          {record.gilt_list.map(gilt =>
+                            <p className='my-0'>
+                              {gilt}
+                            </p>
+                            )}
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          }
+
       </div>
     )
   }

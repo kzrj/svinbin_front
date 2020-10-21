@@ -6,7 +6,7 @@ import { SowTable }  from '../../components/SowRepresentations'
 import { ErrorMessage, FetchingErrorComponentMessage } from '../CommonComponents'
 
 
-function getDateTimeNow() {
+export function getDateTimeNow() {
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, '0');
   let mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -16,7 +16,7 @@ function getDateTimeNow() {
   return today
 }
 
-const renderTextField = ({
+export const renderTextField = ({
   input,
   label,
   type,
@@ -285,7 +285,6 @@ class WS3SowFarrowTab extends Component {
                   />
             }
           </div>
-            {/* <p>Поросят  {this.state.total_piglets}</p> */}
           <div className="row my-1">
             <CountPigletsButtons 
               label={"Живые"}

@@ -4,7 +4,7 @@ export const WhoIs = (props) => (
     <span className='whois'>{props.user ? props.user.user : 'Не залогинен'}</span>)
 
 export const Message = (props) => (
-    <p className='message'>{props.message}</p>)
+    <p className='message my-0'>{props.message}</p>)
 
 export const LoadingMessage = (props) => (
     <p className='loading'>Загрузка</p>)

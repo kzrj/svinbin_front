@@ -49,10 +49,27 @@ const create = () => {
         })
     }
 
+    const getWs3GiltJournal = () => {
+        const token = localStorage.getItem('token') || '';
+
+        return axios({
+                    method: 'get',
+                    url: endpoints.WS3_GILT_JOURNAL,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getInfoWs3,
         getBalancesByToursWs3,
-        ws3TransferSowAndPiglets
+        ws3TransferSowAndPiglets,
+        getWs3GiltJournal
     }
 }
 

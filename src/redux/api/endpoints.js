@@ -1,5 +1,5 @@
-// export const url = 'http://92.53.104.136';
-export const url = 'http://46.229.212.205';
+export const url = 'http://92.53.104.136';
+// export const url = 'http://46.229.212.205';
 export const apiUrl = `${url}/api`;
 
 export default {
@@ -37,6 +37,7 @@ export default {
     cullingSowWs3: (id) => `${apiUrl}/workshopthree/sows/${id}/culling/`,
     abortionSowWs3: (id) => `${apiUrl}/workshopthree/sows/${id}/abortion/`,
     SOWS_MOVE_MANY_WS3: `${apiUrl}/workshopthree/sows/move_many/`,
+    createGilt: (id) => `${apiUrl}/workshopthree/sows/${id}/mark_as_gilt/`,
 
     // boars
     GET_BOARS: `${apiUrl}/boars/`,
@@ -62,7 +63,7 @@ export default {
     INIT_PIGLETS: `${apiUrl}/piglets/init_piglets_from_farrow/`,
     recount_piglets: (id) => `${apiUrl}/piglets/${id}/recount_piglets/`,
     moveGiltsToWs12: (id) => `${apiUrl}/piglets/${id}/move_gilts_to_12/`,
-    createGilt: (id) => `${apiUrl}/piglets/${id}/create_gilt/`,
+    // createGilt: (id) => `${apiUrl}/piglets/${id}/create_gilt/`,
 
     // staff users
     GET_USERS: `${apiUrl}/users/`,
@@ -73,6 +74,7 @@ export default {
     // workshop rest
     IMPORT_SEMINATIONS_FROM_FARM: `${apiUrl}/workshoponetwo/sows/import_seminations_from_farm/`,
     WS3_TRANSFER_SOW_AND_PIGLETS: `${apiUrl}/workshopthree/sows/transfer_sow_and_piglets/`,
+    WS3_GILT_JOURNAL: `${apiUrl}/workshopthree/reports/mark_as_gilts_journal/`,
 
     // reports
     GET_TOUR_REPORTS:  `${apiUrl}/reports/tours/`,

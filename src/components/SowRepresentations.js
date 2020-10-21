@@ -190,3 +190,15 @@ export class SowToursData extends Component {
     )
   }
  }
+
+ export function SowSingle(props) {
+   const { sow } = props
+   return (
+    <div className='my-2 mx-2'>
+      <p className='my-0 font-19 font-600 color-mainDark-dark'>
+        Свиноматка {sow.farm_id} | {sow.status} 
+        | {sow.tour ? sow.tour : <span className='color-red1-light'>без тура</span>} | {sow.location} 
+      </p>
+    </div>
+   )
+ }

@@ -46,3 +46,12 @@ export function* ws3TransferSowAndPiglets(api, action) {
         yield put(WSDataActions.ws3TransferSowAndPigletsFail(err))
     }
 }
+
+export function* getWs3GiltJournal(api, action) {
+    try {
+        let response = yield call(api.getWs3GiltJournal, action.payload);
+        yield put(WSDataActions.getWs3GiltJournalSuccess(response.results));
+    } catch (err) {
+        yield put(WSDataActions.getWs3GiltJournalFail(err))
+    }
+}

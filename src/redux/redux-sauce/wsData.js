@@ -24,6 +24,10 @@ const { Types, Creators } = createActions({
     ws3TransferSowAndPigletsSuccess: ['payload'],
 
     wsDataResetErrorsAndMessages: null,
+
+    getWs3GiltJournalRequest: ['payload'],
+    getWs3GiltJournalFail: ['error'],
+    getWs3GiltJournalSuccess: ['payload'],
 })
 
 export const WsDataTypes = Types
@@ -37,6 +41,8 @@ export const INITIAL_STATE = Immutable({
     import_from_file_data: null,
     balances_by_tours: null,
     info_ws3: null,
+
+    gilt_journal: [],
     
     error: null,
     message: null
@@ -123,6 +129,21 @@ export const wsDataResetErrorsAndMessages = (state) => {
     return state.merge({ fetching: false, error: null, message: '' })
   }
 
+
+// gilt journal
+export const getWs3GiltJournalRequest = (state, { payload }) => {
+    return state.merge({ fetching: true, gilt_journal: [] })
+}
+
+export const getWs3GiltJournalSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, error: null, gilt_journal: payload,
+        message: payload.message })
+}
+
+export const getWs3GiltJournalFail = (state, { error }) => {
+    return state.merge({ fetching: false, error, gilt_journal: [] })
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -147,4 +168,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.WS3_TRANSFER_SOW_AND_PIGLETS_FAIL]: ws3TransferSowAndPigletsFail,
 
     [Types.WS_DATA_RESET_ERRORS_AND_MESSAGES]: wsDataResetErrorsAndMessages,
+
+    [Types.GET_WS3_GILT_JOURNAL_REQUEST]: getWs3GiltJournalRequest,
+    [Types.GET_WS3_GILT_JOURNAL_SUCCESS]: getWs3GiltJournalSuccess,
+    [Types.GET_WS3_GILT_JOURNAL_FAIL]: getWs3GiltJournalFail,
 })

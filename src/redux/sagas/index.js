@@ -83,6 +83,7 @@ export default function* root() {
     takeEvery(SowsTypes.ABORTION_SOW_WS3_REQUEST, sowsSaga.abortionSowWs3, sowsApi),
     takeEvery(SowsTypes.MASS_INIT_TRANSFER_REQUEST, sowsSaga.massInitTransfer, sowsApi),
     takeEvery(SowsTypes.MARK_AS_NURSE_REQUEST, sowsSaga.markAsNurse, sowsApi),
+    takeEvery(SowsTypes.CREATE_GILT_REQUEST, sowsSaga.createGilt, pigletsApi),
 
     takeEvery(SowsTypes.GET_BOARS_REQUEST, sowsSaga.getBoars, sowsApi),
     takeEvery(SowsTypes.CREATE_BOAR_REQUEST, sowsSaga.createBoar, sowsApi),
@@ -106,13 +107,14 @@ export default function* root() {
     takeEvery(PigletsTypes.INIT_PIGLETS_REQUEST, pigletsSaga.initPiglets, pigletsApi),
     takeEvery(PigletsTypes.RECOUNT_PIGLETS_REQUEST, pigletsSaga.recountPiglets, pigletsApi),
     takeEvery(PigletsTypes.MOVE_GILTS_TO_WS12_REQUEST, pigletsSaga.moveGiltsToWs12, pigletsApi),
-    takeEvery(PigletsTypes.CREATE_GILT_REQUEST, pigletsSaga.createGilt, pigletsApi),
+    // takeEvery(PigletsTypes.CREATE_GILT_REQUEST, pigletsSaga.createGilt, pigletsApi),
 
     takeEvery(WsDataTypes.GET_SEMINATORS_REQUEST, wsDataSaga.getSeminators, usersApi),
     takeEvery(WsDataTypes.IMPORT_SEMINATIONS_FROM_FARM_REQUEST, wsDataSaga.importSeminationsFromFarm, sowsApi),
     takeEvery(WsDataTypes.GET_INFO_WS3_REQUEST, wsDataSaga.getInfoWs3, wsRestApi),
     takeEvery(WsDataTypes.GET_BALANCES_BY_TOURS_WS3_REQUEST, wsDataSaga.getBalancesByToursWs3, wsRestApi),
     takeEvery(WsDataTypes.WS3_TRANSFER_SOW_AND_PIGLETS_REQUEST, wsDataSaga.ws3TransferSowAndPiglets, wsRestApi),
+    takeEvery(WsDataTypes.GET_WS3_GILT_JOURNAL_REQUEST, wsDataSaga.getWs3GiltJournal, wsRestApi),
 
   ]);
 }

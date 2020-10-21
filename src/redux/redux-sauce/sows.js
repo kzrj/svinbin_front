@@ -114,6 +114,9 @@ const { Types, Creators } = createActions({
     getSemenBoarListFail: ['error'],
     getSemenBoarListSuccess: ['payload'],
 
+    createGiltRequest: ['payload'],
+    createGiltFail: ['error'],
+    createGiltSuccess: ['payload'],
 })
 
 export const SowsTypes = Types
@@ -549,6 +552,19 @@ export const getSemenBoarListFail = (state, { error }) => {
     return state.merge({ fetching: false, errorList: error })
 }
 
+// create gilt
+export const createGiltRequest = (state, { payload }) => {
+    return state.merge({ eventFetching: true })
+}
+
+export const createGiltSuccess = (state, { payload }) => {
+    return state.merge({ eventFetching: false, eventError: null, message: payload.message })
+}
+
+export const createGiltFail = (state, { error }) => {
+    return state.merge({ eventFetching: false, eventError: error })
+}
+
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -662,4 +678,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_SEMEN_BOAR_LIST_REQUEST]: getSemenBoarListRequest,
     [Types.GET_SEMEN_BOAR_LIST_SUCCESS]: getSemenBoarListSuccess,
     [Types.GET_SEMEN_BOAR_LIST_FAIL]: getSemenBoarListFail,
+
+    [Types.CREATE_GILT_REQUEST]: createGiltRequest,
+    [Types.CREATE_GILT_SUCCESS]: createGiltSuccess,
+    [Types.CREATE_GILT_FAIL]: createGiltFail,
 })

@@ -681,6 +681,31 @@ const create = () => {
         })
     }
 
+    const createGilt = payload => {
+        const { id, date, birth_id } = payload;
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.createGilt(id);
+
+        const formData = new FormData();
+        formData.append("date", date);
+        formData.append("birth_id", birth_id);
+
+        return axios({
+                    method: 'post',
+                    url: url,
+                    data: formData,
+                    headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => {
+            return response.data
+        })
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     return {
         getSows,
         getSow,
@@ -706,6 +731,7 @@ const create = () => {
         importSeminationsFromFarm,
         setSow,
         massCulling,
+        createGilt,
 
         // boars
         createBoar,
