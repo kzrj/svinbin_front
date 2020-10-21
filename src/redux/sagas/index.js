@@ -83,7 +83,7 @@ export default function* root() {
     takeEvery(SowsTypes.ABORTION_SOW_WS3_REQUEST, sowsSaga.abortionSowWs3, sowsApi),
     takeEvery(SowsTypes.MASS_INIT_TRANSFER_REQUEST, sowsSaga.massInitTransfer, sowsApi),
     takeEvery(SowsTypes.MARK_AS_NURSE_REQUEST, sowsSaga.markAsNurse, sowsApi),
-    takeEvery(SowsTypes.CREATE_GILT_REQUEST, sowsSaga.createGilt, pigletsApi),
+    takeEvery(SowsTypes.CREATE_GILT_REQUEST, sowsSaga.createGilt, sowsApi),
 
     takeEvery(SowsTypes.GET_BOARS_REQUEST, sowsSaga.getBoars, sowsApi),
     takeEvery(SowsTypes.CREATE_BOAR_REQUEST, sowsSaga.createBoar, sowsApi),

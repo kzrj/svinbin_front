@@ -689,6 +689,7 @@ const create = () => {
         const formData = new FormData();
         formData.append("date", date);
         formData.append("birth_id", birth_id);
+        console.log(formData)
 
         return axios({
                     method: 'post',

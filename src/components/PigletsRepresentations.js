@@ -158,7 +158,7 @@ export class PigletsWeaningInput extends Component {
               Количество в партию
             </th>
             <th>
-              есть ремонтные?
+              Количество ремонтных
             </th>
           </tr>
         </thead>
@@ -178,14 +178,11 @@ export class PigletsWeaningInput extends Component {
                   />
               </td>
               <td>
-                {weaningRecord.gilts_quantity}{' '}
-                <input type='checkbox' 
-                  disabled={weaningRecord.gilts_quantity <= 0}
-                  onChange={this.props.setGiltsContain}
+                <input type='number' 
+                  onChange={this.props.setGiltsQuantity}
                   data-piglets-id={weaningRecord.id}
-                  value={weaningRecord.gilts_contains}
-                  checked={weaningRecord.gilts_contains}
-                  defaultValue={weaningRecord.gilts_quantity <= 0}
+                  value={weaningRecord.gilts_quantity}
+                  defaultValue={weaningRecord.gilts_quantity}
                   />
               </td>
             </tr>

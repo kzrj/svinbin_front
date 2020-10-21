@@ -26,6 +26,7 @@ class WS3PigletsWeaningTab extends Component {
     this.setData = this.setData.bind(this);
     this.countTotal = this.countTotal.bind(this);
     this.setQuantity = this.setQuantity.bind(this);
+    this.setGiltsQuantity = this.setGiltsQuantity.bind(this);
     this.setGiltsContain = this.setGiltsContain.bind(this);
     this.refreshSowsList = this.refreshSowsList.bind(this);
   }
@@ -103,6 +104,19 @@ class WS3PigletsWeaningTab extends Component {
     })
   }
 
+  setGiltsQuantity (e) {
+    const { pigletsId } = e.target.dataset
+    let { activePigletsInputList } = this.state
+
+    let weaningRecord = getObjectbyId(activePigletsInputList, pigletsId)
+    weaningRecord.gilts_quantity = parseInt(e.target.value)
+
+    this.setState({
+      ...this.state,
+      activePigletsInputList: activePigletsInputList,
+    })
+  }
+
   setGiltsContain (e) {
     const { pigletsId } = e.target.dataset
     let { activePigletsInputList} = this.state
@@ -158,7 +172,6 @@ class WS3PigletsWeaningTab extends Component {
   render() {
     this.refreshSowsList()
     const { locations, sections } = this.props
-    console.log(this.props)
     return (
         <div className='workshop-content'>
           <div className='col-12'>
@@ -215,7 +228,7 @@ class WS3PigletsWeaningTab extends Component {
               <PigletsWeaningInput 
                 weaningRecords={this.state.activePigletsInputList} 
                 setQuantity={this.setQuantity} 
-                setGiltsContain={this.setGiltsContain}/>
+                setGiltsQuantity={this.setGiltsQuantity}/>
             }
           </div>
         </div>
