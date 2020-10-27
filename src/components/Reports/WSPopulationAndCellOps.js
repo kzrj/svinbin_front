@@ -76,7 +76,7 @@ class WSPopulationAndCellOpsComponent extends Component {
                     <p className='mb-0 font-20 text-center'>{populationData['ws'].sows_count} свиноматок</p>
                     <p className='mb-0 font-16 text-center'>{populationData['ws'].sows_sup_count} супоросных</p>
                     <p className='mb-0 font-16 text-center'>
-                      {populationData['ws'].sows_count - populationData['ws'].sows_sup_count} кормящих
+                      {populationData['ws'].sows_count - populationData['ws'].sows_sup_count} подсосных
                     </p>
                   </div>
                 </div>
@@ -106,7 +106,7 @@ class WSPopulationAndCellOpsComponent extends Component {
                     <span className='font-600 ml-1'>{section.sows_count}</span>
                   </p>
                   <p className='my-0 font-10 float-left mr-2'>суп {section.sows_sup_count}</p>
-                  <p className='my-0 font-10'>кор {section.sows_count - section.sows_sup_count}</p>
+                  <p className='my-0 font-10'>подсос {section.sows_count - section.sows_sup_count}</p>
                   <div className='divider mb-1 bg-mainDark-light'></div>
                   <p className='my-0 font-11'>поросята 
                     <span className='font-600 ml-1'>{section.piglets_count ? section.piglets_count : '0'}</span>

@@ -167,7 +167,7 @@ class WSSowUltrasoundTab extends Component {
   }
 
   render() {
-    const { sows, tours, days, eventError, message, errorList } = this.props
+    const { sows, tours, days, eventError, message, errorList, queryCount } = this.props
     this.refreshSowsList()
     
     return (
@@ -192,7 +192,7 @@ class WSSowUltrasoundTab extends Component {
         <div className='commonfilter-results'>
           <div className='count row'>
               <div className='col-4'>
-                Выбрано {this.state.choosedSows.length} из {sows.length}
+                Выбрано {this.state.choosedSows.length} из {queryCount}
               </div>
               <div className='col-4'>
                 <button className='btn btn-outline-secondary' onClick={this.chooseAll}>Выбрать всех</button>

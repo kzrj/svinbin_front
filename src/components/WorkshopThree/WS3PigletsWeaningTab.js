@@ -59,6 +59,7 @@ class WS3PigletsWeaningTab extends Component {
         piglets_id: piglets.id,
         quantity: piglets.quantity,
         metatour_repr: piglets.metatour_repr,
+        week_tour: piglets.week_tour,
         location: location,
         gilts_quantity: piglets.gilts_quantity,
         gilts_contains: false,

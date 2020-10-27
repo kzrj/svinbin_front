@@ -8,12 +8,12 @@ export class Sections extends Component {
     const { sections, activeSectionId, fetching, error } = this.props
      
     return (
-      <div className='row'>
+      <div className='row my-0'>
         {!error ? 
           fetching ? <p className='loading'>Загрузка</p> :
             sections.map((section, key) => 
               <div className={ activeSectionId == section.section_id ? 
-                'col-sm-2 section-button section-active': 'col-sm-2 section-button '
+                'section-button section-active': 'section-button '
                 } onClick={this.props.clickSection}
                 data-section-id={section.section_id}
                 key={key}>
@@ -65,8 +65,8 @@ export class SowCells extends Component {
       location.piglets[0] : null
 
     const cellClassName = activeCellIds.includes(location.id) ? 
-      'col-sm-1 cell cell-active' : 
-        location.is_sow_empty ? 'col-sm-1 cell' : 'col-sm-1 cell-full cell'
+      'col-2 cell cell-active' : 
+        location.is_sow_empty ? 'col-2 cell' : 'col-2 cell-full cell'
     
     const tour = sow ? sow.tour && sow.tour.replace(' 2019г','').replace(' 2020г','') : null
     // const pigletsTour = piglets ? piglets.tour && piglets.tour.replace(' 2019г','') : null
@@ -112,7 +112,6 @@ export class SowCells extends Component {
                       activeCellIds={activeCellIds}
                       clickLocation={this.props.clickLocation}
                       user={this.props.user}
-                      // gilts={this.props.gilts}
                       />
                     )
           :
@@ -131,8 +130,8 @@ export class SowCells extends Component {
   render() {
     const { location, activeCellIds } = this.props
     const cellClassName = activeCellIds.includes(location.id) ? 
-      'col-sm-1 cell cell-active' : 
-        location.is_piglets_empty ? 'col-sm-1 cell' : 'col-sm-1 cell-full cell'
+      'col-2 cell cell-active' : 
+        location.is_piglets_empty ? 'col-2 cell' : 'col-2 cell-full cell'
     const piglets = location.piglets && location.piglets.length > 0 ? location.piglets[0] : null
     let age = ''
     piglets && piglets.age.split(' ').length > 1 
@@ -148,7 +147,7 @@ export class SowCells extends Component {
           {piglets && 
             <div>
               {piglets.gilts_quantity > 0 && 
-                <span className="badge badge-warning">Рм {piglets.gilts_quantity}</span>}
+                <span className="d-block badge badge-warning">Рм {piglets.gilts_quantity}</span>}
               {this.props.user && this.props.user.is_officer && <span>id {piglets.id}</span>}
               <div className='cell-piglets-count'>П {piglets.quantity}</div>
               <div className='cell-piglets-metatour'>
@@ -156,13 +155,11 @@ export class SowCells extends Component {
                   {age}д
               </div>
               <div className='cell-piglets-metatour'>
-                  {/* {piglets.week_tour} */}
                   {piglets.week_tour && 'Т '+ piglets.week_tour.split(' ')[1]}
               </div>
             </div>}
           <br/>
-          {/* {this.props.gilts && piglets && 
-            <span className='gilts-quantity'>рем {piglets.gilts_quantity}</span>} */}
+
       </div>
   )}
  }

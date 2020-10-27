@@ -1,17 +1,6 @@
 import React, { Component } from 'react';
 
- export const PigletsMetaTour = (props) => (
-  <div>
-      {props.metatours.map((metatour, key) => 
-        <p key={key}>
-          <span>Тур {metatour.tour}</span>
-          {/* <span>-{metatour.percentage}%</span> */}
-        </p>
-        )}
-  </div>
-)
-
- export class PigletsGroup extends Component {
+export class PigletsGroup extends Component {
 
   render() {
     const { piglets } = this.props
@@ -20,24 +9,22 @@ import React, { Component } from 'react';
       ? age = piglets.age.split(' ')[0]
       : age = 0
     return (
-      <table className='table table-sm'>
-        <thead>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Количество</td><td>{piglets.quantity}</td>
-          </tr>
-          <tr>
-            <td>Количество ремонтных</td><td>{piglets.gilts_quantity}</td>
-          </tr>
-          <tr>
-            <td>Тур</td><td><PigletsMetaTour metatours={piglets.metatour_repr} /></td>
-          </tr>
-          <tr>
-            <td>Возраст</td><td> {age && age + ' д'}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className='card card-style mx-0'>
+        <div className='content my-1'>
+          <p className='my-0'>
+            Количество {piglets.quantity}
+          </p>
+          <p className='my-0'>
+            ремонтных {piglets.gilts_quantity}
+          </p>
+          <p className='my-0'>
+            {piglets.week_tour}
+          </p>
+          <p className='my-0'>
+            Возраст {age && age + ' д'}
+          </p>
+        </div>
+      </div>
     )
   }
  }
@@ -59,7 +46,7 @@ import React, { Component } from 'react';
             <td>Количество ремонтных</td><td>{piglets.gilts_quantity}</td>
           </tr>
           <tr>
-            <td>Тур</td><td><PigletsMetaTour metatours={piglets.metatour_repr} /></td>
+            <td>Тур</td><td>{piglets.week_tour}</td>
           </tr>
         </tbody>
       </table>
@@ -75,30 +62,12 @@ import React, { Component } from 'react';
       <div className='piglets-list-elem'>
         <p>Количество {piglets.quantity}</p>
         {piglets.gilts_quantity > 0 && <p>Количество ремонтных {piglets.gilts_quantity}</p>}
-        <PigletsMetaTour metatours={piglets.metatour_repr} />
+        {piglets.week_tour}
         {piglets.transfer_part_number && <p>Партия {piglets.transfer_part_number}</p>}
       </div>
     )
   }
  }
-
-export const NomadGroupDetail = (props) => (
-    <table className='table table-sm'>
-        <thead>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Количество</td><td>{props.piglets.quantity}</td>
-        </tr>
-        <tr>
-            <td>Количество ремонтных</td><td>{props.piglets.gilts_quantity}</td>
-        </tr>
-        <tr>
-            <td>Тур</td><td>{props.piglets.tour}</td>
-        </tr>
-        </tbody>
-    </table>
-)
 
 export const WeighingDetail = (props) => (
     <table className='table table-sm'>
@@ -127,9 +96,6 @@ export class PigletsWeaningSectionsTable extends Component {
                   className={activePigletsIds.includes(piglets.id) ? 
                     'col-sm-1 weaning-cell cell-active' : 'col-sm-1 weaning-cell' } 
                   onClick={() => this.props.clickPiglets(piglets, location)}>
-                    {/* {piglets.metatour_repr.map(tour => 
-                      <span>Тур {tour.tour} - {tour.percentage}%</span>
-                      )} */}
                     <p>{piglets.quantity}</p>
                 </tr>
                 )}
@@ -152,7 +118,7 @@ export class PigletsWeaningInput extends Component {
               Клетка - секция
             </th>
             <th>
-              Тур - %
+              Тур
             </th>
             <th>
               Количество в партию
@@ -166,10 +132,11 @@ export class PigletsWeaningInput extends Component {
           {this.props.weaningRecords.length > 0 && this.props.weaningRecords.map((weaningRecord, key) => 
             <tr key={key}>
               <td>{weaningRecord.location.cell}</td>
-              <td>{weaningRecord.metatour_repr.map((tour, key) => 
+              {/* <td>{weaningRecord.metatour_repr.map((tour, key) => 
                 <span key={key}>Тур {tour.tour} - {tour.percentage}%</span>
                 )}
-              </td>
+              </td> */}
+              <td>{weaningRecord.week_tour}</td>
               <td>
                 <input type='number' 
                   onChange={this.props.setQuantity}

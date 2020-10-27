@@ -91,6 +91,7 @@ class WorkshopOneContainer extends Component {
           <WS1Semination12Tab 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
+            queryCount={this.props.state.sows.queryCount}
 
             getBoars={this.props.getBoars}
             boars={this.props.state.sows.boars}
@@ -122,6 +123,7 @@ class WorkshopOneContainer extends Component {
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
             errorList={this.props.state.sows.errorList}
+            queryCount={this.props.state.sows.queryCount}
 
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
@@ -147,6 +149,7 @@ class WorkshopOneContainer extends Component {
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
             errorList={this.props.state.sows.errorList}
+            queryCount={this.props.state.sows.queryCount}
 
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}
