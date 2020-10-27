@@ -16,7 +16,7 @@ class WSSemenBoarCreateTab extends Component {
       farm_id: '',
       boar_id: '',
       semen_date: '',
-      f_denom: 2.0,
+      f_denom: 1.0,
       a: null,
       b: null,
       d: null,
@@ -68,7 +68,7 @@ class WSSemenBoarCreateTab extends Component {
   render() {
     this.refreshSowsList()
     const { boars, eventError, listFetching, message } = this.props
-    console.log(message)
+    
     return (
       <div className='workshop-content'>
         <div>
@@ -114,8 +114,11 @@ class WSSemenBoarCreateTab extends Component {
                 <label >F = E/знаменатель(2.0 или 2.5)</label>
                 <select className="custom-select" name='f_denom' className="form-control" 
                   onChange={this.setData}>
-                  <option defaultValue={2.0} >F = E /2.0</option>
+                  <option defaultValue={1} >F = E / 1.0</option>
+                  <option value={1.5} >F = E / 1.5</option>
+                  <option value={2.0} >F = E /2.0</option>
                   <option value={2.5} >F = E /2.5</option>
+                  <option value={3.0} >F = E / 3.0</option>
                 </select>
               </div>
               <div className="form-group">

@@ -173,9 +173,9 @@ class WSSowUltrasoundTab extends Component {
     return (
       <div className='workshop-content'>
         <div>
-          <div className='commonfilter row'>
-            <label className='sow-event-label'>Фильтр</label>
-            <SowFarmIdFilter farm_id_starts={this.state.query.farm_id_starts} setQuery={this.setQuery} />
+          <div className=''>
+            <SowFarmIdFilter farm_id_starts={this.state.query.farm_id_starts} setQuery={this.setQuery}
+              className='float-left' />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
           </div>
           <div>

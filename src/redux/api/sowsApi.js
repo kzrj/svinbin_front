@@ -34,6 +34,25 @@ const create = () => {
         })
     }
 
+    const getSowByFarmId = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.SOW_BY_FARM_ID;
+
+        return axios({
+            method: 'get',
+            url: url,
+            params: params,
+            headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
     const seminationSow = payload => {
         const { farm_id, week, date, seminator1, boar1, seminator2, boar2, } = payload;
         const token = localStorage.getItem('token') || '';
@@ -733,6 +752,7 @@ const create = () => {
         setSow,
         massCulling,
         createGilt,
+        getSowByFarmId,
 
         // boars
         createBoar,

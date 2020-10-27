@@ -1,5 +1,5 @@
-// export const url = 'http://92.53.104.136';
-export const url = 'http://46.229.212.205';
+export const url = 'http://92.53.104.136';
+// export const url = 'http://46.229.212.205';
 export const apiUrl = `${url}/api`;
 
 export default {
@@ -17,6 +17,7 @@ export default {
     sowMoveTo: (id) => `${apiUrl}/sows/${id}/move_to/`,
     
     getSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/`,
+    SOW_BY_FARM_ID: `${apiUrl}/workshoponetwo/sows/retrieve_by_farm_id/`,
     DOUBLE_SEMINATION: `${apiUrl}/workshoponetwo/sows/double_semination/`,
     ultrasoundSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/ultrasound/`,
     ultrasoundV2Sow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/ultrasoundv2/`,

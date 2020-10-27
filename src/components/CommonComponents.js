@@ -10,7 +10,7 @@ export const LoadingMessage = (props) => (
     <p className='loading'>Загрузка</p>)
 
 export const ErrorMessage = (props) => (
-    <p className='error-message'>ОШИБКА: 
+    <p className={props.className ? 'error-message ' + props.className : 'error-message'}>ОШИБКА: 
         {props.error.data ? props.error.data.message : props.error.message ? 
             props.error.message :'Неизвестная ошибка.'}</p>)
 

@@ -152,8 +152,8 @@ class WSSowTransferToWSTab extends Component {
     return (
       <div className='workshop-content'>
         <div>
-          <div className='commonfilter row'>
-            <label className='sow-event-label'>Фильтр</label>
+          <div className=''>
+            
             <SowFarmIdFilter setQuery={this.setQuery} />
             <SowTourFilter tours={tours} setQuery={this.setQuery}/>
             <SowSemUsoundFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>

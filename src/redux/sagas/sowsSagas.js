@@ -20,6 +20,15 @@ export function* getSow(api, action) {
     }
 }
 
+export function* getSowByFarmId(api, action) {
+    try {
+        let response = yield call(api.getSowByFarmId, action.payload);
+        yield put(SowsActions.getSowByFarmIdSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.getSowByFarmIdFail(err))
+    }
+}
+
 export function* seminationSow(api, action) {
     try {
         let response = yield call(api.seminationSow, action.payload);

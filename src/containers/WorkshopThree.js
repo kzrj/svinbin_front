@@ -440,22 +440,12 @@ class WorkshopThreeContainer extends Component {
 
         {activeTab.name === 'searchSowTab' &&
           <WSSowGlobalSearchTab 
-            getSows={this.props.getSows}
-            sows={this.props.state.sows.list}
-            sowsListFetching={this.props.state.sows.fetching}
-
-            getSow={this.props.getSow}
-            setSow={this.props.setSow}
-
             sow={this.props.state.sows.sow}
-            tours_info={this.props.state.sows.tours_info}
+            cycles={this.props.state.sows.cycles}
+
+            getByFarmIdSow={this.props.getByFarmIdSow}
             singleSowFetching={this.props.state.sows.sowSingleFetching}
-
-            eventError={this.props.state.sows.eventError}
-            eventFetching={this.props.state.sows.eventFetching}
-            message={this.props.state.sows.message}
-
-            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+            errorSingle={this.props.state.sows.errorSingle}
           />
         }
           
@@ -482,6 +472,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
   setSow: sow => dispatch(SowsActions.setSow(sow)),
+  getByFarmIdSow: query => dispatch(SowsActions.getSowByFarmIdRequest(query)),
 
   cullingSow: data => dispatch(SowsActions.cullingSowWs3Request(data)),
   sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyWs3Request(data)),

@@ -11,6 +11,10 @@ const { Types, Creators } = createActions({
     getSowFail: ['error'],
     getSowSuccess: ['payload'],
 
+    getSowByFarmIdRequest: ['payload'],
+    getSowByFarmIdFail: ['error'],
+    getSowByFarmIdSuccess: ['payload'],
+
     seminationSowRequest: ['payload'],
     seminationSowFail: ['error'],
     seminationSowSuccess: ['payload'],
@@ -132,6 +136,7 @@ export const INITIAL_STATE = Immutable({
 
     sow: null,
     tours_info: [],
+    cycles: [],
     sowSingleFetching: false,
     errorSingle: null,
 
@@ -206,16 +211,27 @@ export const getSowRequest = (state, { payload }) => {
 }
 
 export const getSowSuccess = (state, { payload }) => {
-    return state.merge({ sowSingleFetching: false, errorSingle: null, sow: payload.sow,
-         tours_info: payload.tours_info})
+    return state.merge({ sowSingleFetching: false, errorSingle: null, sow: payload})
 }
 
 export const getSowFail = (state, { error }) => {
-    return state.merge({ sowSingleFetching: false, errorSingle: error, sow: null, tours_info: [] })
+    return state.merge({ sowSingleFetching: false, errorSingle: error, sow: null})
 }
 
 export const resetSow = (state, { payload }) => {
     return state.merge({ sow: null, })
+}
+
+export const getSowByFarmIdRequest = (state, { payload }) => {
+    return state.merge({ sowSingleFetching: true, cycles: []})
+}
+
+export const getSowByFarmIdSuccess = (state, { payload }) => {
+    return state.merge({ sowSingleFetching: false, errorSingle: null, sow: payload.sow, cycles: payload.cycles})
+}
+
+export const getSowByFarmIdFail = (state, { error }) => {
+    return state.merge({ sowSingleFetching: false, errorSingle: error, sow: null, cycles: []})
 }
 
 // Semination
@@ -576,6 +592,10 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_SOW_REQUEST]: getSowRequest,
     [Types.GET_SOW_SUCCESS]: getSowSuccess,
     [Types.GET_SOW_FAIL]: getSowFail,
+
+    [Types.GET_SOW_BY_FARM_ID_REQUEST]: getSowByFarmIdRequest,
+    [Types.GET_SOW_BY_FARM_ID_SUCCESS]: getSowByFarmIdSuccess,
+    [Types.GET_SOW_BY_FARM_ID_FAIL]: getSowByFarmIdFail,
 
     [Types.SEMINATION_SOW_REQUEST]: seminationSowRequest,
     [Types.SEMINATION_SOW_SUCCESS]: seminationSowSuccess,

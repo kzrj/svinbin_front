@@ -67,6 +67,7 @@ export default function* root() {
 
     takeEvery(SowsTypes.GET_SOWS_REQUEST, sowsSaga.getSows, sowsApi),
     takeEvery(SowsTypes.GET_SOW_REQUEST, sowsSaga.getSow, sowsApi),
+    takeEvery(SowsTypes.GET_SOW_BY_FARM_ID_REQUEST, sowsSaga.getSowByFarmId, sowsApi),
     takeEvery(SowsTypes.SEMINATION_SOW_REQUEST, sowsSaga.seminationSow, sowsApi),
     takeEvery(SowsTypes.CULLING_SOW_REQUEST, sowsSaga.cullingSow, sowsApi),
     takeEvery(SowsTypes.CULLING_SOW_WS3_REQUEST, sowsSaga.cullingSowWs3, sowsApi),

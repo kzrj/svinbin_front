@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 // components
 import WS1Semination12Tab from '../components/SowTabs/WS1Semination12Tab'
 import WSSowTransferToWSTab from '../components/SowTabs/WSSowTransferToWSTab'
-import WSSowCullingTab from '../components/SowTabs/WSSowCullingTab'
 import WS12SowCullingTab from '../components/SowTabs/WS12SowCullingTab'
 import WSSowUltrasoundTab from '../components/SowTabs/WSSowUltrasoundTab'
 import WSSowGlobalSearchTab from '../components/SowTabs/WSSowGlobalSearchTab'
@@ -29,8 +28,8 @@ class WorkshopOneContainer extends Component {
         {name: 'ultrasound30Tab',     active: false, title: 'УЗИ 28'},
         {name: 'ultrasound60Tab',     active: false, title: 'УЗИ 35'},
         {name: 'transferToWS2Tab',    active: false,  title: 'Перегон'},
-        {name: 'cullingTab',          active: true, title: 'Выбытие'},
-        {name: 'searchSowTab',        active: false, title: 'Поиск по всем цехам'},
+        {name: 'cullingTab',          active: false, title: 'Выбытие'},
+        {name: 'searchSowTab',        active: true, title: 'Поиск по всем цехам'},
         // {name: 'infoTab',             active: false, title: 'Инфо'},
       ]
     }
@@ -216,22 +215,12 @@ class WorkshopOneContainer extends Component {
 
         {activeTab.name === 'searchSowTab' &&
           <WSSowGlobalSearchTab 
-            getSows={this.props.getSows}
-            sows={this.props.state.sows.list}
-            sowsListFetching={this.props.state.sows.fetching}
-
-            getSow={this.props.getSow}
-            setSow={this.props.setSow}
-
             sow={this.props.state.sows.sow}
-            tours_info={this.props.state.sows.tours_info}
+            cycles={this.props.state.sows.cycles}
+
+            getByFarmIdSow={this.props.getByFarmIdSow}
             singleSowFetching={this.props.state.sows.sowSingleFetching}
-
-            eventError={this.props.state.sows.eventError}
-            eventFetching={this.props.state.sows.eventFetching}
-            message={this.props.state.sows.message}
-
-            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+            errorSingle={this.props.state.sows.errorSingle}
           />
         }
 
@@ -270,6 +259,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSows: query => dispatch(SowsActions.getSowsRequest(query)),
   getBoars: query => dispatch(SowsActions.getBoarsRequest(query)),
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
+  getByFarmIdSow: query => dispatch(SowsActions.getSowByFarmIdRequest(query)),
   setSow: sow => dispatch(SowsActions.setSow(sow)),
 
   cullingSow: data => dispatch(SowsActions.cullingSowRequest(data)),

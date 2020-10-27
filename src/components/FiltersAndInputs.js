@@ -149,15 +149,10 @@ export class SowFilter extends Component {
   }
 }
 
-{/* <div className="input-group mb-3">
-        <input type='number' onChange={props.getSowsById} 
-        className="form-control search-input" value={sowIdValue}
-        placeholder="Номер свиноматки"/>
-    </div> */}
 export function SowFarmIdFilter (props) {
     return (
-        <input type="number" className="form-control search-input" placeholder="Номер свиноматки"
-            aria-label="Farmid"  name='farm_id_starts'
+        <input type="number" className="font-20" placeholder="Номер свиноматки"
+            name='farm_id_starts'
             className={props.className ? props.className : ''}
             value={props.farm_id_starts}
             onClick={props.resetQuery}
@@ -169,8 +164,8 @@ export class SowTourFilter extends Component {
 render() {
     const { tours } = this.props
     return (
-    <div className="input-group mb-3 col-3">
-        <select className="custom-select" id="inputGroupSelect01" name='tour'
+    
+        <select className="font-20" id="inputGroupSelect01" name='tour'
             onChange={this.props.setQuery}>
             <option selected value=''>Выбрать тур</option>
             {tours.map(tour =>
@@ -179,7 +174,7 @@ render() {
             </option>
             )}
         </select>
-    </div>
+    
     )
     }
 }
