@@ -9,48 +9,48 @@ export function SowFindByIdWithoutGet (props) {
 const { sows, sow, fetching, sowIdValue, error, queryCount } = props
 
 return (
-    <div className='workshop-content-column-1'>
-    <div className="input-group mb-3">
-        <input type='number' onChange={props.getSowsById} 
-        className="form-control search-input" value={sowIdValue}
-        placeholder="Номер свиноматки"/>
-    </div>
-    <div className="input-group mb-3">
-        <button className='btn btn-secondary mx-2'
-            onClick={() => props.getGilts()}>
-            Показать только ремонтных
-        </button>
-    </div>
-    <p>Количество: {queryCount}</p>
-    <div className='div-scroll'>
-        <ul className='list-unstyled'>
-        {!error 
-            ? fetching 
-                ? <p className='loading'>Загрузка</p> 
-                : (sows.length > 0 && sow) && 
-                    sows.map(sowInList => 
-                        <li className={sowInList.id == sow.id 
-                            ? 'sow-active sow-li my-0 py-0 pl-3 text-justify' 
-                            : 'sow-li my-0 py-0 pl-3 text-justify'} 
-                        key={sowInList.id} 
-                        onClick={() => props.setSow(sowInList)}>
-                            <p className='sow-list-farm-id my-0 '>{sowInList.farm_id}</p>
-                            <p className='my-0 '>
-                                {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}
-                            </p>
-                            <p className='mr-3 my-0 '>{sowInList.status}</p>
-                            {sowInList.birth_id &&
-                                <span className='float-right'>
-                                    №бирки {sowInList.birth_id}
-                                </span>
-                            }
-                            
-                        </li>
-                    )
-            : <ErrorMessage error={error} />
-        }
-        </ul>
-    </div>
+    <div className=''>
+        <div className="input-group mb-3">
+            <input type='number' onChange={props.getSowsById} 
+            className="form-control search-input" value={sowIdValue}
+            placeholder="Номер свиноматки"/>
+        </div>
+        <div className="input-group mb-3">
+            <button className='btn btn-secondary mx-2'
+                onClick={() => props.getGilts()}>
+                Показать только ремонтных
+            </button>
+        </div>
+        <p>Количество: {queryCount}</p>
+        <div className=''>
+            <ul className='list-unstyled'>
+            {!error 
+                ? fetching 
+                    ? <p className='loading'>Загрузка</p> 
+                    : (sows.length > 0 && sow) && 
+                        sows.map(sowInList => 
+                            <li className={sowInList.id == sow.id 
+                                ? 'sow-active sow-li my-0 py-0 pl-3 text-justify' 
+                                : 'sow-li my-0 py-0 pl-3 text-justify'} 
+                            key={sowInList.id} 
+                            onClick={() => props.setSow(sowInList)}>
+                                <p className='sow-list-farm-id my-0 '>{sowInList.farm_id}</p>
+                                <p className='my-0 '>
+                                    {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}
+                                </p>
+                                <p className='mr-3 my-0 '>{sowInList.status}</p>
+                                {sowInList.birth_id &&
+                                    <span className='float-right'>
+                                        №бирки {sowInList.birth_id}
+                                    </span>
+                                }
+                                
+                            </li>
+                        )
+                : <ErrorMessage error={error} />
+            }
+            </ul>
+        </div>
     </div>
   )
 }

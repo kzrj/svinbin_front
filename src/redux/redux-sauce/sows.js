@@ -1,8 +1,11 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
+import { getObjectInListbyFieldValue } from '../../components/utils'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+    getSowFromSows: ['farm_id'],
+    
     getSowsRequest: ['payload'],
     getSowsFail: ['error'],
     getSowsSuccess: ['payload'],
@@ -189,15 +192,19 @@ export const SowsSelectors = {
 }
 
 /* ------------- Reducers ------------- */
+// get sow from sows list
+export const getSowFromSows = (state, { farm_id }) => {
+    let sow = getObjectInListbyFieldValue(state.list, 'farm_id', farm_id)
+    return state.merge({ sow: sow })
+}
+
 // Get list
 export const getSowsRequest = (state, { payload }) => {
     return state.merge({ fetching: true, list: [], queryCount: 0 })
 }
 
 export const getSowsSuccess = (state, { payload }) => {
-    let sow = null
-    if (payload.results.length > 0) sow = payload.results[0]
-    return state.merge({ fetching: false, errorList: null, list: payload.results, sow: sow,
+    return state.merge({ fetching: false, errorList: null, list: payload.results,
         queryCount: payload.count })
 }
 
@@ -295,7 +302,7 @@ export const sowMoveToRequest = (state, { payload }) => {
 
 export const sowMoveToSuccess = (state, { payload }) => {
     return state.merge({ eventFetching: false, eventError: null,
-         sow: payload.sow, sowEvent: payload.transaction, message: payload.message })
+         sow: null, sowEvent: payload.transaction, message: payload.message })
 }
 
 export const sowMoveToFail = (state, { error }) => {
@@ -585,6 +592,8 @@ export const createGiltFail = (state, { error }) => {
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+    [Types.GET_SOW_FROM_SOWS]: getSowFromSows,
+
     [Types.GET_SOWS_REQUEST]: getSowsRequest,
     [Types.GET_SOWS_SUCCESS]: getSowsSuccess,
     [Types.GET_SOWS_FAIL]: getSowsFail,

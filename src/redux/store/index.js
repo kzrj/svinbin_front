@@ -1,13 +1,12 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { routerMiddleware, routerReducer } from 'react-router-redux'
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../sagas';
 // import { reducer as notifications } from 'react-notification-system-redux';
 import { reducer as formReducer } from 'redux-form';
 
 export const reducers = combineReducers({
-  routing: routerReducer,
+  // routing: routerReducer,
   auth: require('../redux-sauce/auth').reducer,
   locations: require('../redux-sauce/locations').reducer,
   sections: require('../redux-sauce/sections').reducer,
@@ -22,10 +21,9 @@ export const reducers = combineReducers({
 })
 
 export default (history) => {
-  const rMiddleware = routerMiddleware(history)
   const sagaMiddleware = createSagaMiddleware();
   const store = createStore(reducers, composeWithDevTools(
-    applyMiddleware(sagaMiddleware, rMiddleware)
+    applyMiddleware(sagaMiddleware)
   ));
 
   let sagasManager = sagaMiddleware.run(rootSaga)

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 //components
 import { SowCells, Sections } from '../Locations'
-import { SowFindByIdWithoutGet } from '../SowRepresentations'
-import { FetchingErrorComponentMessage } from '../CommonComponents';
+import { FetchingErrorComponentMessage, ErrorMessage, Message } from '../CommonComponents';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 class WS3SowIncomeTab extends Component {
@@ -16,6 +16,7 @@ class WS3SowIncomeTab extends Component {
         farm_id_starts: '',
         ordering: 'tour'
       },
+      activeLocation: null,
       activeSectionId: null,
       activeLocationId: null,
       activeCellId: null,
@@ -25,11 +26,11 @@ class WS3SowIncomeTab extends Component {
     }
     this.clickSection = this.clickSection.bind(this);
     this.clickLocation = this.clickLocation.bind(this);
-    this.getSowsById = this.getSowsById.bind(this);
     this.clickSetlle = this.clickSetlle.bind(this);
     this.clickSow = this.clickSow.bind(this);
-    this.clickSearch = this.clickSearch.bind(this);
     this.refreshData = this.refreshData.bind(this);
+
+    this.getSowFromSows = this.getSowFromSows.bind(this);
   }
   
   componentDidMount() {
@@ -45,15 +46,8 @@ class WS3SowIncomeTab extends Component {
     this.props.sowsResetErrorsAndMessages()
   }
 
-  getSowsById (e) {
-    let { query } = this.state
-    query.farm_id_starts = e.target.value
-    this.setState({
-      ...this.state,
-      query: query,
-      activeSowId: null,
-    })
-    this.props.getSows(query)
+  getSowFromSows (e) {
+    this.props.getSowFromSows(e.target.value)
   }
 
   clickSection (e) {
@@ -66,30 +60,24 @@ class WS3SowIncomeTab extends Component {
   }
 
   clickLocation (location) {
+    this.props.sowsResetErrorsAndMessages()
     this.setState({
       ...this.state,
-      activeCellId: location.id,
-    })
-  }
-
-  clickSearch () {
-    this.setState({
-      ...this.state,
-      query: {...this.state.query, farm_id_starts: ''},
-      activeSowId: null,
+      activeLocation: location,
+      activeCellId: location.id
     })
   }
 
   clickSetlle () {
-    const { activeCellId, activeSowId } = this.state
-    this.props.sowMoveTo({id: activeSowId, location: activeCellId})
+    const { activeLocation } = this.state
+    const { sow } =this.props
+    this.props.sowMoveTo({id: sow.id, location: activeLocation.id})
     this.setState({
       ...this.state,
       activeCellId: null,
-      // activeSectionId: null,
+      activeLocation: null,
+      needToRefresh: true,
       query: {...this.state.query, farm_id_starts: ''},
-      activeSowId: null,
-      needToRefresh: true
     })
   }
 
@@ -99,79 +87,85 @@ class WS3SowIncomeTab extends Component {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)
         this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
-      }, 500)
+      }, 100)
     }
   }
 
   render() {
     this.refreshData()
-    const { sows, sections, sectionsFetching, sectionsListError, locationsFetching, sowsListError,
-       listFetching, locationsListError, eventFetching, eventError, message } = this.props
+    const { sow, sections, sectionsFetching, sectionsListError, locationsFetching, 
+        locationsListError, eventFetching, eventError, message, queryCount } = this.props
     return (
-        <div className='row workshop-content'>
-          <div className='col-3 workshop-left-column'>
-
-            <SowFindByIdWithoutGet 
-              sows={sows}
-              activeSowId={this.state.activeSowId}
-              clickSow={this.clickSow}
-              clickSearch={this.clickSearch}
-
-              sowIdValue={this.state.query.farm_id_starts}
-              getSowsById={this.getSowsById} 
-              
-              fetching={listFetching}
-              error={sowsListError}
-              />
-            
-          </div>
-          <div className='col-9 workshop-right-column'>
-            <FetchingErrorComponentMessage 
+      <div className='pt-1 mx-1 pb-5'>
+        <FetchingErrorComponentMessage 
+          fetching={sectionsFetching}
+          error={sectionsListError}
+          message={null}
+          component={
+            <Sections 
+              sections={sections}
+              activeSectionId={this.state.activeSectionId}
               fetching={sectionsFetching}
               error={sectionsListError}
-              message={null}
-              component={
-                <Sections 
-                  sections={sections}
-                  activeSectionId={this.state.activeSectionId}
-                  fetching={sectionsFetching}
-                  error={sectionsListError}
-  
-                  clickSection={this.clickSection}
-                />}
-            />
-            <FetchingErrorComponentMessage 
+
+              clickSection={this.clickSection}
+            />}
+        />
+        <FetchingErrorComponentMessage 
+          fetching={locationsFetching}
+          error={locationsListError}
+          message={null}
+          component={
+            <SowCells 
+              locations={this.props.locations}
+              activeCellIds={[this.state.activeCellId]}
               fetching={locationsFetching}
               error={locationsListError}
-              message={null}
-              component={
-                <SowCells 
-                  locations={this.props.locations}
-                  activeCellIds={[this.state.activeCellId]}
-                  fetching={locationsFetching}
-                  error={locationsListError}
-                  isSection={this.state.activeSectionId}
-                  clickLocation={this.clickLocation}
-                />}
-            />
-            <FetchingErrorComponentMessage 
-              fetching={eventFetching}
-              error={eventError}
-              message={message}
-              component={
-                <div className='bottom-buttons-block row'>
-                  <div className="input-group col">
-                    {this.state.activeCellId && this.state.activeSowId &&
-                      <button onClick={this.clickSetlle} className='btn btn-outline-secondary'>
-                        Разместить свиноматку
-                      </button>
-                    }
-                  </div>
+              isSection={this.state.activeSectionId}
+              clickLocation={this.clickLocation}
+            />}
+        />
+        <div className='card card-style fixed-bottom mx-1 mb-3'>
+          <p className='mt-3 mb-1 font-700 font-18 text-center'>На поступлении {queryCount}</p>
+          {eventFetching 
+            ? <div className='content text-center'><CircularProgress /></div>
+            : <div className='content mt-0 row'>
+                <div className='col-6 text-center'>
+                  {sow 
+                    ? <p className='mb-1 font-16'>{sow.farm_id} {sow.tour}</p>
+                    : <p className='mb-1 font-16'>Нет такого ID</p>
+                  }
+                  <input type='number' className='mt-1' placeholder='ID свиноматки' onChange={this.getSowFromSows}/>
                 </div>
-              }
-            />
-          </div>
+                <div className='col-6 text-center'>
+                  {this.state.activeLocation
+                    ? this.state.activeLocation.is_sow_empty 
+                      ? <p className='mb-1 font-16'>клетка {this.state.activeLocation.cell}</p>
+                      : <p className='mb-1 font-16 color-red1-light'>
+                          клетка {this.state.activeLocation.cell} занята
+                        </p>
+                    : <p className='mb-1 font-16'>Выберите клетку</p>
+                  }
+                  {(this.state.activeLocation && sow) && this.state.activeLocation.is_sow_empty &&
+                    <button className='btn btn-s bg-mainDark-light' onClick={this.clickSetlle}>
+                      Разместить
+                    </button>
+                  }
+                </div>
+              </div>
+          }
+          {eventError && 
+            <div className='content mt-0'>
+              <ErrorMessage error={eventError} />
+            </div>
+          }
+          {message && 
+            <div className='content mt-0 text-center'>
+              <Message message={message} />
+            </div>
+          }
         </div>
+      </div>
     )
   }
 }

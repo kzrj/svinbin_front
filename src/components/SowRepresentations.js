@@ -83,8 +83,9 @@ export const SowLightDetail = (props) => (
  export class SowFindByIdWithoutGet extends Component {
   render() {
     const { sows, activeSowId, fetching, sowIdValue, error } = this.props
+    const sowClass = 'card card-style mx-0 my-1 border-bottom border-mainDark-dark'
     return (
-       <div className='workshop-content-column-1'>
+       <div className=''>
           <div class="input-group mb-3">
               <input type='number' 
                 onChange={this.props.getSowsById} 
@@ -94,27 +95,30 @@ export const SowLightDetail = (props) => (
                 placeholder="Номер свиноматки"/>
           <label>Количество: {sows.length}</label>
           </div>
-          <div className='div-scroll'>
-              <ul className='list-unstyled'>
+          <div className='div-scroll position-static h-50'>
               {!error ? fetching ? <LoadingMessage /> :
                   (sows.length > 0 ) && 
                       sows.map(sowInList => 
-                        <li className={sowInList.id == activeSowId ? 'sow-row sow-row-active' : 'sow-row'} 
+                        <div
+                          className={sowInList.id == activeSowId 
+                            ? sowClass + ' sow-row-active' 
+                            : sowClass} 
                           key={sowInList.id} 
                           data-id={sowInList.id}
                           onClick={this.props.clickSow}>
-                          <span className='sow-list-farm-id' onClick={this.props.clickSow}>
-                            {sowInList.farm_id}
-                          </span>
-                          <br/>
-                          <span className='sow-list-tour' onClick={this.props.clickSow}>
-                              {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}</span>
-                        </li>
+                            <div className='content mx-1 my-1 text-center'>
+                              <span className='d-block sow-list-farm-id' onClick={this.props.clickSow}>
+                                {sowInList.farm_id}
+                              </span>
+                              <span className='sow-list-tour' onClick={this.props.clickSow}>
+                                  {sowInList.tour ? sowInList.tour.replace(' 2019г','') : ''}</span>
+                            </div>
+                        </div>
                       )
                   :
                   <ErrorMessage error={error} />
               }
-              </ul>
+              
           </div>
        </div>
     )

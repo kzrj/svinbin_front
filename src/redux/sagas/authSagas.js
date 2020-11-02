@@ -1,5 +1,5 @@
 import { put, call } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
+// import { push } from 'react-router-redux';
 // import Notifications from 'react-notification-system-redux';
 
 import AuthActions from '../redux-sauce/auth'
@@ -22,7 +22,7 @@ export function * signUp (api, action) {
   try {
     let response = yield call(api.signUp, data);
     yield put(AuthActions.signupSuccess(response));
-    yield put(push('/'));
+    // yield put(push('/'));
   } catch (e) {
     yield put(AuthActions.signupFailure(e.message))
     // yield put(Notifications.error({ title: 'Ошибка', message: e.message, position: 'tc' }));
@@ -55,7 +55,7 @@ export function* checkAuth(api, action) {
     const response = yield call(api.checkAuth, payload);
     yield put(AuthActions.checkAuthSuccess(response));
   } catch (e) {
-    yield put(push('/'));
+    // yield put(push('/'));
     // yield put(Notifications.error({ title: 'Ошибка', message: e.message, position: 'tc' }));
     yield put(AuthActions.checkAuthFail(e.message))
   }

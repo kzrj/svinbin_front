@@ -123,7 +123,16 @@ class WSNomadResettelmentTab extends Component {
     return (
         <div className='row workshop-content'>
           <div className='col-3'>
-            <FetchingErrorComponentMessage
+            {piglets.map(group =>
+              <div className={this.state.activePigletsId == group.id ? 
+                'nomad-piglets-row piglets-active': 'nomad-piglets-row'}
+                onClick={() => this.clickPiglets(group)}
+                key={group.id}
+                >
+                <PigletsListElem piglets={group} />
+              </div>
+            )}
+            {/* <FetchingErrorComponentMessage
               fetching={this.props.listFetching}
               error={this.props.errorList}
               message={null}
@@ -139,7 +148,7 @@ class WSNomadResettelmentTab extends Component {
                     </div>
                   )}
                 </div>}
-            />
+            /> */}
           </div>
           <div className='col-9'>
             <FetchingErrorComponentMessage 

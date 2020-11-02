@@ -31,6 +31,7 @@ import ToursActions from '../redux/redux-sauce/tours'
 import ReportsActions from '../redux/redux-sauce/reports';
 import InputsActions from '../redux/redux-sauce/inputs';
 import WSDataActions from '../redux/redux-sauce/wsData';
+import { throws } from 'assert';
 
 
 class WorkshopThreeContainer extends Component {
@@ -39,11 +40,11 @@ class WorkshopThreeContainer extends Component {
     this.state = {
       tabs: [
         {name: 'infoTab',                 active: false, title: 'ИНФО'},
-        {name: 'returnPigletsTab',        active: false, title: 'Возврат поросята'},
-        {name: 'comingSowsTab',           active: false, title: 'Поступление матки'},
-        {name: 'farrowTab',               active: false,  title: 'Опорос'},
+        {name: 'returnPigletsTab',        active: false,  title: 'Возврат поросята'},
+        {name: 'comingSowsTab',           active: true, title: 'Поступление матки'},
+        {name: 'farrowTab',               active: false, title: 'Опорос'},
         {name: 'nurseSowTab',             active: false, title: 'Кормилица'},
-        {name: 'weaningPigletsTab',       active: true, title: 'Отъем поросят'},
+        {name: 'weaningPigletsTab',       active: false, title: 'Отъем поросят'},
         {name: 'createGiltTab',           active: false, title: 'Биркование'},
         {name: 'sowCullingTab',           active: false, title: 'Выбытие свиноматок'},
         {name: 'pigletsCullingTab',       active: false, title: 'Выбытие поросят'},
@@ -52,7 +53,7 @@ class WorkshopThreeContainer extends Component {
         {name: 'sowInnerTransferTab',     active: false, title: 'Перемещение свиноматок из клетки в клетку'},
         {name: 'sowTransferToWsTab',      active: false, title: 'Перемещение свиноматок в цех1, цех3'},
         {name: 'sowAndPigletsTransferTab',active: false, title: 'Перемещение свиноматок вместе с поросятами из клетки в клетку'},
-        {name: 'pigletsRecountTab',       active: false,  title: 'Пересчет поросят'},
+        {name: 'pigletsRecountTab',       active: false, title: 'Пересчет поросят'},
         // {name: 'pigletsInitPartTab',      active: false, title: 'Создание и перевод партии'},
       ]
     }
@@ -93,7 +94,7 @@ class WorkshopThreeContainer extends Component {
     const activeTab = this.getActiveTab()
 
     return (
-      <div className="workshop container-fluid">
+      <div className="">
         <TabMenu 
           tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №3'} activeTab={activeTab}
           user={this.props.state.auth.user}
@@ -107,8 +108,11 @@ class WorkshopThreeContainer extends Component {
           <WS3SowIncomeTab 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
+            sow={this.props.state.sows.sow}
             listFetching={this.props.state.sows.fetching}
             sowsListError={this.props.state.sows.errorList}
+            queryCount={this.props.state.sows.queryCount}
+            getSowFromSows={this.props.getSowFromSows}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
@@ -473,6 +477,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSow: id => dispatch(SowsActions.getSowRequest(id)),
   setSow: sow => dispatch(SowsActions.setSow(sow)),
   getByFarmIdSow: query => dispatch(SowsActions.getSowByFarmIdRequest(query)),
+  getSowFromSows: farm_id => dispatch(SowsActions.getSowFromSows(farm_id)),
 
   cullingSow: data => dispatch(SowsActions.cullingSowWs3Request(data)),
   sowsMoveMany: data => dispatch(SowsActions.sowsMoveManyWs3Request(data)),

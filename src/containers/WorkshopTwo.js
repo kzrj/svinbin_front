@@ -118,6 +118,7 @@ class WorkshopTwoContainer extends Component {
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
+            queryCount={this.props.state.sows.queryCount}
 
             getTours={this.props.getTours}
             tours={this.props.state.tours.list}

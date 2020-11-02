@@ -6,15 +6,18 @@ export class Sections extends Component {
 
   render() {
     const { sections, activeSectionId, fetching, error } = this.props
-     
+    const sectionClass = 'border border-mainDark-dark px-2 py2 float-left '
     return (
-      <div className='row my-0'>
+      <div className='my-0 float-wrap mx-2 my-2'>
         {!error ? 
           fetching ? <p className='loading'>Загрузка</p> :
             sections.map((section, key) => 
-              <div className={ activeSectionId == section.section_id ? 
-                'section-button section-active': 'section-button '
-                } onClick={this.props.clickSection}
+              <div className={activeSectionId == section.section_id 
+                ? sectionClass + ' section-active'
+                : sectionClass
+                }
+                style={{'height': '50px'}}
+                onClick={this.props.clickSection}
                 data-section-id={section.section_id}
                 key={key}>
                 {section.section_name} 
@@ -23,6 +26,7 @@ export class Sections extends Component {
           :
           <p className='error-message'>{error}</p>
         }
+        <div className='clearfix'></div>
       </div>
     )
   }
@@ -33,7 +37,7 @@ export class SowCells extends Component {
   render() {
     let { locations, activeCellIds, fetching, isSection, error } = this.props
     return (
-      <div className='row div-cells'>
+      <div className='row'>
         {!error ?
           isSection ? 
             fetching ? <p className='loading'>Загрузка</p> :
@@ -69,8 +73,6 @@ export class SowCells extends Component {
         location.is_sow_empty ? 'col-2 cell' : 'col-2 cell-full cell'
     
     const tour = sow ? sow.tour && sow.tour.replace(' 2019г','').replace(' 2020г','') : null
-    // const pigletsTour = piglets ? piglets.tour && piglets.tour.replace(' 2019г','') : null
-    const pigletsTour = null
     return (
       <div 
         className={cellClassName}

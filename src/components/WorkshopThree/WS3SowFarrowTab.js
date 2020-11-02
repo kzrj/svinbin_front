@@ -238,7 +238,7 @@ class WS3SowFarrowTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)  
-      }, 500)
+      }, 100)
     }
   }
 

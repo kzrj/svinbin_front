@@ -1,4 +1,5 @@
 import React, { Component }  from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const WhoIs = (props) => (
     <span className='whois'>{props.user ? props.user.user : 'Не залогинен'}</span>)
@@ -7,7 +8,7 @@ export const Message = (props) => (
     <p className='message my-0'>{props.message}</p>)
 
 export const LoadingMessage = (props) => (
-    <p className='loading'>Загрузка</p>)
+    <div className='text-center my-5 mx-5'><CircularProgress className='color-mainDark-dark'/></div>)
 
 export const ErrorMessage = (props) => (
     <p className={props.className ? 'error-message ' + props.className : 'error-message'}>ОШИБКА: 
@@ -21,17 +22,12 @@ export class TabMenu extends Component {
       this.state = {
         showMenu: false,
         }
-      this.showMenu = this.showMenu.bind(this);
     }
 
-    showMenu () {
-
-    }
-    
     render () {
         let buttonClass = 'workshop-tab col-2 font-12 text-center'
         return (
-        <div className="pos-f-t">
+        <div className="">
             {/* <div className="collapse" id="navbarToggleExternalContent"> */}
             <div className="collapse" id="menuNavBar">
                 {/* <div className='workshop-header-3'>
@@ -51,13 +47,13 @@ export class TabMenu extends Component {
                 </div>
             </div>
             <nav className="nav-workshop-header">
-                <a className="float-left font-11 font-600 color-white text-uppercase ml-3"
+                <p className="float-left font-11 font-600 color-white text-uppercase ml-3 mb-0"
                     data-toggle="collapse" 
                     data-target="#menuNavBar" aria-expanded="false" aria-controls="menuNavBar"
                     onClick={() => this.setState({...this.state, showMenu: !this.state.showMenu})}
                     >
                     {this.state.showMenu ? 'скрыть меню' : 'показать меню'} 
-                </a>
+                </p>
                 {/* {this.props.online 
                     ? <span style={{"color": "green", "float": "left"}}>Online</span> 
                     : <span style={{"color": "red", "float": "left"}}>Offline</span>} */}

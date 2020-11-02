@@ -22,14 +22,11 @@ export default function requireAuthentication(Component, ws_numbers) {
           if (this.props.isLoggedIn === true) access = true
 
           return (
-              <div>
-                  {fetching 
-                    ? <p>Loading</p>
-                    : this.props.isLoggedIn
-                      ? <Component {...this.props} />
-                      : null
-                  }
-              </div>
+            fetching 
+              ? <p>Loading</p>
+              : this.props.isLoggedIn
+                ? <Component {...this.props} />
+                : null
           )
         }
     }
