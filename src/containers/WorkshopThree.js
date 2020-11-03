@@ -43,16 +43,16 @@ class WorkshopThreeContainer extends Component {
         {name: 'returnPigletsTab',        active: false, title: 'Возврат поросята'},
         {name: 'comingSowsTab',           active: false, title: 'Поступление матки'},
         {name: 'farrowTab',               active: false, title: 'Опорос'},
-        {name: 'nurseSowTab',             active: false,  title: 'Кормилица'},
+        {name: 'nurseSowTab',             active: false, title: 'Кормилица'},
         {name: 'weaningPigletsTab',       active: false, title: 'Отъем поросят'},
         {name: 'createGiltTab',           active: false, title: 'Биркование'},
         {name: 'sowCullingTab',           active: false, title: 'Выбытие свиноматок'},
         {name: 'pigletsCullingTab',       active: false, title: 'Выбытие поросят'},
         {name: 'pigletsInnerTransferTab', active: false, title: 'Перемещение поросят из клетки в клетку'},
         {name: 'searchSowTab',            active: false, title: 'Поиск по всем цехам'},
-        {name: 'sowInnerTransferTab',     active: true, title: 'Перемещение свиноматок из клетки в клетку'},
+        {name: 'sowInnerTransferTab',     active: false, title: 'Перемещение свиноматок из клетки в клетку'},
         {name: 'sowTransferToWsTab',      active: false, title: 'Перемещение свиноматок в цех1, цех3'},
-        {name: 'sowAndPigletsTransferTab',active: false, title: 'Перемещение свиноматок вместе с поросятами из клетки в клетку'},
+        {name: 'sowAndPigletsTransferTab',active: true,  title: 'Перемещение свиноматок вместе с поросятами из клетки в клетку'},
         {name: 'pigletsRecountTab',       active: false, title: 'Пересчет поросят'},
         // {name: 'pigletsInitPartTab',      active: false, title: 'Создание и перевод партии'},
       ]
@@ -410,24 +410,18 @@ class WorkshopThreeContainer extends Component {
             sectionsFetching={this.props.state.sections.fetching}
             sectionsListError={this.props.state.sections.errorList}
 
-            getLocations1={this.props.getLocations}
-            locations1={this.props.state.locations.list}
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
             locationsListError={this.props.state.locations.errorList}
-            
-            getLocations2={this.props.getLocationsAdditional}
-            locations2={this.props.state.locations.additional_list}
-            locationsAddFetching={this.props.state.locations.fetchingAdditional}
-            locationsList2Error={this.props.state.locations.errorAdditional}
 
             sowAndPiglets={true}
             ws3TransferSowAndPiglets={this.props.ws3TransferSowAndPiglets}
             eventFetching={this.props.state.wsData.fetching}
             eventError={this.props.state.wsData.error}
             message={this.props.state.wsData.message}
-            showButton={true}
 
-            wsDataResetErrorsAndMessages={this.props.wsDataResetErrorsAndMessages}
+            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
 
         {activeTab.name === 'searchSowTab' &&

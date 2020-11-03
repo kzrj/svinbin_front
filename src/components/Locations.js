@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { PigletsAge } from '../components/PigletsRepresentations'
 
 
 export class Sections extends Component {
