@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 
 const MainMenuLink = (props) => (
     <div className="col-3 ws-home">
-      {/* <Link to={props.url}>{props.title}</Link> */}
-      <a href={props.url}>{props.title}</a>
+      <Link to={props.url}>{props.title}</Link>
     </div>
 )
 

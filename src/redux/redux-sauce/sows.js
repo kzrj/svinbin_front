@@ -4,6 +4,18 @@ import { getObjectInListbyFieldValue } from '../../components/utils'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+    nursesRequest: ['payload'],
+    nursesFail: ['error'],
+    nursesSuccess: ['payload'],
+
+    cullingsRequest: ['payload'],
+    cullingsFail: ['error'],
+    cullingsSuccess: ['payload'],
+
+    farrowsRequest: ['payload'],
+    farrowsFail: ['error'],
+    farrowsSuccess: ['payload'],
+
     getSowFromSows: ['farm_id'],
     
     getSowsRequest: ['payload'],
@@ -158,6 +170,10 @@ export const INITIAL_STATE = Immutable({
     breeds: [],
     semenBoarList: [],
 
+    cullings: [],
+    farrows: [],
+    nurses: [],
+
     initData: null,
 
     message: '',
@@ -192,6 +208,45 @@ export const SowsSelectors = {
 }
 
 /* ------------- Reducers ------------- */
+// Get nurses
+export const nursesRequest = (state, { payload }) => {
+    return state.merge({ fetching: true, culling: []})
+}
+
+export const nursesSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, nurses: payload })
+}
+
+export const nursesFail = (state, { error }) => {
+    return state.merge({ fetching: false, errorList: error, nurses: [] })
+}
+
+// Get cullings
+export const cullingsRequest = (state, { payload }) => {
+    return state.merge({ fetching: true, culling: []})
+}
+
+export const cullingsSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, cullings: payload })
+}
+
+export const cullingsFail = (state, { error }) => {
+    return state.merge({ fetching: false, errorList: error, culling: [] })
+}
+
+// Get farrows
+export const farrowsRequest = (state, { payload }) => {
+    return state.merge({ fetching: true, farrows: []})
+}
+
+export const farrowsSuccess = (state, { payload }) => {
+    return state.merge({ fetching: false, farrows: payload })
+}
+
+export const farrowsFail = (state, { error }) => {
+    return state.merge({ fetching: false, errorList: error, farrows: [] })
+}
+
 // get sow from sows list
 export const getSowFromSows = (state, { farm_id }) => {
     let sow = getObjectInListbyFieldValue(state.list, 'farm_id', farm_id)
@@ -204,7 +259,10 @@ export const getSowsRequest = (state, { payload }) => {
 }
 
 export const getSowsSuccess = (state, { payload }) => {
-    return state.merge({ fetching: false, errorList: null, list: payload.results,
+    let sow = null
+    if (payload.results.length > 0)
+        sow = payload.results[0]
+    return state.merge({ fetching: false, errorList: null, list: payload.results, sow: sow,
         queryCount: payload.count })
 }
 
@@ -592,6 +650,18 @@ export const createGiltFail = (state, { error }) => {
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+    [Types.NURSES_REQUEST]: nursesRequest,
+    [Types.NURSES_SUCCESS]: nursesSuccess,
+    [Types.NURSES_FAIL]: nursesFail,
+
+    [Types.CULLINGS_REQUEST]: cullingsRequest,
+    [Types.CULLINGS_SUCCESS]: cullingsSuccess,
+    [Types.CULLINGS_FAIL]: cullingsFail,
+
+    [Types.FARROWS_REQUEST]: farrowsRequest,
+    [Types.FARROWS_SUCCESS]: farrowsSuccess,
+    [Types.FARROWS_FAIL]: farrowsFail,
+
     [Types.GET_SOW_FROM_SOWS]: getSowFromSows,
 
     [Types.GET_SOWS_REQUEST]: getSowsRequest,

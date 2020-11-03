@@ -5,7 +5,8 @@ export const WhoIs = (props) => (
     <span className='whois'>{props.user ? props.user.user : 'Не залогинен'}</span>)
 
 export const Message = (props) => (
-    <p className='message my-0'>{props.message}</p>)
+    <p className={props.className ? 'message ' + props.className : 'message'}>
+        {props.message}</p>)
 
 export const LoadingMessage = (props) => (
     <div className='text-center my-5 mx-5'><CircularProgress className='color-mainDark-dark'/></div>)
@@ -15,6 +16,15 @@ export const ErrorMessage = (props) => (
         {props.error.data ? props.error.data.message : props.error.message ? 
             props.error.message :'Неизвестная ошибка.'}</p>)
 
+export function ErrorOrMessage (props) {
+    return (
+        props.fetching 
+        ? <LoadingMessage />
+        : props.error 
+            ? <ErrorMessage error={props.error} className={props.className}/>
+            : props.message && <Message message={props.message} className={props.className}/>
+    )
+}
 
 export class TabMenu extends Component {
     constructor(props) {

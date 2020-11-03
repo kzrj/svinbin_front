@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 // components
 import WSSowTransferToWSTab from '../components/SowTabs/WSSowTransferToWSTab'
-import WSSowCullingTab from '../components/SowTabs/WSSowCullingTab'
+import WS12SowCullingTab from '../components/SowTabs/WS12SowCullingTab'
 import WSSowUltrasoundTab from '../components/SowTabs/WSSowUltrasoundTab'
 import WS2CreateTransferTab from '../components/SowTabs/WS2CreateTransferTab'
 import WSSowGlobalSearchTab from '../components/SowTabs/WSSowGlobalSearchTab'
@@ -133,22 +133,25 @@ class WorkshopTwoContainer extends Component {
           />}
 
         { activeTab.name === 'cullingTab' &&
-          <WSSowCullingTab
+          <WS12SowCullingTab
             workshopNumber={2}
             abort={true}
 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
             sowsListFetching={this.props.state.sows.fetching}
+            errorList={this.props.state.sows.errorList}
             queryCount={this.props.state.sows.queryCount}
 
             getSow={this.props.getSow}
             setSow={this.props.setSow}
+
             sow={this.props.state.sows.sow}
             tours_info={this.props.state.sows.tours_info}
             singleSowFetching={this.props.state.sows.sowSingleFetching}
 
             cullingSow={this.props.cullingSow}
+            massCulling={this.props.massCulling}
             abortionSow={this.props.abortionSow}
             eventError={this.props.state.sows.eventError}
             eventFetching={this.props.state.sows.eventFetching}

@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 
 import AuthActions from '../redux/redux-sauce/auth';
 
+// components
+import MainPage from '../components/MainPage';
+
 
 class LoginForm extends Component {
   constructor(props) {
@@ -52,21 +55,12 @@ class Main extends Component {
   }
 
   componentDidMount() {
+    console.log('Opapapapap')
     const token = localStorage.getItem('token');
     if (token) {
       this.props.checkToken(token);
     }
-    window.addEventListener('offline', this.handleNetworkChange);
-    window.addEventListener('online', this.handleNetworkChange);
-  }
-  
-  componentWillUnmount() {
-    window.removeEventListener('offline', this.handleNetworkChange);
-    window.removeEventListener('online', this.handleNetworkChange);
-  }
-
-  handleNetworkChange = () => {
-    this.setState({ online: window.navigator.onLine });
+    console.log(token)
   }
 
   render() {
@@ -79,7 +73,7 @@ class Main extends Component {
 
     const sowsListFetching = this.props.state.sows.fetching
     const sowsEventFetching = this.props.state.sows.eventFetching
-
+    console.log('jikokx')
     return (
       <div className="app container-fluid">
         <div id="pageContent">
@@ -88,7 +82,7 @@ class Main extends Component {
               {/* <button onClick={this.login}>
                 Button login
               </button> */}
-              <h1>Свинокомплекс Николаевский</h1>
+              <h1>Свинокомплекс Николаевский2</h1>
               <LoginForm login={this.props.login}/>
               {error && 
                 <p className='error'>{error}</p>
@@ -98,6 +92,7 @@ class Main extends Component {
           { isLoggedIn &&
             <div>
               {this.props.children}
+              <MainPage />
               <div>
                 <button onClick={this.props.logout}>
                   Выйти

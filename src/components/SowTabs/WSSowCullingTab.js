@@ -1,35 +1,8 @@
 import React, { Component } from 'react';
 
 // components
-import { SowFindByIdWithoutGet } from '../FiltersAndInputs'
-import { SowLightDetail } from '../SowRepresentations'
-import { ErrorMessage, Message, LoadingMessage, FetchingErrorComponentMessage } from '../CommonComponents';
-
-
-function CullingModal () {
-  return (
-    <div className="modal fade" id="cullingModal" tabindex="-1" role="dialog" 
-      aria-labelledby="cullingModalLabel" aria-hidden="true">
-      <div className="modal-dialog" role="document">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" id="cullingModalLabel">Modal title</h5>
-            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div className="modal-body">
-            ...
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" className="btn btn-primary">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+import { SowSingle } from '../SowRepresentations'
+import { ErrorOrMessage, LoadingMessage } from '../CommonComponents';
 
 
 class WSSowCullingTab extends Component {
@@ -43,47 +16,49 @@ class WSSowCullingTab extends Component {
       },
       cullingReason: 'без причины',
       cullingType: 'padej',
-      weight: 0,
+      weight: '',
       needToRefresh: false,
     }
     this.getSowsById = this.getSowsById.bind(this);
-    this.getGilts = this.getGilts.bind(this);
     this.setData = this.setData.bind(this);
     this.cullingSow = this.cullingSow.bind(this);
     this.abortionSow = this.abortionSow.bind(this);
+
+    this.setQuery = this.setQuery.bind(this);
   }
   
   componentDidMount() {
-    this.props.getSows({
-      alive:true,
-      all_in_workshop_number: this.props.workshopNumber,
-      farm_id_isnull: false
-    })
     this.setState({
       ...this.state,
       query: {
         ...this.state.query,
-        all_in_workshop_number: this.props.workshopNumber
+        all_in_workshop_number: this.props.workshopNumber,
+        farm_id_starts: this.props.sow && this.props.sow.farm_id
       }
     })
     this.props.sowsResetErrorsAndMessages()
+    this.props.getSowCullings({ws_number: 3})
+  }
+
+  setQuery (e) {
+    let { query } = this.state
+    query[e.target.name] = e.target.value
+
+    this.setState({
+      ...this.state,
+      query: query,
+      needToRefresh: true
+    })
+    
+    this.props.getSows({
+      ...query
+    })
   }
 
   getSowsById (e) {
     let { query } = this.state
     query.farm_id_starts = e.target.value
     query.farm_id_isnull = false
-    this.setState({
-      ...this.state,
-      query: query
-    })
-    this.props.getSows(query)
-  }
-
-  getGilts () {
-    let { query } = this.state
-    query.farm_id_isnull = true
-    query.farm_id_starts = null
     this.setState({
       ...this.state,
       query: query
@@ -126,20 +101,27 @@ class WSSowCullingTab extends Component {
   refreshSowsList () {
     if (this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
-        this.setState({...this.state, needToRefresh: false})
         this.props.getSows({
           all_in_workshop_number: this.props.workshopNumber,
-          farm_id_isnull: false
-        })  
-      }, 500)
+          farm_id_isnull: false,
+          alive: true,
+        })
+        this.props.getSowCullings({ws_number: 3})
+        this.setState({...this.state, needToRefresh: false,
+          query: {
+            ...this.state.query,
+            farm_id_starts: ''
+          }
+          })
+      }, 300)
     }
   }
 
   render() {
     this.refreshSowsList()
-    const { sows, sow, tours_info, eventError, message, errorList, eventFetching, sowsListFetching } = this.props
+    const { sow, eventError, message,  eventFetching, cullings, sowsListFetching} = this.props
     return (
-      <div className='row workshop-content'>
+      <div className=''>
         <div className="modal fade" id="cullingModal" tabindex="-1" role="dialog" 
           aria-labelledby="cullingModalLabel" aria-hidden="true">
           <div className="modal-dialog" role="document">
@@ -161,7 +143,7 @@ class WSSowCullingTab extends Component {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                <button type="button" className="btn btn-primary" data-dismiss="modal" 
+                <button type="button" className="btn bg-red1-light" data-dismiss="modal" 
                   onClick={this.cullingSow}>
                   Забраковать
                 </button>
@@ -170,69 +152,87 @@ class WSSowCullingTab extends Component {
           </div>
         </div>
 
-        <div className='col-3 workshop-left-column'>
-            <SowFindByIdWithoutGet 
-              sows={sows}
-              queryCount={this.props.queryCount}
-              sow={sow} 
-              sowIdValue={this.state.query.farm_id_starts}
-              getSowsById={this.getSowsById} 
-              getGilts={this.getGilts}
-              setSow={this.props.setSow}
-              fetching={this.props.sowsListFetching}
-              error={errorList}
-              />
-        </div>
-        <div className='col-9'>
-          <div className='workshop-content-column-2'>
-            {this.props.singleFetching 
-                ? <LoadingMessage /> 
-                : sow &&
-                    <div>
-                      <SowLightDetail sow={sow}/>
-                      {eventFetching 
-                        ? <LoadingMessage />
-                        : !eventError 
-                          ? <div>
-                              <div className="input-group">
-                                <select className="custom-select" name='cullingType' onChange={this.setData}>
-                                  <option selected value='padej' >Падеж</option>
-                                  <option value='vinuzhd' >Вынужденный убой</option>
-                                </select>
-                                <input type='text' onChange={this.setData} name='cullingReason'
-                                  placeholder='Напишите причину' value={this.state.cullingReason}/>
-                                <input type='number' onChange={this.setData} name='weight' value={this.state.weight}
-                                  placeholder='Укажите вес'/>
-                                <div className="input-group-append">
-                                  {/* <button className="btn btn-outline-secondary" type="button"  
-                                  onClick={this.cullingSow}>
-                                    Забраковать
-                                  </button> */}
-                                  <button type="button" className="btn btn-outline-secondary" data-toggle="modal"
-                                     data-target="#cullingModal">
-                                    Забраковать
-                                  </button>
-                                </div>
-                              </div>
-                              { this.props.abort &&
-                                <div className="input">
-                                  <label className='sow-event-label'>Пометить как аборт</label>
-                                  <div>
-                                    <button className="btn btn-outline-secondary" type="button"  
-                                    onClick={this.abortionSow}>
-                                      Аборт
-                                    </button>
-                                  </div>
-                                </div>}
-                                {message && <Message message={message}/>}
-                            </div>
-                          : <ErrorMessage error={eventError}/>
-                      }
-                    </div>
-            }
+        <div className='card my-2 mx-1'>
+          <div className='content my-2'>
+            <h4 className='mt-2 mx-2 mb-1'>Введите номер свиноматки</h4>
+              <input type="number" 
+                className="font-20 mx-2 my-2 rounded-s input-custom-placeholder" 
+                placeholder="Номер свиноматки"
+                name='farm_id_starts'
+                value={this.state.query.farm_id_starts}
+                onChange={this.setQuery} />
+            {sow &&
+                <SowSingle sow={sow} className='my-0 font-17 font-600 color-mainDark-dark'/>
+              }
           </div>
         </div>
+
+        <div className='card my-2 mx-1'>
+          <div className='content'>
+            
+            <select className="font-16 py-2 my-2 mx-2" 
+              name='cullingType' 
+              onChange={this.setData}>
+                <option selected value='padej' >Падеж</option>
+                <option value='vinuzhd' >Вынужденный убой</option>
+            </select>
+
+            <input className="font-16 py-1 my-2 mx-2"
+              type='text' onChange={this.setData} name='cullingReason'
+              placeholder='Напишите причину' value={this.state.cullingReason}/>
+
+            <input className="font-16 py-1 my-2 mx-2"
+              type='number' onChange={this.setData} name='weight' value={this.state.weight}
+              placeholder='Укажите вес'/>
+
+          </div>
+          <div className='content mt-1'>
+            <button type="button" className="btn bg-mainDark-dark ml-1 mr-3" data-toggle="modal"
+                data-target="#cullingModal">
+              Забраковать
+            </button>
+            { this.props.abort &&
+              <button className="btn bg-mainDark-dark ml-5" type="button"  
+                onClick={this.abortionSow}>
+                  Аборт
+              </button>
+            }
+            <ErrorOrMessage error={eventError} message={message} fetching={eventFetching}
+              className='my-3 mx-2 font-15' />
+          </div>
       </div>
+      
+      {sowsListFetching 
+          ? <LoadingMessage />
+          :cullings.length > 0 && 
+        <div className='card my-2'>
+          <div className='content'>
+            <p className='my-1'> 10 последних выбытий</p>
+            <table className='table table-sm'>
+              <thead className='bg-mainDark-dark'>
+                <th>Дата</th>
+                <th>Номер</th>
+                <th>Тип</th>
+                <th>Причина</th>
+                <th>Вес</th>
+                <th>Сотрудник</th>
+              </thead>
+              <tbody>
+                {cullings.map(c =>
+                  <tr>
+                    <td>{c.date}</td>
+                    <td>{c.farm_id}</td>
+                    <td>{c.culling_type}</td>
+                    <td>{c.reason}</td>
+                    <td>{c.weight}</td>
+                    <td>{c.initiator}</td>
+                  </tr>
+                  )}
+              </tbody>
+            </table>
+          </div>
+        </div>}
+    </div>
     )
   }
 }

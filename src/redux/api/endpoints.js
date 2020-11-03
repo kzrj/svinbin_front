@@ -32,6 +32,9 @@ export default {
     MASS_CULLING: `${apiUrl}/workshoponetwo/sows/mass_culling/`,
     abortionSow: (id) => `${apiUrl}/workshoponetwo/sows/${id}/abortion/`,
     MASS_INIT_TRANSFER: `${apiUrl}/workshoponetwo/sows/mass_init_and_transfer/`,
+    SOW_CULLINGS: `${apiUrl}/workshoponetwo/sows/cullings/`,
+    SOW_FARROWS: `${apiUrl}/workshoponetwo/sows/farrows/`,
+    NURSES: `${apiUrl}/workshoponetwo/sows/nurses/`,
 
     sowFarrow: (id) => `${apiUrl}/workshopthree/sows/${id}/sow_farrow/`,
     markAsNurse: (id) => `${apiUrl}/workshopthree/sows/${id}/mark_as_nurse/`,

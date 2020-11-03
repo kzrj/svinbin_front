@@ -27,9 +27,9 @@ return (
             {!error 
                 ? fetching 
                     ? <p className='loading'>Загрузка</p> 
-                    : (sows.length > 0 && sow) && 
+                    : (sows.length > 0) && 
                         sows.map(sowInList => 
-                            <li className={sowInList.id == sow.id 
+                            <li className={(sow && sowInList.id == sow.id)
                                 ? 'sow-active sow-li my-0 py-0 pl-3 text-justify' 
                                 : 'sow-li my-0 py-0 pl-3 text-justify'} 
                             key={sowInList.id} 

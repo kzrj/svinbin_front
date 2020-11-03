@@ -35,9 +35,9 @@ export class Sections extends Component {
 export class SowCells extends Component {
 
   render() {
-    let { locations, activeCellIds, fetching, isSection, error } = this.props
+    let { locations, activeCellIds, fetching, isSection, error, fromCellId, toCellId } = this.props
     return (
-      <div className='row'>
+      <div className='row mb-5 pb-4'>
         {!error ?
           isSection ? 
             fetching ? <p className='loading'>Загрузка</p> :
@@ -46,6 +46,8 @@ export class SowCells extends Component {
                   key={key}
                   location={location}
                   activeCellIds={activeCellIds}
+                  fromCellId={fromCellId}
+                  toCellId={toCellId}
                   clickLocation={this.props.clickLocation}/>
             )
             :
@@ -61,16 +63,22 @@ export class SowCells extends Component {
  export class SowCell extends Component {
 
   render() {
-    const { location, activeCellIds } = this.props
+    const { location, activeCellIds, fromCellId, toCellId } = this.props
     const sow = location.sow_set.length > 0 ? location.sow_set[0] : null
     const more_than_one_sow = location.sow_set.length > 1 ? true : false
 
     const piglets = location.piglets.length > 0 ?
       location.piglets[0] : null
 
-    const cellClassName = activeCellIds.includes(location.id) ? 
+    let cellClassName = activeCellIds.includes(location.id) ? 
       'col-2 cell cell-active' : 
         location.is_sow_empty ? 'col-2 cell' : 'col-2 cell-full cell'
+
+    if (fromCellId === location.id)
+      cellClassName = 'col-2 cell bg-teal-dark'
+    
+    if (toCellId === location.id)
+      cellClassName = 'col-2 cell bg-brown1-dark'
     
     const tour = sow ? sow.tour && sow.tour.replace(' 2019г','').replace(' 2020г','') : null
     return (
@@ -86,7 +94,7 @@ export class SowCells extends Component {
               <span className='cell-sow-status'>{sow.status}</span>,
               tour &&
               [<br/>,
-              <span key={sow.farm_id + tour} className='cell-tour'>{tour}</span>]
+              <span key={sow.farm_id + tour} className='cell-tour color-green1-dark'>{tour}</span>]
             ]}
           {more_than_one_sow && 'Ошибка! Больше одной свиньи в клетке!'}
           <br/>

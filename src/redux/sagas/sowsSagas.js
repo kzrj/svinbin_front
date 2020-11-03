@@ -2,6 +2,33 @@ import { put, call } from 'redux-saga/effects';
 
 import SowsActions from '../redux-sauce/sows'
 
+export function* nurses(api, action) {
+    try {
+        let response = yield call(api.nurses, action.payload);
+        yield put(SowsActions.nursesSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.nursesFail(err))
+    }
+}
+
+export function* cullings(api, action) {
+    try {
+        let response = yield call(api.cullings, action.payload);
+        yield put(SowsActions.cullingsSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.cullingsFail(err))
+    }
+}
+
+export function* farrows(api, action) {
+    try {
+        let response = yield call(api.farrows, action.payload);
+        yield put(SowsActions.farrowsSuccess(response));
+    } catch (err) {
+        yield put(SowsActions.farrowsFail(err))
+    }
+}
+
 export function* getSows(api, action) {
     try {
         let response = yield call(api.getSows, action.payload);

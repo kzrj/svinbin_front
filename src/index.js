@@ -39,9 +39,9 @@ ReactDOM.render(
         {/* <div className="page-content header-clear"> */}
         <div className="page-content">
           <Switch>
-            <Route exact path="/" name="Главная" component={Main} >
-              <MainPage />
-            </Route>
+            <Route exact path="/" name="Главная" component={Main} />
+              {/* <MainPage />
+            </Route> */}
             <Route path="/workshop1/" name="Цех1 Осеменение" 
               component={requireAuthentication(WorkshopOne, [1])} />
             <Route path="/workshop2/" name="Цех2 Ожидание родов" 

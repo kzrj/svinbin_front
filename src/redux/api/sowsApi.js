@@ -3,6 +3,62 @@ import endpoints from './endpoints';
 import { parseErrorData, createUrlParamsFromFilters } from './utils';
 
 const create = () => {
+    const nurses = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.NURSES;
+
+        return axios({
+            method: 'get',
+            url: url,
+            params: params,
+            headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const cullings = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.SOW_CULLINGS;
+
+        return axios({
+            method: 'get',
+            url: url,
+            params: params,
+            headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
+
+    const farrows = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+        const token = localStorage.getItem('token') || '';
+        const url = endpoints.SOW_FARROWS;
+
+        return axios({
+            method: 'get',
+            url: url,
+            params: params,
+            headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+        })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
 
     const getSows = (filters) => {
         const params = createUrlParamsFromFilters(filters);
@@ -753,6 +809,9 @@ const create = () => {
         massCulling,
         createGilt,
         getSowByFarmId,
+        cullings,
+        farrows,
+        nurses,
 
         // boars
         createBoar,

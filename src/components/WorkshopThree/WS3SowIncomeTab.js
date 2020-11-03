@@ -27,7 +27,7 @@ class WS3SowIncomeTab extends Component {
     this.clickSection = this.clickSection.bind(this);
     this.clickLocation = this.clickLocation.bind(this);
     this.clickSetlle = this.clickSetlle.bind(this);
-    this.clickSow = this.clickSow.bind(this);
+    
     this.refreshData = this.refreshData.bind(this);
 
     this.getSowFromSows = this.getSowFromSows.bind(this);
@@ -35,14 +35,6 @@ class WS3SowIncomeTab extends Component {
   
   componentDidMount() {
     this.props.getSows(this.state.query)
-  }
-
-  clickSow (e) {
-    const { id } = e.target.dataset
-    this.setState({
-      ...this.state,
-      activeSowId: id
-    })
     this.props.sowsResetErrorsAndMessages()
   }
 
@@ -106,8 +98,7 @@ class WS3SowIncomeTab extends Component {
               sections={sections}
               activeSectionId={this.state.activeSectionId}
               fetching={sectionsFetching}
-              error={sectionsListError}
-
+              error={sectionsListError} 
               clickSection={this.clickSection}
             />}
         />
@@ -135,7 +126,9 @@ class WS3SowIncomeTab extends Component {
                     ? <p className='mb-1 font-16'>{sow.farm_id} {sow.tour}</p>
                     : <p className='mb-1 font-16'>Нет такого ID</p>
                   }
-                  <input type='number' className='mt-1' placeholder='ID свиноматки' onChange={this.getSowFromSows}/>
+                  <input type='number' className='mt-1' placeholder='ID свиноматки'
+                     defaultValue={sow ? sow.farm_id : ''}
+                     onChange={this.getSowFromSows}/>
                 </div>
                 <div className='col-6 text-center'>
                   {this.state.activeLocation
