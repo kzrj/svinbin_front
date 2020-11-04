@@ -51,8 +51,8 @@ class WorkshopThreeContainer extends Component {
         {name: 'pigletsInnerTransferTab', active: false, title: 'Перемещение поросят из клетки в клетку'},
         {name: 'searchSowTab',            active: false, title: 'Поиск по всем цехам'},
         {name: 'sowInnerTransferTab',     active: false, title: 'Перемещение свиноматок из клетки в клетку'},
-        {name: 'sowTransferToWsTab',      active: false, title: 'Перемещение свиноматок в цех1, цех3'},
-        {name: 'sowAndPigletsTransferTab',active: true,  title: 'Перемещение свиноматок вместе с поросятами из клетки в клетку'},
+        {name: 'sowTransferToWsTab',      active: true,  title: 'Перегон свиноматок в цех1, цех3'},
+        {name: 'sowAndPigletsTransferTab',active: false, title: 'Перемещение свиноматок вместе с поросятами из клетки в клетку'},
         {name: 'pigletsRecountTab',       active: false, title: 'Пересчет поросят'},
         // {name: 'pigletsInitPartTab',      active: false, title: 'Создание и перевод партии'},
       ]

@@ -4,8 +4,7 @@ import { toggleArray, toggleArrayDictById } from '../utils';
 
 //components
 import { SowCells, Sections } from '../Locations'
-import { ErrorMessage, Message } from '../CommonComponents';
-import { FetchingErrorComponentMessage } from '../CommonComponents';
+import { FetchingErrorComponentMessage, ErrorOrMessage } from '../CommonComponents';
 
 
 class WS3SowTransferToWsTab extends Component {
@@ -14,6 +13,7 @@ class WS3SowTransferToWsTab extends Component {
     this.state = {
       activeSectionId: 6,
       activeLocationsId: [],
+      reprList: [],
 
       activeSows: [],
 
@@ -41,23 +41,26 @@ class WS3SowTransferToWsTab extends Component {
   }
 
   clickLocation (location) {
-    let { activeLocationsId, activeSows } = this.state
+    this.props.sowsResetErrorsAndMessages()
+    let { activeLocationsId, activeSows, reprList } = this.state
 
     if (location.sow_set.length > 0) {
       activeLocationsId = toggleArray(activeLocationsId, location.id)
+      reprList = toggleArray(reprList, {sow:location.sow_set[0].farm_id, cell: location.cell})
       activeSows = toggleArrayDictById(activeSows, location.sow_set[0])
       
       this.setState({
         ...this.state,
         activeLocationsId: activeLocationsId,
         activeSows: activeSows,
+        reprList: reprList
       })
     }
   }
 
   clickTransfer (e) {
     const { activeSows } = this.state
-    const { to_location } =e.target.dataset
+    const { to_location } = e.target.dataset
     let sows = []
     activeSows.map(activeSow => sows = toggleArray(sows, activeSow.id))
 
@@ -74,6 +77,13 @@ class WS3SowTransferToWsTab extends Component {
     })
   }
 
+  // reprSows () {
+  //   let { activeLocationsId, activeLocationsCell, activeSows } = this.state
+  //   s = riskNamesArr.map(function(x, i){
+  //     return {name: x, state: riskWorkflowStateArr[i]}
+  //   })
+  // }
+
   refresh () {
     if (!this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
@@ -87,80 +97,57 @@ class WS3SowTransferToWsTab extends Component {
 
   render() {
     const { sections, locations, locationsFetching, locationsListError,
-       sectionsFetching, sectionsListError, eventError, message  } = this.props
+       eventError, message, eventFetching  } = this.props
     this.refresh()
     
     return (
-        <div className='row workshop-content'>
-          <div className='col-9'>
-            <FetchingErrorComponentMessage 
-                fetching={this.props.sectionsFetching}
-                error={this.props.sectionsListError}
-                message={null}
-                component={
-                  <Sections 
-                    sections={sections}
-                    activeSectionId={this.state.activeSectionId}
-                    fetching={this.props.sectionsFetching}
-                    error={this.props.sectionsListError}
-    
-                    clickSection={this.clickSection}
-                  />}
-              />
-              <FetchingErrorComponentMessage 
-                fetching={this.props.locationsFetching}
-                error={this.props.locationsListError}
-                message={null}
-                component={
-                  <SowCells 
-                    isSection={this.state.activeSectionId}
-                    locations={locations}
-                    fetching={locationsFetching}
-                    activeCellIds={this.state.activeLocationsId}
-                    clickLocation={this.clickLocation}
-                    error={locationsListError}
-                  />}
-              />
-          </div>
-          <div className='col-3'>
-            <div>
-              {this.state.activeSow && 
-                <ul>
-                  <li>{this.state.activeSow.id}</li>
-                  <li>{this.state.activeSow.farm_id}</li>
-                  <li>{this.state.activeSow.status}</li>
-                </ul>  
-              }
-            </div>
-            <FetchingErrorComponentMessage 
-              fetching={this.props.eventFetching}
-              error={this.props.eventError}
-              message={this.props.message}
+        <div className=''>
+          <FetchingErrorComponentMessage 
+              fetching={this.props.sectionsFetching}
+              error={this.props.sectionsListError}
+              message={null}
               component={
-                this.state.activeSows.length > 0 &&
-                <div>
-                  <div>
-                    <p>Выбрано {this.state.activeSows.length}</p>
-                    {this.state.activeSows.map(activeSow => <p>{activeSow.farm_id}</p>)}
-                  </div>
-                  <div className='bottom-buttons-block'>
-                    <div className="input-group">
-                      <button onClick={this.clickTransfer} data-to_location={3}
-                        className='btn btn-outline-secondary'>
-                        Переместить в цех 3
-                      </button>
-                    </div>
-                    <br />
-                    <div className="input-group">
-                      <button onClick={this.clickTransfer} data-to_location={1}
-                        className='btn btn-outline-secondary'>
-                        Переместить в цех 1
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                }
+                <Sections 
+                  sections={sections}
+                  activeSectionId={this.state.activeSectionId}
+                  fetching={this.props.sectionsFetching}
+                  error={this.props.sectionsListError}
+  
+                  clickSection={this.clickSection}
+                />}
             />
+            <FetchingErrorComponentMessage 
+              fetching={this.props.locationsFetching}
+              error={this.props.locationsListError}
+              message={null}
+              component={
+                <SowCells 
+                  isSection={this.state.activeSectionId}
+                  locations={locations}
+                  fetching={locationsFetching}
+                  activeCellIds={this.state.activeLocationsId}
+                  clickLocation={this.clickLocation}
+                  error={locationsListError}
+                />}
+            />
+          
+          <div className='card card-style fixed-bottom mx-1 my-1'>
+            <div className='content pl-3'>
+              <p className='my-0 font-17'>Выбрано {this.state.activeSows.length}</p>
+              {this.state.activeSows.length > 0 &&
+                <p className='mt-0 mb-1'>{this.state.reprList.map(reprSow =>
+                   `${reprSow.sow}(${reprSow.cell}), `)}</p>}
+              <button onClick={this.clickTransfer} data-to_location={3}
+                className='btn bg-mainDark-dark btn-sm mr-3'>
+                Переместить в цех 3
+              </button>
+              <button onClick={this.clickTransfer} data-to_location={1}
+                className='btn bg-mainDark-dark btn-sm'>
+                Переместить в цех 1
+              </button>
+              <ErrorOrMessage error={eventError} message={message} fetching={eventFetching}
+                  className='mt-2 mb-0 mx-1 font-15' />
+            </div>
           </div>
       </div>
     )
