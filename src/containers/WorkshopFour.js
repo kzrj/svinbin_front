@@ -68,6 +68,7 @@ class WorkshopFourContainer extends Component {
 
   render() {
     const activeTab = this.getActiveTab()
+    let grid = 'col-5 '
 
     return (
       <div className="workshop container-fluid">
@@ -104,6 +105,7 @@ class WorkshopFourContainer extends Component {
             workshopNumber={4}
             weighingPlace={'3/4'}
             user={this.props.state.auth.user}
+            grid={grid}
 
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.piglets.list}
@@ -132,21 +134,17 @@ class WorkshopFourContainer extends Component {
           <WSNomadInnerTransferTab
             workshopNumber={4}
             user={this.props.state.auth.user}
+            grid={grid}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
             sectionsListError={this.props.state.sections.errorList}
 
-            getLocations1={this.props.getLocations}
-            locations1={this.props.state.locations.list}
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
             listFetching={this.props.state.locations.fetching}
             locationsErrorList={this.props.state.locations.errorList}
-
-            getLocations2={this.props.getLocationsAdditional}
-            locations2={this.props.state.locations.additional_list}
-            list2Fetching={this.props.state.locations.fetchingAdditional}
-            locations2ErrorList={this.props.state.locations.errorAdditional}
 
             movePiglets={this.props.movePiglets}
             eventFetching={this.props.state.piglets.eventFetching}
@@ -163,6 +161,7 @@ class WorkshopFourContainer extends Component {
             toLocations={null}
             buttonName={'Отправить в Цех8'}
             user={this.props.state.auth.user}
+            grid={grid}
 
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.piglets.list}
@@ -191,6 +190,7 @@ class WorkshopFourContainer extends Component {
           <WSNomadCullingTab
             user={this.props.state.auth.user}
             workshopNumber={4}
+            grid={grid}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
@@ -210,6 +210,9 @@ class WorkshopFourContainer extends Component {
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
 
+            form={this.props.state.form.cullingPigletsForm}
+            grid={grid}
+
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
 
@@ -217,6 +220,7 @@ class WorkshopFourContainer extends Component {
           <WSPigletsRecountTab
             workshopNumber={3}
             user={this.props.state.auth.user}
+            grid={grid}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}

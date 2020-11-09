@@ -107,10 +107,10 @@ export class SowCells extends Component {
  export class PigletsCells extends Component {
 
   render() {
-    let { locations, activeCellIds, isSection, fetching, error } = this.props
+    let { locations, activeCellIds, isSection, fetching, error, className, grid, fromCellId, toCellId } = this.props
 
     return (
-      <div className='row'>
+      <div className={className +  ' row d-flex justify-content-center'}>
         {!error ? 
           isSection ? 
             fetching ? <p className='loading'>Загрузка</p> :
@@ -121,6 +121,9 @@ export class SowCells extends Component {
                       activeCellIds={activeCellIds}
                       clickLocation={this.props.clickLocation}
                       user={this.props.user}
+                      grid={grid}
+                      fromCellId={fromCellId}
+                      toCellId={toCellId}
                       />
                     )
           :
@@ -137,10 +140,18 @@ export class SowCells extends Component {
  export class PigletsCell extends Component {
 
   render() {
-    const { location, activeCellIds } = this.props
-    const cellClassName = activeCellIds.includes(location.id) ? 
-      'col-2 cell cell-active' : 
-        location.is_piglets_empty ? 'col-2 cell' : 'col-2 cell-full cell'
+    const { location, activeCellIds, grid, fromCellId, toCellId } = this.props
+
+    let cellClassName = activeCellIds.includes(location.id) ? 
+     grid + 'cell cell-active' : 
+        location.is_piglets_empty ? grid + 'cell' : grid + 'cell-full cell'
+
+    if (fromCellId === location.id)
+      cellClassName =  grid +' cell bg-teal-dark'
+    
+    if (toCellId === location.id)
+      cellClassName = grid + ' cell bg-brown1-dark'
+    
     const piglets = location.piglets && location.piglets.length > 0 ? location.piglets[0] : null
     let age = ''
     piglets && piglets.age.split(' ').length > 1 

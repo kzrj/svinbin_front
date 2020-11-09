@@ -270,7 +270,8 @@ export const CullingTypeInput = (props) => (
 export const CullingReasonInput = (props) => (
     <input type='text' value={props.culling_reason} 
         onChange={props.setData} 
-        name='culling_reason' className="form-control search-input"
+        name='culling_reason' 
+        className=""
         placeholder="Причина" />
 )
 

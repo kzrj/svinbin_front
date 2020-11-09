@@ -172,7 +172,7 @@ class WS3PigletsWeaningTab extends Component {
 
   render() {
     this.refreshSowsList()
-    const { locations, sections } = this.props
+    const { locations, sections, grid } = this.props
     return (
         <div className='workshop-content'>
           <div className='col-12'>
@@ -199,6 +199,7 @@ class WS3PigletsWeaningTab extends Component {
                     activeCellIds={this.state.activeLocationsId}
                     clickLocation={this.clickLocation}
                     user={this.props.user}
+                    grid={grid}
                   />}
             />
           </div>

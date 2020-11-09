@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
 //components
-import { PigletsCells, Sections } from '../Locations'
-import { PigletsGroup } from '../PigletsRepresentations'
-import { CullingTypeInput, CullingReasonInput } from '../FiltersAndInputs'
-import { Message, FetchingErrorComponentMessage } from '../CommonComponents'
+import { CullingPigletsForm } from '../PigletsTabs/PigletsForms';
+import { PigletsCells, Sections } from '../Locations';
+import {  PigletsGroupInline } from '../PigletsRepresentations';
+import { FetchingErrorComponentMessage, ErrorOrMessage } from '../CommonComponents';
+import { getToday } from '../utils';
 
 
 class WSNomadCullingTab extends Component {
@@ -14,13 +15,16 @@ class WSNomadCullingTab extends Component {
       activePiglets: null,
       activeSectionId: null,
       activeCellId: null,
+      activeLocation: null,
 
       culling_type: null,
-      culling_reason: null,
+      culling_reason: 'без причины',
       is_it_gilt: false,
       date: null,
-      quantity: null,
+      quantity: 1,
       total_weight: 0,
+
+      expand: false,
 
       needToRefresh: false,
     }
@@ -45,9 +49,15 @@ class WSNomadCullingTab extends Component {
   }
 
   clickLocation (location) {
+    let { expand } = this.state
+    if (location.is_piglets_empty) expand = false
+    else expand = true
+
     this.setState({
       ...this.state,
+      expand: expand,
       activeCellId: location.id,
+      activeLocation: location,
       activePiglets: location.piglets.length > 0 ?
         location.piglets[0] : null
     })
@@ -69,25 +79,11 @@ class WSNomadCullingTab extends Component {
   }
 
   cullingPiglets () {
-    const { culling_type, culling_reason, activePiglets, is_it_gilt, date, quantity, total_weight } = this.state
-    this.props.cullingPiglets({
-      id: activePiglets.id,
-      culling_type: culling_type,
-      reason: culling_reason,
-      is_it_gilt: is_it_gilt,
-      date: date,
-      quantity: quantity,
-      total_weight: total_weight,
-    })
+    this.props.cullingPiglets(this.props.form.values)
     this.setState({
       ...this.state,
-      cullingType: null,
-      cullingReason: null,
-      is_it_gilt: false,
-      date: null,
-      quantity: null,
-      total_weight: 0,
 
+      expand: false,
       needToRefresh: true, 
       activeLocation: null,
       activePiglets: null,
@@ -99,102 +95,85 @@ class WSNomadCullingTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
-      }, 500)
+      }, 300)
     }
   }
 
   render() {
     this.refreshSowsList()
-    const { sections, locations } = this.props
-    const uboi = this.state.culling_type === 'spec' || this.state.culling_type === 'vinuzhd'
+    const { sections, locations, eventFetching, eventError, message, grid } = this.props
+    const { activePiglets, expand, activeLocation } = this.state
+
+    let today = getToday()
+
     return (
-        <div className='row workshop-content'>
-          <div className='col-6'>
-            <FetchingErrorComponentMessage 
-                  fetching={this.props.sectionsFetching}
-                  error={this.props.sectionsListError}
-                  message={null}
-                  component={
-                    <Sections 
-                      sections={sections}
-                      activeSectionId={this.state.activeSectionId}
-                      clickSection={this.clickSection}
-                    />}
-              />
-            <FetchingErrorComponentMessage 
-                fetching={this.props.locationsFetching}
-                error={this.props.locationsErrorList}
-                message={null}
-                component={
-                  <PigletsCells
-                    isSection={this.state.activeSectionId}
-                    fetching={this.props.locationsFetching}
-                    locations={locations}
-                    activeCellIds={[this.state.activeCellId]}
-                    clickLocation={this.clickLocation}
-                    user={this.props.user}
-                  />}
+        <div className='pb-5 mb-5'>
+          <FetchingErrorComponentMessage 
+            fetching={this.props.sectionsFetching}
+            error={this.props.sectionsListError}
+            message={null}
+            component={
+              <Sections 
+                sections={sections}
+                activeSectionId={this.state.activeSectionId}
+                clickSection={this.clickSection}
+              />}
             />
-          </div>
-          <div className='col-6'>
-            <div>
-              <FetchingErrorComponentMessage
-                fetching={this.props.eventFetching}
-                error={this.props.eventError}
-                message={this.props.message}
-                component={
-                  this.state.activePiglets &&
-                  <div>
-                    <PigletsGroup piglets={this.state.activePiglets}/>
-                    {this.state.activePiglets.gilts_quantity > 0 && 
-                      <div>
-                        <label>Ремонтная свинка?</label>
-                        <input type='checkbox' onChange={this.setIsGilt} value={this.state.is_it_gilt} />
-                      </div>
-                    }
-                    
-                    <div className="input-group">
-                      <CullingTypeInput setData={this.setData} cullingTypes={this.props.cullingTypes}/>
-                      {this.state.culling_type !== 'spec' &&
-                        <div className="input-group">
-                          <CullingReasonInput 
-                            setData={this.setData} 
-                            culling_reason={this.state.culling_reason}
-                          />
-                        </div>
-                      }
-                      <div className="input-group">
-                        <input type='number' value={this.state.quantity} 
-                          onChange={this.setData} 
-                          name='quantity' className="form-control search-input"
-                          placeholder="Количество" />
-                      </div>
-                      <div className="input-group">
-                        <input type='date' value={this.state.date} 
-                          onChange={this.setData} 
-                          name='date' className="form-control search-input"
-                          placeholder="Дата, формат 02-02-2020" />
-                      </div>
-                        <div className="input-group">
-                          <label>Укажите вес</label>
-                          <input type='number' value={this.state.total_weight} 
-                            onChange={this.setData} 
-                            name='total_weight' className="form-control search-input"
-                            placeholder="Укажите вес" />
-                        </div>
-                      <br />
-                      <br />
-                      <button className='btn btn-outline-secondary' type='button'
-                        onClick={this.cullingPiglets}
-                        >
-                          Выбраковка/Убой
-                      </button>
-                    </div>
-                  </div>
-                }
-                />
-            {!this.props.message &&
-              <Message message={'Выберите клетку'} />}
+          <FetchingErrorComponentMessage 
+            fetching={this.props.locationsFetching}
+            error={this.props.locationsErrorList}
+            message={null}
+            component={
+              <PigletsCells
+                isSection={this.state.activeSectionId}
+                fetching={this.props.locationsFetching}
+                locations={locations}
+                activeCellIds={[this.state.activeCellId]}
+                clickLocation={this.clickLocation}
+                user={this.props.user}
+                grid={grid}
+                className='mb-5 pb-5'
+              />}
+          />
+          <div className='card card-style fixed-bottom mx-1 my-1'>
+            <div className='content'>
+              <div className='' 
+                onClick={() => this.setState({...this.state, expand: !this.state.expand})}>
+                {expand 
+                  ? <p className='my-0 text-center'>
+                      <i className="fas fa-chevron-down "><span className='ml-1'>Скрыть</span></i> 
+                    </p>
+                  : [<p className='my-0 text-center'>
+                      <i className="fas fa-chevron-up ">
+                        <span className='ml-1'>Выберите клетку</span>
+                      </i>
+                    </p>,
+                    <ErrorOrMessage error={eventError} message={message} fetching={eventFetching}
+                    className='mt-2 mb-0 mx-1 font-15 text-center' />]
+                  }
+              </div>
+              {(activePiglets && expand) &&
+                <div>
+                  <p className='my-0 font-700 '>Клетка {activeLocation.cell}</p>
+                  <PigletsGroupInline piglets={activePiglets} className='my-0 font-700'/>
+                  <CullingPigletsForm 
+                    initialValues={{
+                      id: activePiglets.id,
+                      // culling_type: 'padej',
+                      quantity: 1,
+                      total_weight: 0,
+                      reason: 'без причины',
+                      date: today,
+                      is_it_gilt: false,
+                    }}
+                    eventFetching={eventFetching}
+                    eventError={eventError}
+                    message={message}
+                    cullingTypes={this.props.cullingTypes}
+                    parentSubmit={this.cullingPiglets}
+                  />
+                </div>
+              }
         </div>
       </div>
     </div>

@@ -68,6 +68,7 @@ class WorkshopFiveContainer extends Component {
 
   render() {
     const activeTab = this.getActiveTab()
+    let grid = 'col-4 '
 
     return (
       <div className="workshop container-fluid">
@@ -102,6 +103,7 @@ class WorkshopFiveContainer extends Component {
             workshopNumber={5}
             weighingPlace={'8/5'}
             user={this.props.state.auth.user}
+            grid={grid}
 
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.piglets.list}
@@ -130,21 +132,17 @@ class WorkshopFiveContainer extends Component {
           <WSNomadInnerTransferTab
             workshopNumber={5}
             user={this.props.state.auth.user}
+            grid={grid}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
             sectionsListError={this.props.state.sections.errorList}
 
-            getLocations1={this.props.getLocations}
-            locations1={this.props.state.locations.list}
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
             listFetching={this.props.state.locations.fetching}
             locationsErrorList={this.props.state.locations.errorList}
-
-            getLocations2={this.props.getLocationsAdditional}
-            locations2={this.props.state.locations.additional_list}
-            list2Fetching={this.props.state.locations.fetchingAdditional}
-            locations2ErrorList={this.props.state.locations.errorAdditional}
 
             movePiglets={this.props.movePiglets}
             eventFetching={this.props.state.piglets.eventFetching}
@@ -161,6 +159,7 @@ class WorkshopFiveContainer extends Component {
             toLocations={null}
             buttonName={'Отправить в ремонтных в цех 1-2'}
             user={this.props.state.auth.user}
+            grid={grid}
 
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.piglets.list}
@@ -185,37 +184,12 @@ class WorkshopFiveContainer extends Component {
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
 
-        {/* { activeTab.name === 'transferTo75Tab' &&
-          <WSNomadTransferTab 
-            workshopNumber={5}
-            toLocation={11}
-            toLocations={null}
-            buttonName={'Отправить в Цех7-5'}
-
-            getPiglets={this.props.getPiglets}
-            piglets={this.props.state.piglets.list}
-            listFetching={this.props.state.piglets.listFetching}
-
-            getSections={this.props.getSections}
-            sections={this.props.state.sections.list}
-
-            getLocations={this.props.getLocations}
-            locations={this.props.state.locations.list}
-            locationsFetching={this.props.state.locations.fetching}
-
-            movePiglets={this.props.moveGiltsToWs75}
-            eventFetching={this.props.state.piglets.eventFetching}
-            eventError={this.props.state.piglets.eventError}
-            message={this.props.state.piglets.message}
-
-            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
-          />} */}
-
         { activeTab.name === 'cullingTab' &&
           <WSNomadCullingTab
             user={this.props.state.auth.user}
             workshopNumber={5}
             user={this.props.state.auth.user}
+            grid={grid}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
@@ -234,6 +208,8 @@ class WorkshopFiveContainer extends Component {
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
 
+            form={this.props.state.form.cullingPigletsForm}
+
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
 
@@ -241,6 +217,7 @@ class WorkshopFiveContainer extends Component {
           <WSPigletsRecountTab
             workshopNumber={5}
             user={this.props.state.auth.user}
+            grid={grid}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}

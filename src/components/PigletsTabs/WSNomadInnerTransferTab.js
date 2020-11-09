@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 
 //components
 import { PigletsCells, Sections } from '../Locations'
-import { PigletsGroup } from '../PigletsRepresentations'
+import { PigletsGroup, PigletsGroupInlineMin } from '../PigletsRepresentations'
 import { SplitPigletsInput } from '../FiltersAndInputs'
-import { FetchingErrorComponentMessage } from '../CommonComponents'
+import { FetchingErrorComponentMessage, ErrorOrMessage } from '../CommonComponents'
+
+import TextField from '@material-ui/core/TextField';
 
 
 class WSNomadInnerTransferTab extends Component {
@@ -13,27 +15,54 @@ class WSNomadInnerTransferTab extends Component {
     this.state = {
       activePiglets: null,
 
-      activeFromSectionId: null,
-      activeCellFromLocationId: null,
-      activeToSectionId: null,
-      activeCellToLocationId: null,
+      activeSectionId: null,
+      fromLocation: null,
+      toLocation: null,
 
-      changeQuantity: false,
       quantity: 0,
       gilts_contains: false,
 
+      expand: false,
       needToRefresh: false
     }
-    this.clickFromSection = this.clickFromSection.bind(this);
-    this.clickToSection = this.clickToSection.bind(this);
-    this.clickCellToLocation = this.clickCellToLocation.bind(this);
-    this.clickCellFromLocation = this.clickCellFromLocation.bind(this);
+    this.clickSection = this.clickSection.bind(this);
+    this.clickLocation = this.clickLocation.bind(this);
     this.setData = this.setData.bind(this);
-    this.checked = this.checked.bind(this);
     this.clickTransfer = this.clickTransfer.bind(this);
+    this.resetLocations = this.resetLocations.bind(this);
   }
 
   componentDidMount() {
+    this.props.pigletsResetErrorsAndMessages()
+  }
+
+  clickLocation (location) {
+    const { fromLocation, toLocation } = this.state
+    let btnDisabled = this.state.buttonDisabled
+
+    if (!fromLocation && !toLocation) {
+      if (!location.is_piglets_empty) btnDisabled = false
+
+      this.setState({
+        ...this.state,
+        expand: true,
+        fromLocation: location,
+        toLocation: null,
+        buttonDisabled: btnDisabled,
+        activePiglets: location.piglets.length > 0 ?
+         location.piglets[0] : null,
+        quantity: location.piglets.length > 0 ?
+          location.piglets[0].quantity : 0
+      })
+    }
+
+    if (fromLocation && !toLocation) {
+      this.setState({
+        ...this.state,
+        toLocation: location,
+        buttonDisabled: btnDisabled,
+      })
+    }
     this.props.pigletsResetErrorsAndMessages()
   }
 
@@ -44,59 +73,27 @@ class WSNomadInnerTransferTab extends Component {
     })
   }
 
-  checked (e) {
+  clickSection (e) {
+    const { sectionId } = e.target.dataset
     this.setState({
       ...this.state,
-      [e.target.name]: !this.state[e.target.name]
+      activeSectionId: sectionId
     })
+    this.props.getLocations({by_section: sectionId, cells: true})
   }
   
-  clickFromSection (e) {
-    const { sectionId } = e.target.dataset
-    this.setState({
-      ...this.state,
-      activeFromSectionId: sectionId
-    })
-    this.props.getLocations1({by_section: sectionId, cells: true})
-  }
-
-  clickToSection (e) {
-    const { sectionId } = e.target.dataset
-    this.setState({
-      ...this.state,
-      activeToSectionId: sectionId
-    })
-    this.props.getLocations2({by_section: sectionId, cells: true})
-  }
-
-  clickCellFromLocation (location) {
-    this.props.pigletsResetErrorsAndMessages()
-    this.setState({
-      ...this.state,
-      activeCellFromLocationId: location.id,
-      activePiglets: location.piglets.length > 0 ?
-       location.piglets[0] : null
-    })
-  }
-
-  clickCellToLocation (location) {
-    this.setState({
-      ...this.state,
-      activeCellToLocationId: location.id
-    })
-  }
-
   clickTransfer () {
-    const { activePiglets, activeCellToLocationId, quantity, gilts_contains } = this.state
+    const { activePiglets, toLocation, quantity, gilts_contains } = this.state
     let data = {
       id: activePiglets.id,
-      to_location: activeCellToLocationId,
+      to_location: toLocation.id,
       merge: true,
       gilts_contains: gilts_contains
     }
 
-    if (quantity > 0)
+    if (quantity > 0 && quantity < activePiglets.quantity)
       data['new_amount'] = quantity
+
     this.props.movePiglets(data)
     this.setState({
       ...this.state,
@@ -107,8 +104,21 @@ class WSNomadInnerTransferTab extends Component {
 
       needToRefresh: true, 
 
-      activeCellFromLocationId: null,
-      activeCellToLocationId: null,
+      fromLocation: null,
+      toLocation: null,
+      expand: false,
+    })
+  }
+
+  resetLocations () {
+    this.setState({
+      ...this.state,
+      expand: false,
+      quantity: 0,
+      fromLocation: null,
+      toLocation: null,
+      activePiglets: null,
+      buttonDisabled: true
     })
   }
 
@@ -116,102 +126,143 @@ class WSNomadInnerTransferTab extends Component {
     if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
-        this.props.getLocations1({by_section: this.state.activeFromSectionId, cells: true})
-        this.props.getLocations2({by_section: this.state.activeToSectionId, cells: true})
-      }, 500)
+        this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
+      }, 300)
     }
   }
 
   render() {
-    const { sections, locations1, locations2, eventError } = this.props
+    const { sections, locations, eventFetching, eventError, message, grid } = this.props
+    const { expand, toLocation, fromLocation, activeSectionId, activePiglets, quantity } = this.state
     this.refreshSowsList()
+
+    let fromCell = activePiglets
+      ? fromLocation 
+        ? <p className='my-0 font-16'>
+            {(fromLocation.is_piglets_empty) 
+              ? <span className='color-red1-light'>нет поросят {fromLocation.cell}</span>
+              : <PigletsGroupInlineMin piglets={activePiglets} className='font-13'/>
+            }
+          </p>
+        : <p className='my-0 font-16'>выберите клетку</p>
+      : fromLocation 
+        ? <p className='my-0 font-16'>
+            {fromLocation.is_piglets_empty 
+              ? <span className='color-red1-light'>Пустая {fromLocation.cell}</span>
+              : fromLocation.cell
+            }
+          </p>
+        : <p className='my-0 font-16'>выберите клетку</p>
+
+  let toCell = activePiglets
+    ?  toLocation 
+      ? <p className='my-0 font-16'>
+          {(toLocation.is_piglets_empty)
+            ? <span className=''>Пустая {toLocation.cell}</span>
+            : <PigletsGroupInlineMin piglets={toLocation.piglets[0]} className='font-13'/>
+          }
+        </p>
+      : <p className='my-0 font-16'>выберите клетку</p>
+    : toLocation
+      ? <p className='my-0 font-16'>
+          {toLocation.is_sow_empty
+            ? toLocation.cell
+            : <span className='color-red1-light'>Занято {fromLocation.cell}</span>
+          }
+        </p>
+      : <p className='my-0 font-16'>выберите клетку</p>
     
     return (
-        <div className='row workshop-content'>
-          <div className='col-6'>
-            <FetchingErrorComponentMessage 
-                fetching={this.props.sectionsFetching}
-                error={this.props.sectionsListError}
-                message={null}
-                component={
-                  <Sections 
-                    sections={sections}
-                    activeSectionId={this.state.activeFromSectionId}
-                    clickSection={this.clickFromSection}
-                  />}
-              />
-            <FetchingErrorComponentMessage 
-                fetching={this.props.listFetching}
-                error={this.props.locationsErrorList}
-                message={null}
-                component={
-                  <PigletsCells
-                    isSection={this.state.activeFromSectionId}
-                    fetching={this.props.listFetching}
-                    locations={locations1}
-                    activeCellIds={[this.state.activeCellFromLocationId]}
-                    clickLocation={this.clickCellFromLocation}
-                    user={this.props.user}
-                  />}
+        <div className='pb-5 mb-5'>
+          <FetchingErrorComponentMessage 
+            fetching={this.props.sectionsFetching}
+            error={this.props.sectionsListError}
+            message={null}
+            component={
+              <Sections 
+                sections={sections}
+                activeSectionId={this.state.activeSectionId}
+                clickSection={this.clickSection}
+              />}
             />
-          </div>
-          <div className='col-6'>
-            <FetchingErrorComponentMessage 
-                  fetching={this.props.sectionsFetching}
-                  error={this.props.sectionsListError}
-                  message={null}
-                  component={
-                    <Sections 
-                      sections={sections}
-                      activeSectionId={this.state.activeToSectionId}
-                      clickSection={this.clickToSection}
-                    />}
-                />
-              <FetchingErrorComponentMessage 
-                  fetching={this.props.list2Fetching}
-                  error={this.props.locations2ErrorList}
-                  message={null}
-                  component={
-                    <PigletsCells
-                      isSection={this.state.activeToSectionId}
-                      fetching={this.props.list2Fetching}
-                      locations={locations2}
-                      activeCellIds={[this.state.activeCellToLocationId]}
-                      clickLocation={this.clickCellToLocation}
-                    />}
-              />
-          </div>
-        <div className='row'>
-          <div className='col-6'>
-            {this.state.activePiglets && 
-                <PigletsGroup piglets={this.state.activePiglets}/>
-            }
-          </div>
-          <div className='col-6'>
-            <FetchingErrorComponentMessage
-              fetching={this.props.eventFetching}
-              error={this.props.eventError}
-              message={this.props.message}
-              component={
-                  this.state.activePiglets && 
-                    <div>
-                      <SplitPigletsInput 
-                        checked={this.checked}
-                        changeQuantity={this.state.changeQuantity}
-                        quantity={this.state.quantity}
-                        helpMessage={'Укажите количество'}
-                        setData={this.setData}
-                        gilts_contains={this.state.gilts_contains}
-                      />
-                      <br />
-                      <button 
-                        className='btn btn-outline-secondary' type='button'
-                        onClick={this.clickTransfer}>
-                          Переместить
-                      </button>
-                    </div>
+          <FetchingErrorComponentMessage 
+            fetching={this.props.listFetching}
+            error={this.props.locationsErrorList}
+            message={null}
+            component={
+              <PigletsCells
+                isSection={activeSectionId}
+                fetching={this.props.listFetching}
+                locations={locations}
+                activeCellIds={[
+                  fromLocation ? fromLocation.id : null,
+                  toLocation ? toLocation.id : null,
+                ]}
+                fromCellId={fromLocation ? fromLocation.id : null}
+                toCellId={toLocation ? toLocation.id : null}
+                clickLocation={this.clickLocation}
+                user={this.props.user}
+                grid={grid}
+                className='mb-5 pb-5'
+              />}
+          />
+        <div className='card card-style fixed-bottom mx-1 my-1'>
+          <div className='content'>
+            <div className='' 
+                onClick={() => this.setState({...this.state, expand: !this.state.expand})}>
+                {expand 
+                  ? <p className='my-0 text-center'>
+                      <i className="fas fa-chevron-down "><span className='ml-1'>Скрыть</span></i> 
+                    </p>
+                  : [<p className='my-0 text-center'>
+                      <i className="fas fa-chevron-up ">
+                        <span className='ml-1'>Выберите клетки</span>
+                      </i>
+                    </p>,
+                    <ErrorOrMessage error={eventError} message={message} fetching={eventFetching}
+                    className='mt-2 mb-0 mx-1 font-15 text-center' />]
                   }
-              />
+            </div>
+            {(expand) &&
+              <div className=''>
+                <div className='row d-flex justify-content-center mb-2'>
+                  <div className='col-5 text-center'>
+                    <p className='my-0 font-15'>
+                      Из клетки {fromLocation.cell}<i className="fas fa-circle color-teal-dark pl-1"></i>
+                    </p>
+                    {fromCell}
+                  </div>
+                  <div className='col-5 text-center'>
+                    <p className='my-0 font-15'>
+                      В клетку {toLocation && toLocation.cell}<i className="fas fa-circle color-brown1-dark pl-1"></i>
+                    </p>
+                    {toCell}
+                  </div>
+                  <button onClick={this.resetLocations} className='btn bg-mainDark-dark mt-1'>
+                    Сбросить
+                  </button>
+                </div>
+                <div className='divider my-1 py-0'></div>
+                  {(activePiglets && toLocation) &&
+                    [<TextField
+                      fullWidth={true}
+                      type='number'
+                      defaultValue={quantity}
+                      label={'Кол-во для перемещения'}
+                      placeholder={'Кол-во для перемещения'}
+                      margin='dense'
+                      onChange={this.setData}
+                      name='quantity'
+                      value={this.state.quantity}
+                      />,
+                    <button 
+                      className='btn bg-mainDark-dark mt-2' 
+                      onClick={this.clickTransfer}>
+                        Переместить
+                    </button>]
+                  }
+
+              </div>}
           </div>
         </div>
       </div>

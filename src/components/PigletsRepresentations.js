@@ -29,6 +29,34 @@ export class PigletsGroup extends Component {
   }
  }
 
+ export function PigletsGroupInline (props) {
+  const { piglets } = props
+  let age = ''
+  piglets && piglets.age.split(' ').length > 1 
+    ? age = piglets.age.split(' ')[0]
+    : age = 0
+  
+  return (
+    <p className={props.className}>
+      Количество {piglets.quantity} | {age && age + ' дней'} | рем {piglets.gilts_quantity} | {piglets.week_tour}
+    </p>
+   )
+ }
+
+ export function PigletsGroupInlineMin (props) {
+  const { piglets } = props
+  let age = ''
+  piglets && piglets.age.split(' ').length > 1 
+    ? age = piglets.age.split(' ')[0]
+    : age = 0
+  
+  return (
+    <p className={props.className}>
+      Кол-во {piglets.quantity} | {age && age + ' дней'} | рем {piglets.gilts_quantity} | {piglets.week_tour}
+    </p>
+   )
+ }
+
  export class PigletsWeighing extends Component {
 
   render() {

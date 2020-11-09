@@ -31,7 +31,6 @@ import ToursActions from '../redux/redux-sauce/tours'
 import ReportsActions from '../redux/redux-sauce/reports';
 import InputsActions from '../redux/redux-sauce/inputs';
 import WSDataActions from '../redux/redux-sauce/wsData';
-import { throws } from 'assert';
 
 
 class WorkshopThreeContainer extends Component {
@@ -48,10 +47,10 @@ class WorkshopThreeContainer extends Component {
         {name: 'createGiltTab',           active: false, title: 'Биркование'},
         {name: 'sowCullingTab',           active: false, title: 'Выбытие свиноматок'},
         {name: 'pigletsCullingTab',       active: false, title: 'Выбытие поросят'},
-        {name: 'pigletsInnerTransferTab', active: false, title: 'Перемещение поросят из клетки в клетку'},
+        {name: 'pigletsInnerTransferTab', active: true,  title: 'Перемещение поросят из клетки в клетку'},
         {name: 'searchSowTab',            active: false, title: 'Поиск по всем цехам'},
         {name: 'sowInnerTransferTab',     active: false, title: 'Перемещение свиноматок из клетки в клетку'},
-        {name: 'sowTransferToWsTab',      active: true,  title: 'Перегон свиноматок в цех1, цех3'},
+        {name: 'sowTransferToWsTab',      active: false, title: 'Перегон свиноматок в цех1, цех3'},
         {name: 'sowAndPigletsTransferTab',active: false, title: 'Перемещение свиноматок вместе с поросятами из клетки в клетку'},
         {name: 'pigletsRecountTab',       active: false, title: 'Пересчет поросят'},
         // {name: 'pigletsInitPartTab',      active: false, title: 'Создание и перевод партии'},
@@ -92,6 +91,7 @@ class WorkshopThreeContainer extends Component {
 
   render() {
     const activeTab = this.getActiveTab()
+    let pigletsCellsGrid = 'col-2 '
 
     return (
       <div className="">
@@ -250,6 +250,7 @@ class WorkshopThreeContainer extends Component {
         {activeTab.name === 'weaningPigletsTab' &&
           <WS3PigletsWeaningTab 
             user={this.props.state.auth.user}
+            grid={pigletsCellsGrid}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
@@ -311,27 +312,26 @@ class WorkshopThreeContainer extends Component {
             eventError={this.props.state.piglets.eventError}
             message={this.props.state.piglets.message}
 
+            form={this.props.state.form.cullingPigletsForm}
+            grid={pigletsCellsGrid}
+
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
         {activeTab.name === 'pigletsInnerTransferTab' &&
           <WSNomadInnerTransferTab
             user={this.props.state.auth.user}
             workshopNumber={3}
+            grid={pigletsCellsGrid}
 
             getSections={this.props.getSections}
             sections={this.props.state.sections.list}
             sectionsFetching={this.props.state.sections.fetching}
             sectionsListError={this.props.state.sections.errorList}
 
-            getLocations1={this.props.getLocations}
-            locations1={this.props.state.locations.list}
+            getLocations={this.props.getLocations}
+            locations={this.props.state.locations.list}
             listFetching={this.props.state.locations.fetching}
             locationsErrorList={this.props.state.locations.errorList}
-
-            getLocations2={this.props.getLocationsAdditional}
-            locations2={this.props.state.locations.additional_list}
-            list2Fetching={this.props.state.locations.fetchingAdditional}
-            locations2ErrorList={this.props.state.locations.errorAdditional}
 
             movePiglets={this.props.movePiglets}
             eventFetching={this.props.state.piglets.eventFetching}
@@ -344,6 +344,7 @@ class WorkshopThreeContainer extends Component {
           <WSNomadResettelmentTab
             user={this.props.state.auth.user}
             workshopNumber={3}
+            grid={pigletsCellsGrid}
 
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.piglets.list}
@@ -384,6 +385,7 @@ class WorkshopThreeContainer extends Component {
           <WSPigletsRecountTab
             workshopNumber={3}
             user={this.props.state.auth.user}
+            grid={pigletsCellsGrid}
 
             getRecountBalance={this.props.getRecountBalance}
             recountData={this.props.state.reports.recountData}
