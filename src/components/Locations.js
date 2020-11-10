@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 
 
 export class Sections extends Component {
-
   render() {
     const { sections, activeSectionId, fetching, error } = this.props
     const sectionClass = 'border border-mainDark-dark px-2 py2 float-left '
+
     return (
       <div className='my-0 float-wrap mx-2 my-2'>
         {!error ? 
-          fetching ? <p className='loading'>Загрузка</p> :
-            sections.map((section, key) => 
+          fetching 
+            ? <p className='loading'>Загрузка</p> 
+            : sections.map((section, key) => 
               <div className={activeSectionId == section.section_id 
                 ? sectionClass + ' section-active'
                 : sectionClass
@@ -19,11 +20,9 @@ export class Sections extends Component {
                 onClick={this.props.clickSection}
                 data-section-id={section.section_id}
                 key={key}>
-                {section.section_name} 
-                {/* {section.pigs_count && [<br/>, 'Кол-во ',section.pigs_count]} */}
+                {section.section_name}
               </div>)
-          :
-          <p className='error-message'>{error}</p>
+          : <p className='error-message'>{error}</p>
         }
         <div className='clearfix'></div>
       </div>
@@ -115,17 +114,17 @@ export class SowCells extends Component {
           isSection ? 
             fetching ? <p className='loading'>Загрузка</p> :
               locations.length > 0 && locations.map((location, key) =>
-                    <PigletsCell
-                      key={key}
-                      location={location}
-                      activeCellIds={activeCellIds}
-                      clickLocation={this.props.clickLocation}
-                      user={this.props.user}
-                      grid={grid}
-                      fromCellId={fromCellId}
-                      toCellId={toCellId}
-                      />
-                    )
+                <PigletsCell
+                  key={key}
+                  location={location}
+                  activeCellIds={activeCellIds}
+                  clickLocation={this.props.clickLocation}
+                  user={this.props.user}
+                  grid={grid}
+                  fromCellId={fromCellId}
+                  toCellId={toCellId}
+                  />
+                )
           :
           <p className='choose-section'>Выберите секцию</p>
         :

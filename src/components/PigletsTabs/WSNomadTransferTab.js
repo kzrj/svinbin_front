@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
+import TextField from '@material-ui/core/TextField';
 //components
 import { PigletsCells, Sections } from '../Locations'
-import { PigletsGroup } from '../PigletsRepresentations'
 import { FetchingErrorComponentMessage } from '../CommonComponents'
-import { SplitPigletsInput } from '../FiltersAndInputs'
+import { BottomExpand, PigletsGroupInline } from './PigletsComponent'
 
 
 class WSNomadTransferTab extends Component {
@@ -14,11 +14,12 @@ class WSNomadTransferTab extends Component {
       activePiglets: null,
 
       activeSectionId: null,
-      activeCellId: null,
+      activeCell: null,
 
-      changeQuantity: false,
       quantity: 0,
       gilts_contains: false,
+
+      expand: false,
 
       needToRefresh: false
     }
@@ -26,8 +27,7 @@ class WSNomadTransferTab extends Component {
     this.clickCell = this.clickCell.bind(this);
     this.clickTransfer = this.clickTransfer.bind(this);
     this.setData = this.setData.bind(this);
-    this.checked = this.checked.bind(this);
-    this.moveGilts = this.moveGilts.bind(this);
+    this.clickExpand = this.clickExpand.bind(this);
   }
   
   componentDidMount() {
@@ -41,13 +41,6 @@ class WSNomadTransferTab extends Component {
     })
   }
 
-  checked (e) {
-    this.setState({
-      ...this.state,
-      [e.target.name]: !this.state[e.target.name]
-    })
-  }
-  
   clickSection (e) {
     const { sectionId } = e.target.dataset
     this.setState({
@@ -60,56 +53,45 @@ class WSNomadTransferTab extends Component {
   clickCell (location) {
     this.setState({
       ...this.state,
-      activeCellId: location.id,
+      activeCell: location,
       activePiglets: location.piglets.length > 0 ?
-       location.piglets[0] : null
+       location.piglets[0] : null,
+      expand: true,
+      quantity: location.piglets.length > 0 ?
+        location.piglets[0].quantity : 0,
     })
     this.props.pigletsResetErrorsAndMessages()
   }
 
   clickTransfer (e) {
-    const { activePiglets, quantity, gilts_contains } = this.state
+    const { activePiglets, quantity } = this.state
     let data = {
       id: activePiglets.id,
       to_location: e.target.dataset.tolocation,
+      gilts_contains: false,
       merge: false,
-      gilts_contains: gilts_contains,
     }
 
-    if (quantity > 0)
+    if (quantity > 0 && quantity < activePiglets.quantity)
       data['new_amount'] = quantity
 
-    this.props.movePiglets(data)
     this.setState({
       ...this.state,
       activePiglets: null,
+      activeCell: null,
+      expand: false,
 
-      changeQuantity: false,
       quantity: 0,
-      gilts_contains: false,
 
       needToRefresh: true, 
     })
+    this.props.movePiglets(data)
   }
 
-  moveGilts () {
-    const { activePiglets, quantity, gilts_contains } = this.state
-    let data = {
-      id: activePiglets.id,
-    }
-    if (quantity > 0)
-      data['gilts_amount'] = quantity
-
-    this.props.movePiglets(data)
+  clickExpand () {
     this.setState({
       ...this.state,
-      activePiglets: null,
-
-      changeQuantity: false,
-      quantity: 0,
-      gilts_contains: false,
-
-      needToRefresh: true, 
+      expand: !this.state.expand,
     })
   }
 
@@ -118,80 +100,85 @@ class WSNomadTransferTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
-      }, 500)
+      }, 300)
     }
   }
 
   render() {
     this.refreshSowsList ()
-    const { sections, locations, message, eventError } = this.props
-    return (
-        <div className='row workshop-content'>
-          <div className='col-6'>
-            <FetchingErrorComponentMessage 
-                fetching={this.props.sectionsFetching}
-                error={this.props.sectionsListError}
-                message={null}
-                component={
-                  <Sections 
-                    sections={sections}
-                    activeSectionId={this.state.activeSectionId}
-                    clickSection={this.clickSection}
-                  />}
-              />
-            <FetchingErrorComponentMessage 
-                fetching={this.props.locationsFetching}
-                error={this.props.locationsErrorList}
-                message={null}
-                component={
-                  <PigletsCells
-                    isSection={this.state.activeSectionId}
-                    fetching={this.props.locationsFetching}
-                    locations={locations}
-                    activeCellIds={[this.state.activeCellId]}
-                    clickLocation={this.clickCell}
-                    user={this.props.user}
-                  />}
-            />
-          </div>
-          <div className='col-6'>
-            <FetchingErrorComponentMessage
-              fetching={this.props.eventFetching}
-              error={this.props.eventError}
-              message={this.props.message}
-              component={
-                this.state.activePiglets && 
-                <div>
-                  <PigletsGroup piglets={this.state.activePiglets}/>
-                  <SplitPigletsInput 
-                    checked={this.checked}
-                    changeQuantity={this.state.changeQuantity}
-                    quantity={this.state.quantity}
-                    helpMessage={'Укажите количество'}
-                    setData={this.setData}
-                    gilts_contains={this.state.gilts_contains}
-                  />
-                  <br/>
+    const { sections, locations, message, eventError, grid, eventFetching } = this.props
+    const { expand, activePiglets, activeCell, quantity } = this.state
 
-                  {this.props.toLocations ? this.props.toLocations.map((toLocation, key) => 
-                    <button key={key}
-                      className='btn btn-outline-secondary' type='button'
-                      data-toLocation={toLocation}
-                      onClick={this.clickTransfer}>
-                        {this.props.buttonName} {toLocation}
-                    </button>
-                    ) :
-                    <button 
-                      className='btn btn-outline-secondary' type='button'
-                      data-toLocation={this.props.toLocation}
-                      onClick={this.props.toLocation == 11 ? this.moveGilts : this.clickTransfer}>
-                        {this.props.buttonName}
-                    </button>
+    return (
+        <div className=''>
+          <FetchingErrorComponentMessage 
+              fetching={this.props.sectionsFetching}
+              error={this.props.sectionsListError}
+              message={null}
+              component={
+                <Sections 
+                  sections={sections}
+                  activeSectionId={this.state.activeSectionId}
+                  clickSection={this.clickSection}
+                />}
+            />
+          <FetchingErrorComponentMessage 
+              fetching={this.props.locationsFetching}
+              error={this.props.locationsErrorList}
+              message={null}
+              component={
+                <PigletsCells
+                  isSection={this.state.activeSectionId}
+                  fetching={this.props.locationsFetching}
+                  locations={locations}
+                  activeCellIds={[activeCell && activeCell.id]}
+                  clickLocation={this.clickCell}
+                  user={this.props.user}
+                  grid={grid}
+                />}
+          />
+          <BottomExpand 
+              clickExpand={this.clickExpand}
+              expand={this.state.expand} eventError={eventError} message={message} eventFetching={eventFetching}
+              label={'Выберите клетку'}
+            >
+              {(activeCell && expand) &&
+                <div>
+                  {activePiglets
+                    ? [ <p className='my-0 font-600'>Клетка {activeCell.cell}</p>,
+                        <PigletsGroupInline piglets={activePiglets} className='my-0 font-700'/>,
+                        <TextField
+                          fullWidth={true}
+                          type='number'
+                          defaultValue={quantity}
+                          label={'Кол-во для перегона'}
+                          placeholder={'Кол-во для перегона'}
+                          margin='dense'
+                          onChange={this.setData}
+                          name='quantity'
+                          value={this.state.quantity}
+                          />,
+                        this.props.toLocations 
+                          ? this.props.toLocations.map((toLocation, key) => 
+                            <button key={key}
+                              className='btn btn-sm bg-mainDark-dark mt-2 ml-2' type='button'
+                              data-toLocation={toLocation}
+                              onClick={this.clickTransfer}>
+                                {this.props.buttonName} {toLocation}
+                            </button>,
+                          ) 
+                          :<button 
+                              className='btn bg-mainDark-dark mt-2' type='button'
+                              data-toLocation={this.props.toLocation}
+                              onClick={this.clickTransfer}>
+                                {this.props.buttonName}
+                            </button>,
+                      ]
+                    : <p className='my-0 text-center font-600'>Пустая клетка {activeCell.cell}</p>
                   }
                 </div>
               }
-            />
-        </div>
+            </ BottomExpand>
       </div>
     )
   }

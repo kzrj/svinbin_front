@@ -26,12 +26,12 @@ class WorkshopEightContainer extends Component {
     this.state = {
       tabs: [
         {name: 'incomeTab',        active: false, title: 'Поступление и взвешивание'},
-        {name: 'resettlementTab',  active: false, title: 'Размещение прибывших'},
+        {name: 'resettlementTab',  active: true, title: 'Размещение прибывших'},
         {name: 'innerTransferTab', active: false, title: 'Внутреннее перемещение'},
         {name: 'transferTab',      active: false, title: 'Перегон'},
         {name: 'cullingTab',       active: false, title: 'Выбытие'},
         {name: 'pigletsRecountTab',active: false,  title: 'Пересчет поросят'},
-        {name: 'infoTab',          active: true, title: 'Инфо'},
+        {name: 'infoTab',          active: false, title: 'Инфо'},
       ]
     };
     this.setTab = this.setTab.bind(this);
@@ -69,7 +69,7 @@ class WorkshopEightContainer extends Component {
     const activeTab = this.getActiveTab()
     const grid = 'col-3 '
     return (
-      <div className="workshop container-fluid">
+      <div className="">
         <TabMenu 
           tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №8'} activeTab={activeTab}
           user={this.props.state.auth.user}

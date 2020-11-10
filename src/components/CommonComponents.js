@@ -19,10 +19,10 @@ export const ErrorMessage = (props) => (
 export function ErrorOrMessage (props) {
     return (
         props.fetching 
-        ? <LoadingMessage />
-        : props.error 
-            ? <ErrorMessage error={props.error} className={props.className}/>
-            : props.message && <Message message={props.message} className={props.className}/>
+            ? <LoadingMessage />
+            : props.error 
+                ? <ErrorMessage error={props.error} className={props.className}/>
+                : props.message && <Message message={props.message} className={props.className}/>
     )
 }
 

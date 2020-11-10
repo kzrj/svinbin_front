@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
 //components
-import { PigletsGroup, WeighingDetail, PigletsListElem } from '../PigletsRepresentations'
+import { PigletsGroup, WeighingDetail } from '../PigletsRepresentations'
 import { WeighingPigletsInput } from '../FiltersAndInputs'
+import { PigletsListElem } from './PigletsComponent'
 import { Message, FetchingErrorComponentMessage } from '../CommonComponents'
 
 class WSNomadIncomeTab extends Component {
@@ -163,61 +164,6 @@ class WSNomadIncomeTab extends Component {
                   <WeighingDetail weighingData={this.props.weighingData} />
               : <Message message={'Выберите партию для взвешивания'}/>
             }
-
-          {user.is_officer && 
-            <div>
-              Создать поросят.
-              <div className="form-group row">
-                <div className='col-6'>
-                  <label for='farrow_date'>Дата опороса</label>
-                  <input type='date'
-                    id='farrow_date'
-                    className="form-control search-input"
-                    value={this.state.farrow_date}
-                    name='farrow_date'
-                    placeholder="Дата опороса"
-                    onChange={this.setData}/>
-                </div>
-                <div className='col-6'>
-                  <label for='transaction_date'>Дата прихода</label>
-                  <input type='date'
-                    id='transaction_date'
-                    className="form-control search-input"
-                    value={this.state.transaction_date}
-                    name='transaction_date'
-                    placeholder="Дата прихода"
-                    onChange={this.setData}/>
-                </div>
-              </div>
-              <div className="form-group row">
-                <div className='col-6'>
-                  <input type='number'
-                    id='quantity'
-                    className="form-control search-input"
-                    value={this.state.quantity}
-                    name='quantity'
-                    placeholder="Количество свиней"
-                    onChange={this.setData}/>
-                </div>
-                <div className='col-6'>
-                  <label for='gilts_quantity'>количество ремонтных</label>
-                  <input type='number'
-                    id='gilts_quantity'
-                    className="form-control search-input"
-                    value={this.state.gilts_quantity}
-                    name='gilts_quantity'
-                    placeholder="Количество ремонтных свиней"
-                    onChange={this.setData}/>
-                </div>
-              </div>
-              <div className="form-group">
-                <button className='btn btn-secondary' onClick={this.initPiglets}>
-                  Создать
-                </button>
-              </div>
-            </div>
-          }
-
         </div>
       </div>
     )

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 
+import TextField from '@material-ui/core/TextField';
+
 //components
 import { PigletsCells, Sections } from '../Locations'
-import { PigletsGroup, PigletsGroupInlineMin } from '../PigletsRepresentations'
-import { SplitPigletsInput } from '../FiltersAndInputs'
-import { FetchingErrorComponentMessage, ErrorOrMessage } from '../CommonComponents'
-
-import TextField from '@material-ui/core/TextField';
+import { FetchingErrorComponentMessage } from '../CommonComponents'
+import { BottomExpand, PigletsGroupInlineMin } from './PigletsComponent'
 
 
 class WSNomadInnerTransferTab extends Component {
@@ -30,6 +29,7 @@ class WSNomadInnerTransferTab extends Component {
     this.setData = this.setData.bind(this);
     this.clickTransfer = this.clickTransfer.bind(this);
     this.resetLocations = this.resetLocations.bind(this);
+    this.clickExpand = this.clickExpand.bind(this);
   }
 
   componentDidMount() {
@@ -122,6 +122,13 @@ class WSNomadInnerTransferTab extends Component {
     })
   }
 
+  clickExpand () {
+    this.setState({
+      ...this.state,
+      expand: !this.state.expand,
+    })
+  }
+
   refreshSowsList () {
     if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
@@ -206,65 +213,52 @@ class WSNomadInnerTransferTab extends Component {
                 className='mb-5 pb-5'
               />}
           />
-        <div className='card card-style fixed-bottom mx-1 my-1'>
-          <div className='content'>
-            <div className='' 
-                onClick={() => this.setState({...this.state, expand: !this.state.expand})}>
-                {expand 
-                  ? <p className='my-0 text-center'>
-                      <i className="fas fa-chevron-down "><span className='ml-1'>Скрыть</span></i> 
-                    </p>
-                  : [<p className='my-0 text-center'>
-                      <i className="fas fa-chevron-up ">
-                        <span className='ml-1'>Выберите клетки</span>
-                      </i>
-                    </p>,
-                    <ErrorOrMessage error={eventError} message={message} fetching={eventFetching}
-                    className='mt-2 mb-0 mx-1 font-15 text-center' />]
-                  }
-            </div>
-            {(expand) &&
-              <div className=''>
-                <div className='row d-flex justify-content-center mb-2'>
-                  <div className='col-5 text-center'>
-                    <p className='my-0 font-15'>
-                      Из клетки {fromLocation.cell}<i className="fas fa-circle color-teal-dark pl-1"></i>
-                    </p>
-                    {fromCell}
-                  </div>
-                  <div className='col-5 text-center'>
-                    <p className='my-0 font-15'>
-                      В клетку {toLocation && toLocation.cell}<i className="fas fa-circle color-brown1-dark pl-1"></i>
-                    </p>
-                    {toCell}
-                  </div>
-                  <button onClick={this.resetLocations} className='btn bg-mainDark-dark mt-1'>
-                    Сбросить
-                  </button>
+        <BottomExpand 
+          clickExpand={this.clickExpand}
+          expand={this.state.expand} error={eventError} message={message} fetching={eventFetching}
+          label={'Выберите клетки'}
+        >
+          {(expand) &&
+            <div className=''>
+              <div className='row d-flex justify-content-center mb-2'>
+                <div className='col-5 text-center'>
+                  <p className='my-0 font-15'>
+                    Из клетки {fromLocation.cell}<i className="fas fa-circle color-teal-dark pl-1"></i>
+                  </p>
+                  {fromCell}
                 </div>
-                <div className='divider my-1 py-0'></div>
-                  {(activePiglets && toLocation) &&
-                    [<TextField
-                      fullWidth={true}
-                      type='number'
-                      defaultValue={quantity}
-                      label={'Кол-во для перемещения'}
-                      placeholder={'Кол-во для перемещения'}
-                      margin='dense'
-                      onChange={this.setData}
-                      name='quantity'
-                      value={this.state.quantity}
-                      />,
-                    <button 
-                      className='btn bg-mainDark-dark mt-2' 
-                      onClick={this.clickTransfer}>
-                        Переместить
-                    </button>]
-                  }
-
-              </div>}
-          </div>
-        </div>
+                <div className='col-5 text-center'>
+                  <p className='my-0 font-15'>
+                    В клетку {toLocation && toLocation.cell}<i className="fas fa-circle color-brown1-dark pl-1"></i>
+                  </p>
+                  {toCell}
+                </div>
+                <button onClick={this.resetLocations} className='btn bg-mainDark-dark mt-1'>
+                  Сбросить
+                </button>
+              </div>
+              <div className='divider my-1 py-0'></div>
+                {(activePiglets && toLocation) &&
+                  [<TextField
+                    fullWidth={true}
+                    type='number'
+                    defaultValue={quantity}
+                    label={'Кол-во для перемещения'}
+                    placeholder={'Кол-во для перемещения'}
+                    margin='dense'
+                    onChange={this.setData}
+                    name='quantity'
+                    value={this.state.quantity}
+                    />,
+                  <button 
+                    className='btn bg-mainDark-dark mt-2' 
+                    onClick={this.clickTransfer}>
+                      Переместить
+                  </button>]
+                }
+            </div>
+          }
+        </BottomExpand>
       </div>
     )
   }

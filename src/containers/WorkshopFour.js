@@ -71,7 +71,7 @@ class WorkshopFourContainer extends Component {
     let grid = 'col-5 '
 
     return (
-      <div className="workshop container-fluid">
+      <div className="">
         <TabMenu 
           tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №4'} activeTab={activeTab}
           user={this.props.state.auth.user}

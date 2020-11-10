@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
+import TextField from '@material-ui/core/TextField';
+
 // components
 import { PigletsCells, Sections } from '../Locations'
-import { PigletsListElem } from '../PigletsRepresentations'
-import { Message, FetchingErrorComponentMessage } from '../CommonComponents'
-import { SplitPigletsInput } from '../FiltersAndInputs'
+import { FetchingErrorComponentMessage } from '../CommonComponents'
+import { BottomExpand, PigletsGroupInlineMin, PigletsListElem } from './PigletsComponent'
 
 
 class WSNomadResettelmentTab extends Component {
@@ -13,25 +14,25 @@ class WSNomadResettelmentTab extends Component {
     this.state = {
       activePiglets: null,
       activeSectionId: null,
-      activeCellId: null,
+      activeCell: null,
+      pigletsInCell: null,
 
-      changeQuantity: false,
       quantity: 0,
       gilts_contains: false,
 
       needToRefresh: false
     }
     this.setData = this.setData.bind(this);
-    this.checked = this.checked.bind(this);
     this.clickSection = this.clickSection.bind(this);
     this.clickCell = this.clickCell.bind(this);
     this.clickPiglets = this.clickPiglets.bind(this);
     this.clickSetlle = this.clickSetlle.bind(this);
+
+    this.clickExpand = this.clickExpand.bind(this);
   }
   
   componentDidMount() {
     this.props.getPiglets({
-      // piglets_with_weighing_record: this.props.weighingPlace,
       status_title: (this.props.ignorePigletsStatus ) 
         ? '' : "Взвешены, готовы к заселению",
       by_workshop_number: this.props.workshopNumber
@@ -43,13 +44,6 @@ class WSNomadResettelmentTab extends Component {
     this.setState({
       ...this.state,
       [e.target.name]: e.target.value
-    })
-  }
-
-  checked (e) {
-    this.setState({
-      ...this.state,
-      [e.target.name]: !this.state[e.target.name]
     })
   }
 
@@ -65,41 +59,53 @@ class WSNomadResettelmentTab extends Component {
   clickCell (location) {
     this.setState({
       ...this.state,
-      activeCellId: location.id
+      activeCell: location,
+      pigletsInCell: location.piglets.lenght > 0 ? location.piglets[0] : null,
+      expand: true,
     })
+    this.props.pigletsResetErrorsAndMessages()
   }
 
   clickPiglets (piglets) {
     this.setState({
       ...this.state,
-      activePigletsId: piglets.id,
+      expand: true,
       activePiglets: piglets,
-      weighingRecord: null
+      quantity: piglets.quantity
     })
   }
 
   clickSetlle () {
-    const { activePiglets, activeCellId, quantity, gilts_contains } = this.state
+    const { activePiglets, activeCell, quantity, gilts_contains } = this.state
     let data = {
       id: activePiglets.id,
-      to_location: activeCellId,
+      to_location: activeCell.id,
       merge: true,
       gilts_contains: gilts_contains
     }
 
-    if (quantity > 0)
+    if (quantity > 0 && quantity < activePiglets.quantity)
       data['new_amount'] = quantity
+
     this.props.movePiglets(data)
     this.setState({
       ...this.state,
       activePiglets: null,
+      expand: false,
 
-      changeQuantity: false,
       quantity: 0,
       gilts_contains: false,
       
       needToRefresh: true, 
-      activeCellId: null,
+      activeCell: null,
+      pigletsInCell: null
+    })
+  }
+
+  clickExpand () {
+    this.setState({
+      ...this.state,
+      expand: !this.state.expand,
     })
   }
 
@@ -110,47 +116,36 @@ class WSNomadResettelmentTab extends Component {
         this.props.getLocations({by_section: this.state.activeSectionId, cells: true})
         this.props.getPiglets({
           status_title: "Взвешены, готовы к заселению",
-          // piglets_with_weighing_record: this.props.weighingPlace,
           by_workshop_number: this.props.workshopNumber
         })
-      }, 500)
+      }, 300)
     }
   }
 
   render() {
     this.refreshSowsList()
-    const { piglets, sections, locations, eventError } = this.props
+    const { piglets, sections, locations, eventError, grid, message, eventFetching } = this.props
+    const { quantity, expand, activeCell, activePiglets, activeSectionId } = this.state
+
+    let disabled = true
+    if (activePiglets && activeCell) disabled = false
+
     return (
-        <div className='row workshop-content'>
-          <div className='col-3'>
+      <div className='pb-5 mb-5'>
+        <div className='row'>
+          <div className='col-3 pl-3'>
             {piglets.map(group =>
-              <div className={this.state.activePigletsId == group.id ? 
-                'nomad-piglets-row piglets-active': 'nomad-piglets-row'}
+              <div className={(activePiglets) && activePiglets.id == group.id 
+                  ? 'nomad-piglets-row piglets-active my-1'
+                  : 'nomad-piglets-row my-1 bg-white-dark'}
                 onClick={() => this.clickPiglets(group)}
                 key={group.id}
                 >
                 <PigletsListElem piglets={group} />
               </div>
             )}
-            {/* <FetchingErrorComponentMessage
-              fetching={this.props.listFetching}
-              error={this.props.errorList}
-              message={null}
-              component={
-                <div >
-                  {piglets.map(group =>
-                    <div className={this.state.activePigletsId == group.id ? 
-                      'nomad-piglets-row piglets-active': 'nomad-piglets-row'}
-                      onClick={() => this.clickPiglets(group)}
-                      key={group.id}
-                      >
-                      <PigletsListElem piglets={group} />
-                    </div>
-                  )}
-                </div>}
-            /> */}
           </div>
-          <div className='col-9'>
+          <div className='col-9 pl-3'>
             <FetchingErrorComponentMessage 
                 fetching={this.props.sectionsFetching}
                 error={this.props.sectionsListError}
@@ -158,54 +153,79 @@ class WSNomadResettelmentTab extends Component {
                 component={
                   <Sections 
                     sections={sections}
-                    activeSectionId={this.state.activeSectionId}
+                    activeSectionId={activeSectionId}
                     clickSection={this.clickSection}
                   />}
               />
             <FetchingErrorComponentMessage 
-                fetching={this.props.locationsFetching}
-                error={this.props.locationsErrorList}
-                message={null}
-                component={
-                  <PigletsCells
-                    isSection={this.state.activeSectionId}
-                    fetching={this.props.locationsFetching}
-                    locations={locations}
-                    activeCellIds={[this.state.activeCellId]}
-                    clickLocation={this.clickCell}
-                    user={this.props.user}
-                  />}
-            />
-            <FetchingErrorComponentMessage 
-              fetching={this.props.eventFetching}
-              error={this.props.eventError}
-              message={this.props.message}
+              fetching={this.props.locationsFetching}
+              error={this.props.locationsErrorList}
+              message={null}
               component={
-                <div>
-                  {this.state.activePiglets ?
-                    <div>
-                      <SplitPigletsInput 
-                        checked={this.checked}
-                        changeQuantity={this.state.changeQuantity}
-                        quantity={this.state.quantity}
-                        helpMessage={'Укажите количество'}
-                        setData={this.setData}
-                        gilts_contains={this.state.gilts_contains}
-                      />
-                        <button className='btn btn-outline-secondary' type='button'
-                          onClick={this.clickSetlle}
-                          >
-                            Разместить группу
-                        </button>
-                    </div>
-                    :
-                    !this.props.message && <Message message={'Выберите группу поросят'}/>
+                <PigletsCells
+                  isSection={activeSectionId}
+                  fetching={this.props.locationsFetching}
+                  locations={locations}
+                  activeCellIds={[activeCell && activeCell.id]}
+                  clickLocation={this.clickCell}
+                  user={this.props.user}
+                  grid={grid}
+                />}
+            />
+          </div>
+        </div>
+        <BottomExpand 
+          clickExpand={this.clickExpand}
+          expand={expand} eventError={eventError} message={message} eventFetching={eventFetching}
+          label={'Выберите поросят и клетку'}
+        >
+          {(expand) &&
+            <div>
+              <div className='row d-flex justify-content-center mb-2'>
+                <div className='col-6 text-center'>
+                  {activePiglets 
+                    ? <p className='my-0'>
+                        <PigletsGroupInlineMin piglets={activePiglets} className='font-13 my-0'/>
+                      </p>
+                    : <p className='my-0 font-600'>Выберите поросят</p>
                   }
                 </div>
+                <div className='col-6 text-center'>
+                  {activeCell 
+                    ? <p className='my-0'>
+                        <span className='font-600'>Клетка {activeCell.cell}</span>
+                        {activeCell.piglets.length > 0 && 
+                          <PigletsGroupInlineMin piglets={activeCell.piglets[0]} 
+                            className='d-inline ml-1 font-13 my-0'/>
+                        }
+                      </p>
+                    : <p className='my-0 font-600'>Выберите клетку</p>
+                  }
+                </div>
+              </div>
+              {activePiglets && 
+                [<div className='divider my-1 py-0'></div>,
+                <TextField
+                  fullWidth={true}
+                  type='number'
+                  defaultValue={quantity}
+                  label={'Кол-во для перемещения'}
+                  placeholder={'Кол-во для перемещения'}
+                  margin='dense'
+                  onChange={this.setData}
+                  name='quantity'
+                  value={this.state.quantity}
+                  />,
+                <button className='btn bg-mainDark-dark mt-2'
+                  onClick={this.clickSetlle} disabled={disabled}
+                  >
+                    Разместить группу
+                </button>]
               }
-              />
-          </div>
-      </div>
+            </div>
+          }
+        </BottomExpand>
+    </div>
     )
   }
 }

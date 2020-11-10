@@ -145,7 +145,7 @@ class WSNomadCullingTab extends Component {
                     </p>
                   : [<p className='my-0 text-center'>
                       <i className="fas fa-chevron-up ">
-                        <span className='ml-1'>Выберите клетку</span>
+                        <span className='ml-1'>Выберите клетку с поросятами</span>
                       </i>
                     </p>,
                     <ErrorOrMessage error={eventError} message={message} fetching={eventFetching}

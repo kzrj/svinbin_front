@@ -9,22 +9,23 @@ export class PigletsGroup extends Component {
       ? age = piglets.age.split(' ')[0]
       : age = 0
     return (
-      <div className='card card-style mx-0'>
-        <div className='content my-1'>
-          <p className='my-0'>
-            Количество {piglets.quantity}
-          </p>
-          <p className='my-0'>
-            ремонтных {piglets.gilts_quantity}
-          </p>
-          <p className='my-0'>
-            {piglets.week_tour}
-          </p>
-          <p className='my-0'>
-            Возраст {age && age + ' д'}
-          </p>
+      piglets &&
+        <div className='card card-style mx-0'>
+          <div className='content my-1'>
+            <p className='my-0'>
+              Количество {piglets.quantity}
+            </p>
+            <p className='my-0'>
+              ремонтных {piglets.gilts_quantity}
+            </p>
+            <p className='my-0'>
+              {piglets.week_tour}
+            </p>
+            <p className='my-0'>
+              Возраст {age && age + ' д'}
+            </p>
+          </div>
         </div>
-      </div>
     )
   }
  }
@@ -78,21 +79,6 @@ export class PigletsGroup extends Component {
           </tr>
         </tbody>
       </table>
-    )
-  }
- }
-
- export class PigletsListElem extends Component {
-
-  render() {
-    const { piglets } = this.props
-    return (
-      <div className='piglets-list-elem'>
-        <p>Количество {piglets.quantity}</p>
-        {piglets.gilts_quantity > 0 && <p>Количество ремонтных {piglets.gilts_quantity}</p>}
-        {piglets.week_tour}
-        {piglets.transfer_part_number && <p>Партия {piglets.transfer_part_number}</p>}
-      </div>
     )
   }
  }

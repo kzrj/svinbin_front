@@ -70,7 +70,7 @@ class WorkshopSevenContainer extends Component {
     const activeTab = this.getActiveTab()
     const grid = 'col-4 '
     return (
-      <div className="workshop container-fluid">
+      <div className="">
         <TabMenu 
           tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №7'} activeTab={activeTab}
           user={this.props.state.auth.user}

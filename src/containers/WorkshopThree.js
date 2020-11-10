@@ -39,7 +39,7 @@ class WorkshopThreeContainer extends Component {
     this.state = {
       tabs: [
         {name: 'infoTab',                 active: false, title: 'ИНФО'},
-        {name: 'returnPigletsTab',        active: false, title: 'Возврат поросята'},
+        {name: 'returnPigletsTab',        active: true,  title: 'Возврат поросята'},
         {name: 'comingSowsTab',           active: false, title: 'Поступление матки'},
         {name: 'farrowTab',               active: false, title: 'Опорос'},
         {name: 'nurseSowTab',             active: false, title: 'Кормилица'},
@@ -47,7 +47,7 @@ class WorkshopThreeContainer extends Component {
         {name: 'createGiltTab',           active: false, title: 'Биркование'},
         {name: 'sowCullingTab',           active: false, title: 'Выбытие свиноматок'},
         {name: 'pigletsCullingTab',       active: false, title: 'Выбытие поросят'},
-        {name: 'pigletsInnerTransferTab', active: true,  title: 'Перемещение поросят из клетки в клетку'},
+        {name: 'pigletsInnerTransferTab', active: false, title: 'Перемещение поросят из клетки в клетку'},
         {name: 'searchSowTab',            active: false, title: 'Поиск по всем цехам'},
         {name: 'sowInnerTransferTab',     active: false, title: 'Перемещение свиноматок из клетки в клетку'},
         {name: 'sowTransferToWsTab',      active: false, title: 'Перегон свиноматок в цех1, цех3'},
@@ -344,7 +344,7 @@ class WorkshopThreeContainer extends Component {
           <WSNomadResettelmentTab
             user={this.props.state.auth.user}
             workshopNumber={3}
-            grid={pigletsCellsGrid}
+            grid={'col-3 '}
 
             getPiglets={this.props.getPiglets}
             piglets={this.props.state.piglets.list}
