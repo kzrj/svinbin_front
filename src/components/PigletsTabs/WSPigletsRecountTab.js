@@ -92,7 +92,7 @@ class WSPigletsRecountTab extends Component {
 
   render() {
     this.refreshSowsList()
-    const { sections, locations, recountData} = this.props
+    const { sections, locations, recountData, grid} = this.props
     return (
         <div className='row workshop-content'>
           <div className='col-6'>
@@ -107,6 +107,7 @@ class WSPigletsRecountTab extends Component {
               locations={locations}
               activeCellIds={[this.state.activeCellId]}
               clickLocation={this.clickLocation}
+              grid={grid}
             />
           </div>
           <div className='col-6'>

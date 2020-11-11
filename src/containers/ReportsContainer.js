@@ -21,33 +21,34 @@ class ReportsContainer extends Component {
   }
 
   render() {
-    const routeName = this.props.route.name
+    console.log(this.props)
+    const routeName = this.props.location.pathname.split('/')[2]
+    console.log(routeName)
     return (
       <div className="container-fluid">
-        {routeName == 'Отчёты' && 
-          <div className='row'>
-            <div className='col-3 ws-home'>
-              <a href='/reports/tours/'>Отчет по турам</a>
-            </div>
-            <div className='col-3 ws-home'>
-              <a href='/reports/director/'>Отчет движение поголовья(директору)</a>
-            </div>
-            <div className='col-3 ws-home'>
-              <a href='/reports/operations/'>Операции по цехам</a>
-            </div>
-            <div className='col-3 ws-home'>
-              <a href='/reports/ws3report/'>Отчет движение поголовья цех3</a>
-            </div>
-            <div className='col-3'>
-              <a href='/reports/tours_v2/'>Отчет по турам V2(взвешивания)</a>
-            </div>
-          </div>}
+        <div className='row'>
+          <div className='col-3 ws-home'>
+            <a href='/reports/tours/'>Отчет по турам</a>
+          </div>
+          <div className='col-3 ws-home'>
+            <a href='/reports/director/'>Отчет движение поголовья(директору)</a>
+          </div>
+          <div className='col-3 ws-home'>
+            <a href='/reports/operations/'>Операции по цехам</a>
+          </div>
+          <div className='col-3 ws-home'>
+            <a href='/reports/ws3report/'>Отчет движение поголовья цех3</a>
+          </div>
+          <div className='col-3'>
+            <a href='/reports/tours_v2/'>Отчет по турам V2(взвешивания)</a>
+          </div>
+        </div>
 
-        {routeName == 'Отчёты по турам' && 
+        {routeName == 'tours' && 
           <ToursReportsComponent getTourReports={this.props.getTourReports} reports={this.props.state.reports}/>
         }
 
-        {routeName == 'Отчет по турам V2' && 
+        {routeName == 'tours_v2' && 
           <ToursV2ReportComponent 
             getToursV2Report={this.props.getToursV2Report}
             getTourV2Report={this.props.getTourV2Report}
@@ -57,21 +58,21 @@ class ReportsContainer extends Component {
           />
         }
 
-        {routeName == 'Отчёт директору' && 
+        {routeName == 'director' && 
           <DirReportComponent getDirReport={this.props.getDirReport} reports={this.props.state.reports}/>
         }
 
-        {routeName == 'Отчёт Цех3' && 
+        {routeName == 'ws3report' && 
           <WS3ReportComponent getWs3Report={this.props.getWs3Report} reports={this.props.state.reports}/>
         }
 
-        {routeName == 'Операции' && 
+        {routeName == 'operations' && 
           <Operations getOperationsReport={this.props.getOperationsReport} 
             operationsResultList={this.props.state.reports.operations}
             operationsAdditionalData={this.props.state.reports.operations_add_data} />
         }
         
-        {routeName == 'Отчёты' && 
+        {!routeName && 
           <div className='report-block'>
             <PigsCount getPigsCountReport={this.props.getPigsCountReport} 
               pigsCount={this.props.state.reports.pigsCount}/>

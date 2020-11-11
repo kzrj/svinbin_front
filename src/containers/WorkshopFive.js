@@ -25,12 +25,12 @@ class WorkshopFiveContainer extends Component {
     super(props);
     this.state = {
       tabs: [
-        {name: 'incomeTab',        active: false, title: 'Поступление и взвешивание'},
+        {name: 'incomeTab',        active: true, title: 'Поступление и взвешивание'},
         {name: 'resettlementTab',  active: false, title: 'Размещение прибывших'},
         {name: 'innerTransferTab', active: false, title: 'Внутреннее перемещение'},
-        {name: 'transferTab',      active: true, title: 'Перегон ремонт'},
+        {name: 'transferTab',      active: false, title: 'Перегон ремонт'},
         {name: 'cullingTab',       active: false, title: 'Выбытие/Убой'},
-        {name: 'pigletsRecountTab',active: false, title: 'Пересчет поросят'},
+        // {name: 'pigletsRecountTab',active: false, title: 'Пересчет поросят'},
         {name: 'infoTab',          active: false, title: 'Инфо'},
       ],
     };
@@ -95,6 +95,7 @@ class WorkshopFiveContainer extends Component {
             eventFetching={this.props.state.piglets.eventFetching}
             message={this.props.state.piglets.message}
 
+            form={this.props.state.form.weighingPigletsForm}
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
           />}
 

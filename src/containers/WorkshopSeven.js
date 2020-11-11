@@ -30,7 +30,7 @@ class WorkshopSevenContainer extends Component {
         {name: 'innerTransferTab', active: false, title: 'Внутреннее перемещение'},
         {name: 'transferTab',      active: false, title: 'Перегон ремонт'},
         {name: 'cullingTab',       active: false, title: 'Выбытие'},
-        {name: 'pigletsRecountTab',active: false,  title: 'Пересчет поросят'},
+        // {name: 'pigletsRecountTab',active: false,  title: 'Пересчет поросят'},
         {name: 'infoTab',          active: true, title: 'Инфо'},
       ],
     };
@@ -95,6 +95,7 @@ class WorkshopSevenContainer extends Component {
             message={this.props.state.piglets.message}
 
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
+            form={this.props.state.form.weighingPigletsForm}
           />}
 
         { activeTab.name === 'resettlementTab' &&

@@ -138,7 +138,7 @@ class WS3SowInnerTransferTab extends Component {
     }
 
     if (fromLocation && !toLocation) {
-      if (location.is_sow_empty && !fromLocation.is_sow_empty) btnDisabled = false
+      if (location.is_sow_empty && (fromLocation && !fromLocation.is_sow_empty)) btnDisabled = false
 
       this.setState({
         ...this.state,

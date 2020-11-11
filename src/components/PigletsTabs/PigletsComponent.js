@@ -81,3 +81,17 @@ export function PigletsGroupInline (props) {
     </div>
   )
 }
+
+
+export const WeighingDetail = (props) => (
+  <table className='table table-sm'>
+      <tbody>
+      <tr>
+          <td>Средний вес</td><td>{props.weighingData.average_weight}</td>
+      </tr>
+      <tr>
+          <td>Общий вес</td><td>{props.weighingData.total_weight}</td>
+      </tr>
+      </tbody>
+  </table>
+)

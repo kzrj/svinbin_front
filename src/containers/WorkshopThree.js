@@ -38,8 +38,8 @@ class WorkshopThreeContainer extends Component {
     super(props);
     this.state = {
       tabs: [
-        {name: 'infoTab',                 active: false, title: 'ИНФО'},
-        {name: 'returnPigletsTab',        active: true,  title: 'Возврат поросята'},
+        {name: 'infoTab',                 active: true,  title: 'ИНФО'},
+        {name: 'returnPigletsTab',        active: false, title: 'Возврат поросята'},
         {name: 'comingSowsTab',           active: false, title: 'Поступление матки'},
         {name: 'farrowTab',               active: false, title: 'Опорос'},
         {name: 'nurseSowTab',             active: false, title: 'Кормилица'},

@@ -200,3 +200,83 @@ CullingPigletsForm = reduxForm({
   form: 'cullingPigletsForm',
   validate: validateCullingForm,
 })(CullingPigletsForm)
+
+
+export function WeighingPigletsForm (props) {
+  const { parentSubmit, pristine, reset, submitting, handleSubmit, initialValues, cullingTypes,
+    eventFetching, eventError, message } = props
+  return (
+    <form onSubmit={handleSubmit(parentSubmit)} className=''
+      initialValues={initialValues}
+    > 
+      <Field
+        component={renderTextField}
+        name="id"
+        hidden={true}
+      />
+
+      <Field 
+        component={renderTextField}
+        type='number'
+        label="Количество" 
+        name='new_amount'
+        margin='dense'
+      />
+
+      <Field 
+        component={renderTextField}
+        type='number'
+        label="Вес" 
+        name='total_weight'
+        margin='dense'
+        placeholder='Укажите вес'
+      />
+
+      <Field 
+        component={renderTextField}
+        name='place'
+        hidden={true}
+      />
+
+      <Field 
+        component={renderTextField}
+        type='number'
+        name='to_location'
+        hidden={true}
+      />
+
+      <button 
+        className='btn btn-m mt-2 font-900 shadow-s bg-mainDark-dark text-wrap'
+        type="submit"
+        disabled={pristine || submitting}>
+        Взвесить
+      </button>
+
+    </form>
+  )
+}
+
+const validateWeighingPigletsForm = values => {
+  const errors = {}
+  const requiredFields = [
+    'id',
+    'new_amount',
+    'total_weight'
+  ]
+  
+  if (values['total_weight'] <= 0) {
+    errors['total_weight'] = 'Укажите вес больше 0'
+  }
+  
+  requiredFields.forEach(field => {
+    if (!values[field]) {
+      errors[field] = 'Обязательное поле'
+    }
+  })
+  return errors
+}
+
+WeighingPigletsForm = reduxForm({
+  form: 'weighingPigletsForm',
+  validate: validateWeighingPigletsForm,
+})(WeighingPigletsForm)

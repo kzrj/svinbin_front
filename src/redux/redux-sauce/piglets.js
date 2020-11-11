@@ -265,7 +265,7 @@ export const createGiltFail = (state, { payload } ) => {
 
 // resetErrorsAndMessages
 export const pigletsResetErrorsAndMessages = (state) => {
-    return state.merge({ fetching: false, eventError: null, errorList: null, message: '' })
+    return state.merge({ fetching: false, eventError: null, errorList: null, message: '', weighing: null, })
 }
 
 /* ------------- Hookup Reducers To Types ------------- */

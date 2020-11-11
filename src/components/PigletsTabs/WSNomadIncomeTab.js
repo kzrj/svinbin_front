@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
 //components
-import { PigletsGroup, WeighingDetail } from '../PigletsRepresentations'
+import { WeighingPigletsForm } from './PigletsForms'
 import { WeighingPigletsInput } from '../FiltersAndInputs'
-import { PigletsListElem } from './PigletsComponent'
-import { Message, FetchingErrorComponentMessage } from '../CommonComponents'
+import { PigletsListElem, WeighingDetail, PigletsGroupInline } from './PigletsComponent'
+import { FetchingErrorComponentMessage, ErrorOrMessage } from '../CommonComponents'
 
 class WSNomadIncomeTab extends Component {
    constructor(props) {
@@ -12,22 +12,14 @@ class WSNomadIncomeTab extends Component {
     this.state = {
       activePigletsId: 0,
       activePiglets: null,
-      totalWeight: '',
       weighingRecord: null,
-      checkNewAmount: false,
-      newAmount: null,
 
-      farrow_date: '',
       quantity: null,
-      gilts_quantity: 0,
-      transaction_date: '',
 
       needToRefresh: false
     }
     this.setData = this.setData.bind(this);
     this.weighing = this.weighing.bind(this);
-    this.initPiglets = this.initPiglets.bind(this);
-    this.turnOnNewAmount = this.turnOnNewAmount.bind(this);
     this.refreshSowsList = this.refreshSowsList.bind(this);
   }
   
@@ -57,45 +49,13 @@ class WSNomadIncomeTab extends Component {
     })
   }
 
-  turnOnNewAmount () {
-    this.setState({
-      ...this.state,
-      checkNewAmount: !this.state.checkNewAmount
-    })
-  }
-
   weighing () {
-    let data = {
-      id: this.state.activePiglets.id,
-      place: this.props.weighingPlace,
-      total_weight: this.state.totalWeight,
-      new_amount: this.state.newAmount,
-      to_location: this.props.returnLocation
-    }
-    this.props.weighingPiglets(data)
+    this.props.weighingPiglets(this.props.form.values)
     this.setState({
       ...this.state,
       weighingRecord: this.props.weighingData,
-      totalWeight: '',
+      activePigletsId: null,
       activePiglets: null,
-      newAmount: 0,
-      checkNewAmount: false,
-      needToRefresh: true
-    })
-  }
-
-  initPiglets () {
-    this.props.initPiglets({
-      location: this.props.workshopNumber,
-      from_location: this.props.returnLocation,
-      farrow_date: this.state.farrow_date,
-      quantity: this.state.quantity,
-      gilts_quantity: this.state.gilts_quantity,
-      transaction_date: this.state.transaction_date
-    })
-    this.setState({
-      ...this.state,
-      totalWeight: '',
       needToRefresh: true
     })
   }
@@ -109,26 +69,29 @@ class WSNomadIncomeTab extends Component {
           piglets_without_weighing_record: this.props.weighingPlace,
           by_workshop_number: this.props.workshopNumber
         })
-      }, 500)
+      }, 300)
     }
   }
   
   render() {
     this.refreshSowsList()
-    const { piglets, user } = this.props
+    const { piglets, weighingPlace, eventError, eventFetching, message, returnLocation, weighingData } = this.props
+    const { activePiglets, activePigletsId, weighingRecord } = this.state
 
     return (
-      <div className='row workshop-content'>
-        <div className='col-3'>
+      <div className='row'>
+        <div className='col-4'>
           <FetchingErrorComponentMessage 
             fetching={this.props.listFetching}
             error={this.props.listError}
             message={null}
             component={
               <div>
+                {piglets.length === 0 && <p className='my-1 mx-1'>На поступлении никого нет</p>}
                 {piglets.map(group =>
-                  <div className={this.state.activePigletsId == group.id ? 
-                    'nomad-piglets-row piglets-active': 'nomad-piglets-row'}
+                  <div className={activePigletsId == group.id 
+                    ? 'nomad-piglets-row piglets-active my-1'
+                    : 'nomad-piglets-row my-1 bg-white-dark'}
                     onClick={() => this.clickPiglets(group)}
                     key={group.id}
                     >
@@ -139,31 +102,30 @@ class WSNomadIncomeTab extends Component {
             }
           />
         </div>
-        <div className='col-9'>
-          <FetchingErrorComponentMessage
-            fetching={this.props.eventFetching}
-            error={this.props.eventError}
-            message={this.props.message}
-            component={
-              this.state.activePiglets &&
-              <div>
-                <PigletsGroup piglets={this.state.activePiglets}/>
-                <WeighingPigletsInput 
-                  totalWeight={this.state.totalWeight}
-                  setData={this.setData}
-                  weighing={this.weighing}
-                  turnOnNewAmount={this.turnOnNewAmount}
-                  checkNewAmount={this.state.checkNewAmount}
-                  newAmount={this.state.newAmount}
+        <div className='col-8'>
+          {activePiglets &&
+            <div className='card card-style ml-0 my-1'>
+              <div className='content'>
+                <PigletsGroupInline piglets={activePiglets} className='font-16'/>
+                <WeighingPigletsForm 
+                  parentSubmit={this.weighing}
+                  initialValues={{
+                    id: activePiglets.id,
+                    new_amount: activePiglets.quantity,
+                    place: weighingPlace,
+                    to_location: returnLocation
+                  }}
                 />
               </div>
-            }
-            />
-            {this.props.message 
-              ? this.props.weighingData && 
-                  <WeighingDetail weighingData={this.props.weighingData} />
-              : <Message message={'Выберите партию для взвешивания'}/>
-            }
+            </div>
+          }
+          {weighingData 
+              ? <WeighingDetail weighingData={weighingData} />
+              : !this.state.activePiglets && 
+                <p className='my-3 text-center font-17 font-700'>Выберите партию для взвешивания</p>
+          }
+          <ErrorOrMessage error={eventError} message={message} fetching={eventFetching}
+            className='mt-2 mb-0 mx-1 font-15' />
         </div>
       </div>
     )
