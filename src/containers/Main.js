@@ -55,12 +55,10 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    console.log('Opapapapap')
     const token = localStorage.getItem('token');
     if (token) {
       this.props.checkToken(token);
     }
-    console.log(token)
   }
 
   render() {
@@ -73,7 +71,6 @@ class Main extends Component {
 
     const sowsListFetching = this.props.state.sows.fetching
     const sowsEventFetching = this.props.state.sows.eventFetching
-    console.log('jikokx')
     return (
       <div className="app container-fluid">
         <div id="pageContent">

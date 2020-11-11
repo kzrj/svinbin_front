@@ -36,7 +36,7 @@ class WSPigletsRecountTab extends Component {
       ...this.state,
       activeSectionId: sectionId
     })
-    this.props.getLocations({by_section: sectionId, cells: true})
+    this.props.getLocations({by_section: sectionId, cells_piglets: true})
   }
 
   clickLocation (location) {

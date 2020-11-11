@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 //components
 import { WeighingPigletsForm } from './PigletsForms'
-import { WeighingPigletsInput } from '../FiltersAndInputs'
 import { PigletsListElem, WeighingDetail, PigletsGroupInline } from './PigletsComponent'
 import { FetchingErrorComponentMessage, ErrorOrMessage } from '../CommonComponents'
 
