@@ -22,7 +22,7 @@ class PigsCount extends Component {
     return (
       <div className="container-fluid report-block">
         <h3>Текущее количество</h3>
-        <table className='report-table'>
+        <table className='report-table table table-responsive table-sm'>
           <thead>
             <tr>
               <th ><span className='report-dir-th'></span></th>

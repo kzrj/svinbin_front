@@ -63,7 +63,7 @@ class WS3ReportComponent extends Component {
     let total_info = this.props.reports.ws3Report.total_info ? this.props.reports.ws3Report.total_info : null
 
     return (
-      <div className="container-fluid report-block">
+      <div className=" report-block">
         <h3>Отчет движение поголовья Цех3</h3>
         <div className="form-group row">
           <div className='col-6'>
@@ -102,8 +102,8 @@ class WS3ReportComponent extends Component {
           </div>
         </div>
 
-        <table className='report-table'>
-          <thead>
+        <table className='report-table table table-responsive table-sm'>
+          <thead className='bg-mainDark-dark'>
             <th ><span className='report-ws-th'>Дата</span></th>
             <th ><span className='report-ws-th'>начало дня подсос</span></th>
             <th ><span className='report-ws-th'>начало дня супорос</span></th>

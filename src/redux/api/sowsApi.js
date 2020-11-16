@@ -686,11 +686,12 @@ const create = () => {
     }
 
     const semenBoar = payload => {
-        const { id, a, b, d, final_motility_score, date, f_denom } = payload;
+        const { id, a, b, d, final_motility_score, date, f_denom, tour } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.semenBoar(id);
 
         const formData = new FormData();
+        formData.append("tour", tour);
         formData.append("a", a);
         formData.append("b", b);
         formData.append("d", d);

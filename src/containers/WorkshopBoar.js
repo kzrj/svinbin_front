@@ -10,6 +10,8 @@ import { TabMenu }  from '../components/CommonComponents'
 
 // actions
 import SowsActions from '../redux/redux-sauce/sows';
+import ToursActions from '../redux/redux-sauce/tours';
+import { change, reset } from "redux-form";
 
 
 class WorkshopBoarContainer extends Component {
@@ -17,9 +19,9 @@ class WorkshopBoarContainer extends Component {
     super(props);
     this.state = {
       tabs: [
-        {name: 'boarTab',        active: false, title: 'Создание, выбытие, наличие'},
+        {name: 'boarTab',        active: true, title: 'Создание, выбытие, наличие'},
         {name: 'createSemenTab', active: false, title: 'Регистрация семени'},
-        {name: 'listSemenTab',   active: true,  title: 'Лист семени'},
+        {name: 'listSemenTab',   active: false,  title: 'Лист семени'},
       ]
     }
     this.setTab = this.setTab.bind(this);
@@ -29,6 +31,7 @@ class WorkshopBoarContainer extends Component {
   componentDidMount() {
     this.props.getBoars()
     this.props.getBoarBreed()
+    this.props.getTours({by_workshop_number: 1})
   }
 
   setTab (tab) {
@@ -58,7 +61,7 @@ class WorkshopBoarContainer extends Component {
   render() {
     const activeTab = this.getActiveTab()
     return (
-      <div className="workshop container-fluid">
+      <div className="">
         <TabMenu 
           tabs={this.state.tabs} setTab={this.setTab} workshop={'Хрячник'} activeTab={activeTab}
           user={this.props.state.auth.user}
@@ -70,10 +73,14 @@ class WorkshopBoarContainer extends Component {
             boars={this.props.state.sows.boars}
             listFetching={this.props.state.sows.fetching}
 
+            tours={this.props.state.tours.list}
+
             semenBoar={this.props.semenBoar}
             eventError={this.props.state.sows.eventError}
             eventFetching={this.props.state.sows.eventFetching}
             message={this.props.state.sows.message}
+
+            form={this.props.state.form.semenBoarForm}
 
             sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />
@@ -103,6 +110,11 @@ class WorkshopBoarContainer extends Component {
             eventFetching={this.props.state.sows.eventFetching}
             message={this.props.state.sows.message}
 
+            cullingForm={this.props.state.form.cullingBoarForm}
+            cullingFormSetID={this.props.cullingFormSetID}
+            createForm={this.props.state.form.createBoarForm}
+            resetCreateForm={this.props.resetCreateForm}
+            
             sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />
         }
@@ -118,8 +130,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  getBoarBreed: query => dispatch(SowsActions.getBoarBreedRequest(query)),
+  getTours: query => dispatch(ToursActions.getToursRequest(query)),
 
+  getBoarBreed: query => dispatch(SowsActions.getBoarBreedRequest(query)),
   getBoars: query => dispatch(SowsActions.getBoarsRequest(query)),
   
   cullingBoar: data => dispatch(SowsActions.cullingBoarRequest(data)),
@@ -128,6 +141,9 @@ const mapDispatchToProps = (dispatch) => ({
   getSemenBoarList: query => dispatch(SowsActions.getSemenBoarListRequest(query)),
 
   sowsResetErrorsAndMessages: () => dispatch(SowsActions.sowsResetErrorsAndMessages()),
+
+  cullingFormSetID: boarId => dispatch(change( "cullingBoarForm", "id", boarId )),
+  resetCreateForm: () => dispatch(reset( "createBoarForm"))
 })
 
 export default connect(

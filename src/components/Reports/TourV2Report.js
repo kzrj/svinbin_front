@@ -14,7 +14,7 @@ export const getDate = () => {
 }
 
 const thClass = 'font-12 heigth-25 px-1 py-1 color-mainDark-dark'
-const tableClass = 'font-17 mr-0 text-center table table-sm color-mainGrey-dark'
+const tableClass = 'font-17 mr-0 text-center table table-responsive table-sm color-mainGrey-dark'
 
 function TheadList (){
   return (
@@ -353,7 +353,7 @@ class ToursV2ReportComponent extends Component {
                           total={tourData['3/4']['total']}/>
                       </div>
                     </div>
-                    <table className={tableClass}>
+                    <table className={tableClass + ' table table-responsive table-sm'}>
                       <thead>
                         <th className={thClass}>родилось</th>
                         <th className={thClass}>отгрузка гол</th>

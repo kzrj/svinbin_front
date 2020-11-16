@@ -13,6 +13,7 @@ import InfoTab from '../containers/InfoTab'
 import { TabMenu }  from '../components/CommonComponents'
 
 // actions
+import { change } from "redux-form";
 import SectionsActions from '../redux/redux-sauce/sections';
 import LocationsActions from '../redux/redux-sauce/locations';
 import PigletsActions from '../redux/redux-sauce/piglets';
@@ -184,32 +185,6 @@ class WorkshopSevenContainer extends Component {
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
 
-        {/* { activeTab.name === 'transferTo75Tab' &&
-          <WSNomadTransferTab 
-            workshopNumber={7}
-            toLocation={11}
-            toLocations={null}
-            buttonName={'Отправить в Цех7-5'}
-
-            getPiglets={this.props.getPiglets}
-            piglets={this.props.state.piglets.list}
-            listFetching={this.props.state.piglets.listFetching}
-
-            getSections={this.props.getSections}
-            sections={this.props.state.sections.list}
-
-            getLocations={this.props.getLocations}
-            locations={this.props.state.locations.list}
-            locationsFetching={this.props.state.locations.fetching}
-
-            movePiglets={this.props.moveGiltsToWs75}
-            eventFetching={this.props.state.piglets.eventFetching}
-            eventError={this.props.state.piglets.eventError}
-            message={this.props.state.piglets.message}
-
-            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
-          />} */}
-
         { activeTab.name === 'cullingTab' &&
           <WSNomadCullingTab
             user={this.props.state.auth.user}
@@ -234,6 +209,7 @@ class WorkshopSevenContainer extends Component {
             message={this.props.state.piglets.message}
 
             form={this.props.state.form.cullingPigletsForm}
+            cullingFormSetID={this.props.cullingFormSetID}
 
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
         />}
@@ -286,6 +262,7 @@ const mapDispatchToProps = (dispatch) => ({
   initPiglets: data => dispatch(PigletsActions.initPigletsRequest(data)),
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
   moveGiltsToWs12: data => dispatch(PigletsActions.moveGiltsToWs12Request(data)),
+  cullingFormSetID: id => dispatch(change( "cullingPigletsForm", "id", id )),
 
   // info
   getOperationsReport: (token) => dispatch(ReportsActions.getOperationsReportRequest(token)),

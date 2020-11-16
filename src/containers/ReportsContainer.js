@@ -21,11 +21,10 @@ class ReportsContainer extends Component {
   }
 
   render() {
-    console.log(this.props)
     const routeName = this.props.location.pathname.split('/')[2]
-    console.log(routeName)
+    
     return (
-      <div className="container-fluid">
+      <div className="">
         <div className='row'>
           <div className='col-3 ws-home'>
             <a href='/reports/tours/'>Отчет по турам</a>

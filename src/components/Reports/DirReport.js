@@ -57,7 +57,7 @@ class DirReportComponent extends Component {
     let pigs_count = this.props.reports.dirReport.pigs_count ? this.props.reports.dirReport.pigs_count : null
 
     return (
-      <div className="container-fluid report-block">
+      <div className="report-block">
         <h3>Отчет движение поголовья</h3>
         <div className="form-group row">
           <div className='col-6'>
@@ -89,8 +89,8 @@ class DirReportComponent extends Component {
           </button>
         </div>
 
-        <table className='report-table'>
-          <thead>
+        <table className='report-table table-responsive table table-sm'>
+          <thead className='bg-mainDark-dark'>
             <th ><span className='report-dir-th'>Дата</span></th>
             <th ><span className='report-dir-th'>Наличие на начало дня</span></th>
             <th ><span className='report-dir-th'>Перевод из других групп</span></th>

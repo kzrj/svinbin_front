@@ -13,6 +13,7 @@ import InfoTab from '../containers/InfoTab'
 import { TabMenu }  from '../components/CommonComponents'
 
 // actions
+import { change } from "redux-form";
 import SectionsActions from '../redux/redux-sauce/sections';
 import LocationsActions from '../redux/redux-sauce/locations';
 import PigletsActions from '../redux/redux-sauce/piglets';
@@ -212,6 +213,7 @@ class WorkshopFourContainer extends Component {
             message={this.props.state.piglets.message}
 
             form={this.props.state.form.cullingPigletsForm}
+            cullingFormSetID={this.props.cullingFormSetID}
             grid={grid}
 
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
@@ -268,6 +270,7 @@ const mapDispatchToProps = (dispatch) => ({
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
   initPiglets: data => dispatch(PigletsActions.initPigletsRequest(data)),
   recountPiglets: data => dispatch(PigletsActions.recountPigletsRequest(data)),
+  cullingFormSetID: id => dispatch(change( "cullingPigletsForm", "id", id )),
 
   // info
   getOperationsReport: (token) => dispatch(ReportsActions.getOperationsReportRequest(token)),

@@ -68,6 +68,29 @@ export const renderSelectField = ({
   </FormControl>
 )
 
+export const renderChildrenSelectField = ({
+  input,
+  label,
+  formClass,
+  labelClass,
+  meta: { touched, error },
+  children,
+  options,
+  ...custom
+}) => (
+  <FormControl error={touched && error} className={formClass} fullWidth={true}>
+    <InputLabel className={labelClass}>{label}</InputLabel>
+    <Select
+      {...input}
+      {...custom}
+      fullWidth={true}
+    >
+      {children}
+    </Select>
+    {renderFromHelper({ touched, error })}
+  </FormControl>
+)
+
 export const renderDateTimeField = ({
   label,
   placeholder,

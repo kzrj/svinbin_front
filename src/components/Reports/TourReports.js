@@ -76,9 +76,9 @@ class ToursReportsComponent extends Component {
     ]
 
     return (
-      <div className="container-fluid report-block">
+      <div className="report-block">
         <h3>Отчет по неделям</h3>
-        <table className='report-table'>
+        <table className='table table-responsive table-sm'>
           <tbody>
             {reportRows && reportRows.map(rowLabel => 
               <tr>

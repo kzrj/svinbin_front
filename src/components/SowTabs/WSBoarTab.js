@@ -1,24 +1,28 @@
 import React, { Component } from 'react';
 
 // components
-import { ErrorMessage, Message, FetchingErrorComponentMessage } from '../CommonComponents';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+import { ErrorOrMessage, FetchingErrorComponentMessage } from '../CommonComponents';
+import { CullingBoarForm, CreateBoarForm } from './SowForms';
+import { getToday } from '../utils';
 
 
 function BoarList (props) {
   return (
     <div >
-      {props.list.length > 0 && <label>Количество: {props.list.length}</label>}
-      <ul className='list-unstyled'>
-        {props.listFetching ? <p className='loading'>Загрузка</p> :
-          props.list.length > 0 &&
-          props.list.map(elem => 
-          <li className={props.boar && 
-            props.boar.id == elem.id ? 'sow-active sow-li text-center' : 'sow-li text-center'} 
-            onClick={() => props.clickBoar(elem)}>
-            ID {elem.farm_id} {elem.breed ? elem.breed : 'нет породы'}
-          </li>
-        )}
-      </ul>
+      {props.list.length > 0 && <span className='mx-2 font-15 font-600'>Кол-во: {props.list.length}</span>}
+      {props.listFetching ? <CircularProgress className='color-mainDark-dark'/> :
+        props.list.length > 0 &&
+        props.list.map(elem => 
+        <div className={props.boar &&  props.boar.id == elem.id 
+            ? 'sow-active sow-li text-center' 
+            : 'sow-li text-center'} 
+          onClick={() => props.clickBoar(elem)}>
+          ID {elem.farm_id} {elem.breed ? elem.breed : 'нет породы'}
+        </div>
+      )}
+      
     </div>
   )
 }
@@ -49,7 +53,6 @@ class WSBoarTab extends Component {
   }
   
   componentDidMount() {
-    // this.props.getBoars()
     this.props.sowsResetErrorsAndMessages()
   }
 
@@ -58,6 +61,7 @@ class WSBoarTab extends Component {
       ...this.state,
       boar: boar
     })
+    this.props.cullingFormSetID(boar.id)
     this.props.sowsResetErrorsAndMessages()
   }
 
@@ -69,21 +73,17 @@ class WSBoarTab extends Component {
   }
 
   cullingBoar() {
-    let data = {
-      id: this.state.boar.id,
-      culling_type: this.state.cullingType,
-      reason: this.state.cullingReason,
-      weight: this.state.weight,
-    }
-    this.props.cullingBoar(data)
+    this.props.cullingBoar(this.props.cullingForm.values)
     this.setState({
       ...this.state,
+      boar: null,
       needToRefresh: true
     })
   }
 
   createBoar() {
-    this.props.createBoar({birth_id: this.state.birth_id, farm_id: this.state.farm_id, breed: this.state.breed})
+    this.props.createBoar(this.props.createForm.values)
+    this.props.resetCreateForm()
     this.setState({
       ...this.state,
       needToRefresh: true
@@ -95,109 +95,65 @@ class WSBoarTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getBoars()  
-      }, 500)
+      }, 300)
     }
   }
 
   render() {
     this.refreshSowsList()
-    const { boars, boar, breeds, eventError, listFetching, message } = this.props
+    const { boars, breeds, eventError, listFetching, message, eventFetching } = this.props
+    const { boar } = this.state
+    
     return (
-      <div className='workshop-content'>
-        <div className='row'>
-          <div className='col-4'>
-            <FetchingErrorComponentMessage
-              fetching={this.props.listFetching}
-              component={
-                <BoarList list={boars} 
-                  boar={this.state.boar} clickBoar={this.clickBoar} listFetching={listFetching}/>}
-            />
-          </div>
-          <div className='col-4'>
-              <h4>Выбраковка</h4>
-              <div className="input-group">
-                <div className="input-group-prepend">
-                  <span className="input-group-text">Вид выбраковки</span>
-                </div>
-                <select className="custom-select" name='cullingType' className="form-control" 
-                  onChange={this.setData}>
-                  <option selected value='padej' >Падеж</option>
-                  <option value='vinuzhd' >Вынужденный убой</option>
-                </select>
+      <div className='row mx-0'>
+        <div className='col-3 px-0 py-3'>
+          <FetchingErrorComponentMessage
+            fetching={this.props.listFetching}
+            component={
+              <BoarList list={boars} 
+                boar={this.state.boar} clickBoar={this.clickBoar} listFetching={listFetching}/>}
+          />
+        </div>
+        <div className='col-9 pl-2'>
+          <div className='card card-style mt-3 mb-2 mx-0'>
+            <div className='content'>
+              <h5>
+                Выбраковка {boar 
+                  && <span>{boar.farm_id} {boar.breed}</span>}
+              </h5>
+              {boar 
+                ? <CullingBoarForm
+                  parentSubmit={this.cullingBoar}
+                  cullingTypes={[{value:'padej', label: 'Падеж'}, {value: 'vinuzhd', label: 'Вынужденный убой'}]}
+
+                  initialValues={{
+                    id: boar && boar.id,
+                    culling_type: 'padej',
+                    date: getToday(),
+                    reason: 'без причины'
+                  }}
+                  
+                  eventFetching={eventFetching}
+                  eventError={eventError}
+                  message={message}
+                />
+                : <p className='my-0'>Выберите хряка для выбытия.</p>
+              }
               </div>
-              <div className="input-group">
-                <div className="input-group-prepend">
-                  <span className="input-group-text">Причина</span>
-                </div>
-                <input type='text' onChange={this.setData} name='cullingReason' className="form-control" 
-                    placeholder='Напишите причину' value={this.state.cullingReason}/>
-              </div>
-              <div className="input-group">
-                <div className="input-group-prepend">
-                  <span className="input-group-text">Вес</span>
-                </div>
-                <input type='number' onChange={this.setData} name='weight' value={this.state.weight}
-                  className="form-control"  placeholder='Укажите вес'/>
-              </div>
-              <FetchingErrorComponentMessage
-                fetching={this.props.eventFetching}
-                error={this.props.eventError}
-                message={this.props.message}
-                component={
-                  this.state.boar &&
-                    <div className="input-group">
-                      <button className="btn btn-outline-secondary" type="button"  
-                        onClick={this.cullingBoar}>
-                        Забраковать
-                      </button>
-                    </div>
-                  }
-              />
             </div>
-            <div className='col-4'>
+          <ErrorOrMessage error={eventError} message={message} fetching={eventFetching}
+              className='mt-2 mb-0 mx-1 my-2 font-15' />
+
+          <div className='card card-style mx-0'>
+            <div className='content'>
               <h4>Создать хряка</h4>
-              <div className="input-group">
-                <div className="input-group-prepend">
-                  <span className="input-group-text">ID нового хряка</span>
-                </div>
-                <input type='text' onChange={this.setData} name='farm_id' className="form-control" 
-                    placeholder='ID' value={this.state.farm_id}/>
-              </div>
-              <div className="input-group">
-                <div className="input-group-prepend">
-                  <span className="input-group-text">номер бирки</span>
-                </div>
-                <input type='text' onChange={this.setData} name='birth_id' className="form-control" 
-                    placeholder='BIRHT ID' value={this.state.birth_id}/>
-              </div>
-              <div className="input-group">
-                <div className="input-group-prepend">
-                  <span className="input-group-text">Порода</span>
-                </div>
-                <select className="custom-select" name='breed' className="form-control" 
-                  onChange={this.setData}>
-                    <option selected value={null}>выбрать породу</option>
-                    {breeds.length > 0 && breeds.map(breed => 
-                      <option value={breed.id} >{breed.title}</option>
-                    )}
-                </select>
-              </div>
-              <FetchingErrorComponentMessage
-                fetching={this.props.eventFetching}
-                error={this.props.eventError}
-                message={this.props.message}
-                component={
-                  this.state.birth_id &&
-                    <div className="input-group">
-                      <button className="btn btn-outline-secondary" type="button"  
-                        onClick={this.createBoar}>
-                        Создать хряка
-                      </button>
-                    </div>
-                }
-              />
+              <CreateBoarForm 
+                parentSubmit={this.createBoar}
+                breeds={breeds}
+                />
             </div>
           </div>
+        </div>
       </div>
     )
   }

@@ -61,6 +61,8 @@ class WSNomadCullingTab extends Component {
       activePiglets: location.piglets.length > 0 ?
         location.piglets[0] : null
     })
+    if (location.piglets.length > 0) this.props.cullingFormSetID(location.piglets[0].id)
+    
     this.props.pigletsResetErrorsAndMessages()
   }
 

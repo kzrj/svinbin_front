@@ -38,38 +38,37 @@ export class TabMenu extends Component {
         let buttonClass = 'workshop-tab col-2 font-12 text-center'
         return (
         <div className="">
-            {/* <div className="collapse" id="navbarToggleExternalContent"> */}
             <div className="collapse" id="menuNavBar">
-                {/* <div className='workshop-header-3'>
-                </div> */}
-                <div className='bg-mainDark-dark pt-3 workshop-menu'>
+            <div className='bg-mainDark-dark pt-3 workshop-menu'>
+            </div>
+            <div className='row workshop-menu mb-0'>
+                {this.props.tabs.map((tab, key) =>
+                <div 
+                    key={key}
+                    className={tab.active ? buttonClass + ' tab-active' : buttonClass}
+                    onClick={() => this.props.setTab(tab)}
+                >
+                    {tab.title}
                 </div>
-                <div className='row workshop-menu mb-0'>
-                    {this.props.tabs.map((tab, key) =>
-                    <div 
-                        key={key}
-                        className={tab.active ? buttonClass + ' tab-active' : buttonClass}
-                        onClick={() => this.props.setTab(tab)}
-                    >
-                        {tab.title}
-                    </div>
-                    )}
+                )}
                 </div>
             </div>
             <nav className="nav-workshop-header">
-                <p className="float-left font-11 font-600 color-white text-uppercase ml-3 mb-0"
+                <p className="float-left font-11 font-600 color-white ml-3 mb-0"
                     data-toggle="collapse" 
                     data-target="#menuNavBar" aria-expanded="false" aria-controls="menuNavBar"
                     onClick={() => this.setState({...this.state, showMenu: !this.state.showMenu})}
                     >
-                    {this.state.showMenu ? 'скрыть меню' : 'показать меню'} 
-                </p>
+                    <span className='text-uppercase'>
+                        {this.state.showMenu ? 'скрыть меню' : 'показать меню'} 
+                    </span>
                 {/* {this.props.online 
                     ? <span style={{"color": "green", "float": "left"}}>Online</span> 
                     : <span style={{"color": "red", "float": "left"}}>Offline</span>} */}
                 {/* <div className='clearfix'></div> */}
-                {this.props.workshop} {this.props.activeTab.title}
-                <WhoIs user={this.props.user}/>
+                </p>
+                <span className='d-inline'>{this.props.workshop} {this.props.activeTab.title}</span>
+                <span className='d-inline ml-3'>{this.props.user ? this.props.user.user : 'Не залогинен'}</span>
             </nav>
         </div>
         )
