@@ -38,6 +38,8 @@ class WSNomadIncomeTab extends Component {
       activePiglets: piglets,
       weighingRecord: null
     })
+    this.props.weightFormSetID(piglets.id)
+    this.props.weightFormSetQnty(piglets.quantity)
     this.props.pigletsResetErrorsAndMessages()
   }
 

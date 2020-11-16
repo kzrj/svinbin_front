@@ -97,6 +97,8 @@ class WorkshopFiveContainer extends Component {
             message={this.props.state.piglets.message}
 
             form={this.props.state.form.weighingPigletsForm}
+            weightFormSetID={this.props.weightFormSetID}
+            weightFormSetQnty={this.props.weightFormSetQnty}
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
           />}
 
@@ -265,6 +267,8 @@ const mapDispatchToProps = (dispatch) => ({
   recountPiglets: data => dispatch(PigletsActions.recountPigletsRequest(data)),
   moveGiltsToWs12: data => dispatch(PigletsActions.moveGiltsToWs12Request(data)),
   cullingFormSetID: id => dispatch(change( "cullingPigletsForm", "id", id )),
+  weightFormSetID: id => dispatch(change( "weighingPigletsForm", "id", id )),
+  weightFormSetQnty: quantity => dispatch(change( "weighingPigletsForm", "new_amount", quantity )),
 
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 

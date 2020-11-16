@@ -124,6 +124,7 @@ class WS3SowFarrowTab extends Component {
       activeSowFarmId: ''
     }
     this.setQuery = this.setQuery.bind(this);
+    this.setData = this.setData.bind(this);
     this.decreasePiglets = this.decreasePiglets.bind(this);
     this.increasePiglets = this.increasePiglets.bind(this);
     this.clickFarrow = this.clickFarrow.bind(this);
@@ -154,6 +155,13 @@ class WS3SowFarrowTab extends Component {
     this.props.getSows(query)  
 
     this.props.sowsResetErrorsAndMessages()
+  }
+
+  setData (e) {
+    this.setState({
+      ...this.state,
+      [e.target.name]: e.target.value
+    })
   }
 
   decreasePiglets (e) {

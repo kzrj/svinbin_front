@@ -96,6 +96,8 @@ class WorkshopEightContainer extends Component {
 
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
             form={this.props.state.form.weighingPigletsForm}
+            weightFormSetID={this.props.weightFormSetID}
+            weightFormSetQnty={this.props.weightFormSetQnty}
           />}
 
         { activeTab.name === 'resettlementTab' &&
@@ -263,6 +265,8 @@ const mapDispatchToProps = (dispatch) => ({
   recountPiglets: data => dispatch(PigletsActions.recountPigletsRequest(data)),
 
   cullingFormSetID: id => dispatch(change( "cullingPigletsForm", "id", id )),
+  weightFormSetID: id => dispatch(change( "weighingPigletsForm", "id", id )),
+  weightFormSetQnty: quantity => dispatch(change( "weighingPigletsForm", "new_amount", quantity )),
   
   // info
   getOperationsReport: (token) => dispatch(ReportsActions.getOperationsReportRequest(token)),
