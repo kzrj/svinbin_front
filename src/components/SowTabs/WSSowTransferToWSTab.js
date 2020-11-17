@@ -4,28 +4,8 @@ import React, { Component } from 'react';
 import { toggleArray } from '../../components/utils'
 // components
 import { SowTable }  from '../../components/SowRepresentations'
-import { SowFarmIdFilter, SowTourFilter, SowSemUsoundFilter }  from '../../components/FiltersAndInputs'
-import { FetchingErrorComponentMessage } from '../CommonComponents'
-
-function TransferButtons(props){
-  return (
-    <div className='row'>
-      {props.to_locations.length > 0 && props.to_locations.map(ws =>
-        <div className='col'>
-          <label className='sow-event-label'>Перевести в ЦЕХ {ws.number}</label>
-          <div className="input-group">
-            <div className="input-group-append">
-              <button className="btn btn-outline-secondary" type="button" 
-                onClick={() => props.massMove(ws.id)}>
-                Перевести в ЦЕХ {ws.number}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
+import { SowFarmIdFilter, SowTourFilter, SowSemUsoundFilter }  from './SowsComponent';
+import { FetchingErrorComponentMessage, ErrorOrMessage } from '../CommonComponents'
 
 
 class WSSowTransferToWSTab extends Component {
@@ -60,7 +40,7 @@ class WSSowTransferToWSTab extends Component {
       }
     })
     this.props.getSows(this.state.query)
-    // this.props.sowsResetErrorsAndMessages()
+    this.props.sowsResetErrorsAndMessages()
   }
 
   chooseAll () {
@@ -142,44 +122,43 @@ class WSSowTransferToWSTab extends Component {
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false})
         this.props.getSows(this.state.query)  
-      }, 500)
+      }, 300)
     }
   }
 
   render() {
-    const { sows, tours, eventError, message, errorList, eventFetching, queryCount } = this.props
+    const { sows, tours, eventError, message, errorList, eventFetching, queryCount, to_locations } = this.props
     this.refreshSowsList()
     return (
       <div className='workshop-content'>
-        <div>
-          <div className=''>
+        
+        <div className='mb-3'>
+          <SowFarmIdFilter farm_id_starts={this.state.query.farm_id_starts} setQuery={this.setQuery}
+            className='mx-2' />
+
+          <SowTourFilter formClass='mx-2' options={tours} setQuery={this.setQuery} 
+            label={'Тур'} labelClass='font-13'/>
+
+          <SowSemUsoundFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus} formClass='mx-2'/>
+      
+          {to_locations.length > 0 && to_locations.map(ws =>
+              <button className="btn btn-l mx-2 bg-mainDark-dark" 
+                onClick={() => this.massMove(ws.id)}>
+                Перевести в ЦЕХ {ws.number}
+              </button>
+          )}
             
-            <SowFarmIdFilter setQuery={this.setQuery} />
-            <SowTourFilter tours={tours} setQuery={this.setQuery}/>
-            <SowSemUsoundFilter setSeminatedSuporosStatus={this.setSeminatedSuporosStatus}/>
-          </div>
-          <div>
-            <FetchingErrorComponentMessage 
-              fetching={eventFetching}
-              error={eventError}
-              message={message}
-              component={
-                <TransferButtons to_locations={this.props.to_locations} massMove={this.massMove}/>
-              }
-            />
-          </div>
+          <ErrorOrMessage error={eventError} message={message} fetching={eventFetching} className='mx-2'/>
+          
+        
         </div>
         <div className='commonfilter-results'>
-          <div className='count row'>
-            <div className='col-4'>
+          <div className='mb-3'>
+            <p className='mx-2 my-0 color-mainDark-dark font-17 d-inline'>
               Выбрано {this.state.choosedSows.length} из {queryCount}
-            </div>
-            <div className='col-4'>
-              <button className='btn btn-outline-secondary' onClick={this.chooseAll}>Выбрать всех</button>
-            </div>
-            <div className='col-4'>
-              <button className='btn btn-outline-secondary' onClick={this.resetAll}>Сбросить выбор</button>
-            </div>
+            </p>
+            <button className='btn mx-2 bg-mainDark-dark' onClick={this.chooseAll}>Выбрать всех</button>
+            <button className='btn mx-2 bg-mainDark-dark' onClick={this.resetAll}>Сбросить выбор</button>
           </div>
           <FetchingErrorComponentMessage 
             fetching={this.props.sowsListFetching}

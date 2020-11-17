@@ -220,6 +220,7 @@ class WorkshopOneContainer extends Component {
           <WSSowGlobalSearchTab 
             sow={this.props.state.sows.sow}
             cycles={this.props.state.sows.cycles}
+            setSow={this.props.setSow}
 
             getByFarmIdSow={this.props.getByFarmIdSow}
             singleSowFetching={this.props.state.sows.sowSingleFetching}

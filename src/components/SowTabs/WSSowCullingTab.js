@@ -3,67 +3,33 @@ import React, { Component } from 'react';
 // components
 import { SowSingle } from '../SowRepresentations'
 import { ErrorOrMessage, LoadingMessage } from '../CommonComponents';
+import { CullingSowForm } from './SowForms';
 
 
 class WSSowCullingTab extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      query: {
-        all_in_workshop_number: null,
-        alive: true,
-        farm_id_isnull: false
-      },
       cullingReason: 'без причины',
       cullingType: 'padej',
       weight: '',
       needToRefresh: false,
     }
-    this.getSowsById = this.getSowsById.bind(this);
     this.setData = this.setData.bind(this);
     this.cullingSow = this.cullingSow.bind(this);
     this.abortionSow = this.abortionSow.bind(this);
 
-    this.setQuery = this.setQuery.bind(this);
+    this.findSow = this.findSow.bind(this);
   }
   
   componentDidMount() {
-    this.setState({
-      ...this.state,
-      query: {
-        ...this.state.query,
-        all_in_workshop_number: this.props.workshopNumber,
-        farm_id_starts: this.props.sow && this.props.sow.farm_id
-      }
-    })
     this.props.sowsResetErrorsAndMessages()
     this.props.getSowCullings({ws_number: 3})
+    this.props.setSow(null)
   }
 
-  setQuery (e) {
-    let { query } = this.state
-    query[e.target.name] = e.target.value
-
-    this.setState({
-      ...this.state,
-      query: query,
-      needToRefresh: true
-    })
-    
-    this.props.getSows({
-      ...query
-    })
-  }
-
-  getSowsById (e) {
-    let { query } = this.state
-    query.farm_id_starts = e.target.value
-    query.farm_id_isnull = false
-    this.setState({
-      ...this.state,
-      query: query
-    })
-    this.props.getSows(query)
+  findSow (e) {
+    this.props.getByFarmIdSow({'farm_id': e.target.value, simple: true})
   }
 
   setData(e) {
@@ -81,6 +47,7 @@ class WSSowCullingTab extends Component {
       weight: this.state.weight,
     }
     this.props.cullingSow(data)
+    this.props.setSow(null)
     this.setState({
       ...this.state,
       needToRefresh: true
@@ -92,6 +59,7 @@ class WSSowCullingTab extends Component {
       id: this.props.sow.id,
     }
     this.props.abortionSow(data)
+    this.props.setSow(null)
     this.setState({
       ...this.state,
       needToRefresh: true
@@ -101,25 +69,15 @@ class WSSowCullingTab extends Component {
   refreshSowsList () {
     if (this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
-        this.props.getSows({
-          all_in_workshop_number: this.props.workshopNumber,
-          farm_id_isnull: false,
-          alive: true,
-        })
         this.props.getSowCullings({ws_number: 3})
-        this.setState({...this.state, needToRefresh: false,
-          query: {
-            ...this.state.query,
-            farm_id_starts: ''
-          }
-          })
+        this.setState({...this.state, needToRefresh: false})
       }, 300)
     }
   }
 
   render() {
     this.refreshSowsList()
-    const { sow, eventError, message,  eventFetching, cullings, sowsListFetching} = this.props
+    const { sow, eventError, message, eventFetching, cullings, singleSowFetching} = this.props
     return (
       <div className=''>
         <div className="modal fade" id="cullingModal" tabindex="-1" role="dialog" 
@@ -155,12 +113,9 @@ class WSSowCullingTab extends Component {
         <div className='card my-2 mx-1'>
           <div className='content my-2'>
             <h4 className='mt-2 mx-2 mb-1'>Введите номер свиноматки</h4>
-              <input type="number" 
-                className="font-20 mx-2 my-2 rounded-s input-custom-placeholder" 
-                placeholder="Номер свиноматки"
-                name='farm_id_starts'
-                value={this.state.query.farm_id_starts}
-                onChange={this.setQuery} />
+            <input type="number" className="" placeholder="Номер свиноматки"
+              name='farm_id' onBlur={this.findSow}
+              />
             {sow &&
                 <SowSingle sow={sow} className='my-0 font-17 font-600 color-mainDark-dark'/>
               }
@@ -202,7 +157,7 @@ class WSSowCullingTab extends Component {
           </div>
       </div>
       
-      {sowsListFetching 
+      {singleSowFetching 
           ? <LoadingMessage />
           :cullings.length > 0 && 
         <div className='card my-2'>

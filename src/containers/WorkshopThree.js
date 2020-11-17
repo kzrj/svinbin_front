@@ -146,6 +146,7 @@ class WorkshopThreeContainer extends Component {
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
             locationsListError={this.props.state.locations.errorList}
+            resetLocations={this.props.resetLocations}
             
             sowsMoveMany={this.props.sowsMoveMany}
             eventFetching={this.props.state.sows.eventFetching}
@@ -166,6 +167,7 @@ class WorkshopThreeContainer extends Component {
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
             locationsListError={this.props.state.locations.errorList}
+            initLocations={this.props.resetLocations}
 
             sowAndPiglets={false}
             sowMoveTo={this.props.sowMoveTo}
@@ -225,27 +227,24 @@ class WorkshopThreeContainer extends Component {
             workshopNumber={3}
             abort={true}
 
-            getSows={this.props.getSows}
-            sows={this.props.state.sows.list}
-            sowsListFetching={this.props.state.sows.fetching}
-            errorList={this.props.state.sows.errorList}
-            queryCount={this.props.state.sows.queryCount}
+            sow={this.props.state.sows.sow}
+            cycles={this.props.state.sows.cycles}
 
-            getSow={this.props.getSow}
+            getByFarmIdSow={this.props.getByFarmIdSow}
+            singleSowFetching={this.props.state.sows.sowSingleFetching}
+            errorSingle={this.props.state.sows.errorSingle}
             setSow={this.props.setSow}
 
             getSowCullings={this.props.getSowCullings}
             cullings={this.props.state.sows.cullings}
-
-            sow={this.props.state.sows.sow}
-            tours_info={this.props.state.sows.tours_info}
-            singleSowFetching={this.props.state.sows.sowSingleFetching}
 
             cullingSow={this.props.cullingSow}
             abortionSow={this.props.abortionSow}
             eventError={this.props.state.sows.eventError}
             eventFetching={this.props.state.sows.eventFetching}
             message={this.props.state.sows.message}
+
+            form={this.props.state.form.cullingSowForm}
 
             sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
@@ -373,18 +372,6 @@ class WorkshopThreeContainer extends Component {
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
           />}
 
-        {activeTab.name === 'pigletsInitPartTab' &&
-          <WS3CreateAndMoveTab
-            workshopNumber={3}
-
-            mergeFromInitListPiglets={this.props.mergeFromInitListPiglets}
-            eventFetching={this.props.state.piglets.eventFetching}
-            eventError={this.props.state.piglets.eventError}
-            message={this.props.state.piglets.message}
-
-            pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
-          />}
-
         {activeTab.name === 'pigletsRecountTab' &&
           <WSPigletsRecountTab
             workshopNumber={3}
@@ -400,6 +387,7 @@ class WorkshopThreeContainer extends Component {
             getLocations={this.props.getLocations}
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
+            resetLocations={this.props.resetLocations}
 
             recountPiglets={this.props.recountPiglets}
             eventFetching={this.props.state.piglets.eventFetching}
@@ -420,6 +408,7 @@ class WorkshopThreeContainer extends Component {
             locations={this.props.state.locations.list}
             locationsFetching={this.props.state.locations.fetching}
             locationsListError={this.props.state.locations.errorList}
+            initLocations={this.props.resetLocations}
 
             sowAndPiglets={true}
             ws3TransferSowAndPiglets={this.props.ws3TransferSowAndPiglets}
@@ -434,6 +423,7 @@ class WorkshopThreeContainer extends Component {
           <WSSowGlobalSearchTab 
             sow={this.props.state.sows.sow}
             cycles={this.props.state.sows.cycles}
+            setSow={this.props.setSow}
 
             getByFarmIdSow={this.props.getByFarmIdSow}
             singleSowFetching={this.props.state.sows.sowSingleFetching}
@@ -456,6 +446,7 @@ const mapDispatchToProps = (dispatch) => ({
   getSections: query => dispatch(SectionsActions.getSectionsRequest(query)),
   getLocations: query => dispatch(LocationsActions.getLocationsRequest(query)),
   getLocationsAdditional: query => dispatch(LocationsActions.getLocationsAdditionalRequest(query)),
+  resetLocations: () => dispatch(LocationsActions.resetLocations()),
 
   //tours
   getTours: query => dispatch(ToursActions.getToursRequest(query)),

@@ -14,6 +14,10 @@ class WSSowGlobalSearchTab extends Component {
     this.bgColor = this.bgColor.bind(this);
   }
 
+  componentDidMount() {
+    this.props.setSow(null)
+  }
+
   findSow (e) {
     this.props.getByFarmIdSow({'farm_id': e.target.value})
   }

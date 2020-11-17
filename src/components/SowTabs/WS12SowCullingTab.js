@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 // components
 import { toggleArray } from '../../components/utils'
 import { SowTable }  from '../../components/SowRepresentations'
-import { SowFarmIdFilter }  from '../../components/FiltersAndInputs'
+import { SowFarmIdFilter }  from './SowsComponent';
 import { FetchingErrorMessage } from '../CommonComponents'
 
 class WS12SowCullingTab extends Component {

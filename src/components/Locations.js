@@ -62,8 +62,8 @@ export class SowCells extends Component {
 
   render() {
     const { location, activeCellIds, fromCellId, toCellId } = this.props
-    const sow = location.sow_set.length > 0 ? location.sow_set[0] : null
-    const more_than_one_sow = location.sow_set.length > 1 ? true : false
+    const sow = (location.sow_set && location.sow_set.length > 0) ? location.sow_set[0] : null
+    const more_than_one_sow = (location.sow_set && location.sow_set.length > 1) ? true : false
 
     const piglets = location.piglets.length > 0 ?
       location.piglets[0] : null

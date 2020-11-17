@@ -10,6 +10,8 @@ const { Types, Creators } = createActions({
     getLocationsAdditionalRequest: ['payload'],
     getLocationsAdditionalFail: ['error'],
     getLocationsAdditionalSuccess: ['payload'],
+
+    resetLocations: null
 })
 
 export const LocationsTypes = Types
@@ -63,6 +65,11 @@ export const getLocationsAdditionalFail = (state, { error }) => {
     return state.merge({ fetchingAdditional: false, errorAdditional: error, additional_list: []})
 }
 
+// reset
+export const resetLocations = (state) => {
+    return state.merge({ fetching: false, list: [] })
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -73,4 +80,6 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_LOCATIONS_ADDITIONAL_REQUEST]: getLocationsAdditionalRequest,
     [Types.GET_LOCATIONS_ADDITIONAL_SUCCESS]: getLocationsAdditionalSuccess,
     [Types.GET_LOCATIONS_ADDITIONAL_FAIL]: getLocationsAdditionalFail,
+
+    [Types.RESET_LOCATIONS]: resetLocations,
 })

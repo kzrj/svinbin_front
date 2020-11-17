@@ -27,6 +27,7 @@ class WS3SowTransferToWsTab extends Component {
   }
 
   componentDidMount() {
+    this.props.resetLocations()
     this.props.sowsResetErrorsAndMessages()
   }
   

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import TextField from '@material-ui/core/TextField';
 
 export const getDate = () => {
   let today = new Date();
@@ -13,12 +14,12 @@ export const getDate = () => {
   return {date_after: month_ago_day, date_before: today}
 }
 
-const thClass = 'font-12 heigth-25 px-1 py-1 color-mainDark-dark'
-const tableClass = 'font-17 mr-0 text-center table table-responsive table-sm color-mainGrey-dark'
+const thClass = 'font-12 heigth-25 px-1 py-1'
+const tableClass = 'font-17 mr-0 text-center table table-responsive-sm table-sm color-mainGrey-dark'
 
 function TheadList (){
   return (
-    <thead>
+    <thead className='bg-mainDark-dark'>
       <th className={thClass}>дата</th>
       <th className={thClass}>кол-во</th>
       <th className={thClass}>возраст</th>
@@ -31,7 +32,7 @@ function TheadList (){
 function TheadTotal (props) {
   const { oOrs } = props
   return (
-    <thead>
+    <thead className='bg-mainDark-dark'>
       <th className={thClass}>кол-во при приемке</th>
       <th className={thClass}>прием ср. возраст</th>
       <th className={thClass}>прием ср.вес</th>
@@ -80,7 +81,7 @@ function WeightTable(props) {
       <tbody>
         {list.map(wRecord => 
           <tr>
-            <td className={props.checkDate(wRecord['date'])}>{wRecord['date']}</td>
+            <td className={props.checkDate(wRecord['date']) + ' text-nowrap'}>{wRecord['date']}</td>
             <td>{wRecord['piglets_quantity']}</td>
             <td>{wRecord['piglets_age']}</td>
             <td>{wRecord['average_weight']}</td>
@@ -168,7 +169,7 @@ function SpecUboiTable(props){
       <tbody>
         {props.cullings.map(cull => 
           <tr>
-            <td className={props.checkDate(cull.date)}>{cull.date}</td>
+            <td className={props.checkDate(cull.date) + ' text-nowrap'}>{cull.date}</td>
             <td>{cull.quantity}</td>
             <td>{cull.piglets_age}</td>
             <td>{cull.average_weight}</td>
@@ -215,7 +216,6 @@ class ToursV2ReportComponent extends Component {
 	}
 
   componentDidMount() {
-    // this.props.getToursV2Report({has_weights: true})
     const { date_before, date_after } = this.getDate()
     this.setState({
       ...this.state,
@@ -262,28 +262,40 @@ class ToursV2ReportComponent extends Component {
 
   render() {
     const { tours, tourData, reportsFetching } = this.props
-    let classTour = 'card card-style mx-1 my-1 font-11 rounded-xs'
-
-    
     return (
       <div className="mx-1">
-        <h3>Отчет по турам(взвешивания)</h3>
-        <div className='card card-style mx-0'>
+        <div className='card card-style mx-0 mb-1 mt-2'>
           <div className='content'>
-            <p className='my-0'>Взвешивания в периоде:</p>
-            <input type='date' 
-              name='has_weights_in_range_after'
-              value={this.state.has_weights_in_range_after}
-              onChange={this.setData}
+            <h3>Отчет по турам(взвешивания)</h3>
+            <p className='my-0 font-14 font-500'>Взвешивания в периоде:</p>
+            <TextField
+                label={'Дата с'}
+                type="date"
+                name='has_weights_in_range_after'
+                className='mr-2'
+                value={this.state.has_weights_in_range_after}
+                onChange={this.setData}
+                InputLabelProps={{
+                  className: '',
+                  shrink: true 
+                }}
               />
-            <input type='date' 
-              name='has_weights_in_range_before'
-              value={this.state.has_weights_in_range_before} 
-              onChange={this.setData}/>
-            <button onClick={this.showTours}>Показать туры</button>
+            <TextField
+                label={'Дата с'}
+                type="date"
+                name='has_weights_in_range_before'
+                className='mr-2'
+                value={this.state.has_weights_in_range_before}
+                onChange={this.setData}
+                InputLabelProps={{
+                  className: '',
+                  shrink: true 
+                }}
+              />
+            <button onClick={this.showTours} className='btn bg-mainDark-dark '>Показать туры</button>
           </div>
         </div>
-        <div className='row mx-1' style={{'line-height': '12px'}}>
+        <div className='row mx-1' style={{'line-height': '12px'}} >
           {tours && tours.length > 0 
             ? tours.map(tour => 
                 <div key={tour.id} onClick={() => this.clickTour(tour.id)}
@@ -333,9 +345,9 @@ class ToursV2ReportComponent extends Component {
                       3 цех. 
                       Тур {tourData['tour']['week_number']} {tourData['tour']['year']}
                     </span>
-                    <div className='row'>
+                    <div className='row mt-2'>
                       <div className='col-6'>
-                        Родилось
+                        <p className='my-2 font-600 font-15'>Родилось</p>
                         {tourData['farrow_data']['total_alive'] && 
                           <p className='my-0'>живых {tourData['farrow_data']['total_alive']}</p>
                         }
@@ -347,7 +359,7 @@ class ToursV2ReportComponent extends Component {
                         }
                       </div>
                       <div className='col-6'>
-                        Отгрузка
+                        <p className='my-2 font-600 font-15'>Отгрузка</p>
                         <WeightTable list={tourData['3/4']['list']} 
                           checkDate={this.checkDate}
                           total={tourData['3/4']['total']}/>
@@ -389,12 +401,12 @@ class ToursV2ReportComponent extends Component {
                     </span>
                     <div className='row'>
                       <div className='col-6'>
-                        Приём
+                        <p className='my-2 font-600 font-15'>Приём</p>
                         <WeightTable list={tourData['3/4']['list']} total={tourData['3/4']['total']} 
                           checkDate={this.checkDate}/>
                       </div>
                       <div className='col-6'>
-                        Отгрузка
+                        <p className='my-2 font-600 font-15'>Отгрузка</p>
                         <WeightTable list={tourData['4/8']['list']} total={tourData['4/8']['total']}
                           checkDate={this.checkDate}/>
                       </div>
@@ -414,18 +426,21 @@ class ToursV2ReportComponent extends Component {
                     </span>
                     <div className='row'>
                       <div className='col-6'>
-                        Приём
+                        <p className='my-2 font-600 font-15'>Приём</p>
                         <WeightTable list={tourData['4/8']['list']} total={tourData['4/8']['total']}
                           checkDate={this.checkDate}/>
                       </div>
                       <div className='col-6'>
-                        {tourData['8/5']['list'].length > 0 && ['Отгрузка в 5', 
+                        {tourData['8/5']['list'].length > 0 && [
+                          <p className='my-2 font-600 font-15'>Отгрузка в 5</p>, 
                           <WeightTable list={tourData['8/5']['list']} total={tourData['8/5']['total']}
                            checkDate={this.checkDate}/>]}
-                        {tourData['8/6']['list'].length > 0 && ['Отгрузка в 6', 
+                        {tourData['8/6']['list'].length > 0 && [
+                          <p className='my-2 font-600 font-15'>Отгрузка в 6</p>, 
                           <WeightTable list={tourData['8/6']['list']} total={tourData['8/6']['total']}
                             checkDate={this.checkDate}/>]}
-                        {tourData['8/7']['list'].length > 0 && ['Отгрузка в 7', 
+                        {tourData['8/7']['list'].length > 0 && [
+                          <p className='my-2 font-600 font-15'>Отгрузка в 7</p>, 
                           <WeightTable list={tourData['8/7']['list']} total={tourData['8/7']['total']}
                             checkDate={this.checkDate}/>]}
                       </div>
@@ -443,12 +458,12 @@ class ToursV2ReportComponent extends Component {
                     </span>
                     <div className='row'>
                       <div className='col-6'>
-                        Приём
+                        <p className='my-2 font-600 font-15'>Приём</p>
                         <WeightTable list={tourData['8/5']['list']} total={tourData['8/5']['total']}
                           checkDate={this.checkDate}/>
                       </div>
                       <div className='col-6'>
-                        Спец. убой
+                        <p className='my-2 font-600 font-15'>Спец. убой</p>
                         {tourData['spec_5']['list'].length > 0 && 
                           <SpecUboiTable cullings={tourData['spec_5']['list']} 
                             cullTotal={tourData['spec_5']['total']} checkDate={this.checkDate}/>
@@ -469,12 +484,12 @@ class ToursV2ReportComponent extends Component {
                     </span>
                     <div className='row'>
                       <div className='col-6'>
-                        Приём
+                        <p className='my-2 font-600 font-15'>Приём</p>
                         <WeightTable list={tourData['8/6']['list']} total={tourData['8/6']['total']}
                           checkDate={this.checkDate}/>
                       </div>
                       <div className='col-6'>
-                        Спец. убой
+                        <p className='my-2 font-600 font-15'>Спец. убой</p>
                         {tourData['spec_6']['list'].length > 0 && 
                           <SpecUboiTable cullings={tourData['spec_6']['list']} 
                             cullTotal={tourData['spec_6']['total']} checkDate={this.checkDate}/>
@@ -495,12 +510,12 @@ class ToursV2ReportComponent extends Component {
                     </span>
                     <div className='row'>
                       <div className='col-6'>
-                        Приём
+                        <p className='my-2 font-600 font-15'>Приём</p>
                         <WeightTable list={tourData['8/7']['list']} total={tourData['8/7']['total']}
                           checkDate={this.checkDate}/>
                       </div>
                       <div className='col-6'>
-                        Спец. убой
+                        <p className='my-2 font-600 font-15'>Спец. убой</p>
                         {tourData['spec_7']['list'].length > 0 && 
                           <SpecUboiTable cullings={tourData['spec_7']['list']} 
                             cullTotal={tourData['spec_7']['total']} checkDate={this.checkDate}/>

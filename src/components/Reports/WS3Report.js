@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import endpoints from '../../redux/api/endpoints';
 
+import TextField from '@material-ui/core/TextField';
+
 
 export const getDate = () => {
   let today = new Date();
@@ -58,233 +60,230 @@ class WS3ReportComponent extends Component {
   }
 
   render() {
-    // const { date_before, date_after } = this.getDate()
     let dateReps = this.props.reports.ws3Report.results ? this.props.reports.ws3Report.results : []
     let total_info = this.props.reports.ws3Report.total_info ? this.props.reports.ws3Report.total_info : null
 
     return (
-      <div className=" report-block">
-        <h3>Отчет движение поголовья Цех3</h3>
-        <div className="form-group row">
-          <div className='col-6'>
-            <label for='start-date'>Дата с</label>
-            <input type='date'
-              id='startDate'
-              className="form-control search-input"
-              value={this.state.startDate}
-              name='startDate'
-              placeholder="Дата опороса"
-              onChange={this.setData}
+      <div className="card">
+        <div className='content'>
+          <h3 className='mt-1 mb-3'>Отчет движение поголовья Цех3</h3>
+          <div className="mt-2 mb-3 mx-2">
+            <TextField
+                label={'Дата с'}
+                type="date"
+                name='startDate'
+                className='mr-2'
+                value={this.state.startDate}
+                onChange={this.setData}
+                InputLabelProps={{
+                  className: '',
+                  shrink: true 
+                }}
               />
-          </div>
-          <div className='col-6'>
-            <label for='end-date'>Дата до</label>
-            <input type='date'
-              id='endDate'
-              className="form-control search-input"
-              value={this.state.endDate}
-              name='endDate'
-              placeholder="Дата опороса"
-              onChange={this.setData}
+              <TextField
+                label={'Дата до'}
+                type="date"
+                name='endDate'
+                className='mr-2'
+                value={this.state.endDate}
+                onChange={this.setData}
+                InputLabelProps={{
+                  className: '',
+                  shrink: true 
+                }}
               />
-          </div>
-        </div>
-        <div className='row'>
-          <div className="form-group col-6">
-            <button className='btn btn-secondary' onClick={this.genRep}>
-              Сформировать
-            </button>
-          </div>
-          <div className="form-group col-6">
-              <a href={endpoints.GET_WS3_REPORT_AS_EXCEL} className={dateReps.length > 0 ? '': 'a-disabled'}>
+              <button className='btn bg-mainDark-dark mr-2 ' onClick={this.genRep}>
+                Сформировать
+              </button>
+              <a className='ml-2 float-right' href={endpoints.GET_WS3_REPORT_AS_EXCEL} className={dateReps.length > 0 ? '': 'a-disabled'}>
                 Скачать в EXCEL формате
               </a>
+            
           </div>
+
+          <table className='table table-responsive-sm table-sm'>
+            <thead className='bg-mainDark-dark'>
+              <th >Дата</th>
+              <th >начало дня подсос</th>
+              <th >начало дня супорос</th>
+              <th >поросята сосуны</th>
+              <th >всего</th>
+              <th >приход подсос</th>
+              <th >приход супорос из ц1</th>
+              <th >приход супорос из ц2</th>
+              <th >опоросилось</th>
+              <th >оприходовано</th>
+              <th >расход подсос</th>
+              <th >расход супорос</th>
+              <th >падеж подсос гол</th>
+              <th >падеж подсос вес</th>
+              <th >падеж супорос гол</th>
+              <th >падеж супорос вес</th>
+              <th >забой подсос гол</th>
+              <th >забой подсос вес</th>
+              <th >забой супорос гол</th>
+              <th >забой супорос вес</th>
+              <th >поросята перевод гол</th>
+              <th >поросята перевод вес</th>
+              <th >поросята перевод вес средний</th>
+              <th >поросята падеж гол</th>
+              <th >поросята падеж вес</th>
+              <th >поросята забой гол</th>
+              <th >поросята забой вес</th>
+              <th >поросята ревизия гол</th>
+              <th >поросята ревизия вес</th>
+              <th >конец дня подсос</th>
+              <th >конец дня супорос</th>
+              <th >поросята сосуны</th>
+              <th >всего</th>
+            </thead>
+            <tbody>
+              {dateReps.length > 0 && dateReps.map((dateRep, index) => 
+                <tr key={dateRep['id']}>
+                  <td className='text-nowrap'>{dateRep['date']}</td>
+                  <td >
+                    {dateRep['count_sows_ws3_start_date']['podsos']}
+                  </td>
+                  <td >
+                    {dateRep['count_sows_ws3_start_date']['suporos']}
+                  </td>
+                  <td >
+                    {dateRep['count_piglets_at_start']}
+                  </td>
+                  <td >
+                    {dateRep['count_sows_ws3_start_date']['podsos'] +
+                    dateRep['count_sows_ws3_start_date']['suporos'] + dateRep['count_piglets_at_start']}
+                  </td>
+                  <td >
+                    {dateRep['tr_in_podsos_count']}
+                  </td>
+                  <td >
+                    {dateRep['tr_in_from_1_sup_count']}
+                  </td>
+                  <td >
+                    {dateRep['tr_in_from_2_sup_count']}
+                  </td>
+                  <td >
+                    {dateRep['count_oporos']}
+                  </td>
+                  <td >
+                    {dateRep['count_alive']}
+                  </td>
+                  <td >
+                    {dateRep['tr_out_podsos_count']}
+                  </td>
+                  <td >
+                    {dateRep['tr_out_sup_count']}
+                  </td>
+                  <td >
+                    {dateRep['padej_podsos_count']}
+                  </td>
+                  <td >
+                    {dateRep['padej_podsos_weight']}
+                  </td>
+                  <td >
+                    {dateRep['padej_sup_count']}
+                  </td>
+                  <td >
+                    {dateRep['padej_sup_weight']}
+                  </td>
+                  <td >
+                    {dateRep['vinuzhd_podsos_count']}
+                  </td>
+                  <td >
+                    {dateRep['vinuzhd_podsos_weight']}
+                  </td>
+                  <td >
+                    {dateRep['vinuzhd_sup_count']}
+                  </td>
+                  <td >
+                    {dateRep['vinuzhd_sup_weight']}
+                  </td>
+                  <td >
+                    {dateRep['tr_out_aka_weight_qnty']}
+                  </td>
+                  <td >
+                    {dateRep['tr_out_aka_weight_total']}
+                  </td>
+                  <td >
+                    {dateRep['tr_out_aka_weight_avg']}
+                  </td>
+                  <td >
+                    {dateRep['piglets_padej_qnty']}
+                  </td>
+                  <td >
+                    {dateRep['piglets_padej_weight']}
+                  </td>
+                  <td >
+                    {dateRep['piglets_vinuzhd_qnty']}
+                  </td>
+                  <td >
+                    {dateRep['piglets_vinuzhd_weight']}
+                  </td>
+                  <td >
+                  </td>
+                  <td >
+                  </td>
+                  <td >
+                    {dateReps[index + 1] && 
+                      dateReps[index + 1]['count_sows_ws3_start_date']['podsos']}
+                  </td>
+                  <td >
+                    {dateReps[index + 1] && 
+                      dateReps[index + 1]['count_sows_ws3_start_date']['suporos']}
+                  </td>
+                  <td >
+                    {dateReps[index + 1] && 
+                      dateReps[index + 1]['count_piglets_at_start']}
+                  </td>
+                  <td >
+                    {dateReps[index + 1] && 
+                      dateReps[index + 1]['count_sows_ws3_start_date']['podsos'] +
+                      dateReps[index + 1]['count_sows_ws3_start_date']['suporos'] + 
+                      dateReps[index + 1]['count_piglets_at_start']}
+                  </td>
+                </tr>
+                )}
+              {dateReps.length > 0 && 
+                <tr className='report-dir-total-tr'>
+                  <td >Итого</td>
+                  <td >-</td>
+                  <td >-</td>
+                  <td >-</td>
+                  <td >-</td>
+                  <td >{total_info['total_tr_in_podsos_count']}</td>
+                  <td >{total_info['total_tr_in_from_1_sup_count']}</td>
+                  <td >{total_info['total_tr_in_from_2_sup_count']}</td>
+                  <td >{total_info['total_count_oporos']}</td>
+                  <td >{total_info['total_count_alive']}</td>
+                  <td >{total_info['total_tr_out_podsos_count']}</td>
+                  <td >{total_info['total_tr_out_sup_count']}</td>
+                  <td >{total_info['total_padej_podsos_count']}</td>
+                  <td >{total_info['total_padej_podsos_weight']}</td>
+                  <td >{total_info['total_padej_sup_count']}</td>
+                  <td >{total_info['total_padej_sup_weight']}</td>
+                  <td >{total_info['total_vinuzhd_podsos_count']}</td>
+                  <td >{total_info['total_vinuzhd_podsos_weight']}</td>
+                  <td >{total_info['total_vinuzhd_sup_count']}</td>
+                  <td >{total_info['total_vinuzhd_sup_weight']}</td>
+                  <td >{total_info['total_tr_out_aka_weight_qnty']}</td>
+                  <td >{total_info['total_tr_out_aka_weight_total']}</td>
+                  <td >{total_info['avg_tr_out_weight']}</td>
+                  <td >{total_info['total_piglets_padej_qnty']}</td>
+                  <td >{total_info['total_piglets_padej_weight']}</td>
+                  <td >{total_info['total_piglets_vinuzhd_qnty']}</td>
+                  <td >{total_info['total_piglets_vinuzhd_weight']}</td>
+                  <td >-</td>
+                  <td >-</td>
+                  <td >-</td>
+                  <td >-</td>
+                  <td >-</td>
+                  <td >-</td>
+                </tr>
+              }
+            </tbody>
+          </table>
         </div>
-
-        <table className='report-table table table-responsive table-sm'>
-          <thead className='bg-mainDark-dark'>
-            <th ><span className='report-ws-th'>Дата</span></th>
-            <th ><span className='report-ws-th'>начало дня подсос</span></th>
-            <th ><span className='report-ws-th'>начало дня супорос</span></th>
-            <th ><span className='report-ws-th'>поросята сосуны</span></th>
-            <th ><span className='report-ws-th'>всего</span></th>
-            <th ><span className='report-ws-th'>приход подсос</span></th>
-            <th ><span className='report-ws-th'>приход супорос из ц1</span></th>
-            <th ><span className='report-ws-th'>приход супорос из ц2</span></th>
-            <th ><span className='report-ws-th report-ws-th-vert'>опоросилось</span></th>
-            <th ><span className='report-ws-th report-ws-th-vert'>оприходовано</span></th>
-            <th ><span className='report-ws-th'>расход подсос</span></th>
-            <th ><span className='report-ws-th'>расход супорос</span></th>
-            <th ><span className='report-ws-th'>падеж подсос гол</span></th>
-            <th ><span className='report-ws-th'>падеж подсос вес</span></th>
-            <th ><span className='report-ws-th'>падеж супорос гол</span></th>
-            <th ><span className='report-ws-th'>падеж супорос вес</span></th>
-            <th ><span className='report-ws-th'>забой подсос гол</span></th>
-            <th ><span className='report-ws-th'>забой подсос вес</span></th>
-            <th ><span className='report-ws-th'>забой супорос гол</span></th>
-            <th ><span className='report-ws-th'>забой супорос вес</span></th>
-            <th ><span className='report-ws-th'>поросята перевод гол</span></th>
-            <th ><span className='report-ws-th'>поросята перевод вес</span></th>
-            <th ><span className='report-ws-th'>поросята перевод вес средний</span></th>
-            <th ><span className='report-ws-th'>поросята падеж гол</span></th>
-            <th ><span className='report-ws-th'>поросята падеж вес</span></th>
-            <th ><span className='report-ws-th'>поросята забой гол</span></th>
-            <th ><span className='report-ws-th'>поросята забой вес</span></th>
-            <th ><span className='report-ws-th'>поросята ревизия гол</span></th>
-            <th ><span className='report-ws-th'>поросята ревизия вес</span></th>
-            <th ><span className='report-ws-th'>конец дня подсос</span></th>
-            <th ><span className='report-ws-th'>конец дня супорос</span></th>
-            <th ><span className='report-ws-th'>поросята сосуны</span></th>
-            <th ><span className='report-ws-th'>всего</span></th>
-          </thead>
-          <tbody>
-            {dateReps.length > 0 && dateReps.map((dateRep, index) => 
-              <tr key={dateRep['id']}>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">{dateRep['date']}</td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['count_sows_ws3_start_date']['podsos']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws">
-                  {dateRep['count_sows_ws3_start_date']['suporos']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['count_piglets_at_start']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['count_sows_ws3_start_date']['podsos'] +
-                   dateRep['count_sows_ws3_start_date']['suporos'] + dateRep['count_piglets_at_start']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['tr_in_podsos_count']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['tr_in_from_1_sup_count']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['tr_in_from_2_sup_count']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['count_oporos']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['count_alive']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['tr_out_podsos_count']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['tr_out_sup_count']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['padej_podsos_count']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['padej_podsos_weight']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['padej_sup_count']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['padej_sup_weight']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['vinuzhd_podsos_count']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['vinuzhd_podsos_weight']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['vinuzhd_sup_count']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['vinuzhd_sup_weight']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['tr_out_aka_weight_qnty']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['tr_out_aka_weight_total']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['tr_out_aka_weight_avg']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['piglets_padej_qnty']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['piglets_padej_weight']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['piglets_vinuzhd_qnty']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateRep['piglets_vinuzhd_weight']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateReps[index + 1] && 
-                    dateReps[index + 1]['count_sows_ws3_start_date']['podsos']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateReps[index + 1] && 
-                    dateReps[index + 1]['count_sows_ws3_start_date']['suporos']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateReps[index + 1] && 
-                    dateReps[index + 1]['count_piglets_at_start']}
-                </td>
-                <td className="report-cell-td report-cell-value-ws report-dir-date">
-                  {dateReps[index + 1] && 
-                    dateReps[index + 1]['count_sows_ws3_start_date']['podsos'] +
-                    dateReps[index + 1]['count_sows_ws3_start_date']['suporos'] + 
-                    dateReps[index + 1]['count_piglets_at_start']}
-                </td>
-              </tr>
-              )}
-            {dateReps.length > 0 && 
-              <tr className='report-dir-total-tr'>
-                <td className="report-cell-td report-cell-value-ws ">Итого</td>
-                <td className="report-cell-td report-cell-value-ws">-</td>
-                <td className="report-cell-td report-cell-value-ws">-</td>
-                <td className="report-cell-td report-cell-value-ws">-</td>
-                <td className="report-cell-td report-cell-value-ws">-</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_tr_in_podsos_count']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_tr_in_from_1_sup_count']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_tr_in_from_2_sup_count']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_count_oporos']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_count_alive']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_tr_out_podsos_count']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_tr_out_sup_count']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_padej_podsos_count']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_padej_podsos_weight']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_padej_sup_count']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_padej_sup_weight']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_vinuzhd_podsos_count']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_vinuzhd_podsos_weight']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_vinuzhd_sup_count']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_vinuzhd_sup_weight']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_tr_out_aka_weight_qnty']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_tr_out_aka_weight_total']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['avg_tr_out_weight']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_piglets_padej_qnty']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_piglets_padej_weight']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_piglets_vinuzhd_qnty']}</td>
-                <td className="report-cell-td report-cell-value-ws">{total_info['total_piglets_vinuzhd_weight']}</td>
-                <td className="report-cell-td report-cell-value-ws">-</td>
-                <td className="report-cell-td report-cell-value-ws">-</td>
-                <td className="report-cell-td report-cell-value-ws">-</td>
-                <td className="report-cell-td report-cell-value-ws">-</td>
-                <td className="report-cell-td report-cell-value-ws">-</td>
-                <td className="report-cell-td report-cell-value-ws">-</td>
-              </tr>
-            }
-          </tbody>
-        </table>
-
       </div>
     );
   }

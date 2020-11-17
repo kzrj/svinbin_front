@@ -3,32 +3,8 @@ import React, { Component } from 'react';
 import { toggleArray } from '../../components/utils'
 // components
 import { SowTable }  from '../../components/SowRepresentations'
-import { SowFarmIdFilter, SowTourFilter }  from '../../components/FiltersAndInputs'
-import { FetchingErrorComponentMessage } from '../CommonComponents'
-
-function UsoundButtons (props) {
-  return (
-    <div>
-      <div className='row'>
-        <div className='col-4'>
-          <button className='btn btn-success' data-result={true} onClick={props.clickButton}>
-            Супорос
-          </button>
-        </div>
-        <div className='col-4'>
-          <button className='btn btn-danger'data-result={false} onClick={props.clickButton}>
-            Прохолост
-          </button>
-        </div>
-        <div className='col-4'>
-          <button className='btn btn-info' onClick={props.clickAbort}>
-            Аборт
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
+import { SowFarmIdFilter, SowTourFilter }  from './SowsComponent';
+import { FetchingErrorComponentMessage, ErrorOrMessage } from '../CommonComponents';
 
 
 class WSSowUltrasoundTab extends Component {
@@ -91,6 +67,7 @@ class WSSowUltrasoundTab extends Component {
       ...this.state,
       choosedSows: choosedSows
     })
+    this.props.sowsResetErrorsAndMessages()
   }
 
   setData (e) {
@@ -108,6 +85,7 @@ class WSSowUltrasoundTab extends Component {
       ...this.state,
       choosedSows: choosedSows
     })
+    this.props.sowsResetErrorsAndMessages()
   }
 
   resetAll () {
@@ -115,6 +93,7 @@ class WSSowUltrasoundTab extends Component {
       ...this.state,
       choosedSows: []
     })
+    this.props.sowsResetErrorsAndMessages()
   }
 
   massUltrasound () {
@@ -167,40 +146,42 @@ class WSSowUltrasoundTab extends Component {
   }
 
   render() {
-    const { sows, tours, days, eventError, message, errorList, queryCount } = this.props
+    const { sows, tours, days, eventError, message, errorList, queryCount, eventFetching } = this.props
     this.refreshSowsList()
     
     return (
       <div className='workshop-content'>
-        <div>
-          <div className=''>
-            <SowFarmIdFilter farm_id_starts={this.state.query.farm_id_starts} setQuery={this.setQuery}
-              className='float-left' />
-            <SowTourFilter tours={tours} setQuery={this.setQuery}/>
-          </div>
-          <div>
-          <FetchingErrorComponentMessage 
-            fetching={this.props.eventFetching}
-            error={eventError}
-            message={message}
-            component={
-              <UsoundButtons clickButton={this.clickButton} clickAbort={this.clickAbort}/>
-            }
-          />
-          </div>
+        
+        <div className=' mb-3'>
+          <SowFarmIdFilter farm_id_starts={this.state.query.farm_id_starts} setQuery={this.setQuery}
+            className='mx-2' />
+
+          <SowTourFilter formClass='mx-2' options={tours} setQuery={this.setQuery} 
+            label={'Тур'} labelClass='font-13'/>
+        
+          <button className='btn btn-l mx-2 bg-green2-light' data-result={true} onClick={this.clickButton}>
+            Супорос
+          </button>
+      
+          <button className='btn btn-l mx-2 bg-red2-light'data-result={false} onClick={this.clickButton}>
+            Прохолост
+          </button>
+      
+          <button className='btn btn-l mx-2 bg-mainDark-dark' onClick={this.clickAbort}>
+            Аборт
+          </button>
+
+          <ErrorOrMessage error={eventError} message={message} fetching={eventFetching} className='mx-2'/>
         </div>
+        
         <div className='commonfilter-results'>
-          <div className='count row'>
-              <div className='col-4'>
-                Выбрано {this.state.choosedSows.length} из {queryCount}
-              </div>
-              <div className='col-4'>
-                <button className='btn btn-outline-secondary' onClick={this.chooseAll}>Выбрать всех</button>
-              </div>
-              <div className='col-4'>
-                <button className='btn btn-outline-secondary' onClick={this.resetAll}>Сбросить выбор</button>
-              </div>
-            </div>
+          <div className='mb-3'>
+            <p className='mx-2 my-0 color-mainDark-dark font-17 d-inline'>
+              Выбрано {this.state.choosedSows.length} из {queryCount}
+            </p>
+            <button className='btn mx-2 bg-mainDark-dark' onClick={this.chooseAll}>Выбрать всех</button>
+            <button className='btn mx-2 bg-mainDark-dark' onClick={this.resetAll}>Сбросить выбор</button>
+          </div>
           <FetchingErrorComponentMessage 
             fetching={this.props.sowsListFetching}
             error={errorList}

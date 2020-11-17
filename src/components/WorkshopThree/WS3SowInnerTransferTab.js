@@ -117,6 +117,7 @@ class WS3SowInnerTransferTab extends Component {
       activeSectionId: sectionId,
       needToRefresh: false
     })
+    this.props.initLocations()
     this.props.getLocations({by_section: sectionId, cells: true})
   }
 

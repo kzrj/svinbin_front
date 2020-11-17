@@ -145,7 +145,6 @@ export function CullingBoarForm (props) {
         hidden={true}
       />
       
-
       <Field 
         component={renderDateTimeField}
         name='date'
@@ -287,3 +286,88 @@ CreateBoarForm = reduxForm({
   validate: validateCreateBoarForm,
 })(CreateBoarForm)
 
+
+export function CullingSowForm (props) {
+  const { parentSubmit, pristine, reset, submitting, handleSubmit, initialValues, cullingTypes, sow,
+    eventFetching, eventError, message } = props
+  return (
+    <form onSubmit={handleSubmit(parentSubmit)} className=''
+      initialValues={initialValues}
+    > 
+      <p>{sow.farm_id}</p>
+      <Field
+        component={renderTextField}
+        name="id"
+        hidden={true}
+      />
+      
+      <Field 
+        component={renderDateTimeField}
+        name='date'
+        label='Дата'
+        margin='dense'
+      />
+
+      <Field 
+        component={renderSelectField}
+        name='culling_type'
+        label='Тип выбытия'
+        options={cullingTypes}
+        margin='dense'
+      />
+
+      <Field 
+        component={renderTextField}
+        type='number'
+        label="Вес" 
+        name='weight'
+        margin='dense'
+      />
+
+      <Field 
+        component={renderTextField}
+        label="Причина" 
+        name='reason'
+        margin='dense'
+      />
+
+      <button 
+        className='btn btn-m mt-2 font-900 shadow-s bg-mainDark-dark text-wrap'
+        type="submit"
+        disabled={pristine || submitting}
+      >
+        Выбытие / Убой
+      </button>
+
+      <ErrorOrMessage error={eventError} message={message} fetching={eventFetching}
+          className='mt-2 mb-0 mx-1 font-15' />
+    </form>
+  )
+}
+
+const validateCullingSowForm = values => {
+  const errors = {}
+  const requiredFields = [
+    'id',
+    'culling_type',
+    'total_weight',
+    'reason',
+    'date',
+  ]
+  
+  if (values['date'] > getToday()) {
+    errors['date'] = 'Дата не может быть в будущем'
+  }
+
+  requiredFields.forEach(field => {
+    if (!values[field]) {
+      errors[field] = 'Обязательное поле'
+    }
+  })
+  return errors
+}
+
+CullingSowForm = reduxForm({
+  form: 'cullingSowForm',
+  validate: validateCullingSowForm,
+})(CullingSowForm)

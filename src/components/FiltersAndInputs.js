@@ -149,35 +149,6 @@ export class SowFilter extends Component {
   }
 }
 
-export function SowFarmIdFilter (props) {
-    return (
-        <input type="number" className="font-20" placeholder="Номер свиноматки"
-            name='farm_id_starts'
-            className={props.className ? props.className : ''}
-            value={props.farm_id_starts}
-            onClick={props.resetQuery}
-            onChange={props.setQuery} />
-        )
-}
-  
-export class SowTourFilter extends Component {
-render() {
-    const { tours } = this.props
-    return (
-    
-        <select className="font-20" id="inputGroupSelect01" name='tour'
-            onChange={this.props.setQuery}>
-            <option selected value=''>Выбрать тур</option>
-            {tours.map(tour =>
-            <option value={tour.id} key={tour.id}>
-                Неделя {' '} {tour.week_number} {tour.year}
-            </option>
-            )}
-        </select>
-    
-    )
-    }
-}
 
 export const SowSectionFilter = (props) => (
     <div className="input-group mb-3 col-3">

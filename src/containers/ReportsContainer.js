@@ -25,24 +25,17 @@ class ReportsContainer extends Component {
     
     return (
       <div className="">
-        <div className='row'>
-          <div className='col-3 ws-home'>
-            <a href='/reports/tours/'>Отчет по турам</a>
+        {!routeName &&
+          <div className='card mb-2'>
+            <div className='content'>
+              <a className='d-block' href='/reports/tours/'>Отчет по турам</a>
+              <a className='d-block' href='/reports/director/'>Отчет движение поголовья(директору)</a>
+              <a className='d-block' href='/reports/operations/'>Операции по цехам</a>
+              <a className='d-block' href='/reports/ws3report/'>Отчет движение поголовья цех3</a>
+              <a className='d-block' href='/reports/tours_v2/'>Отчет по турам V2(взвешивания)</a>
+            </div>
           </div>
-          <div className='col-3 ws-home'>
-            <a href='/reports/director/'>Отчет движение поголовья(директору)</a>
-          </div>
-          <div className='col-3 ws-home'>
-            <a href='/reports/operations/'>Операции по цехам</a>
-          </div>
-          <div className='col-3 ws-home'>
-            <a href='/reports/ws3report/'>Отчет движение поголовья цех3</a>
-          </div>
-          <div className='col-3'>
-            <a href='/reports/tours_v2/'>Отчет по турам V2(взвешивания)</a>
-          </div>
-        </div>
-
+        }
         {routeName == 'tours' && 
           <ToursReportsComponent getTourReports={this.props.getTourReports} reports={this.props.state.reports}/>
         }
