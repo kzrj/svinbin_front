@@ -111,7 +111,7 @@ class WSSemenBoarListTab extends Component {
                       {record.boar.farm_id}
                     </td>
                     <td className='text-nowrap'>
-                      {record.tour}
+                      {record.week_number}
                     </td>
                     <td>
                       {record.a}

@@ -31,7 +31,7 @@ class WorkshopBoarContainer extends Component {
   componentDidMount() {
     this.props.getBoars()
     this.props.getBoarBreed()
-    this.props.getTours({by_workshop_number: 1})
+    this.props.getTours({ordering: '-created_at'})
   }
 
   setTab (tab) {

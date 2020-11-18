@@ -75,31 +75,35 @@ class ToursReportsComponent extends Component {
       'остаток 7'
     ]
 
+    const cellClass = 'report-cell-value'
+    // const cellClass = ''
+    const cellTitleClass = 'report-cell-title text-nowrap'
+    // const cellTitleClass = ''
+
     return (
-      <div className="report-block">
-        <h3>Отчет по неделям</h3>
-        <table className='table table-responsive table-sm'>
+      <div className="container-fluid">
+        <div className='table-responsive'>
+        {/* <h3>Отчет по неделям</h3> */}
+        <table className='table table-sm'>
+          <thead></thead>
           <tbody>
             {reportRows && reportRows.map(rowLabel => 
               <tr>
-                {/* {rowLabel == 'Цех 3' ? 
-                  <td className='report-cell-title' colSpan={tourReportslist.length}>{rowLabel}</td> :
-                  <td className='report-cell-title'>{rowLabel}</td>} */}
-                <td className='report-cell-title'>{rowLabel}</td>
+                <td className={cellTitleClass}>{rowLabel}</td>
                 {tourReportslist.map(tourReport =>
-                  <td className='report-cell-td'>
+                  <td className=''>
                     {rowLabel == 'Тур неделя' && 
-                      <div className='report-cell-title'>
+                      <div className={cellTitleClass + ' px-0 py-0 bg-mainDark-dark'}>
                         W{tourReport['week_number']} {tourReport['year']} 
                       </div>}
 
                     {rowLabel == 'осеменненых' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['count_seminated']}
                       </div>}
 
                     {rowLabel == 'УЗИ 28 супорос/прохолост' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['count_usound28_proholost'] | tourReport['count_usound28_suporos'] &&
                           <div>
                             <span className='report-cell-sup'>
@@ -113,7 +117,7 @@ class ToursReportsComponent extends Component {
                       </div>}
 
                     {rowLabel == 'УЗИ 35 супорос/прохолост' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['count_usound35_proholost'] | tourReport['count_usound35_suporos'] &&
                           <div>
                             <span className='report-cell-sup'>
@@ -127,27 +131,27 @@ class ToursReportsComponent extends Component {
                       </div>}
 
                     {rowLabel == 'Аборт' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         <span className='report-cell-proh'>{tourReport['count_abort']}</span>
                       </div>}
 
                     {rowLabel == 'активных свиноматок в туре' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['count_sow'] >0 && tourReport['count_sow']}
                       </div>}
 
                     {rowLabel == 'в цехе 1' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws1_count_tour_sow']}
                       </div>}
 
                     {rowLabel == 'в цехе 2' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws2_count_tour_sow']}
                       </div>}
                     
                     {rowLabel == 'в цехе 3' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws3_count_tour_sow']}
                       </div>}
 
@@ -157,27 +161,27 @@ class ToursReportsComponent extends Component {
                       </div>}
 
                     {rowLabel == 'живорожденных' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['total_born_alive']}
                       </div>}
 
                     {rowLabel == 'мертворожденных' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['total_born_dead']}
                       </div>}
 
                     {rowLabel == 'муммий' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['total_born_mummy']}
                       </div>}
 
                     {rowLabel == 'ремонтных' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['gilt_count']}
                       </div>}
 
                     {rowLabel == 'падеж/прирезка 3' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {(tourReport['ws3_padej_quantity'] || tourReport['ws3_prirezka_quantity']) &&
                           <span>
                             {tourReport['ws3_padej_quantity'] ? tourReport['ws3_padej_quantity'] : 0 }/
@@ -187,7 +191,7 @@ class ToursReportsComponent extends Component {
                       </div>}
 
                     {rowLabel == 'падеж/прирезка % 3' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {(tourReport['ws3_padej_quantity'] || tourReport['ws3_prirezka_quantity']) &&
                           <span>
                             {tourReport['ws3_padej_percentage'] ? tourReport['ws3_padej_percentage'].toFixed(2) : 0 }/
@@ -197,11 +201,11 @@ class ToursReportsComponent extends Component {
                       </div>}
 
                     {rowLabel == 'количество отнятых 3' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['week_weight_qnty_3_4'] > 0  && tourReport['week_weight_qnty_3_4'] }
                       </div>}
                     {rowLabel == 'средний вес 3' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['week_weight_avg_3_4'] ? 
                           tourReport['week_weight_avg_3_4'].toFixed(2) : null}
                       </div>}
@@ -212,14 +216,14 @@ class ToursReportsComponent extends Component {
                       </div>}
                     
                     {rowLabel == 'падеж/прирезка 4' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws4_padej_quantity']} 
                         {tourReport['ws4_padej_quantity'] && tourReport['ws4_prirezka_quantity'] && '/'}
                         {tourReport['ws4_prirezka_quantity']}
                       </div>}
                     
                     {rowLabel == 'падеж/прирезка % 4' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {(tourReport['ws4_padej_percentage'] || tourReport['ws4_prirezka_percentage']) &&
                           <span>
                             {tourReport['ws4_padej_percentage'] ? tourReport['ws4_padej_percentage'].toFixed(2) : 0 }/
@@ -229,17 +233,17 @@ class ToursReportsComponent extends Component {
                       </div>}
 
                     {rowLabel == 'количество ремонтных 4' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws4_gilts_qnty_now']}
                       </div>}
                       
                     {rowLabel == 'количество отнятых 4' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['week_weight_qnty_4_8'] >0 && tourReport['week_weight_qnty_4_8']}
                       </div>}
 
                     {rowLabel == 'средний вес 4' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['week_weight_avg_4_8'] ? 
                           tourReport['week_weight_avg_4_8'].toFixed(2) : null}
                       </div>}
@@ -250,7 +254,7 @@ class ToursReportsComponent extends Component {
                       </div>}
 
                     {rowLabel == 'падеж/прирезка/в.убой 8' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {(tourReport['ws8_padej_quantity'] || tourReport['ws8_prirezka_quantity'] ||
                           tourReport['ws8_vinuzhd_quantity']) &&
                           <span>
@@ -262,7 +266,7 @@ class ToursReportsComponent extends Component {
                       </div>}
 
                     {rowLabel == 'падеж/прирезка/в.убой % 8' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {(tourReport['ws8_padej_percentage'] || tourReport['ws8_prirezka_percentage'] ||
                           tourReport['ws8_vinuzhd_percentage']) &&
                           <span>
@@ -274,17 +278,17 @@ class ToursReportsComponent extends Component {
                       </div>}
 
                     {rowLabel == 'количество ремонтных 8' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                        {tourReport['ws8_gilts_qnty_now']}
                       </div>}
 
                     {rowLabel == 'количество отнятых 8' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['week_weight_qnty_ws8'] >0 && tourReport['week_weight_qnty_ws8']}
                       </div>}
 
                     {rowLabel == 'средний вес 8' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['week_weight_avg_ws8'] ? 
                           tourReport['week_weight_avg_ws8'].toFixed(2): null}
                       </div>}
@@ -295,22 +299,22 @@ class ToursReportsComponent extends Component {
                       </div>}
                     
                     {rowLabel == 'приход 5' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['week_weight_qnty_8_5'] >0 && tourReport['week_weight_qnty_8_5']}
                       </div>}
 
                     {rowLabel == 'количество ремонтных 5' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws5_gilts_qnty_now']}
                       </div>}
 
                     {rowLabel == 'ремонтных 5 в 7/5' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws5_qnty_to_7_5']}
                       </div>}
 
                     {rowLabel == 'падеж/в.убой 5' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {(tourReport['ws5_padej_quantity'] || tourReport['ws5_vinuzhd_quantity']) && 
                           <span>
                             {tourReport['ws5_padej_quantity'] ? tourReport['ws5_padej_quantity'] : 0}/
@@ -320,7 +324,7 @@ class ToursReportsComponent extends Component {
                       </div>}
 
                     {rowLabel == 'падеж/в.убой % 5' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {(tourReport['ws5_padej_percentage'] || tourReport['ws5_vinuzhd_percentage']) && 
                           <span>
                             {tourReport['ws5_padej_percentage'] ? tourReport['ws5_padej_percentage'].toFixed(2) : 0}/
@@ -330,18 +334,18 @@ class ToursReportsComponent extends Component {
                       </div>}
                     
                     {rowLabel == 'спец. забой 5' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws5_spec_quantity']}
                       </div>}
 
                     {rowLabel == 'средний вес 5' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws5_spec_avg_weight'] ? 
                           tourReport['ws5_spec_avg_weight'].toFixed(2) : null}
                       </div>}
 
                     {rowLabel == 'остаток 5' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws5_piglets_qnty_now'] ? tourReport['ws5_piglets_qnty_now'] : 0}
                       </div>}
 
@@ -351,22 +355,22 @@ class ToursReportsComponent extends Component {
                       </div>}
                     
                     {rowLabel == 'приход 6' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['week_weight_qnty_8_6'] >0 && tourReport['week_weight_qnty_8_6']}
                       </div>}
 
                     {rowLabel == 'количество ремонтных 6' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws6_gilts_qnty_now']}
                       </div>}
 
                     {rowLabel == 'ремонтных 6 в 7/5' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws6_qnty_to_7_5']}
                       </div>}
 
                     {rowLabel == 'падеж/в.убой 6' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {(tourReport['ws6_padej_quantity'] || tourReport['ws6_vinuzhd_quantity']) && 
                           <span>
                             {tourReport['ws6_padej_quantity'] ? tourReport['ws6_padej_quantity'] : 0}/
@@ -376,7 +380,7 @@ class ToursReportsComponent extends Component {
                       </div>}
 
                     {rowLabel == 'падеж/в.убой % 6' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {(tourReport['ws6_padej_percentage'] || tourReport['ws6_vinuzhd_percentage']) && 
                           <span>
                             {tourReport['ws6_padej_percentage'] ? tourReport['ws6_padej_percentage'].toFixed(2) : 0}/
@@ -386,18 +390,18 @@ class ToursReportsComponent extends Component {
                       </div>}
                     
                     {rowLabel == 'спец. забой 6' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws6_spec_quantity']}
                       </div>}
 
                     {rowLabel == 'средний вес 6' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws6_spec_avg_weight'] ? 
                           tourReport['ws6_spec_avg_weight'].toFixed(2) : null}
                       </div>}
 
                     {rowLabel == 'остаток 6' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws6_piglets_qnty_now'] ? tourReport['ws6_piglets_qnty_now'] : 0}
                       </div>}
 
@@ -407,22 +411,22 @@ class ToursReportsComponent extends Component {
                       </div>}
                     
                     {rowLabel == 'приход 7' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['week_weight_qnty_8_7'] >0 && tourReport['week_weight_qnty_8_7']}
                       </div>}
 
                     {rowLabel == 'количество ремонтных 7' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws7_gilts_qnty_now']}
                       </div>}
 
                     {rowLabel == 'ремонтных 7 в 7/5' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws7_qnty_to_7_5']}
                       </div>}
 
                     {rowLabel == 'падеж/в.убой 7' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {(tourReport['ws7_padej_quantity'] || tourReport['ws7_vinuzhd_quantity']) && 
                           <span>
                             {tourReport['ws7_padej_quantity'] ? tourReport['ws7_padej_quantity'] : 0}/
@@ -432,7 +436,7 @@ class ToursReportsComponent extends Component {
                       </div>}
 
                     {rowLabel == 'падеж/в.убой % 7' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {(tourReport['ws7_padej_percentage'] || tourReport['ws7_vinuzhd_percentage']) && 
                           <span>
                             {tourReport['ws7_padej_percentage'] ? tourReport['ws7_padej_percentage'].toFixed(2) : 0}/
@@ -442,28 +446,27 @@ class ToursReportsComponent extends Component {
                       </div>}
                     
                     {rowLabel == 'спец. забой 7' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws7_spec_quantity']}
                       </div>}
 
                     {rowLabel == 'средний вес 7' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws7_spec_avg_weight'] ? 
                           tourReport['ws7_spec_avg_weight'].toFixed(2) : null}
                       </div>}
 
                     {rowLabel == 'остаток 7' && 
-                      <div className='report-cell-value'>
+                      <div className={cellClass}>
                         {tourReport['ws7_piglets_qnty_now'] ? tourReport['ws7_piglets_qnty_now'] : 0}
                       </div>}
                   </td>
                   )}
               </tr>
             )}
-              
             </tbody>
         </table>
-
+       </div>
       </div>
     );
   }

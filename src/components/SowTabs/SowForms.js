@@ -8,7 +8,7 @@ import { ErrorOrMessage } from '../CommonComponents';
 
 
 export function SemenBoarForm (props) {
-  const { parentSubmit, pristine, reset, submitting, handleSubmit, initialValues, boars, fValues, tours,
+  const { parentSubmit, pristine, reset, submitting, handleSubmit, initialValues, boars, fValues,
     eventFetching, eventError, message } = props
   return (
     <div className='card card-style mx-0 my-2'>
@@ -32,17 +32,6 @@ export function SemenBoarForm (props) {
           >
             {boars.map(boar =>
               <option value={boar.id}>{boar.farm_id}</option>
-              )}
-          </Field>
-
-          <Field 
-            component={renderChildrenSelectField}
-            name='tour'
-            label='Выберите тур'
-            margin='dense'
-          >
-            {tours.map(tour =>
-              <option value={tour.id}>Неделя {tour.week_number} {tour.year}</option>
               )}
           </Field>
 

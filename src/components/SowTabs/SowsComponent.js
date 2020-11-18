@@ -32,6 +32,7 @@ export function SowTourFilter (props){
       <Select
         onChange={props.setQuery}
         className={'font-13 ' + labelClass}
+        name='tour'
       >
         {options.map(option =>
             <MenuItem value={option.id}>Неделя {' '} {option.week_number} {option.year}</MenuItem>

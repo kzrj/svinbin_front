@@ -24,7 +24,6 @@ class WSSemenBoarCreateTab extends Component {
         <SemenBoarForm 
           parentSubmit={this.createRecord}
           boars={boars}
-          tours={tours}
           fValues={[
             {value: 1,   label: "F = E / 1"},
             {value: 1.5, label: "F = E / 1.5"},
