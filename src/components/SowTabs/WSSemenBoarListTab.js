@@ -104,7 +104,7 @@ class WSSemenBoarListTab extends Component {
                     <td className='text-nowrap'>
                       {record.date}
                     </td>
-                    <td>
+                    <td className='text-nowrap'>
                       {record.boar.breed ? record.boar.breed : 'нет породы'}
                     </td>
                     <td>

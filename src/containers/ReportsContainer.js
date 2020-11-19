@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { change, reset } from "redux-form";
 
 import ReportsActions from '../redux/redux-sauce/reports';
+import ToursActions from '../redux/redux-sauce/tours';
 
 // components
 import ToursReportsComponent from '../components/Reports/TourReports'
@@ -18,6 +20,7 @@ class ReportsContainer extends Component {
 	}
 
   componentDidMount() {
+    this.props.getTours()
   }
 
   render() {
@@ -37,7 +40,15 @@ class ReportsContainer extends Component {
           </div>
         }
         {routeName == 'tours' && 
-          <ToursReportsComponent getTourReports={this.props.getTourReports} reports={this.props.state.reports}/>
+          <ToursReportsComponent 
+            getTourReports={this.props.getTourReports} 
+            reports={this.props.state.reports}
+
+            tours={this.props.state.tours.list}
+            form={this.props.state.form.tourFilterForm}
+
+            toursFormSetID={this.props.toursFormSetID}
+            />
         }
 
         {routeName == 'tours_v2' && 
@@ -90,6 +101,10 @@ const mapDispatchToProps = (dispatch) => ({
   getTourV2Report: (token) => dispatch(ReportsActions.getTourV2ReportRequest(token)),
 
   getWs3Report: (token) => dispatch(ReportsActions.getWs3ReportRequest(token)),
+
+  getTours: query => dispatch(ToursActions.getToursRequest(query)),
+
+  toursFormSetID: ids => dispatch(change( "tourFilterForm", "ids", ids )),
 })
 
 export default connect(
