@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 
 //components
-import { SowSingle }  from '../../components/SowRepresentations'
-import { ErrorMessage, ErrorOrMessage } from '../CommonComponents'
 import { getDateTimeNow } from './WS3SowFarrowTab'
+import { CreateGiltForm } from '../SowTabs/SowForms'
 
 
 class WS3CreateGiltTab extends Component {
@@ -24,6 +23,8 @@ class WS3CreateGiltTab extends Component {
     this.createGilt = this.createGilt.bind(this);
     this.setQuery = this.setQuery.bind(this);
     this.resetBirthId = this.resetBirthId.bind(this);
+
+    this.findSow = this.findSow.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +36,7 @@ class WS3CreateGiltTab extends Component {
       },
       date: getDateTimeNow()
     })
+    this.props.setSow(null)
     this.props.getGiltJournal()
   }
 
@@ -68,67 +70,33 @@ class WS3CreateGiltTab extends Component {
     })
   }
 
-  createGilt () {
-    const { date, birth_id } = this.state
-    const { sow } = this.props
+  findSow (e) {
+    this.props.getByFarmIdSow({'farm_id': e.target.value, simple: true})
+  }
 
-    this.props.createGilt({
-      id: sow.id,
-      birth_id: birth_id,
-      date: date,
-    })
-    this.setState({
-      ...this.state,
-      birth_id: '',
-    })
+  createGilt () {
+    this.props.createGilt(this.props.form.values) 
     this.props.getGiltJournal()
   }
 
   render() {
     const { sow, giltJournal, eventError, message, eventFetching } = this.props
     let today = getDateTimeNow()
-
+    
     return (
       <div className=''>
         <div className='card my-2 mx-1'>
           <div className='content my-2'>
-            <h4 className='mt-2 mx-2 mb-1'>Введите номер свиноматки</h4>
-            <input type="number" 
-              className="font-20 mx-2 my-2 rounded-s input-custom-placeholder" 
-              placeholder="Номер свиноматки"
-              aria-label="Farmid" aria-describedby="basic-addon1" name='farm_id_starts'
-              value={this.state.query.farm_id_starts}
-              onChange={this.setQuery} />
-          
-            <input type='date'
-              className='font-20 mx-2 rounded-s bg-color-white'
-              value={this.state.date}
-              defaultValue={today}
-              name='date'
-              onChange={this.setData}
-              />
-
-            <input type="text" 
-              className="font-20 mx-2 rounded-s" 
-              placeholder="Номер бирки"
-              name='birth_id'
-              value={this.state.birth_id}
-              onClick={this.resetBirthId}
-              onChange={this.setData} />
-
-            <button onClick={this.createGilt}
-              className="btn bg-mainDark-dark btn-l font-20 font-900 mx-2 pr-4" type="button" >
-              Отметить ремонтку
-            </button>
-    
-              {this.state.date > today 
-                ? <ErrorMessage error={{message:'Нельзя выбрать дату в будущем'}}/>
-                : <ErrorOrMessage error={eventError} message={message} fetching={eventFetching}
-                     className='my-0 mx-2' />
-              }
-              {sow &&
-                <SowSingle sow={sow} className='my-0 font-17 font-600 color-mainDark-dark'/>
-              }
+            <CreateGiltForm 
+              sow={sow}
+              parentSubmit={this.createGilt}
+              initialValues={{
+                date: today
+              }}
+              eventError={eventError}
+              eventFetching={eventFetching}
+              message={message}
+            />
             </div>
           </div>
           <div className='clearfix'></div>

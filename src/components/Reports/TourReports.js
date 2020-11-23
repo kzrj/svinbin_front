@@ -9,7 +9,7 @@ class ToursReportsComponent extends Component {
 	}
 
   componentDidMount() {
-    this.props.getTourReports({last_n: 10})
+    this.props.getTourReports({last_n: 100})
   }
 
   clickFilter () {

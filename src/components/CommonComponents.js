@@ -22,7 +22,7 @@ export function ErrorOrMessage (props) {
             ? <LoadingMessage />
             : props.error 
                 ? <ErrorMessage error={props.error} className={props.className}/>
-                : props.message && <Message message={props.message} className={props.className}/>
+                : <Message message={props.message} className={props.className}/>
     )
 }
 

@@ -18,8 +18,8 @@ class WS3NurseSowTab extends Component {
     };
 
     this.markAsNurse = this.markAsNurse.bind(this);
-    this.setQuery = this.setQuery.bind(this);
     this.refreshSowsList = this.refreshSowsList.bind(this);
+    this.findSow = this.findSow.bind(this);
   }
 
   componentDidMount(){
@@ -32,22 +32,9 @@ class WS3NurseSowTab extends Component {
         status_title_in: this.props.statusTitleFilters
       }
     })
-    this.props.getSows({
-      alive:true,
-      all_in_workshop_number: this.props.workshopNumber,
-      status_title_in: this.props.statusTitleFilters
-      })
     this.props.getNurses()
+    this.props.setSow(null)
     this.props.sowsResetErrorsAndMessages()
-  }
-
-  setQuery (e) {
-    let { query } = this.state
-    query[e.target.name] = e.target.value
-    this.setState({
-      ...this.state,
-      query: query,
-    })
   }
   
   markAsNurse () {
@@ -59,24 +46,27 @@ class WS3NurseSowTab extends Component {
     })
   }
 
+  findSow (e) {
+    this.props.getByFarmIdSow({
+      'farm_id': e.target.value,
+       simple: true, 
+       status_title_in: this.props.statusTitleFilters,
+       all_in_workshop_number: this.props.workshopNumber,})
+  }
+
   refreshSowsList () {
     if (!this.props.eventFetching && this.state.needToRefresh){
       setTimeout(() => {
         this.setState({...this.state, needToRefresh: false,
-          query: {
-            ...this.state.query,
-            farm_id_starts: ''
-          }
           })
-        this.props.getSows(this.state.query)
         this.props.getNurses()
-      }, 500)
+      }, 300)
     }
   }
 
   render() {
     this.refreshSowsList()
-    const { sow, eventError, message, eventFetching, nurses, listFetching } = this.props
+    const { sow, eventError, message, eventFetching, nurses, listFetching, errorSingle } = this.props
     
     return (
       <div className=''>
@@ -86,12 +76,14 @@ class WS3NurseSowTab extends Component {
               <input type="number" 
                 className="font-20 mx-2 my-2 rounded-s input-custom-placeholder" 
                 placeholder="Номер свиноматки"
-                name='farm_id_starts'
-                value={this.state.query.farm_id_starts}
-                onChange={this.setQuery} />
+                name='farm_id'
+                onChange={() => this.props.sowsResetErrorsAndMessages()}
+                onBlur={this.findSow} />
             {sow &&
                 <SowSingle sow={sow} className='my-0 font-17 font-600 color-mainDark-dark'/>
               }
+            {errorSingle && <p className='my-0 color-red1-light'>
+              В цехе нет свиноматки c опоросом с таким ID.</p>}
           </div>
           <div className='content'>
             <button className='btn btn-dark' disabled={!sow}

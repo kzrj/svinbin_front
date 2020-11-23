@@ -1,5 +1,11 @@
 import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import axios from 'axios';
+import { Field, reduxForm, change } from 'redux-form';
+import { connect } from 'react-redux'
+
+import endpoints from '../../redux/api/endpoints';
+import { createUrlParamsFromFilters } from '../../redux/api/utils';
+import SowsActions from '../../redux/redux-sauce/sows';
 
 import { getToday } from '../utils';
 import {  renderTextField, renderSelectField, renderDateTimeField, renderChildrenSelectField } 
@@ -278,12 +284,22 @@ CreateBoarForm = reduxForm({
 
 export function CullingSowForm (props) {
   const { parentSubmit, pristine, reset, submitting, handleSubmit, initialValues, cullingTypes, sow,
-    eventFetching, eventError, message } = props
+    eventFetching, eventError, message, abort } = props
   return (
     <form onSubmit={handleSubmit(parentSubmit)} className=''
       initialValues={initialValues}
     > 
-      <p>{sow.farm_id}</p>
+      {sow 
+        ? <p className='my-0 font-700'>Свиноматка №{sow.farm_id}</p>
+        : <p className='my-0 font-700'>Выберите свиноматку</p>
+      }
+      <Field
+        // component={renderAsyncValidateField}
+        component={renderTextField}
+        name='farm_id'
+        type='number'
+      />
+
       <Field
         component={renderTextField}
         name="id"
@@ -328,6 +344,15 @@ export function CullingSowForm (props) {
         Выбытие / Убой
       </button>
 
+      <button 
+        className='btn btn-m mt-2 font-900 shadow-s bg-mainDark-dark text-wrap ml-5'
+        type="button"
+        disabled={sow ? false : true}
+        onClick={abort}
+      >
+        Аборт
+      </button>
+
       <ErrorOrMessage error={eventError} message={message} fetching={eventFetching}
           className='mt-2 mb-0 mx-1 font-15' />
     </form>
@@ -356,7 +381,147 @@ const validateCullingSowForm = values => {
   return errors
 }
 
+export function validateSowByFarmIdCullingWs3 (values, dispatch) {
+  const params = createUrlParamsFromFilters({simple:true, farm_id: values.farm_id, alive: true, all_in_workshop_number: 3});
+  const token = localStorage.getItem('token') || '';
+  const url = endpoints.SOW_BY_FARM_ID;
+  return axios({
+      method: 'get',
+      url: url,
+      params: params,
+      headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+  })
+  .then(response => {
+    dispatch(SowsActions.getSowByFarmIdSuccess(response.data))
+    dispatch(change('cullingSowForm', 'id', response.data.sow.id))
+  })
+  .catch(err => {
+      if (err.response.status === 404 )
+        dispatch(SowsActions.getSowByFarmIdFail())
+        dispatch(change('cullingSowForm', 'id', null))
+        throw { farm_id: 'Свиноматки с таким номером нет.' };
+    })
+
+}
+
+const mapDispatchToPropsCullingForm = (dispatch) => ({
+})
+
 CullingSowForm = reduxForm({
   form: 'cullingSowForm',
   validate: validateCullingSowForm,
-})(CullingSowForm)
+  asyncValidate: validateSowByFarmIdCullingWs3,
+  asyncBlurFields: ['farm_id',]
+})(connect(
+  null,
+  mapDispatchToPropsCullingForm,
+)(CullingSowForm))
+
+
+export function CreateGiltForm (props) {
+  const { parentSubmit, pristine, reset, submitting, handleSubmit, initialValues, sow,
+    eventFetching, eventError, message } = props
+  return (
+    <form onSubmit={handleSubmit(parentSubmit)} className=''
+      initialValues={initialValues}
+    > 
+      {sow 
+        ? <p className='my-0 font-700'>Свиноматка №{sow.farm_id}</p>
+        : <p className='my-0 font-700'>Выберите свиноматку</p>
+      }
+
+      <Field
+        // component={renderAsyncValidateField}
+        component={renderTextField}
+        name='farm_id'
+        type='number'
+      />
+
+      <Field
+        component={renderTextField}
+        name="id"
+        hidden={true}
+      />
+      
+      <Field 
+        component={renderDateTimeField}
+        name='date'
+        label='Дата'
+        margin='dense'
+      />
+
+      <Field 
+        component={renderTextField}
+        label="Номер бирки" 
+        name='birth_id'
+        margin='dense'
+      />
+
+      <button 
+        className='btn btn-m mt-2 font-900 shadow-s bg-mainDark-dark text-wrap'
+        type="submit"
+        disabled={pristine || submitting}
+      >
+        Отметить ремонтку
+      </button>
+
+      <ErrorOrMessage error={eventError} message={message} fetching={eventFetching}
+          className='mt-2 mb-0 mx-1 font-15' />
+    </form>
+  )
+}
+
+const validateCreateGiltForm = values => {
+  const errors = {}
+  const requiredFields = [
+    'farm_id',
+    'birth_id',
+    'date',
+  ]
+  
+  if (values['date'] > getToday()) {
+    errors['date'] = 'Дата не может быть в будущем'
+  }
+
+  requiredFields.forEach(field => {
+    if (!values[field]) {
+      errors[field] = 'Обязательное поле'
+    }
+  })
+  return errors
+}
+
+export function validateSowByFarmIdCreateGilt (values, dispatch) {
+  const params = createUrlParamsFromFilters({simple:true, farm_id: values.farm_id});
+  const token = localStorage.getItem('token') || '';
+  const url = endpoints.SOW_BY_FARM_ID;
+  return axios({
+      method: 'get',
+      url: url,
+      params: params,
+      headers: { 'content-type': 'multipart/form-data', 'Authorization': `JWT ${token}` }
+  })
+  .then(response => {
+    dispatch(SowsActions.getSowByFarmIdSuccess(response.data))
+    dispatch(change('createGiltForm', 'id', response.data.sow.id))
+  })
+  .catch(err => {
+      if (err.response.status === 404 )
+        dispatch(SowsActions.getSowByFarmIdFail())
+        dispatch(change('createGiltForm', 'id', null))
+        throw { farm_id: 'Свиноматки с таким номером нет.' };
+    })
+
+}
+const mapDispatchToProps = (dispatch) => ({
+})
+
+CreateGiltForm = reduxForm({
+  form: 'createGiltForm',
+  validate: validateCreateGiltForm,
+  asyncValidate: validateSowByFarmIdCreateGilt,
+  asyncBlurFields: ['farm_id',]
+})(connect(
+  null,
+  mapDispatchToProps,
+)(CreateGiltForm))

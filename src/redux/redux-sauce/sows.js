@@ -545,7 +545,7 @@ export const markAsNurseFail = (state, { error }) => {
 
 // resetErrorsAndMessages
 export const sowsResetErrorsAndMessages = (state) => {
-    return state.merge({ fetching: false, eventError: null, errorList: null, eventFetching: null, message: '' })
+    return state.merge({ fetching: false, eventError: null, errorList: null, errorSingle: null, eventFetching: null, message: '' })
   }
 
 // setSow

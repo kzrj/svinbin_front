@@ -128,6 +128,7 @@ class WS3SowFarrowTab extends Component {
     this.decreasePiglets = this.decreasePiglets.bind(this);
     this.increasePiglets = this.increasePiglets.bind(this);
     this.clickFarrow = this.clickFarrow.bind(this);
+    this.findSow = this.findSow.bind(this);
   }
 
   componentDidMount() {
@@ -141,6 +142,9 @@ class WS3SowFarrowTab extends Component {
       },
       date: getDateTimeNow()
     })
+    // this.props.getByFarmIdSow({simple:true, farm_id: null, status_title: this.props.statusTitleFilter,
+    //   all_in_workshop_number: this.props.workshopNumber,})
+    this.props.setSow(null)
     this.props.getFarrows()
   }
 
@@ -182,6 +186,14 @@ class WS3SowFarrowTab extends Component {
     })
   }
 
+  findSow (e) {
+    this.props.getByFarmIdSow({
+      'farm_id': e.target.value,
+       simple: true, 
+       status_title: this.props.statusTitleFilter,
+       all_in_workshop_number: this.props.workshopNumber,})
+  }
+
   clickFarrow () {
     this.props.sowFarrow({
       id: this.props.sow.id,
@@ -201,6 +213,7 @@ class WS3SowFarrowTab extends Component {
         farm_id_starts: '',
       }
     })
+    this.props.sowsResetErrorsAndMessages()
   }
 
   refreshSowsList () {
@@ -218,7 +231,7 @@ class WS3SowFarrowTab extends Component {
   }
 
   render() {
-    const { sow, farrows, eventError, eventFetching, message, sowsListFetching } = this.props
+    const { sow, farrows, eventError, eventFetching, message, sowsListFetching, errorSingle } = this.props
     this.refreshSowsList()
     let today = getDateTimeNow()
     
@@ -230,13 +243,14 @@ class WS3SowFarrowTab extends Component {
               <input type="number" 
                 className="font-20 mx-2 my-2 rounded-s input-custom-placeholder" 
                 placeholder="Номер свиноматки"
-                name='farm_id_starts'
-                value={this.state.query.farm_id_starts}
-                defaultValue={sow && sow.farm_id}
-                onChange={this.setQuery} />
+                name='farm_id'
+                onBlur={this.findSow}
+                onChange={() => this.props.sowsResetErrorsAndMessages()} />
             {sow &&
                 <SowSingle sow={sow} className='my-0 font-17 font-600 color-mainDark-dark'/>
               }
+            {errorSingle && <p className='my-0 color-red1-light'>
+              В цехе нет супоросной свиноматки с таким ID.</p>}
           </div>
         </div>
         <div className='card my-2 mx-1'>

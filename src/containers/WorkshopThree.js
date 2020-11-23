@@ -12,7 +12,6 @@ import WSSowGlobalSearchTab from '../components/SowTabs/WSSowGlobalSearchTab'
 
 import WS3PigletsWeaningTab from '../components/WorkshopThree/WS3PigletsWeaningTab'
 import WS3CreateGiltTab from '../components/WorkshopThree/WS3CreateGiltTab'
-import WS3CreateAndMoveTab from '../components/WorkshopThree/WS3CreateAndMoveTab'
 
 import WSNomadInnerTransferTab from '../components/PigletsTabs/WSNomadInnerTransferTab'
 import WSNomadCullingTab from '../components/PigletsTabs/WSNomadCullingTab'
@@ -23,7 +22,7 @@ import InfoTab from '../containers/InfoTab'
 import { TabMenu }  from '../components/CommonComponents'
 
 // # actions
-import { change } from "redux-form";
+import { change, reset } from "redux-form";
 import SowsActions from '../redux/redux-sauce/sows'
 import SectionsActions from '../redux/redux-sauce/sections'
 import LocationsActions from '../redux/redux-sauce/locations'
@@ -40,14 +39,14 @@ class WorkshopThreeContainer extends Component {
     super(props);
     this.state = {
       tabs: [
-        {name: 'infoTab',                 active: true,  title: 'ИНФО'},
+        {name: 'infoTab',                 active: false,  title: 'ИНФО'},
         {name: 'returnPigletsTab',        active: false, title: 'Возврат поросята'},
         {name: 'comingSowsTab',           active: false, title: 'Поступление матки'},
         {name: 'farrowTab',               active: false, title: 'Опорос'},
         {name: 'nurseSowTab',             active: false, title: 'Кормилица'},
         {name: 'weaningPigletsTab',       active: false, title: 'Отъем поросят'},
         {name: 'createGiltTab',           active: false, title: 'Биркование'},
-        {name: 'sowCullingTab',           active: false, title: 'Выбытие свиноматок'},
+        {name: 'sowCullingTab',           active: true, title: 'Выбытие свиноматок'},
         {name: 'pigletsCullingTab',       active: false, title: 'Выбытие поросят'},
         {name: 'pigletsInnerTransferTab', active: false, title: 'Перемещение поросят из клетки в клетку'},
         {name: 'searchSowTab',            active: false, title: 'Поиск по всем цехам'},
@@ -94,7 +93,7 @@ class WorkshopThreeContainer extends Component {
   render() {
     const activeTab = this.getActiveTab()
     let pigletsCellsGrid = 'col-2 '
-
+    // console.log(this.props.state)
     return (
       <div className="">
         <TabMenu 
@@ -188,6 +187,9 @@ class WorkshopThreeContainer extends Component {
             sow={this.props.state.sows.sow}
             sowsListFetching={this.props.state.sows.fetching}
             sowsErrorList={this.props.state.sows.errorList}
+            errorSingle={this.props.state.sows.errorSingle}
+            getByFarmIdSow={this.props.getByFarmIdSow}
+            setSow={this.props.setSow}
 
             getFarrows={this.props.getFarrows}
             farrows={this.props.state.sows.farrows}
@@ -205,10 +207,10 @@ class WorkshopThreeContainer extends Component {
             workshopNumber={3}
             statusTitleFilters={['Опоросилась', 'Отъем']}
 
-            getSows={this.props.getSows}
+            errorSingle={this.props.state.sows.errorSingle}
+            getByFarmIdSow={this.props.getByFarmIdSow}
             sow={this.props.state.sows.sow}
-            listFetching={this.props.state.sows.fetching}
-            sowsListError={this.props.state.sows.errorList}
+            setSow={this.props.setSow}
 
             getNurses={this.props.getNurses}
             nurses={this.props.state.sows.nurses}
@@ -245,6 +247,7 @@ class WorkshopThreeContainer extends Component {
             message={this.props.state.sows.message}
 
             form={this.props.state.form.cullingSowForm}
+            cullingSowFormResetID={this.props.cullingSowFormResetID}
 
             sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
           />}
@@ -276,9 +279,14 @@ class WorkshopThreeContainer extends Component {
 
             getSows={this.props.getSows}
             sows={this.props.state.sows.list}
-            sow={this.props.state.sows.sow}
             sowsListFetching={this.props.state.sows.fetching}
             sowsErrorList={this.props.state.sows.errorList}
+
+            getByFarmIdSow={this.props.getByFarmIdSow}
+            singleSowFetching={this.props.state.sows.sowSingleFetching}
+            errorSingle={this.props.state.sows.errorSingle}
+            sow={this.props.state.sows.sow}
+            setSow={this.props.setSow}
 
             createGilt={this.props.createGilt}
             eventFetching={this.props.state.sows.eventFetching}
@@ -290,6 +298,8 @@ class WorkshopThreeContainer extends Component {
 
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
             sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+
+            form={this.props.state.form.createGiltForm}
           />}
         {activeTab.name === 'pigletsCullingTab' &&
           <WSNomadCullingTab
@@ -481,6 +491,7 @@ const mapDispatchToProps = (dispatch) => ({
   recountPiglets: data => dispatch(PigletsActions.recountPigletsRequest(data)),
 
   cullingFormSetID: id => dispatch(change( "cullingPigletsForm", "id", id )),
+  cullingSowFormResetID:() => dispatch(reset('cullingSowForm')),
 
   pigletsResetErrorsAndMessages: () => dispatch(PigletsActions.pigletsResetErrorsAndMessages()),
 

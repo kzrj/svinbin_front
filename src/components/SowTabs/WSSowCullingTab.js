@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { SowSingle } from '../SowRepresentations'
 import { ErrorOrMessage, LoadingMessage } from '../CommonComponents';
 import { CullingSowForm } from './SowForms';
+import { getDateTimeNow } from '../WorkshopThree/WS3SowFarrowTab';
 
 
 class WSSowCullingTab extends Component {
@@ -15,11 +16,9 @@ class WSSowCullingTab extends Component {
       weight: '',
       needToRefresh: false,
     }
-    this.setData = this.setData.bind(this);
     this.cullingSow = this.cullingSow.bind(this);
     this.abortionSow = this.abortionSow.bind(this);
 
-    this.findSow = this.findSow.bind(this);
   }
   
   componentDidMount() {
@@ -28,25 +27,9 @@ class WSSowCullingTab extends Component {
     this.props.setSow(null)
   }
 
-  findSow (e) {
-    this.props.getByFarmIdSow({'farm_id': e.target.value, simple: true})
-  }
-
-  setData(e) {
-    this.setState({
-      ...this.state,
-      [e.target.name]: e.target.value
-    })
-  }
 
   cullingSow() {
-    let data = {
-      id: this.props.sow.id,
-      culling_type: this.state.cullingType,
-      reason: this.state.cullingReason,
-      weight: this.state.weight,
-    }
-    this.props.cullingSow(data)
+    this.props.cullingSow(this.props.form.values)
     this.props.setSow(null)
     this.setState({
       ...this.state,
@@ -59,6 +42,7 @@ class WSSowCullingTab extends Component {
       id: this.props.sow.id,
     }
     this.props.abortionSow(data)
+    this.props.cullingSowFormResetID()
     this.props.setSow(null)
     this.setState({
       ...this.state,
@@ -69,15 +53,15 @@ class WSSowCullingTab extends Component {
   refreshSowsList () {
     if (this.props.eventFetching && this.state.needToRefresh) {
       setTimeout(() => {
-        this.props.getSowCullings({ws_number: 3})
         this.setState({...this.state, needToRefresh: false})
+        this.props.getSowCullings({ws_number: 3})
       }, 300)
     }
   }
 
   render() {
     this.refreshSowsList()
-    const { sow, eventError, message, eventFetching, cullings, singleSowFetching} = this.props
+    const { sow, eventError, message, eventFetching, cullings, singleSowFetching, errorSingle} = this.props
     return (
       <div className=''>
         <div className="modal fade" id="cullingModal" tabindex="-1" role="dialog" 
@@ -110,22 +94,37 @@ class WSSowCullingTab extends Component {
           </div>
         </div>
 
-        <div className='card my-2 mx-1'>
+        {/* <div className='card my-2 mx-1'>
           <div className='content my-2'>
             <h4 className='mt-2 mx-2 mb-1'>Введите номер свиноматки</h4>
             <input type="number" className="" placeholder="Номер свиноматки"
-              name='farm_id' onBlur={this.findSow}
+              name='farm_id' onBlur={this.findSow} onChange={() => this.props.sowsResetErrorsAndMessages()}
               />
             {sow &&
                 <SowSingle sow={sow} className='my-0 font-17 font-600 color-mainDark-dark'/>
               }
+            {errorSingle && <p className='my-0 color-red1-light'>
+              В цехе нет свиноматки с таким ID или она уже выбыла.</p>}
           </div>
-        </div>
+        </div> */}
 
         <div className='card my-2 mx-1'>
           <div className='content'>
-            
-            <select className="font-16 py-2 my-2 mx-2" 
+            <CullingSowForm
+              parentSubmit={this.cullingSow}
+              sow={sow}
+              cullingTypes={[{value: 'padej', label: 'Падеж'}, {value: 'vinuzhd', label: 'Вынужденный убой'},]}
+              initialValues={{
+                date: getDateTimeNow(),
+                reason: 'без причины',
+                weight: 0
+              }}
+              abort={this.abortionSow}
+              eventError={eventError}
+              eventFetching={eventFetching}
+              message={message}
+            />
+            {/* <select className="font-16 py-2 my-2 mx-2" 
               name='cullingType' 
               onChange={this.setData}>
                 <option selected value='padej' >Падеж</option>
@@ -153,7 +152,7 @@ class WSSowCullingTab extends Component {
               </button>
             }
             <ErrorOrMessage error={eventError} message={message} fetching={eventFetching}
-              className='my-3 mx-2 font-15' />
+              className='my-3 mx-2 font-15' /> */}
           </div>
       </div>
       
