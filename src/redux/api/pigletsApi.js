@@ -185,12 +185,13 @@ const create = () => {
     }
 
     const moveGiltsToWs1 = payload => {
-        const { id, to_location, new_amount } = payload;
+        const { id, to_location, new_amount, total_weight } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.moveGiltsToWs1(id);
 
         const formData = new FormData();
         formData.append("to_location", to_location);
+        formData.append("total_weight", total_weight);
         if (new_amount)
             formData.append("new_amount", new_amount);
 
@@ -254,11 +255,12 @@ const create = () => {
     }
 
     const moveGiltsToWs12 = payload => {
-        const { id, new_amount } = payload;
+        const { id, new_amount, total_weight } = payload;
         const token = localStorage.getItem('token') || '';
         const url = endpoints.moveGiltsToWs12(id);
 
         const formData = new FormData();
+        formData.append("total_weight", total_weight);
         if (new_amount)
             formData.append("new_amount", new_amount);
 

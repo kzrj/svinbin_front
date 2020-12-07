@@ -4,6 +4,8 @@ import { TourFilterForm } from './ReportsComponent';
 
 function OtkormRows (props) {
   const { rowLabel, tourReport, wsNumber } = props
+  let weightLabel = `8_${wsNumber}`
+
   return([
     rowLabel == `Цех ${wsNumber}` && 
       `*`, 
@@ -36,9 +38,16 @@ function OtkormRows (props) {
         tourReport[`ws${wsNumber}_spec_avg_weight`] ? 
           tourReport[`ws${wsNumber}_spec_avg_weight`].toFixed(2) : null,
 
-    rowLabel == `привес ${wsNumber}` && 
-      tourReport[`prives_${wsNumber}`] ? 
-        tourReport[`prives_${wsNumber}`].toFixed(2) : null,
+    rowLabel == `привес/привес без ремонта ${wsNumber}` && 
+      tourReport[`prives_${wsNumber}`] 
+      ? <span> 
+          {tourReport[`prives_${wsNumber}`].toFixed(2)}
+          {tourReport[`prives_without_remont_${wsNumber}`]
+            ? '/' + tourReport[`prives_without_remont_${wsNumber}`].toFixed(2)
+            : null
+          }
+        </span>
+      : null,
 
     rowLabel === `ср. взвш. кормодней ${wsNumber}` &&
       tourReport[`spec_sv_avg_age_ws${wsNumber}`] 
@@ -48,7 +57,23 @@ function OtkormRows (props) {
     rowLabel === `спец. убой общий вес ${wsNumber}` &&
       tourReport[`spec_weight_total_ws${wsNumber}`] 
       ? tourReport[`spec_weight_total_ws${wsNumber}`].toFixed(1)
-      : null
+      : null,
+
+    rowLabel === `приход общий вес ${wsNumber}` &&
+      tourReport[`total2_${weightLabel}`] 
+      ? tourReport[`total2_${weightLabel}`].toFixed(1)
+      : null,
+
+    rowLabel === `привес/привес без ремонта на 1 гол ${wsNumber}` &&
+      tourReport[`prives_1g_${wsNumber}`]
+      ? <span>
+          {tourReport[`prives_1g_${wsNumber}`].toFixed(2)}
+          {tourReport[`prives_without_remont_1g_${wsNumber}`]
+            ? '/' + tourReport[`prives_without_remont_1g_${wsNumber}`].toFixed(2)
+            : null
+          }
+        </span>
+      : null,
   ])
 }
 
@@ -114,7 +139,12 @@ function DorosRows (props) {
     rowLabel === `ср. взвш. кормодней ${wsNumber}` &&
       tourReport[`sv_age_${weightLabel}`]
       ? tourReport[`sv_age_${weightLabel}`].toFixed(2)
-      : null
+      : null,
+
+    rowLabel === `привес на 1 гол ${wsNumber}` &&
+      tourReport[`prives_1g_${wsNumber}`]
+      ? tourReport[`prives_1g_${wsNumber}`].toFixed(2)
+      : null,
   ])
 }
 
@@ -129,6 +159,10 @@ function OtkormSummary (props) {
   let spec_qnty = 0
   let spec_denom = 0
   let spec_avg = 0.00
+
+  let sv_age_otkorm_summ = 0
+  let sv_age_otkorm_denom = 0
+  let sv_age_otkorm = 0
 
   rowLabel == `откорм общий падеж/в.убой` && 
     [5, 6, 7].map(wsNumber => {
@@ -162,6 +196,17 @@ function OtkormSummary (props) {
     spec_denom = spec_denom > 0 ? spec_denom : 1
     spec_avg = spec_avg / spec_denom
   }
+
+  if (rowLabel == `откорм общий ср. взвш. кормодней`) { 
+      [5, 6, 7].map(wsNumber => {
+        if ( tourReport[`spec_sv_avg_age_ws${wsNumber}`] > 0){ 
+          sv_age_otkorm_summ = sv_age_otkorm_summ +  parseFloat(tourReport[`spec_sv_avg_age_ws${wsNumber}`])
+          sv_age_otkorm_denom = sv_age_otkorm_denom + 1
+        }
+      })
+      sv_age_otkorm_denom = sv_age_otkorm_denom > 0 ? sv_age_otkorm_denom : 1
+      sv_age_otkorm = sv_age_otkorm_summ / sv_age_otkorm_denom
+    }
   
   return ([
     rowLabel == `Откормочные цеха` && `*`,
@@ -181,6 +226,7 @@ function OtkormSummary (props) {
     rowLabel == `откорм общий средний вес` && spec_avg > 0 && spec_avg.toFixed(2),
     rowLabel == `откорм общий ремонтных отправлено` && 
       tourReport[`count_remont_total`],
+    rowLabel == `откорм общий ср. взвш. кормодней` && sv_age_otkorm > 0 && sv_age_otkorm.toFixed(2),
   ])
 }
 
@@ -194,7 +240,7 @@ class ToursReportsComponent extends Component {
 	}
 
   componentDidMount() {
-    this.props.getTourReports({last_n: 100})
+    this.props.getTourReports({last_n: 5})
   }
 
   clickFilter () {
@@ -225,7 +271,11 @@ class ToursReportsComponent extends Component {
       'падеж/прирез 3',
       'падеж/прирез % 3',
       'отнятых 3',
+      'отнятых общий вес 3',
       'средний вес 3',
+      'привес 3',
+      'привес на 1 гол 3',
+      'ср. взвш. кормодней 3',
       'Цех 4',
       'падеж/прирез 4',
       'падеж/прирез % 4',
@@ -233,6 +283,7 @@ class ToursReportsComponent extends Component {
       'отнятых 4',
       'средний вес 4',
       'привес 4',
+      'привес на 1 гол 4',
       'ср. взвш. кормодней 4',
       'Цех 8',
       'падеж/прирез/в.убой 8',
@@ -241,6 +292,7 @@ class ToursReportsComponent extends Component {
       'отнятых 8',
       'средний вес 8',
       'привес 8',
+      'привес на 1 гол 8',
       'ср. взвш. кормодней 8',
       'Откормочные цеха',
       'откорм общий приход',
@@ -249,18 +301,22 @@ class ToursReportsComponent extends Component {
       'откорм общий ремонтных отправлено',
       'откорм общий спец. забой',
       'откорм общий средний вес',
+      'откорм общий ср. взвш. кормодней',
        otkormExpand && 'Цех 5',
        otkormExpand && 'приход 5',
+       otkormExpand && 'приход общий вес 5',
        otkormExpand && 'падеж/в.убой 5',
        otkormExpand && 'падеж/в.убой % 5',
        otkormExpand && 'ремонтных 5 в 2',
        otkormExpand && 'спец. забой 5',
        otkormExpand && 'средний вес 5',
        otkormExpand && 'спец. убой общий вес 5',
-       otkormExpand && 'привес 5',
+       otkormExpand && 'привес/привес без ремонта 5',
+       otkormExpand && 'привес/привес без ремонта на 1 гол 5',
        otkormExpand && 'ср. взвш. кормодней 5',
        otkormExpand && 'Цех 6',
        otkormExpand && 'приход 6',
+       otkormExpand && 'приход общий вес 6',
        otkormExpand && 'падеж/в.убой 6',
        otkormExpand && 'падеж/в.убой % 6',
       //  otkormExpand && 'ремонтных 6',
@@ -268,10 +324,12 @@ class ToursReportsComponent extends Component {
        otkormExpand && 'спец. забой 6',
        otkormExpand && 'средний вес 6',
        otkormExpand && 'спец. убой общий вес 6',
-       otkormExpand && 'привес 6',
+       otkormExpand && 'привес/привес без ремонта 6',
+       otkormExpand && 'привес/привес без ремонта на 1 гол 6',
        otkormExpand && 'ср. взвш. кормодней 6',
        otkormExpand && 'Цех 7',
        otkormExpand && 'приход 7',
+       otkormExpand && 'приход общий вес 7',
        otkormExpand && 'падеж/в.убой 7',
        otkormExpand && 'падеж/в.убой % 7',
       //  otkormExpand && 'ремонтных 7',
@@ -279,7 +337,8 @@ class ToursReportsComponent extends Component {
        otkormExpand && 'спец. забой 7',
        otkormExpand && 'средний вес 7',
        otkormExpand && 'спец. убой общий вес 7',
-       otkormExpand && 'привес 7',
+       otkormExpand && 'привес/привес без ремонта 7',
+       otkormExpand && 'привес/привес без ремонта на 1 гол 7',
        otkormExpand && 'ср. взвш. кормодней 7',
     ]
 
@@ -372,17 +431,6 @@ class ToursReportsComponent extends Component {
                           /{tourReport['total_born_mummy']}
                         </span>
                       }
-                      {/* {rowLabel == 'живорожденных' && 
-                        tourReport['total_born_alive']
-                      }
-
-                      {rowLabel == 'мертворожденных' && 
-                        <span className='color-red3-light'>{tourReport['total_born_dead']}</span>
-                      }
-
-                      {rowLabel == 'муммий' && 
-                        tourReport['total_born_mummy'] */}
-                      {/* } */}
 
                       {rowLabel == 'ремонтных' && 
                         tourReport['gilt_count']
@@ -409,9 +457,32 @@ class ToursReportsComponent extends Component {
                       {rowLabel == 'отнятых 3' && 
                         tourReport['week_weight_qnty_3_4'] > 0  && tourReport['week_weight_qnty_3_4'] 
                       }
+
+                      {rowLabel == 'отнятых общий вес 3' &&
+                          tourReport['total2_3_4'] ? 
+                            tourReport['total2_3_4'].toFixed(2) : null
+                      }
+
                       {rowLabel == 'средний вес 3' && 
                           tourReport['week_weight_avg_3_4'] ? 
                             tourReport['week_weight_avg_3_4'].toFixed(2) : null
+                      }
+
+                      {rowLabel == 'привес 3' &&
+                          tourReport['prives_3'] 
+                          ? tourReport['prives_3'].toFixed(2) 
+                          : null
+                      }
+
+                      {rowLabel === `привес на 1 гол 3` &&
+                          tourReport[`prives_1g_3`]
+                          ? tourReport[`prives_1g_3`].toFixed(2)
+                          : null}
+
+                      {rowLabel == 'ср. взвш. кормодней 3' &&
+                          tourReport['sv_age_3_4'] 
+                          ? tourReport['sv_age_3_4'].toFixed(2) 
+                          : null
                       }
 
                       <DorosRows rowLabel={rowLabel} tourReport={tourReport} wsNumber={4}/>

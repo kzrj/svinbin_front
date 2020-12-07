@@ -17,6 +17,7 @@ class WSNomadTransferTab extends Component {
       activeCell: null,
 
       quantity: 0,
+      total_weight: 0,
       gilts_contains: false,
 
       expand: false,
@@ -64,11 +65,12 @@ class WSNomadTransferTab extends Component {
   }
 
   clickTransfer (e) {
-    const { activePiglets, quantity } = this.state
+    const { activePiglets, quantity, total_weight } = this.state
     let data = {
       id: activePiglets.id,
       to_location: e.target.dataset.tolocation,
       gilts_contains: false,
+      total_weight: total_weight,
       merge: false,
     }
 
@@ -82,6 +84,7 @@ class WSNomadTransferTab extends Component {
       expand: false,
 
       quantity: 0,
+      total_weight: 0,
 
       needToRefresh: true, 
     })
@@ -107,7 +110,7 @@ class WSNomadTransferTab extends Component {
   render() {
     this.refreshSowsList ()
     const { sections, locations, message, eventError, grid, eventFetching } = this.props
-    const { expand, activePiglets, activeCell, quantity } = this.state
+    const { expand, activePiglets, activeCell, quantity, total_weight} = this.state
 
     return (
         <div className=''>
@@ -158,6 +161,19 @@ class WSNomadTransferTab extends Component {
                           name='quantity'
                           value={this.state.quantity}
                           />,
+                          this.props.toLocation === 2
+                          ? <TextField
+                            fullWidth={true}
+                            type='number'
+                            defaultValue={total_weight}
+                            label={'Общий вес'}
+                            placeholder={'Общий вес'}
+                            margin='dense'
+                            onChange={this.setData}
+                            name='total_weight'
+                            value={this.state.total_weight}
+                            />
+                          : null,
                         this.props.toLocations 
                           ? this.props.toLocations.map((toLocation, key) => 
                             <button key={key}
