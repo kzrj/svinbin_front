@@ -103,7 +103,7 @@ class WSNomadCullingTab extends Component {
 
   render() {
     this.refreshSowsList()
-    const { sections, locations, eventFetching, eventError, message, grid } = this.props
+    const { sections, locations, eventFetching, eventError, message, grid, workshopNumber } = this.props
     const { activePiglets, expand, activeLocation } = this.state
 
     let today = getToday()
@@ -167,6 +167,7 @@ class WSNomadCullingTab extends Component {
                       reason: 'без причины',
                       date: today,
                       is_it_gilt: false,
+                      ws_number: workshopNumber,
                     }}
                     eventFetching={eventFetching}
                     eventError={eventError}

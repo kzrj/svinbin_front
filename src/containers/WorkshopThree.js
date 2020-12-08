@@ -106,10 +106,6 @@ class WorkshopThreeContainer extends Component {
           setTab={this.setTab} workshop={'Цех №3'} activeTab={activeTab}
           user={this.props.state.auth.user}
         />
-        
-        {/* {activeTab.name === 'infoTab' &&
-          <InfoTab ws_number={'3'}/>
-        } */}
 
         {activeTab.name === 'wsMainTab' &&
           <WSMainPage 

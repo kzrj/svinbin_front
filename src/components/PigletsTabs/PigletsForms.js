@@ -171,6 +171,12 @@ export function CullingPigletsForm (props) {
         name="is_it_gilt"
         hidden={true}
       />
+
+      <Field
+        component={renderTextField}
+        name="ws_number"
+        hidden={true}
+      />
       
       {/* {activePiglets.gilts_quantity > 0 && 
             <div>
@@ -201,13 +207,36 @@ const validateCullingForm = values => {
     'date',
     'total_weight'
   ]
-  
+  let avg = values['total_weight'] / values['quantity']
+
   if (values['date'] > getToday()) {
     errors['date'] = 'Дата не может быть в будущем'
   }
+
   if (values['total_weight'] <= 0) {
     errors['total_weight'] = 'Укажите вес больше 0'
   }
+
+  if (values['ws_number'] === 3) {
+    if (avg > 10)
+      errors['total_weight'] = 'Средний вес одной головы не может быть больше 10кг'
+  }
+
+  if (values['ws_number'] === 4) {
+    if (7 > avg || avg > 26)
+      errors['total_weight'] = 'Средний вес одной головы не может быть больше 26кг и меньше 7кг'
+  }
+
+  if (values['ws_number'] === 8) {
+    if (18 > avg || avg > 65)
+      errors['total_weight'] = 'Средний вес одной головы не может быть больше 65кг и меньше 18кг'
+  }
+
+  if (values['ws_number'] === 5 || values['ws_number'] === 6 || values['ws_number'] === 7 ) {
+    if (45 > avg || avg > 130)
+      errors['total_weight'] = 'Средний вес одной головы не может быть больше 130кг и меньше 45кг'
+  }
+  
   if (values['quantity'] <= 0) {
     errors['quantity'] = 'Укажите больше 0'
   }
