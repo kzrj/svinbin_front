@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 // components
 import WSNomadCullingTab from '../components/PigletsTabs/WSNomadCullingTab'
 import WSNomadTransferTab from '../components/PigletsTabs/WSNomadTransferTab'
-import WSNomadInnerTransferTab from '../components/PigletsTabs/WSNomadInnerTransferTab'
+import WSNomadInnerTransfer2SecTab from '../components/PigletsTabs/WSNomadInnerTransfer2SecTab'
 import WSNomadResettelmentTab from '../components/PigletsTabs/WSNomadResettelmentTab'
 import WSNomadIncomeTab from '../components/PigletsTabs/WSNomadIncomeTab'
 import WSPigletsRecountTab from '../components/PigletsTabs/WSPigletsRecountTab'
@@ -132,7 +132,7 @@ class WorkshopSevenContainer extends Component {
         />}
 
         { activeTab.name === 'innerTransferTab' &&
-          <WSNomadInnerTransferTab
+          <WSNomadInnerTransfer2SecTab
             workshopNumber={7}
             user={this.props.state.auth.user}
             grid={grid}
@@ -142,10 +142,15 @@ class WorkshopSevenContainer extends Component {
             sectionsFetching={this.props.state.sections.fetching}
             sectionsListError={this.props.state.sections.errorList}
 
-            getLocations={this.props.getLocations}
-            locations={this.props.state.locations.list}
-            listFetching={this.props.state.locations.fetching}
-            locationsErrorList={this.props.state.locations.errorList}
+            getFromLocations={this.props.getLocations}
+            fromLocations={this.props.state.locations.list}
+            fromListFetching={this.props.state.locations.fetching}
+            fromLocationsErrorList={this.props.state.locations.errorList}
+
+            getToLocations={this.props.getLocationsAdditional}
+            toLocations={this.props.state.locations.additional_list}
+            toListFetching={this.props.state.locations.fetchingAdditional}
+            toLocationsErrorList={this.props.state.locations.errorAdditional}
 
             movePiglets={this.props.movePiglets}
             eventFetching={this.props.state.piglets.eventFetching}

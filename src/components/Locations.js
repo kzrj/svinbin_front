@@ -7,7 +7,7 @@ export class Sections extends Component {
     const sectionClass = 'border border-mainDark-dark px-2 py2 float-left '
 
     return (
-      <div className='my-0 float-wrap mx-2 my-2'>
+      <div className='my-2'>
         {!error ? 
           fetching 
             ? <p className='loading'>Загрузка</p> 
