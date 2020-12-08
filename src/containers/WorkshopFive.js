@@ -26,13 +26,13 @@ class WorkshopFiveContainer extends Component {
     super(props);
     this.state = {
       tabs: [
-        {name: 'incomeTab',        active: true, title: 'Поступление и взвешивание'},
+        {name: 'incomeTab',        active: false, title: 'Поступление и взвешивание'},
         {name: 'resettlementTab',  active: false, title: 'Размещение прибывших'},
         {name: 'innerTransferTab', active: false, title: 'Внутреннее перемещение'},
         {name: 'transferTab',      active: false, title: 'Перегон ремонт'},
         {name: 'cullingTab',       active: false, title: 'Выбытие/Убой'},
         // {name: 'pigletsRecountTab',active: false, title: 'Пересчет поросят'},
-        {name: 'infoTab',          active: false, title: 'Инфо'},
+        {name: 'infoTab',          active: true, title: 'Инфо'},
       ],
     };
     this.setTab = this.setTab.bind(this);
@@ -77,6 +77,10 @@ class WorkshopFiveContainer extends Component {
           tabs={this.state.tabs} setTab={this.setTab} workshop={'Цех №5'} activeTab={activeTab}
           user={this.props.state.auth.user}
         />
+        {activeTab.name === 'infoTab' &&
+          <InfoTab ws_number={'5'}/>
+        }
+
         { activeTab.name === 'incomeTab' &&
           <WSNomadIncomeTab
             user={this.props.state.auth.user} 
@@ -239,9 +243,6 @@ class WorkshopFiveContainer extends Component {
             pigletsResetErrorsAndMessages={this.props.pigletsResetErrorsAndMessages}
           />}
 
-        {activeTab.name === 'infoTab' &&
-          <InfoTab ws_number={'5'}/>
-        }
       </div>
     );
   }

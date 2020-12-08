@@ -75,6 +75,27 @@ export class TabMenu extends Component {
     }
 }
 
+export class Tab2Menu extends Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        showMenu: false,
+        }
+    }
+
+    render () {
+        return (
+        <div className="d-flex justify-content-between bg-mainDark-dark">
+            <p className='my-0 mx-3 color-white font-700' onClick={() => this.props.setTab({name: 'wsMainTab'})}>
+                МЕНЮ
+            </p>
+            <p className='my-0 color-white font-700'>{this.props.workshop} {this.props.activeTab.title}</p>
+            <p className='my-0 mx-3 color-white font-700'>{this.props.user ? this.props.user.user : 'Не залогинен'}</p>
+        </div>
+        )
+    }
+}
+
 export function FetchingErrorComponentMessage(props) {
     const { fetching, error, component, divClassName } = props
     let message = props.message ? props.message : null

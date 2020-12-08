@@ -101,7 +101,7 @@ class WS3ReportComponent extends Component {
             
           </div>
 
-          <table className='table table-responsive-sm table-sm'>
+          <table className='table table-responsive table-sm'>
             <thead className='bg-mainDark-dark'>
               <th >Дата</th>
               <th >начало дня подсос</th>

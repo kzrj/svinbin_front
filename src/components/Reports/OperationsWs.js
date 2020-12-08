@@ -68,7 +68,7 @@ export class WsOpInputs4 extends Component {
     const { operationsInputs, ws_number, type } = this.props
 
     return(
-    <div className='row'>
+    <div className='row my-0'>
       {Object.keys(operationsInputs).map(op_key => 
         operationsInputs[op_key]['ws'] == ws_number && 
         operationsInputs[op_key]['type'] == type &&
@@ -150,14 +150,14 @@ class OperationsWs extends Component {
     return (
       <div className="container-fluid">
 
-        {pigsCount && pigsCount.ws_number == 3 &&
+        {/* {pigsCount && pigsCount.ws_number == 3 &&
           <PigsCountWs3 pigsCount={pigsCount}/>
-        }
+        } */}
         <h3>Операции</h3>
-        <div>
-          <div className='row'>
+        <div className='my-0'>
+          <div className='row my-0'>
             <div className='col-6'>
-              <div className="form-group row">
+              <div className="form-group row my-0">
                 <div className='col-6'>
                   <label>Дата с</label>
                   <input type='date'
