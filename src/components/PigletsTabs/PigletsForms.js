@@ -59,9 +59,22 @@ export const renderSelectField = ({
       {...input}
       {...custom}
       fullWidth={true}
+      classes={{
+        root: input.value 
+                ? input.value === 'spec' 
+                  ? 'bg-green1-light' : 'bg-red1-light'
+                : null,
+        // label: classes.label, // class name, e.g. `classes-nesting-label-x`
+      }}
     >
       {options.map(option =>
-          <MenuItem value={option.value}>{option.label}</MenuItem>
+          <MenuItem value={option.value} 
+            classes={{
+              root: option.value === 'spec' ? 'bg-green1-light' : 'bg-red1-light',
+              // label: classes.label, // class name, e.g. `classes-nesting-label-x`
+            }}>
+            {option.label}
+          </MenuItem>
           )}
     </Select>
     {renderFromHelper({ touched, error })}
@@ -154,6 +167,13 @@ export function CullingPigletsForm (props) {
       <Field 
         component={renderTextField}
         type='number'
+        name='total_quantity'
+        hidden={true}
+      />
+
+      <Field 
+        component={renderTextField}
+        type='number'
         label="Вес" 
         name='total_weight'
         margin='dense'
@@ -208,6 +228,10 @@ const validateCullingForm = values => {
     'total_weight'
   ]
   let avg = values['total_weight'] / values['quantity']
+
+  if (values['quantity'] > values['total_quantity']){
+    errors['quantity'] = 'Укажите меньшее количество. В группе мешьне голов.'
+  }
 
   if (values['date'] > getToday()) {
     errors['date'] = 'Дата не может быть в будущем'

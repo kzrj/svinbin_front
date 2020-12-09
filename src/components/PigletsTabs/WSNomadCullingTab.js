@@ -163,6 +163,7 @@ class WSNomadCullingTab extends Component {
                       id: activePiglets.id,
                       // culling_type: 'padej',
                       quantity: 1,
+                      total_quantity: activePiglets.quantity,
                       total_weight: 0,
                       reason: 'без причины',
                       date: today,
