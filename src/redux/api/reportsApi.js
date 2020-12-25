@@ -130,6 +130,17 @@ const create = () => {
             throw error;
         })
     }
+
+    const getWs12Report = (filters) => {
+        const params = createUrlParamsFromFilters(filters);
+        return axios.get(endpoints.GET_WS12_REPORT, { params })
+        .then(response => response.data)
+        .catch(err => {
+            const error = new Error(err);
+            error.data = parseErrorData(err);
+            throw error;
+        })
+    }
     
     return {
         getTourReports,
@@ -142,7 +153,8 @@ const create = () => {
         getWsReport,
         getRecountBalance,
         getToursV2Report,
-        getTourV2Report
+        getTourV2Report,
+        getWs12Report
     }
 }
 

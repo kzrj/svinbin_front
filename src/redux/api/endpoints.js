@@ -90,6 +90,7 @@ export default {
     GET_WS_REPORT_PIGS_COUNT: `${apiUrl}/reports/director/ws_report_count/`,
     GET_WS_REPORT: `${apiUrl}/reports/director/ws_report/`,
     get_ws_report_as_excel: (ws_number) => `${apiUrl}/reports/director/get_ws_report_excel/?ws_number=${ws_number}`,
+    GET_WS12_REPORT: `${apiUrl}/reports/director/ws12_report/`,
 
     GET_RECOUNT_BALANCE: `${apiUrl}/reports/recounts/ws_balance/`,
     GET_TOURS_WITH_WEIGHTS: `${apiUrl}/reports/tours_v2/`,

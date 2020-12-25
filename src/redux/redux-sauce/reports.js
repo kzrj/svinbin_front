@@ -47,6 +47,10 @@ const { Types, Creators } = createActions({
     getTourV2ReportRequest: ['payload'],
     getTourV2ReportFail: ['error'],
     getTourV2ReportSuccess: ['payload'],
+
+    getWs12ReportRequest: ['payload'],
+    getWs12ReportFail: ['error'],
+    getWs12ReportSuccess: ['payload'],
 })
 
 export const ReportsTypes = Types
@@ -64,6 +68,8 @@ export const INITIAL_STATE = Immutable({
     pigsCount: {},
 
     ws3Report: {},
+
+    ws12Report: {},
 
     wsReport: {},
 
@@ -93,6 +99,7 @@ export const TourReportsSelectors = {
     getWs3Report: state => state.ws3Report,
     getWsReportPigsCount: state => state.wsReportPigsCount,
     getWsReport: state => state.wsReport,
+    getWs12Report: state => state.ws12Report,
 }
 
 /* ------------- Reducers ------------- */
@@ -242,6 +249,20 @@ export const getTourV2ReportSuccess = (state, { payload }) => {
 export const getTourV2ReportFail = (state, { error }) => {
     return state.merge({ reportsFetching: false, reportsErrorFetching: error,})
 }
+
+// ws12 report
+export const getWs12ReportRequest = (state, { payload }) => {
+    return state.merge({ reportsFetching: true, ws12Report: {} })
+}
+
+export const getWs12ReportSuccess = (state, { payload }) => {
+    return state.merge({ reportsFetching: false, reportsErrorFetching: null,
+        ws12Report: payload })
+}
+
+export const getWs12ReportFail = (state, { error }) => {
+    return state.merge({ reportsFetching: false, reportsErrorFetching: error, ws12Report: {} })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -288,4 +309,8 @@ export const reducer = createReducer(INITIAL_STATE, {
     [Types.GET_TOUR_V2_REPORT_REQUEST]: getTourV2ReportRequest,
     [Types.GET_TOUR_V2_REPORT_SUCCESS]: getTourV2ReportSuccess,
     [Types.GET_TOUR_V2_REPORT_FAIL]: getTourV2ReportFail,
+
+    [Types.GET_WS12_REPORT_REQUEST]: getWs12ReportRequest,
+    [Types.GET_WS12_REPORT_SUCCESS]: getWs12ReportSuccess,
+    [Types.GET_WS12_REPORT_FAIL]: getWs12ReportFail,
 })

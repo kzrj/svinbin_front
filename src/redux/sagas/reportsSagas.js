@@ -100,3 +100,12 @@ export function* getTourV2Report(api, action) {
         yield put(ReportsActions.getTourV2ReportFail(err.message))
     }
 }
+
+export function* getWs12Report(api, action) {
+    try {
+        let response = yield call(api.getWs12Report, action.payload);
+        yield put(ReportsActions.getWs12ReportSuccess(response));
+    } catch (err) {
+        yield put(ReportsActions.getWs12ReportFail(err.message))
+    }
+}

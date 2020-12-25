@@ -8,7 +8,7 @@ import WS12SowCullingTab from '../components/SowTabs/WS12SowCullingTab'
 import WSSowUltrasoundTab from '../components/SowTabs/WSSowUltrasoundTab'
 import WSSowGlobalSearchTab from '../components/SowTabs/WSSowGlobalSearchTab'
 import WS1ImportSeminationTab from '../components/SowTabs/WS1ImportSeminationTab'
-import WSBoarTab from '../components/SowTabs/WSBoarTab'
+import WS12ReportTab from '../components/Reports/WS12Report'
 
 import { TabMenu }  from '../components/CommonComponents'
 
@@ -16,6 +16,7 @@ import { TabMenu }  from '../components/CommonComponents'
 import SowsActions from '../redux/redux-sauce/sows';
 import ToursActions from '../redux/redux-sauce/tours';
 import WsDataActions from '../redux/redux-sauce/wsData';
+import ReportsActions from '../redux/redux-sauce/reports';
 
 
 class WorkshopOneContainer extends Component {
@@ -30,7 +31,7 @@ class WorkshopOneContainer extends Component {
         {name: 'transferToWS2Tab',    active: false,  title: 'Перегон'},
         {name: 'cullingTab',          active: false, title: 'Выбытие'},
         {name: 'searchSowTab',        active: true, title: 'Поиск по всем цехам'},
-        // {name: 'infoTab',             active: false, title: 'Инфо'},
+        {name: 'infoTab',             active: false, title: 'Инфо'},
       ]
     }
     this.setTab = this.setTab.bind(this);
@@ -228,21 +229,15 @@ class WorkshopOneContainer extends Component {
           />
         }
 
-        {activeTab.name === 'boarTab' &&
-          <WSBoarTab 
-            getBoars={this.props.getBoars}
-            boars={this.props.state.sows.boars}
-            listFetching={this.props.state.sows.fetching}
-
-            boar={this.props.state.sows.boar}
-
-            cullingBoar={this.props.cullingBoar}
-            createBoar={this.props.createBoar}
-            eventError={this.props.state.sows.eventError}
-            eventFetching={this.props.state.sows.eventFetching}
-            message={this.props.state.sows.message}
-
-            sowsResetErrorsAndMessages={this.props.sowsResetErrorsAndMessages}
+        {activeTab.name === 'infoTab' &&
+          <WS12ReportTab 
+            ws_number={1} 
+            getWsReport={this.props.getWsReport}
+            wsReport={this.props.state.reports.ws12Report}
+        
+            eventError={this.props.state.reports.reportsErrorFetching}
+            eventFetching={this.props.state.reports.reportsFetching}
+            message={this.props.state.reports.message}
           />
         }
 
@@ -281,6 +276,8 @@ const mapDispatchToProps = (dispatch) => ({
 
   getSeminators: query => dispatch(WsDataActions.getSeminatorsRequest(query)),
   uploadFile: data => dispatch(WsDataActions.importSeminationsFromFarmRequest(data)),
+
+  getWsReport: query => dispatch(ReportsActions.getWs12ReportRequest(query)),
 })
 
 export default connect(

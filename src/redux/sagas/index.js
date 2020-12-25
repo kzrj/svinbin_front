@@ -64,6 +64,7 @@ export default function* root() {
     takeEvery(ReportsTypes.GET_WS_POPULATION_REQUEST, reportsSaga.getWsPopulation, locationsApi),
     takeEvery(ReportsTypes.GET_TOURS_V2_REPORT_REQUEST, reportsSaga.getToursV2Report, reportsApi),
     takeEvery(ReportsTypes.GET_TOUR_V2_REPORT_REQUEST, reportsSaga.getTourV2Report, reportsApi),
+    takeEvery(ReportsTypes.GET_WS12_REPORT_REQUEST, reportsSaga.getWs12Report, reportsApi),
 
     takeEvery(SowsTypes.GET_SOWS_REQUEST, sowsSaga.getSows, sowsApi),
     takeEvery(SowsTypes.GET_SOW_REQUEST, sowsSaga.getSow, sowsApi),
